@@ -14,6 +14,8 @@ class BeltExamForm(ModelForm):
                                            attrs={'class': 'form-control select2 select2-hidden-accessible',
                                                   'style': 'width: 100%; '}))
 
+
+
     class Meta:
         model = BeltExam
 

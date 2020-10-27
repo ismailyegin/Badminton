@@ -40,3 +40,4 @@ class Level(models.Model):
 
     class Meta:
         default_permissions = ()
+

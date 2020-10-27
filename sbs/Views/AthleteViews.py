@@ -179,6 +179,7 @@ def return_add_athlete_antrenor(request):
             license.sportsClub = SportsClub.objects.get(name=request.POST.get('sportsClub'))
             license.save()
 
+
             athlete.licenses.add(license)
 
             # subject, from_email, to = 'WUSHU - Sporcu Bilgi Sistemi Kullanıcı Giriş Bilgileri', 'ik@oxityazilim.com', user.email
@@ -450,6 +451,7 @@ def return_athletes_antrenor(request):
 
     user_form = UserSearchForm()
 
+
     athletes = Athlete.objects.none()
     if request.method == 'POST':
         user_form = UserSearchForm(request.POST)
@@ -632,6 +634,7 @@ def updateathletes(request, pk):
                               {'user_form': user_form, 'communication_form': communication_form,
                                'person_form': person_form, 'licenses_form': licenses_form,
                                'athlete': athlete, 'say': say, 'competition': competition})
+
 
         name = request.POST.get('first_name')
         surname = request.POST.get('last_name')

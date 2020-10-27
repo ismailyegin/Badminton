@@ -108,8 +108,10 @@ def return_add_referee(request):
             log = str(user.get_full_name()) + " Hakemi  ekledi"
             log = general_methods.logwrite(request, request.user, log)
 
+
             user.groups.add(group)
             user.save()
+
 
             person = person_form.save(commit=False)
             communication = communication_form.save(commit=False)
@@ -119,6 +121,7 @@ def return_add_referee(request):
             judge = Judge(user=user, person=person, communication=communication)
             judge.iban = iban_form.cleaned_data['iban']
             judge.save()
+
 
             # subject, from_email, to = 'Halter - Hakem Bilgi Sistemi Kullanıcı Giriş Bilgileri', 'no-reply@twf.gov.tr:81', user.email
             # text_content = 'Aşağıda ki bilgileri kullanarak sisteme giriş yapabilirsiniz.'
@@ -473,7 +476,6 @@ def referenceUpdateReferee(request, pk):
     return render(request, 'hakem/HakemBasvuruUpdate.html',
                   {'preRegistrationform': refere_form})
 
-
 @login_required
 def updateReferee(request, pk):
     perm = general_methods.control_access(request)
@@ -546,6 +548,7 @@ def updateReferee(request, pk):
 
             person_form.save()
             communication_form.save()
+
 
             messages.success(request, 'Hakem Başarıyla Güncellendi')
             # return redirect('sbs:hakemler')
@@ -1057,7 +1060,6 @@ def referenceStatus_reddet(request, pk):
         messages.warning(request, 'Tekrar deneyiniz.')
 
     return redirect('sbs:basvuru-referee')
-
 
 @login_required
 def referenceStatus(request, pk):

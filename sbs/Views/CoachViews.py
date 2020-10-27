@@ -48,7 +48,6 @@ from sbs.models.PreRegistration import PreRegistration
 from sbs.models.ReferenceReferee import ReferenceReferee
 from sbs.models.ReferenceCoach import ReferenceCoach
 
-
 # visaseminer ekle
 @login_required
 def visaSeminar_ekle(request):
@@ -89,7 +88,6 @@ def return_visaSeminar(request):
 
     return render(request, 'antrenor/VisaSeminar.html', {'competitions': Seminar})
 
-
 @login_required
 def visaSeminar_duzenle(request, pk):
     perm = general_methods.control_access(request)
@@ -110,6 +108,7 @@ def visaSeminar_duzenle(request, pk):
         else:
 
             messages.warning(request, 'Alanları Kontrol Ediniz')
+
 
     return render(request, 'antrenor/VizeSeminar-Duzenle.html',
                   {'competition_form': competition_form, 'competition': seminar, 'athletes': coach})
@@ -403,6 +402,7 @@ def categoryItemDelete(request, pk):
 @login_required
 def categoryItemUpdate(request, pk):
     perm = general_methods.control_access(request)
+
 
     if not perm:
         logout(request)
@@ -778,6 +778,7 @@ def coachUpdate(request, pk):
             log = str(user.get_full_name()) + " Antrenor güncelledi"
             log = general_methods.logwrite(request, request.user, log)
 
+
             iban_form.save()
             person_form.save()
             communication_form.save()
@@ -848,10 +849,10 @@ def updateCoachProfile(request):
                   {'user_form': user_form, 'communication_form': communication_form,
                    'person_form': person_form, 'password_form': password_form})
 
-
 @login_required
 def kademe_delete(request, grade_pk, coach_pk):
     perm = general_methods.control_access(request)
+
 
     if not perm:
         logout(request)
@@ -878,6 +879,7 @@ def kademe_delete(request, grade_pk, coach_pk):
 def vize_delete(request, grade_pk, coach_pk):
     perm = general_methods.control_access(request)
 
+
     if not perm:
         logout(request)
         return redirect('accounts:login')
@@ -893,6 +895,7 @@ def vize_delete(request, grade_pk, coach_pk):
             log = str(coach.user.get_full_name()) + " vize silindi"
             log = general_methods.logwrite(request, request.user, log)
 
+
             obj.delete()
 
             return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
@@ -900,6 +903,7 @@ def vize_delete(request, grade_pk, coach_pk):
             return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
     else:
         return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+
 
 
 @login_required
@@ -927,8 +931,6 @@ def kademe_onay(request, grade_pk, coach_pk):
     except:
         messages.warning(request, 'Lütfen yeniden deneyiniz.')
     return redirect('sbs:update-coach', pk=coach_pk)
-
-
 @login_required
 def visa_onay(request, grade_pk, coach_pk):
     perm = general_methods.control_access(request)
@@ -947,7 +949,6 @@ def visa_onay(request, grade_pk, coach_pk):
 
     messages.success(request, 'Vize onaylanmıştır')
     return redirect('sbs:update-coach', pk=coach_pk)
-
 
 @login_required
 def kademe_reddet(request, grade_pk, coach_pk):
@@ -987,6 +988,7 @@ def vize_reddet(request, grade_pk, coach_pk):
 
     messages.warning(request, 'Vize Reddedilmistir.')
     return redirect('sbs:update-coach', pk=coach_pk)
+
 
 
 @login_required
@@ -1035,6 +1037,8 @@ def kademe_list(request):
                   {'belts': grade})
 
 
+
+
 @login_required
 def vize_list(request):
     perm = general_methods.control_access(request)
@@ -1049,6 +1053,7 @@ def vize_list(request):
     grade = Level.objects.filter(definition_id__in=coa, levelType=EnumFields.VISA).distinct()
     return render(request, 'antrenor/Vize-Listesi.html',
                   {'belts': grade})
+
 
 
 @login_required
@@ -1074,7 +1079,6 @@ def kademe_onayla(request, grade_pk):
 
     return redirect('sbs:kademe-listesi')
 
-
 @login_required
 def kademe_reddet_liste(request, grade_pk):
     perm = general_methods.control_access(request)
@@ -1088,7 +1092,6 @@ def kademe_reddet_liste(request, grade_pk):
     messages.success(request, 'Kademe   Onaylanmıştır')
     return redirect('sbs:kademe-listesi')
 
-
 @login_required
 def vize_onayla_liste(request, grade_pk):
     perm = general_methods.control_access(request)
@@ -1101,8 +1104,6 @@ def vize_onayla_liste(request, grade_pk):
     visa.save()
     messages.success(request, 'Vize Onaylanmıştır')
     return redirect('sbs:vize-listesi')
-
-
 @login_required
 def vize_reddet_liste(request, grade_pk):
     perm = general_methods.control_access(request)
@@ -1223,7 +1224,6 @@ def antrenor_vısa_ekle(request, pk):
 
     return render(request, 'antrenor/Vize-ekle.html',
                   {'grade_form': visa_form, 'category_item_form': category_item_form})
-
 
 @login_required
 def vize_update(request, grade_pk, coach_pk):

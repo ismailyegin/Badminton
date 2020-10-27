@@ -11,6 +11,7 @@ from django.shortcuts import render, redirect, render_to_response
 from accounts.forms import LoginForm, PermForm
 from accounts.models import Forgot
 
+
 from sbs.Forms.PreRegidtrationForm import PreRegistrationForm
 
 from django.contrib import auth, messages
@@ -183,6 +184,7 @@ def pre_registration(request):
                           {'preRegistrationform': PreRegistrationform})
 
         # -------------------------------------
+
 
         if PreRegistrationform.is_valid():
             PreRegistrationform.save()
@@ -532,6 +534,7 @@ def referenceReferee(request):
         #     messages.warning(request, 'Tc kimlik numarasi ile isim  soyisim dogum yılı  bilgileri uyuşmamaktadır. ')
         #     return render(request, 'registration/Referee.html',
         #                   {'preRegistrationform': referee})
+
 
         if referee.is_valid():
             if request.POST.get('kademe_definition'):

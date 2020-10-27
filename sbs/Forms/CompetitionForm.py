@@ -51,4 +51,6 @@ class CompetitionForm(ModelForm):
             'compGeneralType': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                                    'style': 'width: 100%; '}),
 
+
+
         }

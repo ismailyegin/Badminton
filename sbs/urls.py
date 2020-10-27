@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'sporcu/sporcu-birlestir/(?P<pk>\d+)$', AthleteViews.sporcu_sec, name='sporcu-birlestir'),
     url(r'sporcu/sporcu-birlestironay/$', AthleteViews.sporcu_birlestir, name='sporcu-birlestir-onay'),
 
+
     url(r'sporcu/sporcu-ekle-antrenor/$', AthleteViews.return_add_athlete_antrenor, name='sporcu-ekle-antrenor'),
     url(r'sporcu/sporcular/$', AthleteViews.return_athletes, name='sporcular'),
     url(r'sporcu/sporcular/antrenor/$', AthleteViews.return_athletes_antrenor, name='sporcular-antrenor'),
@@ -156,6 +157,7 @@ urlpatterns = [
     url(r'kulup/basvuru/reddet/(?P<pk>\d+)$', PreRegistration.rejected_preRegistration, name='basvuru-reddet'),
     url(r'klup/basvuru-incele/(?P<pk>\d+)$', PreRegistration.update_preRegistration, name='update-basvuru'),
 
+
     url(r'kulup/kulup-ekle/$', ClubViews.return_add_club, name='kulup-ekle'),
     url(r'kulup/kulupler/$', ClubViews.return_clubs, name='kulupler'),
     url(r'kulup/kulup-uyesi-ekle/$', ClubViews.return_add_club_person, name='kulup-uyesi-ekle'),
@@ -226,6 +228,7 @@ urlpatterns = [
     url(r'antrenor/antrenorler/onayla/basvuru/(?P<pk>\d+)$', CoachViews.referenappcoverCoach,
         name='onayla-coach-basvuru'),
     url(r'antrenor/basvuru/onayla/(?P<pk>\d+)$', CoachViews.referenceCoachStatus, name='basvuru-onayla-coach'),
+
 
     url(r'antrenor/antrenorDuzenle/(?P<pk>\d+)$', CoachViews.coachUpdate,
         name='update-coach'),

@@ -42,4 +42,7 @@ class LicenseForm(ModelForm):
             'cityHeadShip': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                                 'style': 'width: 100%;', 'required': 'required'}),
 
+
+
+
         }

@@ -54,6 +54,7 @@ def aplication(request, pk):
         logout(request)
         return redirect('accounts:login')
 
+
     musabaka = Competition.objects.get(pk=pk)
 
     login_user = request.user
@@ -87,6 +88,7 @@ def aplication(request, pk):
 
 @login_required
 def return_competition(request):
+
     perm = general_methods.control_access(request)
 
     if not perm:
@@ -109,6 +111,7 @@ def return_competitions(request):
     competition = Competition.objects.filter(registerStartDate__lte=timezone.now(),
                                              registerFinishDate__gte=timezone.now())
     competitions = Competition.objects.none()
+
 
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -171,6 +174,7 @@ def musabaka_duzenle(request, pk):
 
     musabaka = Competition.objects.get(pk=pk)
     athletes = CompAthlete.objects.filter(competition=pk)
+
 
     weights = Weight.objects.all()
     competition_form = CompetitionForm(request.POST or None, instance=musabaka)
@@ -284,6 +288,7 @@ def return_sporcu_ajax(request):
     elif request.method == 'POST':
         datatables = request.POST
 
+
     # /Sayfanın baska bir yerden istenmesi durumunda degerlerin None dönmemesi icin degerler try boklari icerisine alindi
 
     try:
@@ -362,6 +367,7 @@ def return_sporcu_ajax(request):
             'anne': item.person.motherName,
             'baba': item.person.fatherName,
 
+
             'name': item.user.first_name + ' ' + item.user.last_name,
 
             'birthDate': date,
@@ -426,12 +432,14 @@ def return_sporcu(request):
             if comp.athlete:
                 athletes.append(comp.athlete.pk)
 
+
         if user.groups.filter(name='KulupUye'):
             sc_user = SportClubUser.objects.get(user=user)
             clubsPk = []
             clubs = SportsClub.objects.filter(clubUser=sc_user)
             for club in clubs:
                 clubsPk.append(club.pk)
+
 
             modeldata = Athlete.objects.exclude(pk__in=athletes).filter(licenses__sportsClub__in=clubsPk).distinct()
             total = modeldata.count()
@@ -458,6 +466,7 @@ def return_sporcu(request):
             modeldata = Athlete.objects.filter(
                 Q(user__last_name__icontains=search) | Q(user__first_name__icontains=search) | Q(
                     user__email__icontains=search))
+
 
             for comp in compAthlete:
                 if comp.athlete:
@@ -541,6 +550,7 @@ def return_sporcu(request):
         }
         beka.append(data)
         say += 1
+
 
     response = {
 
@@ -814,6 +824,7 @@ def return_competition_ajax(request):
 
                 modeldata = Competition.objects.filter(year=pk)
                 total = modeldata.count()
+
 
     say = start + 1
     start = start + length

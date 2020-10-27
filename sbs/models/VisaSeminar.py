@@ -8,6 +8,7 @@ from sbs.models.EnumFields import EnumFields
 
 
 class VisaSeminar(models.Model):
+
     WAITED = 'Beklemede'
     APPROVED = 'Onaylandı'
     PROPOUND = 'Onaya Gönderildi'
@@ -19,6 +20,7 @@ class VisaSeminar(models.Model):
         (DENIED, 'Reddedildi'),
         (WAITED, 'Beklemede'),
     )
+
 
     creationDate = models.DateTimeField(auto_now_add=True)
     modificationDate = models.DateTimeField(auto_now=True)

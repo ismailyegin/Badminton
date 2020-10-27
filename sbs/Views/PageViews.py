@@ -32,8 +32,6 @@ from django.core.paginator import Paginator
 from django.shortcuts import render
 
 import json
-
-
 def deneme(request):
     perm = general_methods.control_access_klup(request)
 
@@ -57,6 +55,7 @@ def return_athletesdeneme(request):
     elif request.method == 'POST':
         datatables = request.POST
         # print("post islemi gerceklesti")
+
 
     # /Sayfanın baska bir yerden istenmesi durumunda degerlerin None dönmemesi icin degerler try boklari icerisine alindi
     try:
@@ -111,6 +110,9 @@ def return_athletesdeneme(request):
             elif user.groups.filter(name__in=['Yonetim', 'Admin']):
                 modeldata = Athlete.objects.all()[start:start + length]
                 total = Athlete.objects.count()
+
+
+
 
     # /Sayfalama  islemleri ile gerekli bir sekil de istenilen sayfanın gönderilmesi gerçeklesitirildi.
 

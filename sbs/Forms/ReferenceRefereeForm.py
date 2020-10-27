@@ -89,3 +89,4 @@ class RefereeForm(ModelForm):
                                            'style': 'width: 100%;', 'required': 'required'}),
 
         }
+

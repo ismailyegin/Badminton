@@ -65,6 +65,7 @@ def update_user(request, pk):
     user = User.objects.get(pk=pk)
     user_form = UserForm(request.POST or None, instance=user)
 
+
     if request.method == 'POST':
 
         if user_form.is_valid():
@@ -109,6 +110,7 @@ def active_user(request, pk):
 
     else:
         return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+
 
 
 @login_required

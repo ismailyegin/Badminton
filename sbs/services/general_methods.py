@@ -251,6 +251,7 @@ def import_csv():
 
             club.save()
 
+
             user = User()
             user.first_name = row[1]
             user.last_name = row[2]

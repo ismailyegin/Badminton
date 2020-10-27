@@ -22,6 +22,7 @@ def return_message(request):
     return render(request, 'Chat/chat.html')
 
 
+
 @login_required
 def return_athlete_dashboard(request):
     perm = general_methods.control_access(request)
@@ -89,6 +90,7 @@ def return_club_user_dashboard(request):
     current_user = request.user
     clubuser = SportClubUser.objects.get(user=current_user)
     club = SportsClub.objects.filter(clubUser=clubuser)[0]
+
 
     total_club_user = club.clubUser.count()
     total_coach = Coach.objects.filter(sportsclub=club).count()

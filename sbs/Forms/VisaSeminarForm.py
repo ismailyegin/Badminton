@@ -1,8 +1,6 @@
 from django import forms
 from django.forms import ModelForm
 from sbs.models.VisaSeminar import VisaSeminar
-
-
 class VisaSeminarForm(ModelForm):
     class Meta:
         model = VisaSeminar

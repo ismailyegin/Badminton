@@ -410,6 +410,7 @@ def update_commission(request, pk):
                   {'commission_form': commission_form})
 
 
+
 @login_required
 def updateDirectoryProfile(request):
     perm = general_methods.control_access(request)

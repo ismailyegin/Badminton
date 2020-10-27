@@ -4,8 +4,6 @@ from django.db import models
 
 from sbs.models.Athlete import Athlete
 from sbs.models.EnumFields import EnumFields
-
-
 class Competition(models.Model):
     TURKEY = 0
     WORLD = 1
@@ -23,6 +21,7 @@ class Competition(models.Model):
     INTERSCHOOL = 1
     PERSONAL = 2
     GRANDPRİX = 3
+
 
     COMPTYPE = (
         (INTERUNIVERSITY, 'Üniversiteler Arası'),
@@ -56,7 +55,6 @@ class Competition(models.Model):
     kobilId = models.IntegerField(db_column='kobilId', default=0)  # Field name made lowercase.
 
     year = models.IntegerField(blank=True, null=True, )  # Field name made lowercase.
-
     def __str__(self):
         return '%s ' % self.name
 

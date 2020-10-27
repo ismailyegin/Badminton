@@ -46,8 +46,6 @@ from sbs.models.ReferenceCoach import ReferenceCoach
 
 from django.contrib.auth.models import Group, Permission, User
 from operator import itemgetter
-
-
 @login_required
 def return_add_club(request):
     perm = general_methods.control_access(request)
@@ -98,6 +96,7 @@ def return_add_club(request):
 @login_required
 def return_clubs(request):
     perm = general_methods.control_access_klup(request)
+
 
     if not perm:
         logout(request)
@@ -684,6 +683,7 @@ def deleteClubUserFromClub(request, pk, club_pk):
             log = str(club) + " Klup üyesi cikarildi"
             log = general_methods.logwrite(request, request.user, log)
 
+
             club.save()
 
             return JsonResponse({'status': 'Success', 'messages': 'delete successfully'})
@@ -772,6 +772,7 @@ def clubUpdate(request, pk):
 
     athletes = Athlete.objects.filter(licenses__sportsClub=club)
 
+
     try:
         com_id = club.communication.pk
         communication = Communication.objects.get(id=com_id)
@@ -804,6 +805,7 @@ def clubUpdate(request, pk):
 
             log = str(club) + " Klup güncellendi"
             log = general_methods.logwrite(request, request.user, log)
+
 
             messages.success(request, 'Başarıyla Güncellendi')
             return redirect('sbs:kulupler')
