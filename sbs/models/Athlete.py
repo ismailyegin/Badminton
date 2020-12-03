@@ -24,4 +24,4 @@ class Athlete(models.Model):
         ordering = ['pk']
         default_permissions = ()
         db_table = 'athlete'
-        managed = False
+        # managed = False

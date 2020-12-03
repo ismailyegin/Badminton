@@ -35,6 +35,12 @@ from sbs.services import general_methods
 
 from accounts.models import Forgot
 
+from sbs.models.Document import Document
+from sbs.models.Penal import Penal
+
+from sbs.Forms.DocumentForm import DocumentForm
+from sbs.Forms.PenalForm import PenalForm
+
 # page
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 # from sbs.models.simplecategory import simlecategory
@@ -44,7 +50,6 @@ from zeep import Client
 from sbs.models.PreRegistration import PreRegistration
 from sbs.models.ReferenceReferee import ReferenceReferee
 from sbs.models.ReferenceCoach import ReferenceCoach
-
 
 @login_required
 def return_add_athlete_antrenor(request):
@@ -607,6 +612,14 @@ def updateathletes(request, pk):
     say = 0
     say = athlete.licenses.all().filter(status='Onaylandı').count()
     competition = Competition.objects.filter(compathlete__athlete=athlete).distinct()
+
+    test = athlete.person.penal.all()
+    for item in test:
+        print(item)
+
+
+
+
     if request.method == 'POST':
 
         # controller tc email
@@ -706,6 +719,31 @@ def return_belt(request):
     categoryitem = CategoryItem.objects.filter(forWhichClazz="BELT")
     return render(request, 'sporcu/kusak.html',
                   {'category_item_form': category_item_form, 'categoryitem': categoryitem})
+
+
+@login_required
+def athlete_document_delete(request, athlete_pk, document_pk):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    if request.method == 'POST' and request.is_ajax():
+        try:
+
+            athlete = Athlete.objects.get(pk=athlete_pk)
+            document = Document.objects.get(pk=document_pk)
+            athlete.person.document.remove(document)
+            athlete.save()
+            document.delete()
+            return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
+        except CategoryItem.DoesNotExist:
+            return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
+
+    else:
+        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+
+
 
 
 @login_required
@@ -859,6 +897,75 @@ def sporcu_lisans_ekle_antrenor(request, pk):
 
     return render(request, 'sporcu/lisans-ekle-antrenor.html',
                   {'license_form': license_form})
+
+
+@login_required
+def sporcu_ceza_ekle(request, pk):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    athlete = Athlete.objects.get(pk=pk)
+    user = request.user
+
+    penal_form = PenalForm()
+
+    if request.method == 'POST':
+        print('post')
+        penal_form = PenalForm(request.POST, request.FILES or None)
+        if penal_form.is_valid():
+            ceza = penal_form.save()
+            athlete.person.penal.add(ceza)
+            athlete.save()
+            messages.success(request, 'Belge Başarıyla Eklenmiştir.')
+
+            log = str(athlete.user.get_full_name()) + " Ceza eklendi"
+            log = general_methods.logwrite(request, request.user, log)
+            return redirect('sbs:update-athletes', pk=pk)
+
+
+
+        else:
+            messages.warning(request, 'Alanları Kontrol Ediniz')
+
+    return render(request, 'sporcu/Sporcu-ceza-ekle.html',
+                  {'ceza': penal_form})
+
+
+@login_required
+def sporcu_belge_ekle(request, pk):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    athlete = Athlete.objects.get(pk=pk)
+    user = request.user
+
+    document_form = DocumentForm()
+
+    if request.method == 'POST':
+        document_form = DocumentForm(request.POST, request.FILES or None)
+        if document_form.is_valid():
+            document = document_form.save()
+            athlete.person.document.add(document)
+            athlete.save()
+            messages.success(request, 'Belge Başarıyla Eklenmiştir.')
+
+            log = str(athlete.user.get_full_name()) + " Belge eklendi"
+            log = general_methods.logwrite(request, request.user, log)
+
+            return redirect('sbs:update-athletes', pk=pk)
+
+        else:
+
+            messages.warning(request, 'Alanları Kontrol Ediniz')
+
+    return render(request, 'sporcu/Sporcu-belge-ekle.html',
+                  {'belge': document_form})
+
+
 
 
 @login_required

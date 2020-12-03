@@ -35,6 +35,12 @@ urlpatterns = [
     url(r'sporcu/sporcuKusakDuzenle/(?P<belt_pk>\d+)/(?P<athlete_pk>\d+)$', AthleteViews.sporcu_kusak_duzenle,
         name='sporcu-kusak-duzenle'),
     url(r'sporcu/sporcuLisansEkle/(?P<pk>\d+)$', AthleteViews.sporcu_lisans_ekle, name='sporcu-lisans-ekle'),
+
+    url(r'sporcu/sporcuBelgeEkle/(?P<pk>\d+)$', AthleteViews.sporcu_belge_ekle, name='sporcu-belge-ekle'),
+    url(r'sporcu/sporcuCezaEkle/(?P<pk>\d+)$', AthleteViews.sporcu_ceza_ekle, name='sporcu-ceza-ekle'),
+
+
+
     url(r'sporcu/sporcuLisansEkle/antrenor/(?P<pk>\d+)$', AthleteViews.sporcu_lisans_ekle_antrenor,
         name='sporcu-lisans-ekle-antrenor'),
     url(r'sporcu/sporcuLisansDuzenle/(?P<license_pk>\d+)/(?P<athlete_pk>\d+)$', AthleteViews.sporcu_lisans_duzenle,
@@ -109,6 +115,9 @@ urlpatterns = [
     url(r'sporcu/sporcu-lisans-listesi/$', AthleteViews.sporcu_lisans_listesi, name='lisans-listesi'),
     url(r'sporcu/sporcu-profil-guncelle/$', AthleteViews.updateAthleteProfile,
         name='sporcu-profil-guncelle'),
+
+    url(r'sporcu/sporcuBelgeKaldır/(?P<athlete_pk>\d+)/(?P<document_pk>\d+)$', AthleteViews.athlete_document_delete,
+        name='sporcu-belge-kaldir'),
 
     # Hakemler
     url(r'hakem/hakem-ekle/$', RefereeViews.return_add_referee, name='hakem-ekle'),

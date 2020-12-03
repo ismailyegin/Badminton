@@ -1,5 +1,6 @@
 from django.db import models
-
+from sbs.models.Document import Document
+from sbs.models.Penal import Penal
 
 class Person(models.Model):
     MALE = 0
@@ -39,9 +40,13 @@ class Person(models.Model):
     fatherName = models.CharField(max_length=120, null=True, blank=True, verbose_name='Baba Adı')
     profileImage = models.ImageField(upload_to='profile/', null=True, blank=True, default='profile/user.png',
                                      verbose_name='Profil Resmi')
+
     birthDate = models.DateField(null=True, blank=True, verbose_name='Doğum Tarihi')
     bloodType = models.CharField(max_length=128, verbose_name='Kan Grubu', choices=BLOODTYPE, null=True, blank=True)
     gender = models.IntegerField(choices=GENDER_CHOICES)
+
+    document = models.ManyToManyField(Document)
+    penal = models.ManyToManyField(Penal)
 
     class Meta:
         default_permissions = ()
