@@ -107,7 +107,7 @@
             {% csrf_token %}
             <div class="row">
 
-                <div class="col-lg-6">
+                <div class="col-lg-5">
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title">Genel Bilgiler</h3>
@@ -205,11 +205,21 @@
                     </div>
 
                 </div>
-                <div class="col-lg-6">
-                    <div class="box box-primary">
+                {#            iletişim bilgileri #}
+                <div class="col-lg-7">
+
+                    <div class="box box-info collapsed-box">
                         <div class="box-header with-border">
-                            <h3 class="box-title">İletişim Bilgileri</h3>
+                            <h3 class="box-title">İLETİŞİM BİLGİLERİ</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                            <!-- /.box-tools -->
                         </div>
+                        <!-- /.box-header -->
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-lg-6">
@@ -253,196 +263,377 @@
                         <div class="box-footer">
                             <button class="btn btn-primary" type="submit">Kaydet</button>
                         </div>
-
-
+                        <!-- /.box-body -->
                     </div>
 
+
                 </div>
+                {#            KADEME BİLGİLERİ #}
+                <div class="col-lg-7">
+
+                    <div class="box box-info collapsed-box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">KADEME BİLGİLERİ</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                            <!-- /.box-tools -->
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="box-header with-border">
+                                <div class="btn-group">
+
+                                    <a href="{% url 'sbs:antrenor-kademe-ekle' coach %}"
+                                       type="button" class="btn btn-success"><i
+                                            class="fa fa-edit"></i> Kademe Ekle
+                                    </a>
+
+                                </div>
+                            </div>
+                            <table id="belt" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th> Hak Kazanma Zamanı</th>
+                                    <th> Branş</th>
+                                    <th> Tanımı</th>
+                                    <th>Dekont</th>
+                                    <th> Onay Durumu</th>
+                                    <th>İşlemler</th>
+
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% if grades_form.all %}
+                                    {% for grade in grades_form %}
+                                        <tr>
+                                            <td>{{ forloop.counter }} </td>
+                                            <td>{{ grade.startDate }}  </td>
+                                            <td>{{ grade.branch }}  </td>
+                                            <td>{{ grade.definition }}  </td>
+                                            <td><img src="/media/{{ grade.dekont }}" class="user-image" alt="Sbs"
+                                                     style=" width: 30px;height: 30px;"></td>
+                                            <td>{{ grade.status }}  </td>
+
+                                            <td>
+                                                <div class="btn-group">
+
+                                                    {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                                                        <a href="{% url "sbs:kademe-onayla" grade_pk=grade.pk coach_pk=coach %}"
+                                                           type="button" class="btn btn-success"><i
+                                                                class="fa fa-edit"></i>Onayla
+                                                        </a>
+
+
+                                                        <a href="{% url "sbs:kademe-reddet" grade_pk=grade.pk coach_pk=coach %}"
+                                                           type="button" class="btn btn-danger"><i
+                                                                class="fa fa-trash"></i>Reddet
+                                                        </a>
+                                                        <a href="{% url "sbs:kademe-güncelle" grade_pk=grade.pk coach_pk=coach %}"
+                                                           type="button" class="btn btn-warning"><i
+                                                                class="fa fa-edit"></i>Güncelle
+                                                        </a>
+
+                                                        <a class="btn btn-danger"
+                                                           data-toggle="modal"
+                                                           onclick=delete_grade({{ grade.pk }},{{ coach }})><i
+                                                                class="fa fa-trash"></i>Sil
+                                                        </a>
+
+                                                    {% endif %}
+
+
+                                                </div>
+                                            </td>
+
+
+                                        </tr>
+
+                                    {% endfor %}
+                                {% endif %}
+
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <!-- /.box-body -->
+                    </div>
+
+
+                </div>
+                {#            VİZE BİLGİLERİ #}
+                <div class="col-lg-7">
+
+                    <div class="box box-info collapsed-box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">VİZE BİLGİLERİ</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                            <!-- /.box-tools -->
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="box-header with-border">
+                                <div class="btn-group">
+
+                                    <a href="{% url 'sbs:antrenor-vize-ekle' coach %}"
+                                       type="button" class="btn btn-success"><i
+                                            class="fa fa-edit"></i> Vize Ekle
+                                    </a>
+
+                                </div>
+                            </div>
+                            <table id="belt" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th> Hak Kazanma Yılı</th>
+                                    <th> Branş</th>
+                                    <th> Dekont</th>
+                                    <th> Onay Durumu</th>
+                                    <th>İşlemler</th>
+
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% if visa_form.all %}
+
+
+                                    {% for grade in visa_form %}
+                                        <tr>
+
+                                            <td>{{ forloop.counter }} </td>
+                                            <td>{{ grade.startDate.year }}  </td>
+                                            <td>{{ grade.branch }}  </td>
+
+
+                                            <td><img src="/media/{{ grade.dekont }}" class="user-image" alt="KOBİLTEK"
+                                                     style=" width: 30px;height: 30px;"></td>
+                                            <td>{{ grade.status }}  </td>
+
+                                            <td>
+                                                <div class="btn-group">
+
+                                                    {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                                                        <a href="{% url "sbs:vize-onayla" grade_pk=grade.pk coach_pk=coach %}"
+                                                           type="button" class="btn btn-success"><i
+                                                                class="fa fa-edit"></i>Onayla
+                                                        </a>
+
+
+                                                        <a href="{% url "sbs:vize-reddet" grade_pk=grade.pk coach_pk=coach %}"
+                                                           type="button" class="btn btn-danger"><i
+                                                                class="fa fa-trash"></i>Reddet
+                                                        </a>
+                                                        <a href="{% url "sbs:vize-güncelle" grade_pk=grade.pk coach_pk=coach %}"
+                                                           type="button" class="btn btn-warning"><i
+                                                                class="fa fa-edit"></i>Güncelle
+                                                        </a>
+
+                                                        <a class="btn btn-danger"
+                                                           data-toggle="modal"
+                                                           onclick=delete_visa({{ grade.pk }},{{ coach }})><i
+                                                                class="fa fa-trash"></i>Sil
+                                                        </a>
+
+                                                    {% endif %}
+
+
+                                                </div>
+                                            </td>
+
+
+                                        </tr>
+
+                                    {% endfor %}
+                                {% endif %}
+
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <!-- /.box-body -->
+                    </div>
+
+
+                </div>
+
+                {#            belge bilgileri#}
+
+                <div class="col-lg-7">
+
+                    <div class="box box-info collapsed-box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">BELGE BİLGİLERİ</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                            <!-- /.box-tools -->
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="box-header with-border">
+                                <div class="btn-group">
+
+
+                                    <a href="
+{#{% url "sbs:sporcu-belge-ekle"  athlete.pk %}#}
+"
+                                       type="button" class="btn btn-success"><i
+                                            class="fa fa-edit"></i> Yeni belge Ekle
+                                    </a>
+
+                                </div>
+                            </div>
+                            <table id="competition" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Belge İsmi</th>
+                                    <th>Belge</th>
+                                    <th>İşlemler</th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% if athlete.person.document.all %}
+                                    {% for item  in athlete.person.document.all %}
+                                        <tr id="needDocuments-{{ item.pk }}">
+                                            <td>{{ forloop.counter }} </td>
+                                            <td>
+                                                {{ item.name }}
+                                            </td>
+                                            <td>
+
+                                                {{ item.file }}
+
+                                            </td>
+
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a class="btn btn-success"
+                                                       data-toggle="modal"
+                                                       href="{{ MEDIA_URL }}{{ item.name }}"
+                                                       download><i
+                                                            class="fa fa-download"></i></a>
+
+
+                                                    <a class="btn btn-danger"
+                                                       data-toggle="modal"
+                                                       onclick=deleteneeddocument({{ athlete.pk }},{{ item.pk }})><i
+                                                            class="fa fa-trash"></i></a>
+
+                                                </div>
+                                            </td>
+
+
+                                        </tr>
+
+                                    {% endfor %}
+                                {% endif %}
+
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+
+
+                </div>
+                {#            ceza bilgileri#}
+                <div class="col-lg-7">
+
+                    <div class="box box-info collapsed-box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">CEZA BİLGİLERİ</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                            <!-- /.box-tools -->
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="box-header with-border">
+                                <div class="btn-group">
+
+
+                                    <a href="
+{#{% url "sbs:sporcu-ceza-ekle"  athlete.pk %}#}
+"
+                                       type="button" class="btn btn-success"><i
+                                            class="fa fa-edit"></i> Yeni Ceza Ekle
+                                    </a>
+
+                                </div>
+                            </div>
+                            <table id="competition" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Müsabaka</th>
+                                    <th>Müsabaka Türü</th>
+                                    <th> işlemler</th>
+
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% if athlete.person.penal.all %}
+                                    {% for item  in athlete.person.penal.all %}
+                                        <tr>
+                                            <td>{{ forloop.counter }} </td>
+                                            <td>
+                                                {{ item.penal }}
+                                            </td>
+                                            <td>
+
+                                                {{ item.file }}
+
+                                            </td>
+
+                                            <td>işlemler</td>
+                                        </tr>
+
+                                    {% endfor %}
+                                {% endif %}
+
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+
+
+                </div>
+
 
             </div>
 
         </form>
-
-
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Kademe Bilgileri</h3>
-                    </div>
-                    <div class="box-body">
-                        <div class="box-header with-border">
-                            <div class="btn-group">
-
-                                <a href="{% url 'sbs:antrenor-kademe-ekle' coach %}"
-                                   type="button" class="btn btn-success"><i
-                                        class="fa fa-edit"></i> Kademe Ekle
-                                </a>
-
-                            </div>
-                        </div>
-                        <table id="belt" class="table table-bordered table-hover">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th> Hak Kazanma Zamanı</th>
-                                <th> Branş</th>
-                                <th> Tanımı</th>
-                                <th>Dekont</th>
-                                <th> Onay Durumu</th>
-                                <th>İşlemler</th>
-
-
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% if grades_form.all %}
-                                {% for grade in grades_form %}
-                                    <tr>
-                                        <td>{{ forloop.counter }} </td>
-                                        <td>{{ grade.startDate }}  </td>
-                                        <td>{{ grade.branch }}  </td>
-                                        <td>{{ grade.definition }}  </td>
-                                        <td><img src="/media/{{ grade.dekont }}" class="user-image" alt="Sbs"
-                                                 style=" width: 30px;height: 30px;"></td>
-                                        <td>{{ grade.status }}  </td>
-
-                                        <td>
-                                            <div class="btn-group">
-
-                                                {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
-                                                    <a href="{% url "sbs:kademe-onayla" grade_pk=grade.pk coach_pk=coach %}"
-                                                       type="button" class="btn btn-success"><i
-                                                            class="fa fa-edit"></i>Onayla
-                                                    </a>
-
-
-                                                    <a href="{% url "sbs:kademe-reddet" grade_pk=grade.pk coach_pk=coach %}"
-                                                       type="button" class="btn btn-danger"><i
-                                                            class="fa fa-trash"></i>Reddet
-                                                    </a>
-                                                    <a href="{% url "sbs:kademe-güncelle" grade_pk=grade.pk coach_pk=coach %}"
-                                                       type="button" class="btn btn-warning"><i
-                                                            class="fa fa-edit"></i>Güncelle
-                                                    </a>
-
-                                                    <a class="btn btn-danger"
-                                                       data-toggle="modal"
-                                                       onclick=delete_grade({{ grade.pk }},{{ coach }})><i
-                                                            class="fa fa-trash"></i>Sil
-                                                    </a>
-
-                                                {% endif %}
-
-
-                                            </div>
-                                        </td>
-
-
-                                    </tr>
-
-                                {% endfor %}
-                            {% endif %}
-
-
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Vize Bilgileri</h3>
-                    </div>
-                    <div class="box-body">
-                        <div class="box-header with-border">
-                            <div class="btn-group">
-
-                                <a href="{% url 'sbs:antrenor-vize-ekle' coach %}"
-                                   type="button" class="btn btn-success"><i
-                                        class="fa fa-edit"></i> Vize Ekle
-                                </a>
-
-                            </div>
-                        </div>
-                        <table id="belt" class="table table-bordered table-hover">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th> Hak Kazanma Yılı</th>
-                                <th> Branş</th>
-                                <th> Dekont</th>
-                                <th> Onay Durumu</th>
-                                <th>İşlemler</th>
-
-
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% if visa_form.all %}
-
-
-                                {% for grade in visa_form %}
-                                    <tr>
-
-                                        <td>{{ forloop.counter }} </td>
-                                        <td>{{ grade.startDate.year }}  </td>
-                                        <td>{{ grade.branch }}  </td>
-
-
-                                        <td><img src="/media/{{ grade.dekont }}" class="user-image" alt="KOBİLTEK"
-                                                 style=" width: 30px;height: 30px;"></td>
-                                        <td>{{ grade.status }}  </td>
-
-                                        <td>
-                                            <div class="btn-group">
-
-                                                {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
-                                                    <a href="{% url "sbs:vize-onayla" grade_pk=grade.pk coach_pk=coach %}"
-                                                       type="button" class="btn btn-success"><i
-                                                            class="fa fa-edit"></i>Onayla
-                                                    </a>
-
-
-                                                    <a href="{% url "sbs:vize-reddet" grade_pk=grade.pk coach_pk=coach %}"
-                                                       type="button" class="btn btn-danger"><i
-                                                            class="fa fa-trash"></i>Reddet
-                                                    </a>
-                                                    <a href="{% url "sbs:vize-güncelle" grade_pk=grade.pk coach_pk=coach %}"
-                                                       type="button" class="btn btn-warning"><i
-                                                            class="fa fa-edit"></i>Güncelle
-                                                    </a>
-
-                                                    <a class="btn btn-danger"
-                                                       data-toggle="modal"
-                                                       onclick=delete_visa({{ grade.pk }},{{ coach }})><i
-                                                            class="fa fa-trash"></i>Sil
-                                                    </a>
-
-                                                {% endif %}
-
-
-                                            </div>
-                                        </td>
-
-
-                                    </tr>
-
-                                {% endfor %}
-                            {% endif %}
-
-
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-            </div>
-        </div>
 
 
     </section>

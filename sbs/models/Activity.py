@@ -7,11 +7,13 @@ class Activity(models.Model):
     DOMESTİC = 0
     OVERSEAS = 1
     EDUCATİON = 2
+    CAMP = 3
 
     TYPE = (
         (DOMESTİC, 'YURT İÇİ FAALİYETLERİ'),
         (OVERSEAS, 'YURT DIŞI FAALİYETLERİ'),
         (EDUCATİON, 'EGİTİM FAALİYETLERİ'),
+        (CAMP, 'KAMP FAALİYETLERİ'),
     )
     type = models.IntegerField(db_column='Type', blank=False, null=False, choices=TYPE)  # Field name made lowercase.
     creationDate = models.DateTimeField(db_column='creationDate', blank=True, null=True,
