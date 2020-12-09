@@ -1050,14 +1050,16 @@ def sporcu_lisans_reddet(request, license_pk, athlete_pk):
     if request.POST:
         athlete = Athlete.objects.get(pk=athlete_pk)
         license = License.objects.get(pk=license_pk)
-        license.reddetwhy = request.POST.get('reddetwhy')
         license.status = License.DENIED
+        license.reddetwhy = request.POST.get('reddetwhy')
+        license.isActive = False
         license.save()
 
         log = str(athlete.user.get_full_name()) + " Lisans reddedildi"
         log = general_methods.logwrite(request, request.user, log)
+        messages.success(request, 'Lisans Reddedilmiştir')
 
-    messages.success(request, 'Lisans Reddedilmiştir')
+
     return redirect('sbs:update-athletes', pk=athlete_pk)
 
 
