@@ -118,6 +118,8 @@ urlpatterns = [
 
     url(r'sporcu/sporcuBelgeKaldır/(?P<athlete_pk>\d+)/(?P<document_pk>\d+)$', AthleteViews.athlete_document_delete,
         name='sporcu-belge-kaldir'),
+    url(r'sporcu/sporcuCezaKaldır/(?P<athlete_pk>\d+)/(?P<document_pk>\d+)$', AthleteViews.athlete_penal_delete,
+        name='sporcu-ceza-kaldir'),
 
     # Hakemler
     url(r'hakem/hakem-ekle/$', RefereeViews.return_add_referee, name='hakem-ekle'),
@@ -159,6 +161,10 @@ urlpatterns = [
         name='hakem-vize-güncelle'),
     url(r'hakem/Vize-Duzenle/sil/(?P<grade_pk>\d+)/(?P<referee_pk>\d+)$', RefereeViews.vize_delete,
         name='hakem-vize-sil'),
+    url(r'hakem/hakemBelgeEkle/(?P<pk>\d+)$', RefereeViews.hakem_belge_ekle, name='hakem-belge-ekle'),
+    url(r'hakem/hakemBelgeKaldır/(?P<athlete_pk>\d+)/(?P<document_pk>\d+)$', RefereeViews.judje_document_delete,
+        name='hakem-belge-kaldir'),
+    url(r'hakem/hakemCezaEkle/(?P<pk>\d+)$', RefereeViews.judge_ceza_ekle, name='hakem-ceza-ekle'),
 
     # Kulüpler
     url(r'kulup/basvuru-listesi/$', PreRegistration.return_preRegistration, name='basvuru-listesi'),
@@ -322,6 +328,8 @@ urlpatterns = [
     url(r'hakem/Vize-listesi/', RefereeViews.vize_list, name='hakem-vize-listesi'),
     url(r'hakem/vize-Liste-Onayla/(?P<referee_pk>\d+)$', RefereeViews.vize_onayla_liste,
         name='hakem-vize-list-onay'),
+    url(r'hakem/hakemCezaKaldır/(?P<athlete_pk>\d+)/(?P<document_pk>\d+)$', RefereeViews.judge_penal_delete,
+        name='hakem-ceza-kaldir'),
 
     # Yönetim Kurulu
     url(r'yonetim/kurul-uyeleri/$', DirectoryViews.return_directory_members, name='kurul-uyeleri'),

@@ -585,8 +585,8 @@
                                                 <div class="btn-group">
                                                     <a class="btn btn-success"
                                                        data-toggle="modal"
-                                                       href="{{ MEDIA_URL }}{{ item.name }}"
-                                                       download><i
+                                                       href="/media/{{ item.file }}"
+                                                       download> <i
                                                             class="fa fa-download"></i></a>
 
 
@@ -655,7 +655,7 @@
                                 <tbody>
                                 {% if athlete.person.penal.all %}
                                     {% for item  in athlete.person.penal.all %}
-                                        <tr>
+                                        <tr id="needPenal-{{ item.pk }}">
                                             <td>{{ forloop.counter }} </td>
                                             <td>
                                                 {{ item.penal }}
@@ -666,7 +666,22 @@
 
                                             </td>
 
-                                            <td>işlemler</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a class="btn btn-success"
+                                                       data-toggle="modal"
+                                                       href="/media/{{ item.file }}"
+                                                       download><i
+                                                            class="fa fa-download"></i></a>
+
+
+                                                    <a class="btn btn-danger"
+                                                       data-toggle="modal"
+                                                       onclick=deletepenal({{ athlete.pk }},{{ item.pk }})><i
+                                                            class="fa fa-trash"></i></a>
+
+                                                </div>
+                                            </td>
                                         </tr>
 
                                     {% endfor %}
@@ -778,6 +793,51 @@
                                         $('#modal-success').modal('hide');
 
                                         $('#needDocuments-' + competitionId).hide();
+
+                                    }
+
+                                });
+
+                            }).modal('show');
+
+
+                            console.log(result.status)
+                        }
+                    });
+
+                });
+            }).modal('show');
+            $('#btn-close').click(function () {
+                $('#modal-danger').modal('hide');
+            });
+
+        }
+
+        function deletepenal(id, competitionId) {
+
+            var html = '';
+            $("#modal-danger").on("shown.bs.modal", function (e) {
+                $("#btn-conf").click(function (e) {
+
+
+                    $.ajax({
+                        url: "{% url "sbs:sporcu-ceza-kaldir" athlete_pk=212121223232323232 document_pk=999999999999999 %}".replace(/212121223232323232/, id.toString()).replace(/999999999999999/, competitionId.toString()),
+                        type: "POST",
+                        data: {
+                            'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                            isActive: 'False'
+                        },
+                        success: function (result) {
+                            html = 'Ceza başarıyla kaldırıldı.';
+                            $(".successModal").html(html);
+                            $('#modal-success').on("shown.bs.modal", function () {
+
+                                $(".btn-ok").click(function () {
+                                    if (e.handled !== true) { // This will prevent event triggering more then once
+                                        e.handled = true;
+                                        $('#modal-success').modal('hide');
+
+                                        $('#needPenal-' + competitionId).hide();
 
                                     }
 

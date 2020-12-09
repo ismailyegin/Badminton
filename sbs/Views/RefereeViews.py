@@ -1,12 +1,16 @@
-from django.contrib.auth import logout, authenticate, update_session_auth_hash
+from datetime import date
+
+from django.contrib import messages
+from django.contrib.auth import logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.models import User, Group
-from django.contrib import messages
 from django.core.mail import EmailMultiAlternatives
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.utils import timezone
+from zeep import Client
 
 from accounts.models import Forgot
 from sbs.Forms.CategoryItemForm import CategoryItemForm
@@ -14,32 +18,28 @@ from sbs.Forms.CommunicationForm import CommunicationForm
 from sbs.Forms.DisabledCommunicationForm import DisabledCommunicationForm
 from sbs.Forms.DisabledPersonForm import DisabledPersonForm
 from sbs.Forms.DisabledUserForm import DisabledUserForm
-from sbs.Forms.UserForm import UserForm
-from sbs.Forms.PersonForm import PersonForm
-from sbs.Forms.UserSearchForm import UserSearchForm
+from sbs.Forms.DocumentForm import DocumentForm
 from sbs.Forms.GradeFormReferee import GradeFormReferee
-from sbs.Forms.RefereeSearchForm import RefereeSearchForm
-from sbs.Forms.SearchClupForm import SearchClupForm
 from sbs.Forms.IbanFormJudge import IbanFormJudge
-
+from sbs.Forms.PenalForm import PenalForm
+from sbs.Forms.PersonForm import PersonForm
+from sbs.Forms.RefereeSearchForm import RefereeSearchForm
+from sbs.Forms.ReferenceRefereeForm import RefereeForm
+from sbs.Forms.SearchClupForm import SearchClupForm
+from sbs.Forms.UserForm import UserForm
 from sbs.Forms.VisaForm import VisaForm
 from sbs.Forms.VisaSeminarForm import VisaSeminarForm
-
-from sbs.Forms.ReferenceRefereeForm import RefereeForm
-from sbs.models.ReferenceReferee import ReferenceReferee
-
 from sbs.models import Judge, CategoryItem, Communication, Level
-from sbs.models.VisaSeminar import VisaSeminar
+from sbs.models.Document import Document
 from sbs.models.EnumFields import EnumFields
-from sbs.services import general_methods
-from datetime import date, datetime
-from django.utils import timezone
-
-from zeep import Client
+from sbs.models.Penal import Penal
 from sbs.models.Person import Person
 from sbs.models.PreRegistration import PreRegistration
 # from sbs.models.ReferenceReferee import ReferenceReferee
 from sbs.models.ReferenceCoach import ReferenceCoach
+from sbs.models.ReferenceReferee import ReferenceReferee
+from sbs.models.VisaSeminar import VisaSeminar
+from sbs.services import general_methods
 
 
 @login_required
@@ -1321,3 +1321,112 @@ def vize_reddet_liste(request, referee_pk):
     visa.save()
     messages.success(request, 'Vize reddedilmistir.')
     return redirect('sbs:hakem-vize-listesi')
+
+
+@login_required
+def hakem_belge_ekle(request, pk):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    judge = Judge.objects.get(pk=pk)
+    user = request.user
+
+    document_form = DocumentForm()
+
+    if request.method == 'POST':
+        document_form = DocumentForm(request.POST, request.FILES or None)
+        if document_form.is_valid():
+            document = document_form.save()
+            judge.person.document.add(document)
+            judge.save()
+            messages.success(request, 'Belge Başarıyla Eklenmiştir.')
+
+            log = str(judge.user.get_full_name()) + " Belge eklendi"
+            log = general_methods.logwrite(request, request.user, log)
+
+            return redirect('sbs:hakem-duzenle', pk=pk)
+
+        else:
+
+            messages.warning(request, 'Alanları Kontrol Ediniz')
+
+    return render(request, 'hakem/hakem-belgeEkle.html',
+                  {'belge': document_form})
+
+
+@login_required
+def judje_document_delete(request, athlete_pk, document_pk):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    if request.method == 'POST' and request.is_ajax():
+        try:
+
+            athlete = Judge.objects.get(pk=athlete_pk)
+            document = Document.objects.get(pk=document_pk)
+            athlete.person.document.remove(document)
+            athlete.save()
+            document.delete()
+            return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
+        except CategoryItem.DoesNotExist:
+            return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
+
+    else:
+        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+
+
+@login_required
+def judge_ceza_ekle(request, pk):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    athlete = Judge.objects.get(pk=pk)
+    user = request.user
+
+    penal_form = PenalForm()
+
+    if request.method == 'POST':
+        penal_form = PenalForm(request.POST, request.FILES or None)
+        if penal_form.is_valid():
+            ceza = penal_form.save()
+            athlete.person.penal.add(ceza)
+            athlete.save()
+            messages.success(request, 'Ceza Başarıyla Eklenmiştir.')
+
+            log = str(athlete.user.get_full_name()) + " Ceza eklendi"
+            log = general_methods.logwrite(request, request.user, log)
+            return redirect('sbs:hakem-duzenle', pk=pk)
+        else:
+            messages.warning(request, 'Alanları Kontrol Ediniz')
+
+    return render(request, 'hakem/hakem-ceza-ekle.html',
+                  {'ceza': penal_form})
+
+
+@login_required
+def judge_penal_delete(request, athlete_pk, document_pk):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    if request.method == 'POST' and request.is_ajax():
+        try:
+
+            athlete = Judge.objects.get(pk=athlete_pk)
+            document = Penal.objects.get(pk=document_pk)
+            athlete.person.penal.remove(document)
+            athlete.save()
+            document.delete()
+            return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
+        except CategoryItem.DoesNotExist:
+            return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
+
+    else:
+        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})

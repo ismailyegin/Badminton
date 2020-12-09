@@ -501,10 +501,8 @@
                                 <div class="btn-group">
 
 
-                                    <a href="
-{#{% url "sbs:sporcu-belge-ekle"  athlete.pk %}#}
-"
-                                       type="button" class="btn btn-success"><i
+                                    <a href="{% url "sbs:hakem-belge-ekle"  judge.pk %}" type="button"
+                                       class="btn btn-success"><i
                                             class="fa fa-edit"></i> Yeni belge Ekle
                                     </a>
 
@@ -521,8 +519,8 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% if athlete.person.document.all %}
-                                    {% for item  in athlete.person.document.all %}
+                                {% if judge.person.document.all %}
+                                    {% for item  in judge.person.document.all %}
                                         <tr id="needDocuments-{{ item.pk }}">
                                             <td>{{ forloop.counter }} </td>
                                             <td>
@@ -538,14 +536,14 @@
                                                 <div class="btn-group">
                                                     <a class="btn btn-success"
                                                        data-toggle="modal"
-                                                       href="{{ MEDIA_URL }}{{ item.name }}"
+                                                       href="/media/{{ item.file }}"
                                                        download><i
                                                             class="fa fa-download"></i></a>
 
 
                                                     <a class="btn btn-danger"
                                                        data-toggle="modal"
-                                                       onclick=deleteneeddocument({{ athlete.pk }},{{ item.pk }})><i
+                                                       onclick=deleteneeddocument({{ judge.pk }},{{ item.pk }})><i
                                                             class="fa fa-trash"></i></a>
 
                                                 </div>
@@ -587,10 +585,8 @@
                                 <div class="btn-group">
 
 
-                                    <a href="
-{#{% url "sbs:sporcu-ceza-ekle"  athlete.pk %}#}
-"
-                                       type="button" class="btn btn-success"><i
+                                    <a href="{% url "sbs:hakem-ceza-ekle"  judge.pk %}" type="button"
+                                       class="btn btn-success"><i
                                             class="fa fa-edit"></i> Yeni Ceza Ekle
                                     </a>
 
@@ -608,9 +604,9 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% if athlete.person.penal.all %}
-                                    {% for item  in athlete.person.penal.all %}
-                                        <tr>
+                                {% if judge.person.penal.all %}
+                                    {% for item  in judge.person.penal.all %}
+                                        <tr id="penalDocuments-{{ item.pk }}">
                                             <td>{{ forloop.counter }} </td>
                                             <td>
                                                 {{ item.penal }}
@@ -621,7 +617,22 @@
 
                                             </td>
 
-                                            <td>işlemler</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a class="btn btn-success"
+                                                       data-toggle="modal"
+                                                       href="/media/{{ item.file }}"
+                                                       download><i
+                                                            class="fa fa-download"></i></a>
+
+
+                                                    <a class="btn btn-danger"
+                                                       data-toggle="modal"
+                                                       onclick=deletepenal({{ judge.pk }},{{ item.pk }})><i
+                                                            class="fa fa-trash"></i></a>
+
+                                                </div>
+                                            </td>
                                         </tr>
 
                                     {% endfor %}
@@ -796,6 +807,99 @@
             });
 
         }
+
+        function deleteneeddocument(id, competitionId) {
+
+            var html = '';
+            $("#modal-danger").on("shown.bs.modal", function (e) {
+                $("#btn-conf").click(function (e) {
+
+
+                    $.ajax({
+                        url: "{% url "sbs:hakem-belge-kaldir" athlete_pk=212121223232323232 document_pk=999999999999999 %}".replace(/212121223232323232/, id.toString()).replace(/999999999999999/, competitionId.toString()),
+                        type: "POST",
+                        data: {
+                            'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                            isActive: 'False'
+                        },
+                        success: function (result) {
+                            html = 'Döküman başarıyla kaldırıldı.';
+                            $(".successModal").html(html);
+                            $('#modal-success').on("shown.bs.modal", function () {
+
+                                $(".btn-ok").click(function () {
+                                    if (e.handled !== true) { // This will prevent event triggering more then once
+                                        e.handled = true;
+
+
+                                        {#console.log('işlem basari ile gerçekleşti');#}
+                                        $('#modal-success').modal('hide');
+
+                                        $('#needDocuments-' + competitionId).hide();
+
+                                    }
+
+                                });
+
+                            }).modal('show');
+
+
+                            console.log(result.status)
+                        }
+                    });
+
+                });
+            }).modal('show');
+            $('#btn-close').click(function () {
+                $('#modal-danger').modal('hide');
+            });
+
+        }
+
+        function deletepenal(id, competitionId) {
+
+            var html = '';
+            $("#modal-danger").on("shown.bs.modal", function (e) {
+                $("#btn-conf").click(function (e) {
+
+
+                    $.ajax({
+                        url: "{% url "sbs:hakem-ceza-kaldir" athlete_pk=212121223232323232 document_pk=999999999999999 %}".replace(/212121223232323232/, id.toString()).replace(/999999999999999/, competitionId.toString()),
+                        type: "POST",
+                        data: {
+                            'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                            isActive: 'False'
+                        },
+                        success: function (result) {
+                            html = 'Ceza başarıyla kaldırıldı.';
+                            $(".successModal").html(html);
+                            $('#modal-success').on("shown.bs.modal", function () {
+
+                                $(".btn-ok").click(function () {
+                                    if (e.handled !== true) { // This will prevent event triggering more then once
+                                        e.handled = true;
+                                        $('#modal-success').modal('hide');
+                                        $('#penalDocuments-' + competitionId).hide();
+
+                                    }
+
+                                });
+
+                            }).modal('show');
+
+
+                            console.log(result.status)
+                        }
+                    });
+
+                });
+            }).modal('show');
+            $('#btn-close').click(function () {
+                $('#modal-danger').modal('hide');
+            });
+
+        }
+
     </script>
 
 

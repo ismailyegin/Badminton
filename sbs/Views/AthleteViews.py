@@ -610,16 +610,8 @@ def updateathletes(request, pk):
     person_form = PersonForm(request.POST or None, request.FILES or None, instance=person)
     communication_form = CommunicationForm(request.POST or None, instance=communication)
     say = 0
-    say = athlete.licenses.all().filter(status='Onaylandı').count()
+    say = athlete.licenses.filter(status='Onaylandı').count()
     competition = Competition.objects.filter(compathlete__athlete=athlete).distinct()
-
-    test = athlete.person.penal.all()
-    for item in test:
-        print(item)
-
-
-
-
     if request.method == 'POST':
 
         # controller tc email
@@ -720,6 +712,28 @@ def return_belt(request):
     return render(request, 'sporcu/kusak.html',
                   {'category_item_form': category_item_form, 'categoryitem': categoryitem})
 
+
+@login_required
+def athlete_penal_delete(request, athlete_pk, document_pk):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    if request.method == 'POST' and request.is_ajax():
+        try:
+
+            athlete = Athlete.objects.get(pk=athlete_pk)
+            document = Penal.objects.get(pk=document_pk)
+            athlete.person.penal.remove(document)
+            athlete.save()
+            document.delete()
+            return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
+        except CategoryItem.DoesNotExist:
+            return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
+
+    else:
+        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
 
 @login_required
 def athlete_document_delete(request, athlete_pk, document_pk):
