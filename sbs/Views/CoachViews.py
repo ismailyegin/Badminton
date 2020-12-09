@@ -48,6 +48,11 @@ from sbs.models.PreRegistration import PreRegistration
 from sbs.models.ReferenceReferee import ReferenceReferee
 from sbs.models.ReferenceCoach import ReferenceCoach
 
+from sbs.models.Penal import Penal
+from sbs.models.Document import Document
+from sbs.Forms.PenalForm import PenalForm
+from sbs.Forms.DocumentForm import DocumentForm
+
 # visaseminer ekle
 @login_required
 def visaSeminar_ekle(request):
@@ -790,7 +795,7 @@ def coachUpdate(request, pk):
 
     return render(request, 'antrenor/antrenorDuzenle.html',
                   {'user_form': user_form, 'communication_form': communication_form,
-                   'person_form': person_form, 'grades_form': grade_form, 'coach': coach.pk,
+                   'person_form': person_form, 'grades_form': grade_form, 'coach': coach,
                    'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form})
 
 
@@ -1327,3 +1332,116 @@ def visaSeminar_onayla(request, pk):
 
     return render(request, 'antrenor/VisaSeminar.html')
     # {'grade_form': grade_form})
+
+
+@login_required
+def coach_penal_add(request, pk):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    athlete = Coach.objects.get(pk=pk)
+    user = request.user
+
+    penal_form = PenalForm()
+
+    if request.method == 'POST':
+        print('post')
+        penal_form = PenalForm(request.POST, request.FILES or None)
+        if penal_form.is_valid():
+            ceza = penal_form.save()
+            athlete.person.penal.add(ceza)
+            athlete.save()
+            messages.success(request, 'Belge Başarıyla Eklenmiştir.')
+
+            log = str(athlete.user.get_full_name()) + " Ceza eklendi"
+            log = general_methods.logwrite(request, request.user, log)
+            return redirect('sbs:update-coach', pk=pk)
+
+
+
+        else:
+            messages.warning(request, 'Alanları Kontrol Ediniz')
+
+    return render(request, 'antrenor/antrenor-ceza-ekle.html',
+                  {'ceza': penal_form})
+
+
+@login_required
+def coach_penal_delete(request, athlete_pk, document_pk):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    if request.method == 'POST' and request.is_ajax():
+        try:
+
+            athlete = Coach.objects.get(pk=athlete_pk)
+            document = Penal.objects.get(pk=document_pk)
+            athlete.person.penal.remove(document)
+            athlete.save()
+            document.delete()
+            return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
+        except CategoryItem.DoesNotExist:
+            return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
+
+    else:
+        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+
+
+@login_required
+def antrenor_belge_ekle(request, pk):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    athlete = Coach.objects.get(pk=pk)
+    user = request.user
+
+    document_form = DocumentForm()
+
+    if request.method == 'POST':
+        document_form = DocumentForm(request.POST, request.FILES or None)
+        if document_form.is_valid():
+            document = document_form.save()
+            athlete.person.document.add(document)
+            athlete.save()
+            messages.success(request, 'Belge Başarıyla Eklenmiştir.')
+
+            log = str(athlete.user.get_full_name()) + " Belge eklendi"
+            log = general_methods.logwrite(request, request.user, log)
+
+            return redirect('sbs:update-coach', pk=pk)
+
+        else:
+
+            messages.warning(request, 'Alanları Kontrol Ediniz')
+
+    return render(request, 'antrenor/Antrenor-belge-ekle.html',
+                  {'belge': document_form})
+
+
+@login_required
+def coach_document_delete(request, athlete_pk, document_pk):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    if request.method == 'POST' and request.is_ajax():
+        try:
+
+            athlete = Coach.objects.get(pk=athlete_pk)
+            document = Document.objects.get(pk=document_pk)
+            athlete.person.document.remove(document)
+            athlete.save()
+            document.delete()
+            return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
+        except CategoryItem.DoesNotExist:
+            return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
+
+    else:
+        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})

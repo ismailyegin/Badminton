@@ -287,7 +287,7 @@
                             <div class="box-header with-border">
                                 <div class="btn-group">
 
-                                    <a href="{% url 'sbs:antrenor-kademe-ekle' coach %}"
+                                    <a href="{% url 'sbs:antrenor-kademe-ekle' coach.pk %}"
                                        type="button" class="btn btn-success"><i
                                             class="fa fa-edit"></i> Kademe Ekle
                                     </a>
@@ -324,24 +324,24 @@
                                                 <div class="btn-group">
 
                                                     {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
-                                                        <a href="{% url "sbs:kademe-onayla" grade_pk=grade.pk coach_pk=coach %}"
+                                                        <a href="{% url "sbs:kademe-onayla" grade_pk=grade.pk coach_pk=coach.pk %}"
                                                            type="button" class="btn btn-success"><i
                                                                 class="fa fa-edit"></i>Onayla
                                                         </a>
 
 
-                                                        <a href="{% url "sbs:kademe-reddet" grade_pk=grade.pk coach_pk=coach %}"
+                                                        <a href="{% url "sbs:kademe-reddet" grade_pk=grade.pk coach_pk=coach.pk %}"
                                                            type="button" class="btn btn-danger"><i
                                                                 class="fa fa-trash"></i>Reddet
                                                         </a>
-                                                        <a href="{% url "sbs:kademe-güncelle" grade_pk=grade.pk coach_pk=coach %}"
+                                                        <a href="{% url "sbs:kademe-güncelle" grade_pk=grade.pk coach_pk=coach.pk %}"
                                                            type="button" class="btn btn-warning"><i
                                                                 class="fa fa-edit"></i>Güncelle
                                                         </a>
 
                                                         <a class="btn btn-danger"
                                                            data-toggle="modal"
-                                                           onclick=delete_grade({{ grade.pk }},{{ coach }})><i
+                                                           onclick=delete_grade({{ grade.pk }},{{ coach.pk }})><i
                                                                 class="fa fa-trash"></i>Sil
                                                         </a>
 
@@ -387,7 +387,7 @@
                             <div class="box-header with-border">
                                 <div class="btn-group">
 
-                                    <a href="{% url 'sbs:antrenor-vize-ekle' coach %}"
+                                    <a href="{% url 'sbs:antrenor-vize-ekle' coach.pk %}"
                                        type="button" class="btn btn-success"><i
                                             class="fa fa-edit"></i> Vize Ekle
                                     </a>
@@ -427,24 +427,24 @@
                                                 <div class="btn-group">
 
                                                     {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
-                                                        <a href="{% url "sbs:vize-onayla" grade_pk=grade.pk coach_pk=coach %}"
+                                                        <a href="{% url "sbs:vize-onayla" grade_pk=grade.pk coach_pk=coach.pk %}"
                                                            type="button" class="btn btn-success"><i
                                                                 class="fa fa-edit"></i>Onayla
                                                         </a>
 
 
-                                                        <a href="{% url "sbs:vize-reddet" grade_pk=grade.pk coach_pk=coach %}"
+                                                        <a href="{% url "sbs:vize-reddet" grade_pk=grade.pk coach_pk=coach.pk %}"
                                                            type="button" class="btn btn-danger"><i
                                                                 class="fa fa-trash"></i>Reddet
                                                         </a>
-                                                        <a href="{% url "sbs:vize-güncelle" grade_pk=grade.pk coach_pk=coach %}"
+                                                        <a href="{% url "sbs:vize-güncelle" grade_pk=grade.pk coach_pk=coach.pk %}"
                                                            type="button" class="btn btn-warning"><i
                                                                 class="fa fa-edit"></i>Güncelle
                                                         </a>
 
                                                         <a class="btn btn-danger"
                                                            data-toggle="modal"
-                                                           onclick=delete_visa({{ grade.pk }},{{ coach }})><i
+                                                           onclick=delete_visa({{ grade.pk }},{{ coach.pk }})><i
                                                                 class="fa fa-trash"></i>Sil
                                                         </a>
 
@@ -493,10 +493,8 @@
                                 <div class="btn-group">
 
 
-                                    <a href="
-{#{% url "sbs:sporcu-belge-ekle"  athlete.pk %}#}
-"
-                                       type="button" class="btn btn-success"><i
+                                    <a href="{% url "sbs:antrenor-belge-ekle"  coach.pk %}" type="button"
+                                       class="btn btn-success"><i
                                             class="fa fa-edit"></i> Yeni belge Ekle
                                     </a>
 
@@ -513,8 +511,8 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% if athlete.person.document.all %}
-                                    {% for item  in athlete.person.document.all %}
+                                {% if coach.person.document.all %}
+                                    {% for item  in coach.person.document.all %}
                                         <tr id="needDocuments-{{ item.pk }}">
                                             <td>{{ forloop.counter }} </td>
                                             <td>
@@ -530,14 +528,14 @@
                                                 <div class="btn-group">
                                                     <a class="btn btn-success"
                                                        data-toggle="modal"
-                                                       href="{{ MEDIA_URL }}{{ item.name }}"
+                                                       href="/media/{{ item.file }}"
                                                        download><i
                                                             class="fa fa-download"></i></a>
 
 
                                                     <a class="btn btn-danger"
                                                        data-toggle="modal"
-                                                       onclick=deleteneeddocument({{ athlete.pk }},{{ item.pk }})><i
+                                                       onclick=deleteneeddocument({{ coach.pk }},{{ item.pk }})><i
                                                             class="fa fa-trash"></i></a>
 
                                                 </div>
@@ -579,10 +577,8 @@
                                 <div class="btn-group">
 
 
-                                    <a href="
-{#{% url "sbs:sporcu-ceza-ekle"  athlete.pk %}#}
-"
-                                       type="button" class="btn btn-success"><i
+                                    <a href="{% url "sbs:antrenor-ceza-ekle"  coach.pk %}" type="button"
+                                       class="btn btn-success"><i
                                             class="fa fa-edit"></i> Yeni Ceza Ekle
                                     </a>
 
@@ -600,9 +596,9 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% if athlete.person.penal.all %}
-                                    {% for item  in athlete.person.penal.all %}
-                                        <tr>
+                                {% if coach.person.penal.all %}
+                                    {% for item  in coach.person.penal.all %}
+                                        <tr id="penalDocuments-{{ item.pk }}">
                                             <td>{{ forloop.counter }} </td>
                                             <td>
                                                 {{ item.penal }}
@@ -613,7 +609,22 @@
 
                                             </td>
 
-                                            <td>işlemler</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a class="btn btn-success"
+                                                       data-toggle="modal"
+                                                       href="/media/{{ item.file }}"
+                                                       download><i
+                                                            class="fa fa-download"></i></a>
+
+
+                                                    <a class="btn btn-danger"
+                                                       data-toggle="modal"
+                                                       onclick=deletepenal({{ coach.pk }},{{ item.pk }})><i
+                                                            class="fa fa-trash"></i></a>
+
+                                                </div>
+                                            </td>
                                         </tr>
 
                                     {% endfor %}
@@ -661,7 +672,7 @@
                             $('#modal-success').on("shown.bs.modal", function (e) {
                                 $(".btn-ok").click(function () {
 
-                                    window.location.replace("{% url "sbs:update-coach" coach  %}");
+                                    window.location.replace("{% url "sbs:update-coach" coach.pk  %}");
 
                                 });
 
@@ -678,8 +689,7 @@
             });
 
         }
-    </script>
-    <script>
+
         function delete_visa(grade, coach) {
 
 
@@ -702,7 +712,7 @@
                             $('#modal-success').on("shown.bs.modal", function (e) {
                                 $(".btn-ok").click(function () {
 
-                                    window.location.replace("{% url "sbs:update-coach" coach  %}");
+                                    window.location.replace("{% url "sbs:update-coach" coach.pk  %}");
 
                                 });
 
@@ -712,6 +722,96 @@
                             console.log(result.status)
                         }
                     });
+                });
+            }).modal('show');
+            $('#btn-close').click(function () {
+                $('#modal-danger').modal('hide');
+            });
+
+        }
+
+        function deleteneeddocument(id, competitionId) {
+
+            var html = '';
+            $("#modal-danger").on("shown.bs.modal", function (e) {
+                $("#btn-conf").click(function (e) {
+
+
+                    $.ajax({
+                        url: "{% url "sbs:antrenor-belge-kaldir" athlete_pk=212121223232323232 document_pk=999999999999999 %}".replace(/212121223232323232/, id.toString()).replace(/999999999999999/, competitionId.toString()),
+                        type: "POST",
+                        data: {
+                            'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                            isActive: 'False'
+                        },
+                        success: function (result) {
+                            html = 'Döküman başarıyla kaldırıldı.';
+                            $(".successModal").html(html);
+                            $('#modal-success').on("shown.bs.modal", function () {
+
+                                $(".btn-ok").click(function () {
+                                    if (e.handled !== true) { // This will prevent event triggering more then once
+                                        e.handled = true;
+
+
+                                        {#console.log('işlem basari ile gerçekleşti');#}
+                                        $('#modal-success').modal('hide');
+
+                                        $('#needDocuments-' + competitionId).hide();
+
+                                    }
+
+                                });
+
+                            }).modal('show');
+
+
+                            console.log(result.status)
+                        }
+                    });
+
+                });
+            }).modal('show');
+            $('#btn-close').click(function () {
+                $('#modal-danger').modal('hide');
+            });
+
+        }
+
+        function deletepenal(id, competitionId) {
+
+            var html = '';
+            $("#modal-danger").on("shown.bs.modal", function (e) {
+                $("#btn-conf").click(function (e) {
+
+
+                    $.ajax({
+                        url: "{% url "sbs:antrenor-ceza-kaldir" athlete_pk=212121223232323232 document_pk=999999999999999 %}".replace(/212121223232323232/, id.toString()).replace(/999999999999999/, competitionId.toString()),
+                        type: "POST",
+                        data: {
+                            'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                            isActive: 'False'
+                        },
+                        success: function (result) {
+                            html = 'Ceza başarıyla kaldırıldı.';
+                            $(".successModal").html(html);
+                            $('#modal-success').on("shown.bs.modal", function () {
+
+                                $(".btn-ok").click(function () {
+                                    if (e.handled !== true) { // This will prevent event triggering more then once
+                                        e.handled = true;
+                                        $('#modal-success').modal('hide');
+                                        $('#penalDocuments-' + competitionId).hide();
+                                    }
+                                });
+
+                            }).modal('show');
+
+
+                            console.log(result.status)
+                        }
+                    });
+
                 });
             }).modal('show');
             $('#btn-close').click(function () {

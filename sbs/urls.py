@@ -300,6 +300,16 @@ urlpatterns = [
     url(r'antrenor/visa-Seminar/antroner-sec/(?P<pk>\d+)$', CoachViews.choose_coach, name='vize-semineri-antroner-sec'),
     url(r'antrenor/visa-Seminar/antroner-sil/(?P<pk>\d+)/(?P<competition>\d+)$', CoachViews.visaSeminar_Delete_Coach,
         name='visaSeminar-antrenör-sil'),
+
+    url(r'antrenor/antrenorCezaEkle/(?P<pk>\d+)$', CoachViews.coach_penal_add, name='antrenor-ceza-ekle'),
+    url(r'antrenor/antrenorCezaKaldır/(?P<athlete_pk>\d+)/(?P<document_pk>\d+)$', CoachViews.coach_penal_delete,
+        name='antrenor-ceza-kaldir'),
+    url(r'antrenor/antrenorBelgeEkle/(?P<pk>\d+)$', CoachViews.antrenor_belge_ekle, name='antrenor-belge-ekle'),
+    url(r'antrenor/antrenorBelgeKaldır/(?P<athlete_pk>\d+)/(?P<document_pk>\d+)$', CoachViews.coach_document_delete,
+        name='antrenor-belge-kaldir'),
+
+
+
     # Hakem
     url(r'hakem/visa-Seminar$', RefereeViews.return_visaSeminar, name='hakem-visa-seminar'),
     url(r'hakem/visa-Seminar-ekle$', RefereeViews.visaSeminar_ekle, name='hakem-visa-seminar-ekle'),
