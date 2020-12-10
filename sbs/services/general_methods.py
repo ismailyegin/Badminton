@@ -1,16 +1,16 @@
 import csv
+from datetime import datetime
 
 from django.conf import settings
 from django.contrib.auth.models import Permission, User, Group
 
 from sbs.models import Menu, MenuAdmin, MenuAthlete, MenuReferee, MenuCoach, MenuDirectory, MenuClubUser, \
     SportClubUser, Person, Athlete, Coach, Judge, DirectoryMember, SportsClub, Communication, City, Country, ClubRole
+from sbs.models.ActiveGroup import ActiveGroup
+from sbs.models.Logs import Logs
 from sbs.models.PreRegistration import PreRegistration
 from sbs.models.ReferenceCoach import ReferenceCoach
 from sbs.models.ReferenceReferee import ReferenceReferee
-from datetime import datetime
-
-from sbs.models.Logs import Logs
 
 
 def get_client_ip(request):
@@ -105,8 +105,6 @@ def show_urls_deneme(urllist, depth=0):
             show_urls(entry.url_patterns, depth + 1)
 
     return urls
-
-
 def control_access_judge(request):
     group = request.user.groups.all()[0]
 
@@ -162,10 +160,38 @@ def control_access_klup(request):
             if request.resolver_match.url_name == perm.name:
                 is_exist = True
 
-        if group.name == "Admin" or group.name == "KulupUye" or group.name == "Antrenor":
-            is_exist = True
+        for item in request.user.groups.all():
+            if group.name == "Admin" or group.name == "KulupUye" or group.name == "Antrenor":
+                is_exist = True
+                break
+
+
 
     return is_exist
+
+
+def aktif(request):
+    if User.objects.filter(pk=request.user.pk):
+        print('deger')
+        print(request.user)
+        if not (ActiveGroup.objects.filter(user=request.user)):
+            aktive = ActiveGroup(user=request.user, group=request.user.groups.all()[0])
+            aktive.save()
+            aktif = request.user.groups.all()[0]
+        else:
+            aktif = ActiveGroup.objects.get(user=request.user).group.name
+        group = request.user.groups.all()
+        return {'aktif': aktif,
+                'group': group,
+                }
+
+    else:
+        return {}
+
+
+
+
+
 
 
 def getProfileImage(request):
@@ -177,6 +203,7 @@ def getProfileImage(request):
             clupcontrol = True
 
         if current_user.groups.filter(name='KulupUye').exists():
+
             athlete = SportClubUser.objects.get(user=current_user)
             person = Person.objects.get(id=athlete.person.id)
 

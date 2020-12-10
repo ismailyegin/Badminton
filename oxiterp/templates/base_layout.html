@@ -197,38 +197,44 @@
                                     {% if clupcontrol %}
                                         <small> Kulüp Üyesi - Antrenör </small>
 
-                                    {% elif user.groups.all.0.name == "KulupUye" %}
+                                    {% elif aktif == "KulupUye" %}
                                         <small> Kulüp Üyesi </small>
 
 
-                                    {% elif user.groups.all.0.name == "Hakem" %}
+                                    {% elif aktif == "Hakem" %}
                                         <small> Hakem</small>
 
 
 
-                                    {% elif user.groups.all.0.name == "Admin" %}
+                                    {% elif  aktif ==  "Admin" %}
                                         <small> Admin</small>
 
 
-                                    {% elif user.groups.all.0.name == "Yonetim" %}
+                                    {% elif aktif == "Yonetim" %}
                                         <small> Yönetim</small>
 
 
-                                    {% elif user.groups.all.0.name == "Sporcu" %}
+                                    {% elif aktif == "Sporcu" %}
                                         <small> Sporcu </small>
 
 
 
 
-                                    {% elif user.groups.all.0.name == "Antrenor" %}
+                                    {% elif aktif == "Antrenor" %}
                                         <small> Antrenör</small>
 
 
                                     {% else %}
-                                        <a><i class="fa fa-circle text-success"></i> {{ user.groups.all.0.name }}</a>
+                                        <a><i class="fa fa-circle text-success"></i> {{ aktif }}</a>
                                     {% endif %}
 
 
+
+                                    {% for item in group %}
+
+                                        {{ item.name }}
+
+                                    {% endfor %}
 
 
                                     <small>Kayıt Tarihi: {{ user.date_joined }}</small>
@@ -259,44 +265,44 @@
 
 
 
-                                    {% elif user.groups.all.0.name == "Sporcu" %}
+                                    {% elif aktif == "Sporcu" %}
                                         <a href="{% url "sbs:sporcu-profil-guncelle" %}"
                                            class="btn btn-default btn-flat">Profil Bilgisi</a>
 
-                                    {% elif user.groups.all.0.name == "Admin" %}
+                                    {% elif aktif == "Admin" %}
                                         <a href="{% url "sbs:admin-profil-guncelle" %}"
                                            class="btn btn-default btn-flat">Profil Bilgisi</a>
 
-                                    {% elif user.groups.all.0.name == "Hakem" %}
+                                    {% elif aktif == "Hakem" %}
                                         <a href="{% url "sbs:hakem-profil-guncelle" %}"
                                            class="btn btn-default btn-flat">Profil Bilgisi</a>
 
 
 
-                                    {% elif user.groups.all.0.name == "Admin" %}
+                                    {% elif aktif == "Admin" %}
                                         <a href="{% url "sbs:kullanici-duzenle" %}"
                                            class="btn btn-default btn-flat">Profil Bilgisi</a>
 
 
-                                    {% elif user.groups.all.0.name == "Yonetim" %}
+                                    {% elif aktif == "Yonetim" %}
                                         <a href="{% url "sbs:yonetim-kurul-profil-guncelle" %}"
                                            class="btn btn-default btn-flat">Profil Bilgisi</a>
 
 
-                                    {% elif user.groups.all.0.name == "KulupUye" %}
+                                    {% elif aktif == "KulupUye" %}
                                         <a href="{% url "sbs:kulup-uyesi-profil-guncelle" %}"
                                            class="btn btn-default btn-flat">Profil Bilgisi</a>
 
 
 
 
-                                    {% elif user.groups.all.0.name == "Antrenor" %}
+                                    {% elif aktif == "Antrenor" %}
                                         <a href="{% url "sbs:antrenor-profil-guncelle" %}"
                                            class="btn btn-default btn-flat">Profil Bilgisi</a>
 
 
                                     {% else %}
-                                        <a><i class="fa fa-circle text-success"></i> {{ user.groups.all.0.name }}</a>
+                                        <a><i class="fa fa-circle text-success"></i> {{ aktif }}</a>
                                     {% endif %}
 
 
@@ -370,7 +376,7 @@
 
 
 
-                {% elif  user.groups.all.0.name == 'Sporcu' %}
+                {% elif  aktif == 'Sporcu' %}
 
                     {% for menu in athletemenus %}
 
@@ -414,7 +420,7 @@
 
 
 
-                {% elif  user.groups.all.0.name == 'Hakem' %}
+                {% elif  aktif == 'Hakem' %}
 
                     {% for menu in refereemenus %}
 
@@ -458,7 +464,7 @@
 
 
 
-                {% elif  user.groups.all.0.name == 'Antrenor' %}
+                {% elif  aktif == 'Antrenor' %}
 
                     {% for menu in coachmenus %}
 
@@ -501,7 +507,7 @@
 
 
 
-                {% elif  user.groups.all.0.name == 'KulupUye' %}
+                {% elif  aktif == 'KulupUye' %}
 
                     {% for menu in clubusermenus %}
 
@@ -547,7 +553,7 @@
 
 
 
-                {% elif  user.groups.all.0.name == 'Yonetim' %}
+                {% elif  aktif == 'Yonetim' %}
 
                     {% for menu in directorymenus %}
 

@@ -74,6 +74,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.i18n',
+
+                'sbs.services.general_methods.aktif',
+
                 'sbs.services.general_methods.getMenu',
                 'sbs.services.general_methods.getAdminMenu',
                 'sbs.services.general_methods.getAthleteMenu',

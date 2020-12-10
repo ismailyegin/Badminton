@@ -308,8 +308,6 @@ urlpatterns = [
     url(r'antrenor/antrenorBelgeKaldır/(?P<athlete_pk>\d+)/(?P<document_pk>\d+)$', CoachViews.coach_document_delete,
         name='antrenor-belge-kaldir'),
 
-
-
     # Hakem
     url(r'hakem/visa-Seminar$', RefereeViews.return_visaSeminar, name='hakem-visa-seminar'),
     url(r'hakem/visa-Seminar-ekle$', RefereeViews.visaSeminar_ekle, name='hakem-visa-seminar-ekle'),
