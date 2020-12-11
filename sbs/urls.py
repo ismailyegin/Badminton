@@ -431,4 +431,7 @@ urlpatterns = [
     url(r'message/messages/$', DashboardViews.return_message,
         name='message'),
 
+    url(r'rol/güncelle/(?P<pk>\d+)$', DashboardViews.activeGroup,
+        name='aktive-update'),
+
 ]

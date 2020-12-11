@@ -1,6 +1,6 @@
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.shortcuts import render, redirect
 # from rest_framework_simplejwt import views as jwt_views
 from django.http import JsonResponse
@@ -12,7 +12,7 @@ from sbs.models.ReferenceCoach import ReferenceCoach
 from sbs.models.ReferenceReferee import ReferenceReferee
 from sbs.models.PreRegistration import PreRegistration
 # from rest_framework.authtoken.models import Token
-
+from sbs.models.ActiveGroup import ActiveGroup
 
 from datetime import date, datetime
 
@@ -213,3 +213,26 @@ def City_athlete_cout(request):
         return JsonResponse({'status': 'Fail'})
 #
 #
+
+
+@login_required
+def activeGroup(request, pk):
+    userActive = ActiveGroup.objects.get(user=request.user)
+    group = Group.objects.get(pk=pk)
+    userActive.group = group
+    userActive.save()
+
+    if group.name == "Admin":
+        return redirect('sbs:admin')
+    elif group.name == "Antrenor":
+        return redirect('sbs:antrenor')
+    elif group.name == 'Hakem':
+        return redirect('sbs:hakem', )
+    elif group.name == 'KulupUye':
+        return redirect('sbs:kulup-uyesi')
+    elif group.name == 'Sporcu':
+        return redirect('sbs:sporcu')
+    elif group.name == 'Yonetim':
+        return redirect('sbs:federasyon')
+    else:
+        return {}

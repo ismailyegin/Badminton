@@ -230,11 +230,7 @@
 
 
 
-                                    {% for item in group %}
 
-                                        {{ item.name }}
-
-                                    {% endfor %}
 
 
                                     <small>Kayıt Tarihi: {{ user.date_joined }}</small>
@@ -255,17 +251,28 @@
                                  </div>
 
                              </li> -->
+
+
+                            <li class="user-body">
+                                <div class="row">
+
+                                    {% for item in group %}
+
+
+                                        <div class="col-xs-4 text-center">
+                                            <a href="{% url "sbs:aktive-update"  item.pk %}">{{ item.name }}</a>
+                                        </div>
+
+                                    {% endfor %}
+
+                                    <!-- /.row -->
+                            </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
 
-                                    {% if clupcontrol %}
-                                        <a href="{% url "sbs:kulup-uyesi-profil-guncelle" %}"
-                                           class="btn btn-default btn-flat">Profil Bilgisi</a>
 
-
-
-                                    {% elif aktif == "Sporcu" %}
+                                    {% if aktif == "Sporcu" %}
                                         <a href="{% url "sbs:sporcu-profil-guncelle" %}"
                                            class="btn btn-default btn-flat">Profil Bilgisi</a>
 
@@ -277,13 +284,6 @@
                                         <a href="{% url "sbs:hakem-profil-guncelle" %}"
                                            class="btn btn-default btn-flat">Profil Bilgisi</a>
 
-
-
-                                    {% elif aktif == "Admin" %}
-                                        <a href="{% url "sbs:kullanici-duzenle" %}"
-                                           class="btn btn-default btn-flat">Profil Bilgisi</a>
-
-
                                     {% elif aktif == "Yonetim" %}
                                         <a href="{% url "sbs:yonetim-kurul-profil-guncelle" %}"
                                            class="btn btn-default btn-flat">Profil Bilgisi</a>
@@ -292,8 +292,6 @@
                                     {% elif aktif == "KulupUye" %}
                                         <a href="{% url "sbs:kulup-uyesi-profil-guncelle" %}"
                                            class="btn btn-default btn-flat">Profil Bilgisi</a>
-
-
 
 
                                     {% elif aktif == "Antrenor" %}
@@ -311,8 +309,12 @@
                                     <a href="{% url 'accounts:logout' %}" class="btn btn-default btn-flat">Çıkış Yap</a>
                                 </div>
                             </li>
+
+
                         </ul>
                     </li>
+
+
                     <!-- Control Sidebar Toggle Button -->
 
                 </ul>
@@ -327,56 +329,7 @@
             <ul class="sidebar-menu" data-widget="tree">
 
 
-                {% if clupcontrol %}
-
-
-                    {% for menu in clubusermenus %}
-
-
-                        {% if menu.is_parent %}
-
-                            <li class="treeview ">
-                            <a href="#">
-                                <i class=" {{ menu.fa_icon }}"></i>
-                                <span>{{ menu.name }}</span>
-                                <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                            </a>
-                        {% endif %}
-
-
-                    <ul class="treeview-menu">
-
-                        {% for menusub in clubusermenus %}
-
-
-
-                            {% if menusub.parent.id is menu.id %}
-
-                                <li>
-                                    <a href="{% url menusub.url %}"><i
-                                            class=" {{ menusub.fa_icon }}"></i> {{ menusub.name }}</a>
-                                </li>
-
-                            {% endif %}
-
-                        {% endfor %}
-
-                    </ul>
-                    </li>
-                    {% endfor %}
-
-
-
-
-
-
-
-
-
-
-                {% elif  aktif == 'Sporcu' %}
+                {% if  aktif == 'Sporcu' %}
 
                     {% for menu in athletemenus %}
 

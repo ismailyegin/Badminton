@@ -106,69 +106,56 @@ def show_urls_deneme(urllist, depth=0):
 
     return urls
 def control_access_judge(request):
-    group = request.user.groups.all()[0]
-
-    permissions = group.permissions.all()
-
+    groups = request.user.groups.all()
     is_exist = False
 
-    for perm in permissions:
-
-        if request.resolver_match.url_name == perm.name:
-            is_exist = True
-
-    if group.name == "Admin" or group.name == "Hakem":
-        is_exist = True
-
-    return is_exist
-
-
-def control_access(request):
-    group = request.user.groups.all()[0]
-
-    permissions = group.permissions.all()
-
-    is_exist = False
-
-    for perm in permissions:
-
-        if request.resolver_match.url_name == perm.name:
-            is_exist = True
-
-    if group.name == "Admin":
-        is_exist = True
-
-    return is_exist
-
-
-def control_access_klup(request):
-    current_user = request.user
-    if current_user.groups.filter(name='KulupUye').exists():
-
-        is_exist = True
-
-
-    else:
-        group = request.user.groups.all()[0]
-
+    for group in groups:
         permissions = group.permissions.all()
-
-        is_exist = False
 
         for perm in permissions:
 
             if request.resolver_match.url_name == perm.name:
                 is_exist = True
 
-        for item in request.user.groups.all():
-            if group.name == "Admin" or group.name == "KulupUye" or group.name == "Antrenor":
-                is_exist = True
-                break
-
-
+        if group.name == "Admin" or group.name == "Hakem":
+            is_exist = True
 
     return is_exist
 
+def control_access(request):
+    groups = request.user.groups.all()
+    is_exist = False
+
+    for group in groups:
+        permissions = group.permissions.all()
+
+        for perm in permissions:
+
+            if request.resolver_match.url_name == perm.name:
+                is_exist = True
+
+        if group.name == "Admin":
+            is_exist = True
+
+    return is_exist
+
+
+def control_access_klup(request):
+    groups = request.user.groups.all()
+    is_exist = False
+
+    for group in groups:
+        permissions = group.permissions.all()
+
+        for perm in permissions:
+
+            if request.resolver_match.url_name == perm.name:
+                is_exist = True
+
+        if group.name == "Admin" or group.name == "Hakem" or group.name == "Antrenor":
+            is_exist = True
+
+    return is_exist
 
 def aktif(request):
     if User.objects.filter(pk=request.user.pk):
@@ -197,10 +184,6 @@ def aktif(request):
 def getProfileImage(request):
     if (request.user.id):
         current_user = request.user
-        clupcontrol = False
-
-        if current_user.groups.count() > 1:
-            clupcontrol = True
 
         if current_user.groups.filter(name='KulupUye').exists():
 
@@ -231,7 +214,7 @@ def getProfileImage(request):
         else:
             person = None
 
-        return {'person': person, 'clupcontrol': clupcontrol}
+        return {'person': person}
 
     return {}
 
