@@ -144,7 +144,7 @@
                         <div class="box-header with-border">
                             <h3 class="box-title">Kuşak Sınavları</h3>
                         </div>
-                        {% if user.groups.all.0.name == 'KulupUye' or user.groups.all.0.name == 'Admin' %}
+                        {% if aktif == 'Admin' %}
                             <div class="box-header with-border">
                                 <div class="btn-group">
                                     <a href="{% url "sbs:kusak-sinavi-ekle" %}"
@@ -159,7 +159,7 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                                    {% if aktif == 'Admin' %}
                                         <th>Kulübü</th>
                                     {% endif %}
                                     <th>Sınav Tarihi</th>
@@ -175,7 +175,7 @@
                                     {% for exam in exams %}
                                         <tr>
                                             <td>{{ forloop.counter }} </td>
-                                            {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                                            {% if aktif == 'Admin' %}
                                                 <td>{{ exam.sportClub }}</td>
                                             {% endif %}
                                             <td>{{ exam.branch }}</td>

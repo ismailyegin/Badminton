@@ -237,7 +237,7 @@
         })
     </script>
 
-    {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+    {% if aktif == 'Admin' %}
         <script>
 
             function onay() {

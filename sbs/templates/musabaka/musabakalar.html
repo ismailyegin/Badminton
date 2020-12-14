@@ -393,7 +393,7 @@
                     </div>
                     <div class="box-header with-border">
                         <div class="btn-group">
-                            {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                            {% if aktif == 'Admin' %}
                                 <a href="{% url "sbs:musabaka-ekle" %}"
                                    type="button" class="btn btn-success"><i
                                         class="fa fa-edit"></i> Yeni Müsabaka Ekle
@@ -436,7 +436,7 @@
                                                 </a>
 
 
-                                                {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                                                {% if aktif == 'Admin' %}
                                                     <a href="{% url "sbs:musabaka-duzenle" competition.pk %}"
                                                        type="button" class="btn btn-warning"><i
                                                             class="fa fa-edit"></i>İncele

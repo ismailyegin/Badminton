@@ -368,7 +368,7 @@
                                                                 <div class="btn-group">
 
 
-                                                                    {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                                                                    {% if aktif == 'Admin' %}
                                                                         <a href="{% url "sbs:sporcu-lisans-onayla" license_pk=license.pk athlete_pk=athlete.pk %}"
                                                                            type="button" class="btn btn-success"><i
                                                                                 class="fa fa-edit"></i>Onayla
@@ -392,7 +392,7 @@
                                                                         </a>
 
                                                                     {% endif %}
-                                                                    {% if license.status != 'Onaylandı' or  user.groups.all.0.name == 'Admin' %}
+                                                                    {% if aktif == 'Admin' %}
 
                                                                         {% if user.groups.all.0.name == 'Antrenor' %}
 

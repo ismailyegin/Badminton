@@ -323,7 +323,7 @@
                                             <td>
                                                 <div class="btn-group">
 
-                                                    {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                                                    {% if aktif == 'Admin' %}
                                                         <a href="{% url "sbs:kademe-onayla" grade_pk=grade.pk coach_pk=coach.pk %}"
                                                            type="button" class="btn btn-success"><i
                                                                 class="fa fa-edit"></i>Onayla
@@ -426,7 +426,7 @@
                                             <td>
                                                 <div class="btn-group">
 
-                                                    {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                                                    {% if aktif == 'Admin' %}
                                                         <a href="{% url "sbs:vize-onayla" grade_pk=grade.pk coach_pk=coach.pk %}"
                                                            type="button" class="btn btn-success"><i
                                                                 class="fa fa-edit"></i>Onayla

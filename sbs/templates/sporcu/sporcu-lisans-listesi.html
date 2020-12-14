@@ -210,7 +210,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Lisans Listesi</h3>
                     </div>
-                    {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                    {% if aktif == 'Admin' %}
                         <a onclick="onay()" type="button" class="btn btn-success">
                             <i class="fa fa-edit"></i>
                             Hepsini Onayla
@@ -266,7 +266,7 @@
                                             <div class="btn-group">
 
 
-                                                {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                                                {% if aktif == 'Admin' %}
                                                     <a href="{% url "sbs:sporcu-lisans-listesi-onayla" license_pk=license.pk %}"
                                                        type="button" class="btn btn-success"><i
                                                             class="fa fa-edit"></i>Onayla
@@ -404,7 +404,7 @@
 
 
     </script>
-    {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+    {% if aktif == 'Admin' %}
         <script>
 
             function onay() {

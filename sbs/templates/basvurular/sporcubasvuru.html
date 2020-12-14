@@ -161,7 +161,7 @@
                                     <th> Ad Soyad</th>
                                     <th>E-Mail</th>
 
-                                    {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                                    {% if aktif == 'Admin' %}
                                         <th>İncele/Sil</th>
                                     {% endif %}
 

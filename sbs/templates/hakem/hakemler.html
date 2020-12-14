@@ -236,7 +236,7 @@
                                     <th>Branş</th>
                                     <th>Kademe</th>
                                     <th>Vize</th>
-                                    {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                                    {% if aktif == 'Admin' %}
                                         <th>İncele/Sil</th>
                                     {% endif %}
 

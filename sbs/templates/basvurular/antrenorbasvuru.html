@@ -162,7 +162,7 @@
                                     <th>E-Mail</th>
                                     <th>Onay Durumu</th>
 
-                                    {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                                    {% if aktif == 'Admin' %}
                                         <th>İncele/Sil</th>
                                     {% endif %}
 

@@ -222,7 +222,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Kuşak Listesi</h3>
                     </div>
-                    {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                    {% if aktif == 'Admin' %}
                         <a onclick="onay()" type="button" class="btn btn-success">
                             <i class="fa fa-edit"></i>
                             Hepsini Onayla
@@ -240,7 +240,7 @@
                             <tr>
                                 <th>#</th>
                                 <th> Ad</th>
-                                {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                                {% aktif == 'Admin' %}
                                     <th>Kulüp</th>
                                 {% endif %}
                                 <th> Hak Kazanma Tarihi</th>
@@ -249,7 +249,7 @@
                                 <th> Onay Durumu</th>
                                 <th> Dekont</th>
                                 <th> Form</th>
-                                {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                                {% if aktif == 'Admin' %}
                                     <th> İşlemler</th>
                                 {% endif %}
 
@@ -269,7 +269,7 @@
 
                                         </td>
 
-                                        {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                                        {% if aktif == 'Admin' %}
                                             <td>{{ belt.athlete_set.first.licenses.last.sportsClub }}</td>
                                         {% endif %}
                                         <td>{{ belt.startDate }}  </td>
@@ -293,7 +293,7 @@
 
 
 
-                                        {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                                        {% if aktif == 'Admin' %}
                                             <td>
                                                 <div class="btn-group">
 
@@ -445,7 +445,7 @@
 
     </script>
 
-    {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+{% if aktif == 'Admin' %}
         <script>
 
             function onay() {

@@ -229,7 +229,7 @@
                         </div>
 
 
-                        {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                        {% if aktif == 'Admin' %}
                             <a href="{% url "sbs:musabaka-duzenle" pk=pk %}"
                                type="button" class="btn btn-success"><i
                                     class="fa fa-edit"></i>Müsabaka Düzenle

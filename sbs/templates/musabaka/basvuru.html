@@ -373,7 +373,7 @@
                             <th>#</th>
                             <th>Ad Soyad</th>
                             {#                            <th>Doğum Tarihi</th>#}
-                            {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                            {% if aktif == 'Admin' %}
                                 <th>Kulüp</th>
                             {% endif %}
                             <th>Siklet</th>
@@ -393,7 +393,7 @@
                                     <td>{{ forloop.counter }} </td>
                                     <td>{{ compathlete.athlete.user.first_name }} {{ compathlete.athlete.user.last_name }} </td>
                                     {#                                    <td>{{ compathlete.athlete.person.birthDate |date }} </td>#}
-                                    {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                                    {% if aktif == 'Admin' %}
                                         <td>{{ compathlete.athlete.licenses.last.sportsClub }}</td>
                                     {% endif %}
                                     <td>{{ compathlete.sıklet.weight }}</td>

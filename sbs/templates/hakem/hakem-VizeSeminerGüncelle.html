@@ -171,7 +171,7 @@
                             </div>
 
                             <div class="box-footer">
-                                {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                                {% if aktif == 'Admin' %}
 
                                     <button class="btn btn-primary" type="submit">Güncelle</button>
                                 {% endif %}
