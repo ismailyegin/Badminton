@@ -599,6 +599,13 @@ def updateathletes(request, pk):
         logout(request)
         return redirect('accounts:login')
     athlete = Athlete.objects.get(pk=pk)
+
+    # Sporcu bir gruba dahil edilmememişse Sporcu grubuna dahil ettik.
+    if not athlete.user.groups.all():
+        user = athlete.user
+        athlete.user.groups.add(Group.objects.get(name="Sporcu"))
+        athlete.save()
+
     # belts_form = athlete.belts.all()
     licenses_form = athlete.licenses.all()
     user = User.objects.get(pk=athlete.user.pk)
@@ -612,6 +619,7 @@ def updateathletes(request, pk):
     say = 0
     say = athlete.licenses.filter(status='Onaylandı').count()
     competition = Competition.objects.filter(compathlete__athlete=athlete).distinct()
+    group = Group.objects.all()
     if request.method == 'POST':
 
         # controller tc email
@@ -626,7 +634,7 @@ def updateathletes(request, pk):
                 return render(request, 'sporcu/sporcuDuzenle.html',
                               {'user_form': user_form, 'communication_form': communication_form,
                                'person_form': person_form, 'licenses_form': licenses_form,
-                               'athlete': athlete, 'say': say, 'competition': competition})
+                               'athlete': athlete, 'say': say, 'competition': competition, 'groups': group})
 
         tc = request.POST.get('tc')
 
@@ -638,7 +646,7 @@ def updateathletes(request, pk):
                 return render(request, 'sporcu/sporcuDuzenle.html',
                               {'user_form': user_form, 'communication_form': communication_form,
                                'person_form': person_form, 'licenses_form': licenses_form,
-                               'athlete': athlete, 'say': say, 'competition': competition})
+                               'athlete': athlete, 'say': say, 'competition': competition, 'groups': group})
 
 
         name = request.POST.get('first_name')
@@ -652,7 +660,7 @@ def updateathletes(request, pk):
             return render(request, 'sporcu/sporcuDuzenle.html',
                           {'user_form': user_form, 'communication_form': communication_form,
                            'person_form': person_form, 'licenses_form': licenses_form,
-                           'athlete': athlete, 'say': say, 'competition': competition})
+                           'athlete': athlete, 'say': say, 'competition': competition, 'groups': group})
 
         if user_form.is_valid() and communication_form.is_valid() and person_form.is_valid():
             # user = user_form.save(commit=False)
@@ -681,7 +689,7 @@ def updateathletes(request, pk):
     return render(request, 'sporcu/sporcuDuzenle.html',
                   {'user_form': user_form, 'communication_form': communication_form,
                    'person_form': person_form, 'licenses_form': licenses_form,
-                   'athlete': athlete, 'say': say, 'competition': competition})
+                   'athlete': athlete, 'say': say, 'competition': competition, 'groups': group})
 
 
 @login_required

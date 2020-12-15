@@ -722,6 +722,56 @@
                 </div>
 
 
+                {#            grup bilgileri    #}
+                {% if aktif == "Admin" %}
+                    <div class="col-lg-7">
+
+                        <div class="box box-info collapsed-box">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">GRUP BİLGİLERİ</h3>
+
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                                <!-- /.box-tools -->
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="box-header with-border">
+                                    <div class="btn-group">
+                                        <div class="row">
+
+
+                                            {% for group in groups %}
+
+
+                                                <div class="col-md-2 ">
+                                                    <div class="form-group">
+                                                        <a href="{% url "sbs:sporcu-aktive-group" pk=judge.user.pk %}?group={{ group.name }}&pk={{ judge.pk }}&person={{ judge.person.pk }}&communication={{ judge.communication.pk }}&user={{ judge.user.pk }}"
+                                                           type="button" class="btn btn-block  btn-danger text-center"
+                                                           id="{{ group.name }}">{{ group }}
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+
+
+                    </div>
+                {% endif %}
+
+
             </div>
 
         </form>
@@ -730,6 +780,20 @@
     </section>
 
     <script>
+
+        $(function () {
+
+            {% for item in judge.user.groups.all %}
+
+                $("#{{ item.name }}").removeClass("btn-danger");
+                $("#{{ item.name }}").addClass("btn-success disabled");
+                $("#{{ item.name }}").text("{{ item.name }}");
+
+            {% endfor %}
+
+
+        })
+
         function delete_grade(grade, referee) {
             var html = '';
             $("#modal-danger").on("shown.bs.modal", function (e) {

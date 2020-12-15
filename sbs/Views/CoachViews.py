@@ -715,6 +715,11 @@ def coachUpdate(request, pk):
         return redirect('accounts:login')
     coach = Coach.objects.get(pk=pk)
 
+    if not coach.user.groups.all():
+        user = coach.user
+        coach.user.groups.add(Group.objects.get(name="Antrenor"))
+        coach.save()
+    groups = Group.objects.all()
     grade_form = coach.grades.all()
     visa_form = coach.visa.all()
     user = User.objects.get(pk=coach.user.pk)
@@ -742,7 +747,7 @@ def coachUpdate(request, pk):
                 return render(request, 'antrenor/antrenorDuzenle.html',
                               {'user_form': user_form, 'communication_form': communication_form,
                                'person_form': person_form, 'grades_form': grade_form, 'coach': coach.pk,
-                               'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form})
+                               'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups})
 
         tc = request.POST.get('tc')
         if tc != coach.person.tc:
@@ -753,7 +758,7 @@ def coachUpdate(request, pk):
                 return render(request, 'antrenor/antrenorDuzenle.html',
                               {'user_form': user_form, 'communication_form': communication_form,
                                'person_form': person_form, 'grades_form': grade_form, 'coach': coach.pk,
-                               'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form})
+                               'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups})
 
         name = request.POST.get('first_name')
         surname = request.POST.get('last_name')
@@ -766,7 +771,7 @@ def coachUpdate(request, pk):
             return render(request, 'antrenor/antrenorDuzenle.html',
                           {'user_form': user_form, 'communication_form': communication_form,
                            'person_form': person_form, 'grades_form': grade_form, 'coach': coach.pk,
-                           'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form})
+                           'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups})
 
         if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and iban_form.is_valid():
 
@@ -796,7 +801,7 @@ def coachUpdate(request, pk):
     return render(request, 'antrenor/antrenorDuzenle.html',
                   {'user_form': user_form, 'communication_form': communication_form,
                    'person_form': person_form, 'grades_form': grade_form, 'coach': coach,
-                   'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form})
+                   'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups})
 
 
 @login_required

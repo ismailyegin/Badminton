@@ -257,6 +257,13 @@ def updateClubPersons(request, pk):
         logout(request)
         return redirect('accounts:login')
     athlete = SportClubUser.objects.get(pk=pk)
+
+    if not athlete.user.groups.all():
+        user = athlete.user
+        athlete.user.groups.add(Group.objects.get(name="KulupUye"))
+        athlete.save()
+    groups = Group.objects.all()
+
     user = User.objects.get(pk=athlete.user.pk)
     person = Person.objects.get(pk=athlete.person.pk)
     communication = Communication.objects.get(pk=athlete.communication.pk)
@@ -277,7 +284,8 @@ def updateClubPersons(request, pk):
                 email=mail):
                 messages.warning(request, 'Mail adresi başka bir kullanici tarafından kullanilmaktadir.')
                 return render(request, 'kulup/kulup-uyesi-duzenle.html',
-                              {'user_form': user_form, 'communication_form': communication_form,
+                              {'user_form': user_form, 'communication_form': communication_form, 'groups': groups,
+                               'clupUser': athlete,
                                'person_form': person_form, 'sportClubUser_form': sportClubUser_form, 'clubs': clubs})
 
         tc = request.POST.get('tc')
@@ -287,7 +295,8 @@ def updateClubPersons(request, pk):
                 tc=tc) or PreRegistration.objects.exclude(status=PreRegistration.DENIED).filter(tc=tc):
                 messages.warning(request, 'Tc kimlik numarasi sisteme kayıtlıdır. ')
                 return render(request, 'kulup/kulup-uyesi-duzenle.html',
-                              {'user_form': user_form, 'communication_form': communication_form,
+                              {'user_form': user_form, 'communication_form': communication_form, 'groups': groups,
+                               'clupUser': athlete,
                                'person_form': person_form, 'sportClubUser_form': sportClubUser_form, 'clubs': clubs})
 
         name = request.POST.get('first_name')
@@ -299,7 +308,8 @@ def updateClubPersons(request, pk):
         if not (client.service.TCKimlikNoDogrula(tc, name, surname, year[2])):
             messages.warning(request, 'Tc kimlik numarasi ile isim  soyisim dogum yılı  bilgileri uyuşmamaktadır. ')
             return render(request, 'kulup/kulup-uyesi-duzenle.html',
-                          {'user_form': user_form, 'communication_form': communication_form,
+                          {'user_form': user_form, 'communication_form': communication_form, 'groups': groups,
+                           'clupUser': athlete,
                            'person_form': person_form, 'sportClubUser_form': sportClubUser_form, 'clubs': clubs})
 
         if user_form.is_valid() and communication_form.is_valid() and person_form.is_valid() and sportClubUser_form.is_valid():
@@ -327,7 +337,8 @@ def updateClubPersons(request, pk):
                 messages.warning(request, user_form.errors[x][0])
 
     return render(request, 'kulup/kulup-uyesi-duzenle.html',
-                  {'user_form': user_form, 'communication_form': communication_form,
+                  {'user_form': user_form, 'communication_form': communication_form, 'groups': groups,
+                   'clupUser': athlete,
                    'person_form': person_form, 'sportClubUser_form': sportClubUser_form, 'clubs': clubs})
 
 

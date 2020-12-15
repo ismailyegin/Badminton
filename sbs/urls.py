@@ -434,4 +434,6 @@ urlpatterns = [
     url(r'rol/güncelle/(?P<pk>\d+)$', DashboardViews.activeGroup,
         name='aktive-update'),
 
+    url(r'rol/degisitir/(?P<pk>\d+)$', AdminViews.activeGroup,
+        name='sporcu-aktive-group'),
 ]

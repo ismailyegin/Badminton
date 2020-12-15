@@ -17,8 +17,10 @@ from sbs.Forms.PersonForm import PersonForm
 from sbs.Forms.SportClubUserForm import SportClubUserForm
 from sbs.Forms.UserForm import UserForm
 from sbs.Forms.UserSearchForm import UserSearchForm
-from sbs.models import SportClubUser, Person, Communication
 from sbs.services import general_methods
+
+from sbs.models import ActiveGroup, Coach, Judge, DirectoryMember, SportClubUser, Athlete, ClubRole, Person, \
+    Communication, DirectoryMemberRole, DirectoryCommission
 
 
 @login_required
@@ -53,3 +55,53 @@ def updateProfile(request):
 
     return render(request, 'admin/admin-profil-guncelle.html',
                   {'user_form': user_form, 'password_form': password_form})
+
+
+@login_required
+def activeGroup(request, pk):
+    group = Group.objects.get(name=request.GET.get('group'))
+    pk = request.GET.get('pk')
+    communication = Communication.objects.get(pk=request.GET.get('communication'))
+    person = Person.objects.get(pk=request.GET.get('person'))
+    user = User.objects.get(pk=request.GET.get('user'))
+
+    if group.name == "Antrenor":
+        coach = Coach(person=person, communication=communication, user=user)
+        coach.save()
+        user.groups.add(group)
+        user.save()
+        return redirect('sbs:update-coach', pk=coach.pk)
+    elif group.name == "Hakem":
+        judge = Judge(person=person, communication=communication, user=user)
+        judge.save()
+        user.groups.add(group)
+        user.save()
+        return redirect('sbs:hakem-duzenle', pk=judge.pk)
+    elif group.name == "Admin":
+        user.groups.add(group)
+        user.is_superuser = True
+        user.is_staff = True
+        user.is_active = True
+        user.save()
+        return redirect('sbs:admin')
+    elif group.name == "KulupUye":
+        clupuser = SportClubUser(person=person, communication=communication, user=user, role=ClubRole.objects.all()[0])
+        clupuser.save()
+        user.groups.add(group)
+        user.save()
+        return redirect('sbs:kulup-uyesi-guncelle', pk=clupuser.pk)
+    elif group.name == "Sporcu":
+        athlete = Athlete(person=person, communication=communication, user=user)
+        athlete.save()
+        user.groups.add(group)
+        user.save()
+        return redirect('sbs:update-athletes', pk=athlete.pk)
+    elif group.name == "Yonetim":
+        member = DirectoryMember(person=person, communication=communication, user=user,
+                                 role=DirectoryMemberRole.objects.all()[0],
+                                 commission=DirectoryCommission.objects.all()[0])
+        member.save()
+        user.groups.add(group)
+        user.save()
+        return redirect('sbs:kurul-uyesi-duzenle', pk=member.pk)
+    return {}

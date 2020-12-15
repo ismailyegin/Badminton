@@ -484,6 +484,15 @@ def updateReferee(request, pk):
         logout(request)
         return redirect('accounts:login')
     judge = Judge.objects.get(pk=pk)
+
+    if not judge.user.groups.all():
+        user = judge.user
+        judge.user.groups.add(Group.objects.get(name="Hakem"))
+        judge.save()
+    groups = Group.objects.all()
+
+
+
     user = User.objects.get(pk=judge.user.pk)
     person = Person.objects.get(pk=judge.person.pk)
     communication = Communication.objects.get(pk=judge.communication.pk)
@@ -507,7 +516,7 @@ def updateReferee(request, pk):
                 return render(request, 'hakem/hakemDuzenle.html',
                               {'user_form': user_form, 'communication_form': communication_form,
                                'person_form': person_form, 'judge': judge, 'grade_form': grade_form,
-                               'visa_form': visa_form, 'iban_form': iban_form, })
+                               'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups})
 
         tc = request.POST.get('tc')
         if tc != judge.person.tc:
@@ -518,7 +527,7 @@ def updateReferee(request, pk):
                 return render(request, 'hakem/hakemDuzenle.html',
                               {'user_form': user_form, 'communication_form': communication_form,
                                'person_form': person_form, 'judge': judge, 'grade_form': grade_form,
-                               'visa_form': visa_form, 'iban_form': iban_form, })
+                               'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups})
 
         name = request.POST.get('first_name')
         surname = request.POST.get('last_name')
@@ -531,7 +540,7 @@ def updateReferee(request, pk):
             return render(request, 'hakem/hakemDuzenle.html',
                           {'user_form': user_form, 'communication_form': communication_form,
                            'person_form': person_form, 'judge': judge, 'grade_form': grade_form,
-                           'visa_form': visa_form, 'iban_form': iban_form, })
+                           'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups})
 
         if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and iban_form.is_valid():
 
@@ -558,7 +567,7 @@ def updateReferee(request, pk):
     return render(request, 'hakem/hakemDuzenle.html',
                   {'user_form': user_form, 'communication_form': communication_form,
                    'person_form': person_form, 'judge': judge, 'grade_form': grade_form,
-                   'visa_form': visa_form, 'iban_form': iban_form, })
+                   'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups})
 
 
 @login_required

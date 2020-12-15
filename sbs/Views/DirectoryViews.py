@@ -193,6 +193,15 @@ def update_directory_member(request, pk):
         logout(request)
         return redirect('accounts:login')
     member = DirectoryMember.objects.get(pk=pk)
+
+    if not member.user.groups.all():
+        user = judge.user
+        member.user.groups.add(Group.objects.get(name="Yonetim"))
+        member.save()
+    groups = Group.objects.all()
+
+
+
     user = User.objects.get(pk=member.user.pk)
     person = Person.objects.get(pk=member.person.pk)
     communication = Communication.objects.get(pk=member.communication.pk)
@@ -212,9 +221,8 @@ def update_directory_member(request, pk):
                 email=mail):
                 messages.warning(request, 'Mail adresi başka bir kullanici tarafından kullanilmaktadir.')
                 return render(request, 'yonetim/kurul-uyesi-duzenle.html',
-                              {'user_form': user_form, 'communication_form': communication_form,
-                               'person_form': person_form, 'member_form': member_form})
-
+                              {'user_form': user_form, 'communication_form': communication_form, 'member': member,
+                               'person_form': person_form, 'member_form': member_form, 'groups': groups})
         tc = request.POST.get('tc')
 
         if person.tc != tc:
@@ -223,8 +231,8 @@ def update_directory_member(request, pk):
                 tc=tc) or PreRegistration.objects.exclude(status=PreRegistration.DENIED).filter(tc=tc):
                 messages.warning(request, 'Tc kimlik numarasi sistemde kayıtlıdır. ')
                 return render(request, 'yonetim/kurul-uyesi-duzenle.html',
-                              {'user_form': user_form, 'communication_form': communication_form,
-                               'person_form': person_form, 'member_form': member_form})
+                              {'user_form': user_form, 'communication_form': communication_form, 'member': member,
+                               'person_form': person_form, 'member_form': member_form, 'groups': groups})
 
         name = request.POST.get('first_name')
         surname = request.POST.get('last_name')
@@ -235,8 +243,8 @@ def update_directory_member(request, pk):
         if not (client.service.TCKimlikNoDogrula(tc, name, surname, year[2])):
             messages.warning(request, 'Tc kimlik numarasi ile isim  soyisim dogum yılı  bilgileri uyuşmamaktadır. ')
             return render(request, 'yonetim/kurul-uyesi-duzenle.html',
-                          {'user_form': user_form, 'communication_form': communication_form,
-                           'person_form': person_form, 'member_form': member_form})
+                          {'user_form': user_form, 'communication_form': communication_form, 'member': member,
+                           'person_form': person_form, 'member_form': member_form, 'groups': groups})
 
         if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and member_form.is_valid():
 
@@ -258,8 +266,8 @@ def update_directory_member(request, pk):
             messages.warning(request, 'Alanları Kontrol Ediniz')
 
     return render(request, 'yonetim/kurul-uyesi-duzenle.html',
-                  {'user_form': user_form, 'communication_form': communication_form,
-                   'person_form': person_form, 'member_form': member_form})
+                  {'user_form': user_form, 'communication_form': communication_form, 'member': member,
+                   'person_form': person_form, 'member_form': member_form, 'groups': groups})
 
 
 @login_required

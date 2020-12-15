@@ -159,8 +159,6 @@ def control_access_klup(request):
 
 def aktif(request):
     if User.objects.filter(pk=request.user.pk):
-        print('deger')
-        print(request.user)
         if not (ActiveGroup.objects.filter(user=request.user)):
             aktive = ActiveGroup(user=request.user, group=request.user.groups.all()[0])
             aktive.save()
