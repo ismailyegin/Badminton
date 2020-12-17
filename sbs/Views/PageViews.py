@@ -111,9 +111,6 @@ def return_athletesdeneme(request):
                 modeldata = Athlete.objects.all()[start:start + length]
                 total = Athlete.objects.count()
 
-
-
-
     # /Sayfalama  islemleri ile gerekli bir sekil de istenilen sayfanın gönderilmesi gerçeklesitirildi.
 
     say = start + 1
@@ -125,23 +122,21 @@ def return_athletesdeneme(request):
         brans = '-'
         klup = '-'
         kusak = '-'
-        if item.licenses.count() > 0:
-            if item.licenses.last().sportsClub.name is not None:
-                klup = item.licenses.last().sportsClub.name
+        # license=item.licenses.last().sportsClub.name
+        # if item.licenses.count() > 0:
+        #     if  license:
+        #         klup = item.licenses.last().sportsClub.name
+        #
+        #     if item.licenses.last().branch is not None:
+        #         brans = item.licenses.last().branch
 
-            if item.licenses.last().branch is not None:
-                brans = item.licenses.last().branch
-        if item.belts.count() > 0:
-            kusak = item.belts.last()
-            kusak = kusak.definition.name
         data = {
             'say': say,
             'pk': item.pk,
             'name': item.user.first_name + item.user.last_name,
             'user': item.person.birthDate,
-            'klup': klup,
-            'brans': brans,
-            'kusak': kusak,
+            # 'klup': klup,
+            # 'brans': brans,
 
         }
         beka.append(data)
@@ -166,11 +161,9 @@ def return_athletesdeneme(request):
     # print(total)
     # Veri istenildigi gibi paketlendi ve gönderildi
     response = {
-
         'data': beka,
         'draw': draw,
         'recordsTotal': total,
         'recordsFiltered': total,
-
     }
     return JsonResponse(response)

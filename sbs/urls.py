@@ -2,7 +2,7 @@ from django.conf.urls import url
 
 from sbs.Views import DashboardViews, AthleteViews, RefereeViews, ClubViews, CoachViews, DirectoryViews, UserViews, \
     CompetitionViews, AdminViews, HelpViews, PageViews, PreRegistration, ActivityView, ReferenceView, QuestionViews, \
-    LogViews
+    LogViews, ProductView
 
 app_name = 'sbs'
 
@@ -21,8 +21,6 @@ urlpatterns = [
     url(r'sporcu/sporcu-ekle/$', AthleteViews.return_add_athlete, name='sporcu-ekle'),
     url(r'sporcu/sporcu-birlestir/(?P<pk>\d+)$', AthleteViews.sporcu_sec, name='sporcu-birlestir'),
     url(r'sporcu/sporcu-birlestironay/$', AthleteViews.sporcu_birlestir, name='sporcu-birlestir-onay'),
-
-
     url(r'sporcu/sporcu-ekle-antrenor/$', AthleteViews.return_add_athlete_antrenor, name='sporcu-ekle-antrenor'),
     url(r'sporcu/sporcular/$', AthleteViews.return_athletes, name='sporcular'),
     url(r'sporcu/sporcular/antrenor/$', AthleteViews.return_athletes_antrenor, name='sporcular-antrenor'),
@@ -436,4 +434,11 @@ urlpatterns = [
 
     url(r'rol/degisitir/(?P<pk>\d+)$', AdminViews.activeGroup,
         name='sporcu-aktive-group'),
+
+    #     products
+    url(r'urun/ekle', ProductView.add_product, name='urun-ekle'),
+    url(r'urun/urunler', ProductView.return_products, name='urunler'),
+    url(r'urun/urun-sil(?P<pk>\d+)$', ProductView.product_delete, name='urun-sil'),
+    url(r'urun/urun-duzenle/(?P<pk>\d+)$', ProductView.product_update, name='urun-duzenle'),
+
 ]
