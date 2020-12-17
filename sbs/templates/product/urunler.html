@@ -396,13 +396,13 @@
                         },
                         success: function (result) {
 
-                            html = 'Faaliyet Başarıyla Silindi';
+                            html = 'Urun Başarıyla Silindi';
                             debugger;
                             $(".successModal").html(html);
                             $('#modal-success').on("shown.bs.modal", function (e) {
                                 $(".btn-ok").click(function () {
 
-                                    window.location.replace("{% url "sbs:faaliyet" %}");
+                                    window.location.replace("{% url "sbs:urunler" %}");
 
                                 });
 

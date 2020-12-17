@@ -2,11 +2,13 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
 from sbs.Forms.ProductForm import ProductForm
 from sbs.models.Products import Products
 from sbs.services import general_methods
+
 
 
 #
@@ -68,10 +70,13 @@ def product_delete(request, pk):
         logout(request)
         return redirect('accounts:login')
     if request.method == 'POST' and request.is_ajax():
+
+        print('geldim')
+        obj = Products.objects.get(pk=pk)
+        obj.delete()
+        return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
         try:
-            obj = Products.objects.get(pk=pk)
-            obj.delete()
-            return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
+            print()
         except:
             return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
 

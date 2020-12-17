@@ -48,7 +48,7 @@ def getMenu(request):
 
 
 def getAdminMenu(request):
-    adminmenus = MenuAdmin.objects.all()
+    adminmenus = MenuAdmin.objects.all().order_by("sorting")
     return {'adminmenus': adminmenus}
 
 
@@ -58,22 +58,22 @@ def getAthleteMenu(request):
 
 
 def getRefereeMenu(request):
-    refereemenus = MenuReferee.objects.all()
+    refereemenus = MenuReferee.objects.all().order_by("sorting")
     return {'refereemenus': refereemenus}
 
 
 def getCoachMenu(request):
-    coachmenus = MenuCoach.objects.all()
+    coachmenus = MenuCoach.objects.all().order_by("sorting")
     return {'coachmenus': coachmenus}
 
 
 def getDirectoryMenu(request):
-    directorymenus = MenuDirectory.objects.all()
+    directorymenus = MenuDirectory.objects.all().order_by("sorting")
     return {'directorymenus': directorymenus}
 
 
 def getClubUserMenu(request):
-    clubusermenus = MenuClubUser.objects.all()
+    clubusermenus = MenuClubUser.objects.all().order_by("sorting")
     return {'clubusermenus': clubusermenus}
 
 
