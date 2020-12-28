@@ -38,6 +38,5 @@ class Level(models.Model):
     def __str__(self):
         return '%s ' % self.branch
 
-    class Meta:
-        default_permissions = ()
-
+    # class Meta:
+    #     default_permissions = ()

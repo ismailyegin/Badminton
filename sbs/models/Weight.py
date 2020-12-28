@@ -7,5 +7,5 @@ class Weight(models.Model):
     operationdate = models.DateTimeField(db_column='operationDate', blank=True, null=True)  # Field name made lowercase.
     weight = models.CharField(max_length=255, blank=True, null=True)
 
-    class Meta:
-        db_table = 'weight'
+    # class Meta:
+    #     db_table = 'weight'

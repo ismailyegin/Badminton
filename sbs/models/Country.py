@@ -11,7 +11,7 @@ class Country(models.Model):
     #     self.name = self.name.upper()
     #     super(Country, self).save(force_insert, force_update)
 
-    class Meta:
-        default_permissions = ()
-        db_table = 'country'
-        managed = False
+    # class Meta:
+    #     default_permissions = ()
+    #     db_table = 'country'
+    #     managed = False

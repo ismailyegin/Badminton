@@ -92,6 +92,6 @@ class ReferenceReferee(models.Model):
     def __str__(self):
         return '%s %s' % (self.first_name, self.last_name)
     #
-    class Meta:
-        default_permissions = ()
-        # managed = False
+    # class Meta:
+    #     default_permissions = ()
+    #     # managed = False

@@ -48,9 +48,9 @@ class Person(models.Model):
     document = models.ManyToManyField(Document)
     penal = models.ManyToManyField(Penal)
 
-    class Meta:
-        default_permissions = ()
-        db_table = 'person'
+    # class Meta:
+    #     default_permissions = ()
+    #     db_table = 'person'
 
     # def save(self, force_insert=False, force_update=False):
     #     if self.birthplace:

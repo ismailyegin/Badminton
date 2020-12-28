@@ -58,10 +58,10 @@ class Competition(models.Model):
     def __str__(self):
         return '%s ' % self.name
 
-    class Meta:
-        default_permissions = ()
-        db_table = 'competition'
-        managed = False
+    # class Meta:
+    #     default_permissions = ()
+    #     db_table = 'competition'
+    #     managed = False
     # def save(self, force_insert=False, force_update=False):
     #     if self.name:
     #         self.name = self.name.upper()

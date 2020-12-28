@@ -12,5 +12,5 @@ class Logs(models.Model):
     def __str__(self):
         return '%s ' % self.user.get_full_name()
 
-    class Meta:
-        default_permissions = ()
+    # class Meta:
+    #     default_permissions = ()

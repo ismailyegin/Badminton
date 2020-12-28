@@ -11,7 +11,7 @@ class City(models.Model):
     #     self.name = self.name.upper()
     #     super(City, self).save(force_insert, force_update)
 
-    class Meta:
-        default_permissions = ()
-        db_table = 'city'
-        managed = False
+    # class Meta:
+    #     default_permissions = ()
+    #     db_table = 'city'
+    #     managed = False

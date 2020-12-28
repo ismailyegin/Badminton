@@ -7,5 +7,5 @@ class Penal(models.Model):
     creationDate = models.DateTimeField(auto_now_add=True)
     operationDate = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return '%s ' % self.penal
+    # def __str__(self):
+    #     return '%s ' % self.penal

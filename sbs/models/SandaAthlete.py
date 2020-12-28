@@ -12,5 +12,5 @@ class SandaAthlete(models.Model):
     def __str__(self):
         return '%s %s' % (self.athlete.user.first_name, self.athlete.user.last_name)
 
-    class Meta:
-        default_permissions = ()
+    # class Meta:
+    #     default_permissions = ()

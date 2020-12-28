@@ -119,8 +119,8 @@ class PreRegistration(models.Model):
     kademe_belge = models.FileField(upload_to='dekont/', null=True, blank=True, verbose_name='Belge')
     iban = models.CharField(max_length=120, null=True, blank=True, verbose_name='İban Adresi')
 
-    class Meta:
-        default_permissions = ()
+    # class Meta:
+    #     default_permissions = ()
 
     # def save(self, force_insert=False, force_update=False):
     #     self.birthplace = self.birthplace.upper()

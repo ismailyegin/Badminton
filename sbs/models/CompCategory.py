@@ -22,6 +22,6 @@ class CompCategory(models.Model):
 
     def __str__(self):
         return '%s' % (self.name)
-    class Meta:
-        db_table = 'compcategory'
-        managed = False
+    # class Meta:
+    #     db_table = 'compcategory'
+    #     managed = False

@@ -43,6 +43,6 @@ class CompAthlete(models.Model):
                                             default=0)  # Field name made lowercase.
     competition = models.ForeignKey(Competition, models.DO_NOTHING, db_column='competition', blank=True, null=True)
 
-    class Meta:
-        db_table = 'compathlete'
-        managed = False
+    # class Meta:
+    #     db_table = 'compathlete'
+    #     managed = False

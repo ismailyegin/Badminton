@@ -12,7 +12,7 @@ class Communication(models.Model):
     city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='İl', db_column='city')
     country = models.ForeignKey(Country, on_delete=models.CASCADE, verbose_name='Ülke', db_column='country')
 
-    class Meta:
-        default_permissions = ()
-        db_table = 'communication'
-        managed = False
+    # class Meta:
+    #     default_permissions = ()
+    #     db_table = 'communication'
+    #     managed = False

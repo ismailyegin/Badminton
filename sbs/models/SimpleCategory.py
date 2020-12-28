@@ -21,5 +21,5 @@ class SimpleCategory(models.Model):
     def __str__(self):
         return '%s'(self.categoryName)
 
-    class Meta:
-        default_permissions = ()
+    # class Meta:
+    #     default_permissions = ()

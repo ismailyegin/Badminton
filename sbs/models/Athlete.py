@@ -20,8 +20,8 @@ class Athlete(models.Model):
     def __str__(self):
         return '%s %s' % (self.user.first_name, self.user.last_name)
 
-    class Meta:
-        ordering = ['pk']
-        default_permissions = ()
-        db_table = 'athlete'
-        # managed = False
+    # class Meta:
+    #     ordering = ['pk']
+    #     default_permissions = ()
+    #     db_table = 'athlete'
+    #     # managed = False

@@ -33,7 +33,7 @@ class SportsClub(models.Model):
     def __str__(self):
         return '%s' % (self.name)
 
-    class Meta:
-        default_permissions = ()
-        db_table = 'sportclub'
-        managed = False
+    # class Meta:
+    #     default_permissions = ()
+    #     db_table = 'sportclub'
+    #     managed = False

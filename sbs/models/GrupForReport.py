@@ -40,5 +40,5 @@ class GrupForReport(models.Model):
     competition = models.ForeignKey(Competition, on_delete=models.DO_NOTHING, db_column='competition', blank=True,
                                     null=True)
 
-    class Meta:
-        db_table = 'grupforreport'
+    # class Meta:
+    #     db_table = 'grupforreport'

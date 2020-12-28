@@ -44,6 +44,6 @@ class License(models.Model):
     #         self.reddetwhy = self.reddetwhy.upper()
     #     super(License, self).save(force_insert, force_update)
 
-    class Meta:
-        default_permissions = ()
-        db_table = 'license'
+    # class Meta:
+    #     default_permissions = ()
+    #     db_table = 'license'
