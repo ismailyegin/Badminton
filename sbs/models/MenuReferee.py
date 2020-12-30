@@ -1,9 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import auth, Permission, User
 
-
 class MenuReferee(models.Model):
-
     name = models.CharField(max_length=120, null=True)
     url = models.CharField(max_length=120, null=True, blank=True)
     permission = models.ManyToManyField(User)

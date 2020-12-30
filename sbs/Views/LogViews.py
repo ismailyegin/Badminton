@@ -22,7 +22,7 @@ from sbs.Forms.DisabledCommunicationForm import DisabledCommunicationForm
 from sbs.Forms.DisabledPersonForm import DisabledPersonForm
 from sbs.Forms.DisabledUserForm import DisabledUserForm
 from sbs.Forms.LicenseForm import LicenseForm
-from sbs.Forms.LİcenseFormAntrenor import LicenseFormAntrenor
+from sbs.Forms.LicenseFormAntrenor import LicenseFormAntrenor
 from sbs.Forms.UserForm import UserForm
 from sbs.Forms.PersonForm import PersonForm
 from sbs.Forms.UserSearchForm import UserSearchForm
