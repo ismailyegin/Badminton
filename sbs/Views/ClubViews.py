@@ -1,6 +1,3 @@
-from idlelib.idle_test.test_run import S
-from itertools import product
-
 from django.contrib.auth import logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
