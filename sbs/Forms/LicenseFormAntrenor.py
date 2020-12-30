@@ -1,8 +1,11 @@
 from django import forms
 from django.forms import ModelForm
-from sbs.models import License, SportsClub
 
-class LicenseForm(ModelForm):
+from sbs.models import License
+from sbs.models.SportsClub import SportsClub
+
+
+class LicenseFormAntrenor(ModelForm):
     sportsClub = forms.ModelChoiceField(queryset=SportsClub.objects.all(),
                                         to_field_name='name',
                                         empty_label="Seçiniz",
@@ -16,9 +19,9 @@ class LicenseForm(ModelForm):
         model = License
 
         fields = (
-            'startDate', 'sportsClub', 'branch', 'licenseNo', 'cityHeadShip', 'expireDate', 'lisansPhoto')
+            'startDate', 'branch', 'sportsClub', 'licenseNo', 'cityHeadShip', 'expireDate', 'lisansPhoto')
 
-        labels = {'startDate': 'Başlangıç Tarihi', 'branch': 'Branş', 'sportsClub': 'Kulüp',
+        labels = {'startDate': 'Başlangıç Tarihi', 'branch': 'Branş',
                   'licenseNo': 'Lisans No', 'cityHeadShip': 'Verildiği İl', 'expireDate': 'Geçer. Süresi',
                   'lisansPhoto': 'Lisans Foto'}
 
@@ -39,8 +42,5 @@ class LicenseForm(ModelForm):
 
             'cityHeadShip': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                                 'style': 'width: 100%;', 'required': 'required'}),
-
-
-
 
         }
