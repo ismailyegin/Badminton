@@ -1,8 +1,24 @@
 from django.db import models
 from sbs.models.Document import Document
 from sbs.models.Penal import Penal
+from sbs.models.Material import Meterial
 
 class Person(models.Model):
+    ILKOKUL = 'İlk Okul'
+    lISE = 'Lise'
+    UNİVERİSTE = 'Üniversite(Lisans)'
+    YUKSEKLİSANS = 'Yüksek Lisans'
+    YUKSEKOKUL = 'Yüksek Okul'
+
+    JOP = (
+        (ILKOKUL, 'İlk Okul'),
+        (lISE, 'Lise'),
+        (UNİVERİSTE, 'Üniversite(Lisans)'),
+        (YUKSEKLİSANS, 'Yüksek Lisans'),
+        (YUKSEKOKUL, 'Yüksek Okul'),
+
+    )
+
     MALE = 0
     FEMALE = 1
 
@@ -45,8 +61,22 @@ class Person(models.Model):
     bloodType = models.CharField(max_length=128, verbose_name='Kan Grubu', choices=BLOODTYPE, null=True, blank=True)
     gender = models.IntegerField(choices=GENDER_CHOICES)
 
+
     document = models.ManyToManyField(Document)
     penal = models.ManyToManyField(Penal)
+
+    # badminton database add festportal
+
+    uyrukid = models.CharField(max_length=10, blank=True, null=True)
+    nufus_ailesirano = models.CharField(max_length=20, blank=True, null=True)
+    nufus_sirano = models.CharField(max_length=20, blank=True, null=True)
+    nufus_ciltno = models.CharField(max_length=20, blank=True, null=True)
+
+    meslek = models.CharField(max_length=120, blank=True, null=True)
+    kurum = models.CharField(max_length=120, blank=True, null=True)
+    is_unvani = models.CharField(max_length=120, blank=True, null=True)
+    education = models.CharField(max_length=128, verbose_name='Egitim Durumu ', choices=JOP, null=True, blank=True)
+    material = models.ForeignKey(Meterial, models.CASCADE, blank=True, null=True)
 
     # class Meta:
     #     default_permissions = ()

@@ -9,7 +9,11 @@ from django.contrib.auth.models import User
 
 class Judge(models.Model):
     person = models.OneToOneField(Person, on_delete=models.CASCADE)
-    communication = models.OneToOneField(Communication, on_delete=models.CASCADE)
+
+    communication = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True, related_name='Ev')
+    communication2 = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
+                                       related_name='İs')
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     creationDate = models.DateTimeField(auto_now_add=True)
     modificationDate = models.DateTimeField(auto_now=True)

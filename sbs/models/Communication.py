@@ -9,7 +9,7 @@ class Communication(models.Model):
     phoneNumber = models.CharField(max_length=120, null=True, blank=True)
     phoneNumber2 = models.CharField(max_length=120, null=True, blank=True)
     address = models.TextField(blank=True, null=True, verbose_name='Adres')
-    city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='İl', db_column='city')
+    city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='İl', db_column='city', null=True, blank=True)
     country = models.ForeignKey(Country, on_delete=models.CASCADE, verbose_name='Ülke', db_column='country')
 
     # class Meta:
