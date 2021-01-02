@@ -2,7 +2,7 @@ from django.conf.urls import url
 
 from sbs.Views import DashboardViews, AthleteViews, RefereeViews, ClubViews, CoachViews, DirectoryViews, UserViews, \
     CompetitionViews, AdminViews, HelpViews, PageViews, PreRegistration, ActivityView, ReferenceView, QuestionViews, \
-    LogViews, ProductView
+    LogViews, ProductView, Aktarma
 
 app_name = 'sbs'
 
@@ -36,8 +36,6 @@ urlpatterns = [
 
     url(r'sporcu/sporcuBelgeEkle/(?P<pk>\d+)$', AthleteViews.sporcu_belge_ekle, name='sporcu-belge-ekle'),
     url(r'sporcu/sporcuCezaEkle/(?P<pk>\d+)$', AthleteViews.sporcu_ceza_ekle, name='sporcu-ceza-ekle'),
-
-
 
     url(r'sporcu/sporcuLisansEkle/antrenor/(?P<pk>\d+)$', AthleteViews.sporcu_lisans_ekle_antrenor,
         name='sporcu-lisans-ekle-antrenor'),
@@ -170,7 +168,6 @@ urlpatterns = [
     url(r'kulup/basvuru/reddet/(?P<pk>\d+)$', PreRegistration.rejected_preRegistration, name='basvuru-reddet'),
     url(r'klup/basvuru-incele/(?P<pk>\d+)$', PreRegistration.update_preRegistration, name='update-basvuru'),
 
-
     url(r'kulup/kulup-ekle/$', ClubViews.return_add_club, name='kulup-ekle'),
     url(r'kulup/kulupler/$', ClubViews.return_clubs, name='kulupler'),
     url(r'kulup/kulup-uyesi-ekle/$', ClubViews.return_add_club_person, name='kulup-uyesi-ekle'),
@@ -241,7 +238,6 @@ urlpatterns = [
     url(r'antrenor/antrenorler/onayla/basvuru/(?P<pk>\d+)$', CoachViews.referenappcoverCoach,
         name='onayla-coach-basvuru'),
     url(r'antrenor/basvuru/onayla/(?P<pk>\d+)$', CoachViews.referenceCoachStatus, name='basvuru-onayla-coach'),
-
 
     url(r'antrenor/antrenorDuzenle/(?P<pk>\d+)$', CoachViews.coachUpdate,
         name='update-coach'),
@@ -441,4 +437,7 @@ urlpatterns = [
     url(r'urun/urun-sil(?P<pk>\d+)$', ProductView.product_delete, name='urun-sil'),
     url(r'urun/urun-duzenle/(?P<pk>\d+)$', ProductView.product_update, name='urun-duzenle'),
 
+    # aktarma
+    url(r'aktarma/kulup-aktar', Aktarma.kulup_aktar, name='kulup-aktar'),
+    url(r'aktarma/hakem-aktar', Aktarma.hakem_aktar, name='hakem-aktar'),
 ]
