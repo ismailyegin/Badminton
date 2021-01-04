@@ -4,14 +4,12 @@ from sbs.models.Penal import Penal
 from sbs.models.Material import Meterial
 
 class Person(models.Model):
-    ILKOKUL = 'İlk Okul'
-    lISE = 'Lise'
-    UNİVERİSTE = 'Üniversite(Lisans)'
-    YUKSEKLİSANS = 'Yüksek Lisans'
-    YUKSEKOKUL = 'Yüksek Okul'
+    lISE = 15
+    UNİVERİSTE = 25
+    YUKSEKLİSANS = 30
+    YUKSEKOKUL = 20
 
     JOP = (
-        (ILKOKUL, 'İlk Okul'),
         (lISE, 'Lise'),
         (UNİVERİSTE, 'Üniversite(Lisans)'),
         (YUKSEKLİSANS, 'Yüksek Lisans'),
@@ -19,8 +17,8 @@ class Person(models.Model):
 
     )
 
-    MALE = 0
-    FEMALE = 1
+    MALE = 1
+    FEMALE = 0
 
     AB1 = 'AB Rh+'
     AB2 = 'AB Rh-'
@@ -59,7 +57,7 @@ class Person(models.Model):
 
     birthDate = models.DateField(null=True, blank=True, verbose_name='Doğum Tarihi')
     bloodType = models.CharField(max_length=128, verbose_name='Kan Grubu', choices=BLOODTYPE, null=True, blank=True)
-    gender = models.IntegerField(choices=GENDER_CHOICES)
+    gender = models.IntegerField(choices=GENDER_CHOICES, blank=True, null=True)
 
 
     document = models.ManyToManyField(Document)
@@ -75,8 +73,10 @@ class Person(models.Model):
     meslek = models.CharField(max_length=120, blank=True, null=True)
     kurum = models.CharField(max_length=120, blank=True, null=True)
     is_unvani = models.CharField(max_length=120, blank=True, null=True)
-    education = models.CharField(max_length=128, verbose_name='Egitim Durumu ', choices=JOP, null=True, blank=True)
+    education = models.IntegerField(choices=JOP, null=True, blank=True)
     material = models.ForeignKey(Meterial, models.CASCADE, blank=True, null=True)
+
+    mezunokul = models.CharField(max_length=200, blank=True, null=True)
 
     # class Meta:
     #     default_permissions = ()
