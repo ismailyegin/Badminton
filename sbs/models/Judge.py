@@ -10,9 +10,13 @@ from django.contrib.auth.models import User
 class Judge(models.Model):
     person = models.OneToOneField(Person, on_delete=models.CASCADE)
 
-    communication = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True, related_name='Ev')
-    communication2 = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
-                                       related_name='İs')
+    communication = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
+                                      related_name='HakemikametAdres')
+    communicationHome = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
+                                          related_name='HakemEvAdres')
+    communicationJop = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
+                                         related_name='HakemIsAdres')
+
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     creationDate = models.DateTimeField(auto_now_add=True)
@@ -20,6 +24,9 @@ class Judge(models.Model):
     grades = models.ManyToManyField(Level, related_name='Judgegrades')
     visa = models.ManyToManyField(Level, related_name='Judgevisa')
     iban = models.CharField(max_length=120, null=True, blank=True, verbose_name='İban Adresi')
+
+    oldpk = models.IntegerField(null=True, blank=True)
+
 
     def __str__(self):
         return '%s %s' % (self.user.first_name, self.user.last_name)

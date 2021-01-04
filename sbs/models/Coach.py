@@ -8,13 +8,21 @@ from sbs.models.Person import Person
 
 class Coach(models.Model):
     person = models.OneToOneField(Person, on_delete=models.CASCADE)
-    communication = models.OneToOneField(Communication, on_delete=models.CASCADE)
+
+    communication = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
+                                      related_name='AntrenorikametAdres')
+    communicationHome = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
+                                          related_name='AntrenorEvAdres')
+    communicationJop = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
+                                         related_name='AntrenorİsAdres')
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     grades = models.ManyToManyField(Level, related_name='CoachGrades')
     visa = models.ManyToManyField(Level, related_name='CoachVisa')
     creationDate = models.DateTimeField(auto_now_add=True)
     modificationDate = models.DateTimeField(auto_now=True)
     iban = models.CharField(max_length=120, null=True, blank=True, verbose_name='İban Adresi')
+
+    oldpk = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return '%s %s' % (self.user.first_name, self.user.last_name)
