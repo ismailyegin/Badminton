@@ -36,9 +36,9 @@ def hakem_aktar(request):
         return redirect('accounts:login')
 
     eskihakemler = Sporcular.objects.filter(hakem=1)
-    print(eskihakemler.count())
+    # print(eskihakemler.count())
     for e in eskihakemler :
-        print(e.adi + " " + e.soyadi)
+        # print(e.adi + " " + e.soyadi)
         user = User(
             first_name=e.adi,
                     last_name=e.soyadi,
@@ -48,19 +48,18 @@ def hakem_aktar(request):
                     )
         user.save()
 
-
-        print(user)
+        # print(user)
         grup = Group.objects.get(name='Hakem')
         user.groups.add(grup)
-        print(grup)
+        # print(grup)
         meterial = Meterial(ayakkabi=e.ayakkabi,
                             esofman=e.esofman,
                             tshirt=e.tshirt,
                             raket=e.raket
                             )
         meterial.save()
-        print(meterial)
-        print(e.egitimid)
+        # print(meterial)
+        # print(e.egitimid)
         person = Person(
             tc=e.tcno,
             birthplace=e.dogumyeri,
@@ -82,7 +81,7 @@ def hakem_aktar(request):
 
         )
 
-        print(person)
+        # print(person)
         person.material = meterial
         person.save()
 
@@ -109,9 +108,9 @@ def hakem_aktar(request):
             country=Country.objects.filter(name__icontains="TÜRKİYE")[0],
         )
         comis.save()
-        print(comikamet)
-        print(comev)
-        print(comis)
+        # print(comikamet)
+        # print(comev)
+        # print(comis)
         hakem = Judge(
             pk=e.sporcuid,
             person=person,
@@ -136,10 +135,10 @@ def antrenor_aktar(request):
         return redirect('accounts:login')
 
     eskihakemler = Sporcular.objects.filter(antrenor=1).exclude(tcno=None)
-    print(eskihakemler.count())
+    # print(eskihakemler.count())
 
     grup = Group.objects.get(name='Antrenor')
-    print(grup)
+    # print(grup)
     for e in eskihakemler:
         print(e.adi + " " + e.soyadi)
         if User.objects.filter(username=e.tcno):
@@ -174,17 +173,17 @@ def antrenor_aktar(request):
             )
             user.save()
 
-            print(user)
+            # print(user)
             user.groups.add(grup)
-            print(grup)
+            # print(grup)
             meterial = Meterial(ayakkabi=e.ayakkabi,
                                 esofman=e.esofman,
                                 tshirt=e.tshirt,
                                 raket=e.raket
                                 )
             meterial.save()
-            print(meterial)
-            print(e.egitimid)
+            # print(meterial)
+            # print(e.egitimid)
             person = Person(
                 tc=e.tcno,
                 birthplace=e.dogumyeri,
@@ -208,7 +207,7 @@ def antrenor_aktar(request):
 
             person.material = meterial
             person.save()
-            print(person)
+            # print(person)
 
             comikamet = Communication(
                 phoneNumber=e.ceptel,
@@ -233,9 +232,9 @@ def antrenor_aktar(request):
                 country=Country.objects.filter(name__icontains="TÜRKİYE")[0],
             )
             comis.save()
-            print(comikamet)
-            print(comev)
-            print(comis)
+            # print(comikamet)
+            # print(comev)
+            # print(comis)
             coach = Coach(
                 pk=e.sporcuid,
                 person=person,
@@ -260,7 +259,7 @@ def sporcu_aktar(request):
         return redirect('accounts:login')
 
     eskihakemler = Sporcular.objects.filter(sporcu=1).exclude(tcno=None)
-    print(eskihakemler.count())
+    # print(eskihakemler.count())
 
     grup = Group.objects.get(name='Sporcu')
     print(grup)
@@ -316,17 +315,17 @@ def sporcu_aktar(request):
             )
             user.save()
 
-            print(user)
+            # print(user)
             user.groups.add(grup)
-            print(grup)
+            # print(grup)
             meterial = Meterial(ayakkabi=e.ayakkabi,
                                 esofman=e.esofman,
                                 tshirt=e.tshirt,
                                 raket=e.raket
                                 )
             meterial.save()
-            print(meterial)
-            print(e.egitimid)
+            # print(meterial)
+            # print(e.egitimid)
             person = Person(
                 tc=e.tcno,
                 birthplace=e.dogumyeri,
@@ -350,7 +349,7 @@ def sporcu_aktar(request):
 
             person.material = meterial
             person.save()
-            print(person)
+            # print(person)
 
             comikamet = Communication(
                 phoneNumber=e.ceptel,
@@ -375,9 +374,9 @@ def sporcu_aktar(request):
                 country=Country.objects.filter(name__icontains="TÜRKİYE")[0],
             )
             comis.save()
-            print(comikamet)
-            print(comev)
-            print(comis)
+            # print(comikamet)
+            # print(comev)
+            # print(comis)
             athlete = Athlete(
                 pk=e.sporcuid,
                 person=person,
@@ -389,5 +388,28 @@ def sporcu_aktar(request):
                 oldpk=e.sporcuid
             )
             athlete.save()
+
+    return redirect('sbs:admin')
+
+
+@login_required
+def lisans_aktar(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+
+    eskihakemler = Sporcular.objects.exclude(kulupid=None).exclude(tcno=None)
+    print(eskihakemler.count())
+    for item in eskihakemler:
+        print(item.adi + ' ' + item.soyadi)
+        athlete = Athlete.objects.get(pk=item.pk)
+        lisans = License(
+
+            sportsClub=SportsClub.objects.get(pk=kulupid.pk),
+            licenseNo=item.
+
+        )
 
     return redirect('sbs:admin')

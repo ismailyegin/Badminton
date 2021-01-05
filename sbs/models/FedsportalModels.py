@@ -306,8 +306,13 @@ class SporcuPuanlari(models.Model):
 
 class Sporcular(models.Model):
     sporcuid = models.AutoField(primary_key=True)
+
+    # user
     adi = models.CharField(max_length=200)
     soyadi = models.CharField(max_length=200)
+    eposta = models.CharField(max_length=200, blank=True, null=True)
+
+    # person
     anneadi = models.CharField(max_length=200, blank=True, null=True)
     babaadi = models.CharField(max_length=200, blank=True, null=True)
     tcno = models.CharField(unique=True, max_length=11, blank=True, null=True)
@@ -329,10 +334,15 @@ class Sporcular(models.Model):
     istel = models.CharField(max_length=40, blank=True, null=True)
     ceptel = models.CharField(max_length=40, blank=True, null=True)
     ev_adresi = models.CharField(max_length=400, blank=True, null=True)
-    eposta = models.CharField(max_length=200, blank=True, null=True)
+
+    # lisans
     lisansno = models.CharField(max_length=80, blank=True, null=True)
     antrenorid = models.ForeignKey('self', models.DO_NOTHING, db_column='antrenorid', blank=True, null=True,related_name='+')
+    antrenorid2 = models.ForeignKey('self', models.DO_NOTHING, db_column='antrenorid2', blank=True, null=True,
+                                    related_name='+')
     lisanstarihi = models.DateField(blank=True, null=True)
+    kulupid = models.ForeignKey(Kulupler, models.DO_NOTHING, db_column='kulupid', blank=True, null=True)
+
     vize = models.DateField(blank=True, null=True)
     egitimid = models.PositiveIntegerField(blank=True, null=True)
     bankahesapno = models.CharField(max_length=120, blank=True, null=True)
@@ -346,7 +356,7 @@ class Sporcular(models.Model):
     upsuser_id = models.PositiveIntegerField(blank=True, null=True)
     updtime = models.DateTimeField(blank=True, null=True)
     hakemkademeid = models.ForeignKey(HakemKademeleri, models.DO_NOTHING, db_column='hakemkademeid', blank=True, null=True)
-    kulupid = models.ForeignKey(Kulupler, models.DO_NOTHING, db_column='kulupid', blank=True, null=True)
+
     hakem = models.IntegerField(blank=True, null=True)
     hakemvize = models.DateField(blank=True, null=True)
     antrenorkademeid = models.PositiveIntegerField(blank=True, null=True)
@@ -355,11 +365,12 @@ class Sporcular(models.Model):
     user = models.ForeignKey('Users', models.DO_NOTHING, blank=True, null=True)
     mezunokul = models.CharField(max_length=200, blank=True, null=True)
     fedkayitno = models.PositiveIntegerField(blank=True, null=True)
+
     ayakkabi = models.CharField(max_length=120, blank=True, null=True)
     esofman = models.CharField(max_length=120, blank=True, null=True)
     tshirt = models.CharField(max_length=120, blank=True, null=True)
     raket = models.CharField(max_length=120, blank=True, null=True)
-    antrenorid2 = models.ForeignKey('self', models.DO_NOTHING, db_column='antrenorid2', blank=True, null=True,related_name='+')
+
     cinsiyet = models.IntegerField(blank=True, null=True)
     yerlesim_ilid = models.IntegerField(blank=True, null=True)
     urlpart = models.CharField(max_length=2000, blank=True, null=True)

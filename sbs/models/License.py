@@ -31,10 +31,11 @@ class License(models.Model):
     cityHeadShip = models.ForeignKey(City, on_delete=models.CASCADE, db_column='cityHeadShip')
     startDate = models.DateField(blank=False, null=False)
     status = models.CharField(max_length=128, verbose_name='Onay Durumu', choices=STATUS_CHOICES, default=WAITED)
-    lisansPhoto = models.FileField(upload_to='lisans/', null=False, blank=False, verbose_name='Lisans')
+    lisansPhoto = models.FileField(upload_to='lisans/', null=True, blank=True, verbose_name='Lisans')
     reddetwhy = models.CharField(blank=True, null=True, max_length=255)
     isFerdi = models.BooleanField(default=False)
-    coach = models.ForeignKey(Coach, on_delete=models.SET_NULL, blank=True, null=True)
+    coach = models.ForeignKey(Coach, on_delete=models.SET_NULL, blank=True, null=True, related_name="antrenor1")
+    coach2 = models.ForeignKey(Coach, on_delete=models.SET_NULL, blank=True, null=True, related_name="antrenor2")
 
     def __str__(self):
         return '%s ' % self.sportsClub.name

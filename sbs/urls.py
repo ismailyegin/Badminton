@@ -442,4 +442,5 @@ urlpatterns = [
     url(r'aktarma/hakem-aktar', Aktarma.hakem_aktar, name='hakem-aktar'),
     url(r'aktarma/antrenor-aktar', Aktarma.antrenor_aktar, name='antrenor-aktar'),
     url(r'aktarma/sporcu-aktar', Aktarma.sporcu_aktar, name='sporcu-aktar'),
+    url(r'aktarma/lisans-aktar', Aktarma.lisans_aktar, name='lisans-aktar'),
 ]
