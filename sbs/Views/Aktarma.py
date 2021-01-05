@@ -496,19 +496,37 @@ def kademe_aktar(request):
         logout(request)
         return redirect('accounts:login')
 
-    return redirect('sbs:admin')
+    antrenor = Sporcular.objects.exclude(tcno=None).filter(antrenor=1)
 
-    # if judge.visa.count() == 0:
-    #         #     visa = Level(dekont=request.POST.get('dekont'), branch=request.POST.get('branch'))
-    #         #     visa.startDate = date(int(request.POST.get('startDate')), 1, 1)
-    #         #
-    #         #     visa.definition = CategoryItem.objects.get(forWhichClazz='VISA_REFEREE')
-    #         #     visa.levelType = EnumFields.LEVELTYPE.VISA
-    #         #     visa.status = Level.APPROVED
-    #         #     for item in referee.visa.all():
-    #         #         if item.branch == visa.branch:
-    #         #             item.isActive = False
-    #         #             item.save()
-    #         #     visa.isActive = True
-    #         #     visa.save()
-    # vize ekleme
+    for item in antrenor:
+
+        coach = Coach.objects.get(oldpk=item.sporcuid)
+
+        print(coach.user.get_full_name())
+        print(item.antrenorkademeid)
+        print(item.antrenorvize)
+
+        if item.antrenorkademeid:
+            grade = Level(definition=CategoryItem.objects.get(name=item.antrenorkademeid),
+                          branch=EnumFields.BADMİNTON.value)
+            grade.levelType = EnumFields.LEVELTYPE.GRADE
+            grade.status = Level.APPROVED
+            grade.save()
+            coach.grades.add(grade)
+            coach.save()
+
+        if item.antrenorvize:
+            visa = Level(branch=EnumFields.BADMİNTON.value)
+            visa.startDate = item.antrenorvize
+            visa.definition = CategoryItem.objects.get(forWhichClazz='VISA')
+            visa.levelType = EnumFields.LEVELTYPE.VISA
+            visa.status = Level.APPROVED
+            visa.isActive = True
+            visa.save()
+            coach.visa.add(visa)
+            coach.save()
+
+
+
+
+    return redirect('sbs:admin')

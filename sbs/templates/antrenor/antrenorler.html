@@ -234,7 +234,7 @@
                                     <th>#</th>
                                     <th> Ad Soyad</th>
                                     <th>E-Mail</th>
-                                    <th>Branş</th>
+                                    {#                                    <th>Branş</th>#}
                                     <th>Kademe</th>
                                     <th>Vize</th>
                                     {% if aktif == 'Admin' %}
@@ -251,19 +251,19 @@
                                             <td>{{ forloop.counter }} </td>
                                             <td>{{ coach.user.first_name }} {{ coach.user.last_name }} </td>
                                             <td>{{ coach.user.email }} </td>
-                                            <td>
+                                            {#                                            <td>#}
 
 
-                                                {% for grade in coach.grades.all %}
-                                                    {% if  grade.status == 'Onaylandı' and grade.isActive == True %}
+                                            {#                                                {% for grade in coach.grades.all %}#}
+                                            {#                                                    {% if  grade.status == 'Onaylandı' and grade.isActive == True %}#}
+                                            {##}
+                                            {#                                                        <p>{{ grade.branch }}  </p>#}
+                                            {#                                                    {% endif %}#}
+                                            {##}
+                                            {##}
+                                            {#                                                {% endfor %}#}
 
-                                                        <p>{{ grade.branch }}  </p>
-                                                    {% endif %}
-
-
-                                                {% endfor %}
-
-                                            </td>
+                                            {#                                            </td>#}
                                             <td>
 
 
@@ -283,7 +283,7 @@
                                                 {% for grade in coach.visa.all %}
                                                     {% if  grade.status == 'Onaylandı' and  grade.isActive == True %}
 
-                                                        <p>{{ grade.branch }}  </p>
+                                                        <p>Vizeli </p>
                                                     {% endif %}
 
 
