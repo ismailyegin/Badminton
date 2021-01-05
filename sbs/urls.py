@@ -445,5 +445,7 @@ urlpatterns = [
     url(r'aktarma/lisans-aktar', Aktarma.lisans_aktar, name='lisans-aktar'),
     url(r'control', Aktarma.control, name='control-aktar'),
     url(r'aktarma/antrenor-kademe-aktar', Aktarma.kademe_aktar, name='kademe-aktar-antrenor'),
+    url(r'aktarma/user-aktar', Aktarma.username_aktar, name='user-aktar'),
+
 
 ]

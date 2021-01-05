@@ -26,7 +26,7 @@ class Level(models.Model):
     levelType = models.CharField(max_length=128, verbose_name='Leveller', choices=EnumFields.LEVELTYPE.value)
     branch = models.CharField(max_length=128, verbose_name='Branş', choices=EnumFields.BRANCH.value)
     isActive = models.BooleanField(default=False)
-    startDate = models.DateField()
+    startDate = models.DateField(null=True, blank=True)
     expireDate = models.DateField(null=True, blank=True, )
     durationDay = models.IntegerField(null=True, blank=True, )
     definition = models.ForeignKey(CategoryItem, on_delete=models.CASCADE)
@@ -34,11 +34,11 @@ class Level(models.Model):
     status = models.CharField(max_length=128, verbose_name='Onay Durumu', choices=STATUS_CHOICES, default=WAITED)
     dekont = models.FileField(upload_to='dekont/', null=True, blank=True, verbose_name='Belge ')
     # son eklemeler
-    city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='İl')
+    city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='İl', null=True, blank=True)
     form = models.FileField(upload_to='form/', null=True, blank=True, verbose_name='Form ')
 
     def __str__(self):
-        return '%s ' % self.branch
+        return '%s ' % self.levelType
 
     # class Meta:
     #     default_permissions = ()

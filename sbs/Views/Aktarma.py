@@ -530,3 +530,22 @@ def kademe_aktar(request):
 
 
     return redirect('sbs:admin')
+
+
+@login_required
+def username_aktar(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+
+    users = User.objects.all()
+    for item in users:
+        if item.email != "badminton@hotmail.com":
+            if not User.objects.filter(username=item.email):
+                if item.username != item.email:
+                    item.username = item.email
+                    item.save()
+
+    return redirect('sbs:admin')
