@@ -27,10 +27,10 @@ class EnumFields(enum.Enum):
         NATIONAL = 1
         INTERNATIONAL = 2
 
-    HALTER = 'HALTER'
+    BADMİNTON = 'BADMİNTON'
 
     BRANCH = (
-        (HALTER, 'HALTER'),
+        (BADMİNTON, 'BADMİNTON'),
 
     )
 

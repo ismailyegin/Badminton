@@ -23,13 +23,14 @@ class License(models.Model):
 
     creationDate = models.DateTimeField(auto_now_add=True)
     operationDate = models.DateTimeField(auto_now=True)
+
     branch = models.CharField(max_length=128, verbose_name='Branş', choices=EnumFields.BRANCH.value)
     sportsClub = models.ForeignKey(SportsClub, on_delete=models.CASCADE, db_column='sportsClub')
     isActive = models.BooleanField(default=False)
-    licenseNo = models.CharField(blank=False, null=False, max_length=255)
-    expireDate = models.DateField(blank=False, null=False)
-    cityHeadShip = models.ForeignKey(City, on_delete=models.CASCADE, db_column='cityHeadShip')
-    startDate = models.DateField(blank=False, null=False)
+    licenseNo = models.CharField(blank=True, null=True, max_length=255)
+    expireDate = models.DateField(blank=True, null=True)
+    cityHeadShip = models.ForeignKey(City, on_delete=models.CASCADE, db_column='cityHeadShip', null=True, blank=True)
+    startDate = models.DateField(blank=True, null=True)
     status = models.CharField(max_length=128, verbose_name='Onay Durumu', choices=STATUS_CHOICES, default=WAITED)
     lisansPhoto = models.FileField(upload_to='lisans/', null=True, blank=True, verbose_name='Lisans')
     reddetwhy = models.CharField(blank=True, null=True, max_length=255)

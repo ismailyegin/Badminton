@@ -21,8 +21,10 @@ class Judge(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     creationDate = models.DateTimeField(auto_now_add=True)
     modificationDate = models.DateTimeField(auto_now=True)
+
     grades = models.ManyToManyField(Level, related_name='Judgegrades')
     visa = models.ManyToManyField(Level, related_name='Judgevisa')
+
     iban = models.CharField(max_length=120, null=True, blank=True, verbose_name='İban Adresi')
 
     oldpk = models.IntegerField(null=True, blank=True)

@@ -5,8 +5,11 @@ from django.shortcuts import redirect
 
 from sbs.models import *
 from sbs.models.FedsportalModels import Sporcular
+from sbs.models.EnumFields import EnumFields
 from sbs.models.Material import Meterial
 from sbs.services import general_methods
+
+from datetime import date, datetime
 
 
 @login_required
@@ -41,7 +44,7 @@ def hakem_aktar(request):
         # print(e.adi + " " + e.soyadi)
         user = User(
             first_name=e.adi,
-                    last_name=e.soyadi,
+            last_name=e.soyadi,
             email=e.eposta if e.eposta else 'badminton@hotmail.com',
             username=e.tcno
 
@@ -259,135 +262,136 @@ def sporcu_aktar(request):
         return redirect('accounts:login')
 
     eskihakemler = Sporcular.objects.filter(sporcu=1).exclude(tcno=None)
-    # print(eskihakemler.count())
+    print(eskihakemler.count())
 
-    grup = Group.objects.get(name='Sporcu')
-    print(grup)
-    for e in eskihakemler:
-        print(e.adi + " " + e.soyadi)
-        if User.objects.filter(username=e.tcno):
-            if User.objects.filter(username=e.tcno)[0].groups.filter(name="Hakem"):
-                if not (Coach.objects.filter(user=User.objects.filter(username=e.tcno)[0])):
-                    judge = Judge.objects.get(user=User.objects.filter(username=e.tcno)[0])
-                    coach = Coach(
-                        user=judge.user,
-                        communication=judge.communication,
-                        communicationHome=judge.communicationHome,
-                        communicationJop=judge.communicationJop,
-                        iban=judge.iban,
-                        oldpk=judge.oldpk,
-                        person=judge.person
-
-                    )
-                    coach.save()
-                    coach.user.groups.add(grup)
-                    coach.save()
-                else:
-                    print('Control Hakem')
-            elif User.objects.filter(username=e.tcno)[0].groups.filter(name="Antrenor"):
-                if not (Athlete.objects.filter(user=User.objects.filter(username=e.tcno)[0])):
-                    coach = Coach.objects.get(user=User.objects.filter(username=e.tcno)[0])
-                    athlete = Athlete(
-                        user=coach.user,
-                        communication=coach.communication,
-                        communicationHome=coach.communicationHome,
-                        communicationJop=coach.communicationJop,
-                        iban=coach.iban,
-                        oldpk=coach.oldpk,
-                        person=coach.person
-
-                    )
-                    athlete.save()
-                    athlete.user.groups.add(grup)
-                    athlete.save()
-                else:
-                    print('Control Antrenor')
-
-
-
-        else:
-            user = User(
-                first_name=e.adi,
-                last_name=e.soyadi,
-                email=e.eposta if e.eposta else 'badminton@hotmail.com',
-                username=e.tcno
-
-            )
-            user.save()
-
-            # print(user)
-            user.groups.add(grup)
-            # print(grup)
-            meterial = Meterial(ayakkabi=e.ayakkabi,
-                                esofman=e.esofman,
-                                tshirt=e.tshirt,
-                                raket=e.raket
-                                )
-            meterial.save()
-            # print(meterial)
-            # print(e.egitimid)
-            person = Person(
-                tc=e.tcno,
-                birthplace=e.dogumyeri,
-                motherName=e.anneadi,
-                fatherName=e.babaadi,
-                birthDate=e.dogumtarihi,
-                bloodType=e.kangrubu,
-                # profileImage=e.resim,
-                gender=e.cinsiyet,
-                uyrukid=e.uyrukid,
-                nufus_ailesirano=e.nufus_ailesirano,
-                nufus_ciltno=e.nufus_ciltno,
-                nufus_sirano=e.nufus_sirano,
-                meslek=e.meslek,
-                kurum=e.kurum,
-                is_unvani=e.is_unvani,
-                # meterial=meterial.id,
-                # education=e.egitimid
-
-            )
-
-            person.material = meterial
-            person.save()
-            # print(person)
-
-            comikamet = Communication(
-                phoneNumber=e.ceptel,
-                address=e.yerlesimyeri,
-                city=City.objects.filter(name__icontains=e.nufus_ilid.iladi)[0] if e.nufus_ilid else None,
-                country=Country.objects.filter(name__icontains="TÜRKİYE")[0],
-            )
-            comikamet.save()
-            comev = Communication(
-                phoneNumber=e.ceptel,
-                phoneNumber2=e.evtel,
-                address=e.ev_adresi,
-                city=City.objects.filter(name__icontains=e.nufus_ilid.iladi)[0] if e.nufus_ilid else None,
-                country=Country.objects.filter(name__icontains="TÜRKİYE")[0],
-            )
-            comev.save()
-            comis = Communication(
-                phoneNumber=e.ceptel,
-                phoneNumber2=e.istel,
-                address=e.is_adresi,
-                city=City.objects.filter(name__icontains=e.nufus_ilid.iladi)[0] if e.nufus_ilid else None,
-                country=Country.objects.filter(name__icontains="TÜRKİYE")[0],
-            )
-            comis.save()
-            # print(comikamet)
-            # print(comev)
-            # print(comis)
-            athlete = Athlete(
-                pk=e.sporcuid,
-                person=person,
-                communication=comikamet,
-                communicationHome=comev,
-                communicationJop=comis,
-                user=user,
-                iban=e.bankahesapno,
-                oldpk=e.sporcuid
-            )
-            athlete.save()
+    # grup = Group.objects.get(name='Sporcu')
+    # print(grup)
+    # for e in eskihakemler:
+    #
+    #     if User.objects.filter(username=e.tcno):
+    #         if User.objects.filter(username=e.tcno)[0].groups.filter(name="Hakem"):
+    #             if not (Athlete.objects.filter(user=User.objects.filter(username=e.tcno)[0])):
+    #                 judge = Judge.objects.get(user=User.objects.filter(username=e.tcno)[0])
+    #                 print(e.adi + " " + e.soyadi)
+    #                 athlete = Athlete(
+    #                     user=judge.user,
+    #                     communication=judge.communication,
+    #                     communicationHome=judge.communicationHome,
+    #                     communicationJop=judge.communicationJop,
+    #                     iban=judge.iban,
+    #                     oldpk=judge.oldpk,
+    #                     person=judge.person
+    #
+    #                 )
+    #                 athlete.save()
+    #                 athlete.user.groups.add(grup)
+    #                 athlete.save()
+    #             else:
+    #                 print('Control Hakem')
+    #         elif User.objects.filter(username=e.tcno)[0].groups.filter(name="Antrenor"):
+    #             if not (Athlete.objects.filter(user=User.objects.filter(username=e.tcno)[0])):
+    #                 coach = Coach.objects.get(user=User.objects.filter(username=e.tcno)[0])
+    #                 athlete = Athlete(
+    #                     user=coach.user,
+    #                     communication=coach.communication,
+    #                     communicationHome=coach.communicationHome,
+    #                     communicationJop=coach.communicationJop,
+    #                     iban=coach.iban,
+    #                     oldpk=coach.oldpk,
+    #                     person=coach.person
+    #
+    #                 )
+    #                 athlete.save()
+    #                 athlete.user.groups.add(grup)
+    #                 athlete.save()
+    #             else:
+    #                 print('Control Antrenor')
+    #
+    #
+    #
+    #     else:
+    #         user = User(
+    #             first_name=e.adi,
+    #             last_name=e.soyadi,
+    #             email=e.eposta if e.eposta else 'badminton@hotmail.com',
+    #             username=e.tcno
+    #
+    #         )
+    #         user.save()
+    #
+    #         # print(user)
+    #         user.groups.add(grup)
+    #         # print(grup)
+    #         meterial = Meterial(ayakkabi=e.ayakkabi,
+    #                             esofman=e.esofman,
+    #                             tshirt=e.tshirt,
+    #                             raket=e.raket
+    #                             )
+    #         meterial.save()
+    #         # print(meterial)
+    #         # print(e.egitimid)
+    #         person = Person(
+    #             tc=e.tcno,
+    #             birthplace=e.dogumyeri,
+    #             motherName=e.anneadi,
+    #             fatherName=e.babaadi,
+    #             birthDate=e.dogumtarihi,
+    #             bloodType=e.kangrubu,
+    #             # profileImage=e.resim,
+    #             gender=e.cinsiyet,
+    #             uyrukid=e.uyrukid,
+    #             nufus_ailesirano=e.nufus_ailesirano,
+    #             nufus_ciltno=e.nufus_ciltno,
+    #             nufus_sirano=e.nufus_sirano,
+    #             meslek=e.meslek,
+    #             kurum=e.kurum,
+    #             is_unvani=e.is_unvani,
+    #             # meterial=meterial.id,
+    #             # education=e.egitimid
+    #
+    #         )
+    #
+    #         person.material = meterial
+    #         person.save()
+    #         # print(person)
+    #
+    #         comikamet = Communication(
+    #             phoneNumber=e.ceptel,
+    #             address=e.yerlesimyeri,
+    #             city=City.objects.filter(name__icontains=e.nufus_ilid.iladi)[0] if e.nufus_ilid else None,
+    #             country=Country.objects.filter(name__icontains="TÜRKİYE")[0],
+    #         )
+    #         comikamet.save()
+    #         comev = Communication(
+    #             phoneNumber=e.ceptel,
+    #             phoneNumber2=e.evtel,
+    #             address=e.ev_adresi,
+    #             city=City.objects.filter(name__icontains=e.nufus_ilid.iladi)[0] if e.nufus_ilid else None,
+    #             country=Country.objects.filter(name__icontains="TÜRKİYE")[0],
+    #         )
+    #         comev.save()
+    #         comis = Communication(
+    #             phoneNumber=e.ceptel,
+    #             phoneNumber2=e.istel,
+    #             address=e.is_adresi,
+    #             city=City.objects.filter(name__icontains=e.nufus_ilid.iladi)[0] if e.nufus_ilid else None,
+    #             country=Country.objects.filter(name__icontains="TÜRKİYE")[0],
+    #         )
+    #         comis.save()
+    #         # print(comikamet)
+    #         # print(comev)
+    #         # print(comis)
+    #         athlete = Athlete(
+    #             pk=e.sporcuid,
+    #             person=person,
+    #             communication=comikamet,
+    #             communicationHome=comev,
+    #             communicationJop=comis,
+    #             user=user,
+    #             iban=e.bankahesapno,
+    #             oldpk=e.sporcuid
+    #         )
+    #         athlete.save()
 
     return redirect('sbs:admin')
 
@@ -400,16 +404,111 @@ def lisans_aktar(request):
         logout(request)
         return redirect('accounts:login')
 
-    eskihakemler = Sporcular.objects.exclude(kulupid=None).exclude(tcno=None)
+    eskihakemler = Sporcular.objects.exclude(kulupid=None).exclude(tcno=None).filter(sporcu=1)
     print(eskihakemler.count())
     for item in eskihakemler:
-        print(item.adi + ' ' + item.soyadi)
-        athlete = Athlete.objects.get(pk=item.pk)
-        lisans = License(
 
-            sportsClub=SportsClub.objects.get(pk=kulupid.pk),
-            licenseNo=item.
+        athlete = Athlete.objects.get(oldpk=item.sporcuid)
+        if athlete.licenses.count() == 0:
+            lisans = License(
 
-        )
+                licenseNo=item.lisansno,
+                branch=EnumFields.BADMİNTON.value,
+                isActive=True,
+                status=License.APPROVED
+            )
+            if item.lisanstarihi is not None:
+                lisans.expireDate = item.lisanstarihi
+                lisans.startDate = date(int(item.lisanstarihi.year) - 1, item.lisanstarihi.month, item.lisanstarihi.day)
+
+            if item.kulupid is not None:
+                lisans.sportsClub = SportsClub.objects.get(pk=item.kulupid.pk)
+            if item.antrenorid is not None:
+                if Coach.objects.filter(oldpk=item.antrenorid.pk):
+                    lisans.coach = Coach.objects.get(oldpk=item.antrenorid.pk)
+            if item.antrenorid2 is not None:
+                if Coach.objects.filter(oldpk=item.antrenorid2.pk):
+                    lisans.coach2 = Coach.objects.get(oldpk=item.antrenorid2.pk)
+            lisans.save()
+            athlete.licenses.add(lisans);
 
     return redirect('sbs:admin')
+
+
+@login_required
+def control(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    print(Sporcular.objects.filter(sporcu=1).exclude(kulupid=None).exclude(tcno=None).count())
+    for item in Sporcular.objects.filter(sporcu=1).exclude(kulupid=None).exclude(tcno=None):
+        athlete = Athlete.objects.get(oldpk=item.sporcuid)
+        if athlete.licenses.count() > 1:
+            print(item.adi + " " + item.soyadi)
+            for lisans in athlete.licenses.all():
+
+                athlete.licenses.remove(lisans)
+                lisans.delete()
+                if athlete.licenses.count() == 1:
+                    break;
+
+        elif athlete.licenses.count() == 0:
+            print(item.adi + "---" + item.soyadi)
+            lisans = License(
+
+                licenseNo=item.lisansno,
+                branch=EnumFields.BADMİNTON.value,
+                isActive=True,
+                status=License.APPROVED
+            )
+            if item.lisanstarihi is not None:
+                lisans.expireDate = item.lisanstarihi
+                lisans.startDate = date(int(item.lisanstarihi.year) - 1, item.lisanstarihi.month, item.lisanstarihi.day)
+
+            if item.kulupid is not None:
+                lisans.sportsClub = SportsClub.objects.get(pk=item.kulupid.pk)
+            if item.antrenorid is not None:
+                if Coach.objects.filter(oldpk=item.antrenorid.pk):
+                    lisans.coach = Coach.objects.get(oldpk=item.antrenorid.pk)
+            if item.antrenorid2 is not None:
+                if Coach.objects.filter(oldpk=item.antrenorid2.pk):
+                    lisans.coach2 = Coach.objects.get(oldpk=item.antrenorid2.pk)
+            lisans.save()
+            athlete.licenses.add(lisans);
+            athlete.save()
+
+
+
+
+
+
+
+    return redirect('sbs:admin')
+
+
+@login_required
+def kademe_aktar(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+
+    return redirect('sbs:admin')
+
+    # if judge.visa.count() == 0:
+    #         #     visa = Level(dekont=request.POST.get('dekont'), branch=request.POST.get('branch'))
+    #         #     visa.startDate = date(int(request.POST.get('startDate')), 1, 1)
+    #         #
+    #         #     visa.definition = CategoryItem.objects.get(forWhichClazz='VISA_REFEREE')
+    #         #     visa.levelType = EnumFields.LEVELTYPE.VISA
+    #         #     visa.status = Level.APPROVED
+    #         #     for item in referee.visa.all():
+    #         #         if item.branch == visa.branch:
+    #         #             item.isActive = False
+    #         #             item.save()
+    #         #     visa.isActive = True
+    #         #     visa.save()
+    # vize ekleme

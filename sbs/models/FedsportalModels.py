@@ -344,10 +344,27 @@ class Sporcular(models.Model):
     kulupid = models.ForeignKey(Kulupler, models.DO_NOTHING, db_column='kulupid', blank=True, null=True)
 
     vize = models.DateField(blank=True, null=True)
+
     egitimid = models.PositiveIntegerField(blank=True, null=True)
     bankahesapno = models.CharField(max_length=120, blank=True, null=True)
+
+    # roller
     sporcu = models.IntegerField()
     antrenor = models.IntegerField()
+    hakem = models.IntegerField(blank=True, null=True)
+
+    # Hakem
+
+    hakemvize = models.DateField(blank=True, null=True)
+    hakemkademeid = models.ForeignKey(HakemKademeleri, models.DO_NOTHING, db_column='hakemkademeid', blank=True,
+                                      null=True)
+
+    # antrenor
+
+    antrenorkademeid = models.PositiveIntegerField(blank=True, null=True)
+    antrenorvize = models.DateField(blank=True, null=True)
+
+
     yerlesimyeri = models.CharField(max_length=200, blank=True, null=True)
     rec_version = models.IntegerField()
     resim = models.CharField(max_length=800, blank=True, null=True)
@@ -355,12 +372,7 @@ class Sporcular(models.Model):
     instime = models.DateTimeField(blank=True, null=True)
     upsuser_id = models.PositiveIntegerField(blank=True, null=True)
     updtime = models.DateTimeField(blank=True, null=True)
-    hakemkademeid = models.ForeignKey(HakemKademeleri, models.DO_NOTHING, db_column='hakemkademeid', blank=True, null=True)
 
-    hakem = models.IntegerField(blank=True, null=True)
-    hakemvize = models.DateField(blank=True, null=True)
-    antrenorkademeid = models.PositiveIntegerField(blank=True, null=True)
-    antrenorvize = models.DateField(blank=True, null=True)
     hakemvizetipi = models.PositiveIntegerField(blank=True, null=True)
     user = models.ForeignKey('Users', models.DO_NOTHING, blank=True, null=True)
     mezunokul = models.CharField(max_length=200, blank=True, null=True)
