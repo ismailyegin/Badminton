@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 from sbs.models import *
 from sbs.models.FedsportalModels import Sporcular
 from sbs.models.EnumFields import EnumFields
-from sbs.models.Material import Meterial
+from sbs.models.Material import Material
 from sbs.services import general_methods
 
 from datetime import date, datetime

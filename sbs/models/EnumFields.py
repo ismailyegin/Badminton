@@ -2,7 +2,6 @@ import enum
 
 from enum import IntEnum
 
-
 class EnumFields(enum.Enum):
     class LEVELTYPE2(enum.Enum):
         VISA = 1

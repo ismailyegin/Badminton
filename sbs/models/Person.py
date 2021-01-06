@@ -1,20 +1,21 @@
 from django.db import models
 from sbs.models.Document import Document
 from sbs.models.Penal import Penal
-from sbs.models.Material import Meterial
+from sbs.models.Material import Material
 
 class Person(models.Model):
+    ILKOKUL = 10
     lISE = 15
     UNİVERİSTE = 25
     YUKSEKLİSANS = 30
     YUKSEKOKUL = 20
 
     JOP = (
+        (ILKOKUL, 'İlkokul'),
         (lISE, 'Lise'),
         (UNİVERİSTE, 'Üniversite(Lisans)'),
         (YUKSEKLİSANS, 'Yüksek Lisans'),
         (YUKSEKOKUL, 'Yüksek Okul'),
-
     )
 
     MALE = 1
@@ -73,10 +74,13 @@ class Person(models.Model):
     meslek = models.CharField(max_length=120, blank=True, null=True)
     kurum = models.CharField(max_length=120, blank=True, null=True)
     is_unvani = models.CharField(max_length=120, blank=True, null=True)
-    education = models.IntegerField(choices=JOP, null=True, blank=True)
-    material = models.ForeignKey(Meterial, models.CASCADE, blank=True, null=True)
 
+    education = models.IntegerField(choices=JOP, null=True, blank=True)
     mezunokul = models.CharField(max_length=200, blank=True, null=True)
+
+    material = models.ForeignKey(Material, models.CASCADE, blank=True, null=True)
+
+
 
     # class Meta:
     #     default_permissions = ()
