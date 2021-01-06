@@ -690,12 +690,12 @@
                                     {% endif %}
                                 </div>
                             </div>
-                            <table id="license" class="table table-bordered table-hover">
+                            <table id="lisans" class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Kulüp-Antrenör</th>
-                                    <th> Başlama Tarihi</th>
+                                    <th>Kulüp</th>
+                                    <th> Antrenörler</th>
                                     <th> Bitiş Tarihi</th>
                                     {#                                    <th> Branş</th>#}
                                     <th> Lisans No</th>
@@ -712,17 +712,12 @@
                                         <tr>
                                             <td>{{ forloop.counter }} </td>
                                             <td>
-                                                {% if license.sportsClub.name == 'FERDI' %}
 
-                                                    {{ license.coach }}
-
-
-                                                {% else %}
                                                     {{ license.sportsClub }}
 
-                                                {% endif %}
                                             </td>
-                                            <td>{{ license.startDate | date }}  </td>
+                                            <td> {{ license.coach }} <br>
+                                                {{ license.coach2 }}</td>
                                             <td>{{ license.expireDate | date }}  </td>
                                             {#                                            <td>{{ license.branch }}  </td>#}
                                             <td>{{ license.licenseNo }}  </td>
@@ -838,9 +833,10 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Müsabaka</th>
-                                    <th>Müsabaka Türü</th>
-                                    {#                                    <th> Başlama Tarihi</th>#}
-                                    {#                                    <th> Bitiş Tarihi</th>#}
+                                    <th>Klup</th>
+                                    <th>Kategori</th>
+                                    <th> Sayi</th>
+                                    <th> Grup</th>
                                     {#                                    <th> Branş</th>#}
                                     {#                                    <th> Lisans No</th>#}
                                     {#                                    <th> Lisans Foto.</th>#}
@@ -851,20 +847,33 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% if competition.all %}
-                                    {% for musabaka  in competition %}
+
+
+                                {% if competitions.all %}
+                                    {% for musabaka  in competitions %}
                                         <tr>
                                             <td>{{ forloop.counter }} </td>
                                             <td>
-                                                {{ musabaka.name }}
+                                                {{ musabaka.competition.name }}
                                             </td>
                                             <td>
 
-                                                {% if musabaka.compGeneralType == 0 %}
-                                                    Yurt içi
-                                                {% else %}
-                                                    Yurt Dışı
-                                                {% endif %}
+                                                {{ musabaka.club }}
+
+                                            </td>
+                                            <td>
+
+                                                {{ musabaka.category }}
+
+                                            </td>
+                                            <td>
+
+                                                {{ musabaka.sira }}
+
+                                            </td>
+                                            <td>
+
+                                                {{ musabaka.grupid }}
 
                                             </td>
 
@@ -1119,15 +1128,31 @@
 
     <script>
         $(function () {
-            $('#license').DataTable({
+            $('#lisans').DataTable({
                 'paging': true,
                 'lengthChange': true,
-                'searching': false,
-                'ordering': false,
+                'searching': true,
+                'ordering': true,
                 'info': true,
                 'autoWidth': true,
                 'responsive': true
             });
+
+            $('#competition').DataTable({
+                'paging': true,
+                'lengthChange': true,
+                'searching': true,
+                'ordering': true,
+                'info': true,
+                'autoWidth': true,
+                'responsive': true
+            });
+
+
+
+
+
+
             {% for item in athlete.user.groups.all %}
 
                 $("#{{ item.name }}").removeClass("btn-danger");

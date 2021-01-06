@@ -15,18 +15,23 @@ class CommunicationWorkForm(ModelForm):
         widgets = {
 
             'address': forms.Textarea(
-                attrs={'class': 'form-control ', 'rows': '2'}),
+                attrs={'class': 'form-control ', 'rows': '2', 'name': 'adressWork', 'id': 'adressWork', }),
 
-            'phoneNumber': forms.TextInput(attrs={'class': 'form-control '}),
+            'phoneNumber': forms.TextInput(
+                attrs={'class': 'form-control ', 'name': 'phoneNumber', 'id': 'phoneNumber', }),
 
-            'phoneNumber2': forms.TextInput(attrs={'class': 'form-control '}),
+            'phoneNumber2': forms.TextInput(
+                attrs={'class': 'form-control ', 'name': 'phoneNumber2Work', 'id': 'phoneNumber2Work', }),
 
-            'postalCode': forms.TextInput(attrs={'class': 'form-control '}),
+            'postalCode': forms.TextInput(
+                attrs={'class': 'form-control ', 'name': 'postalCodeWork', 'id': 'postalCodeWork', }),
 
             'city': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
+                                        'name': 'cityWork', 'id': 'cityWork',
                                         'style': 'width: 100%;', 'required': 'required'}),
 
             'country': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
+                                           'name': 'countryWork', 'id': 'countryWork',
                                            'style': 'width: 100%;', 'required': 'required'}),
 
         }

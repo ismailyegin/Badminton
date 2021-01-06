@@ -446,6 +446,9 @@ urlpatterns = [
     url(r'control', Aktarma.control, name='control-aktar'),
     url(r'aktarma/antrenor-kademe-aktar', Aktarma.kademe_aktar, name='kademe-aktar-antrenor'),
     url(r'aktarma/user-aktar', Aktarma.username_aktar, name='user-aktar'),
+    url(r'aktarma/musabaka-aktar', Aktarma.musabaka_aktar, name='musabaka-aktar'),
+    url(r'aktarma/musabaka-sporcu-aktar', Aktarma.musabaka_sporcu_aktar, name='musabaka-aktar-sporcu'),
+
 
 
 ]

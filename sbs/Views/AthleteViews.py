@@ -55,6 +55,8 @@ from sbs.models.PreRegistration import PreRegistration
 from sbs.models.ReferenceReferee import ReferenceReferee
 from sbs.models.ReferenceCoach import ReferenceCoach
 
+from sbs.models.CompetitionsAthlete import CompetitionsAthlete
+
 @login_required
 def return_add_athlete_antrenor(request):
     perm = general_methods.control_access_klup(request)
@@ -619,6 +621,11 @@ def updateathletes(request, pk):
     communicationWork = Communication.objects.get(pk=athlete.communicationJop.pk)
     metarial = Material.objects.get(pk=athlete.person.material.pk)
 
+    competitions = CompetitionsAthlete.objects.filter(athlete=athlete)
+    #
+    # for item in competitions:
+    #     print(item.competition.name)
+
     if user.email == 'badminton@hotmail.com':
         user.email = ''
     user_form = UserForm(request.POST or None, instance=user)
@@ -648,7 +655,7 @@ def updateathletes(request, pk):
                                'athlete': athlete, 'say': say, 'competition': competition, 'groups': group,
                                'communicationHome_form': communicationHome_form,
                                'communicationWork_form': communicationWork_form,
-                               'metarial_form': metarial_form
+                               'metarial_form': metarial_form, 'competitions': competitions
                                })
 
         tc = request.POST.get('tc')
@@ -664,7 +671,7 @@ def updateathletes(request, pk):
                                'athlete': athlete, 'say': say, 'competition': competition, 'groups': group,
                                'communicationHome_form': communicationHome_form,
                                'communicationWork_form': communicationWork_form,
-                               'metarial_form': metarial_form
+                               'metarial_form': metarial_form, 'competitions': competitions
                                })
 
 
@@ -682,7 +689,7 @@ def updateathletes(request, pk):
                            'athlete': athlete, 'say': say, 'competition': competition, 'groups': group,
                            'communicationHome_form': communicationHome_form,
                            'communicationWork_form': communicationWork_form,
-                           'metarial_form': metarial_form,
+                           'metarial_form': metarial_form, 'competitions': competitions
                            })
 
         if user_form.is_valid() and communication_form.is_valid() and person_form.is_valid() and metarial_form.is_valid():
@@ -715,7 +722,7 @@ def updateathletes(request, pk):
                    'athlete': athlete, 'say': say, 'competition': competition, 'groups': group,
                    'communicationHome_form': communicationHome_form,
                    'communicationWork_form': communicationWork_form,
-                   'metarial_form': metarial_form
+                   'metarial_form': metarial_form, 'competitions': competitions
                    })
 
 

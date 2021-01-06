@@ -4,10 +4,14 @@ from django.contrib.auth.models import User, Group
 from django.shortcuts import redirect
 
 from sbs.models import *
-from sbs.models.FedsportalModels import Sporcular
+from sbs.models.FedsportalModels import Sporcular, Turnuvalar, TurnSporculari, TurnHakemleri
 from sbs.models.EnumFields import EnumFields
 from sbs.models.Material import Material
 from sbs.services import general_methods
+
+from sbs.models.CompetitionsAthlete import CompetitionsAthlete
+
+from sbs.models.Category import Category
 
 from datetime import date, datetime
 
@@ -547,5 +551,73 @@ def username_aktar(request):
                 if item.username != item.email:
                     item.username = item.email
                     item.save()
+
+    return redirect('sbs:admin')
+
+
+@login_required
+def musabaka_aktar(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+
+    competities = Turnuvalar.objects.all()
+
+    for item in competities:
+        print(item.turnuvaadi)
+
+        competi = Competition(
+
+            pk=item.turnuvaid,
+            name=item.turnuvaadi,
+            startDate=item.basltarihi,
+            finishDate=item.bitistarihi,
+            registerStartDate=item.basvurubasltarihi,
+            registerFinishDate=item.basvurubitistarihi,
+            explanation=item.aciklama
+
+        )
+        competi.save()
+
+    print(competities.count())
+
+    return redirect('sbs:admin')
+
+
+@login_required
+def musabaka_sporcu_aktar(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+
+    turn = TurnSporculari.objects.all()
+
+    for item in turn:
+
+        com = CompetitionsAthlete(pk=item.turnsporcuid)
+
+        if not CompetitionsAthlete.objects.filter(pk=item.turnsporcuid):
+            if item.antrenorid:
+                com.coach = Coach.objects.get(oldpk=item.antrenorid)
+            if item.kulupid:
+                com.club = SportsClub.objects.get(pk=item.kulupid)
+            if item.sporcuid:
+                com.athlete = Athlete.objects.get(oldpk=item.sporcuid.pk)
+            if item.turnuvaid:
+                com.competition = Competition.objects.get(pk=item.turnuvaid.pk)
+            if item.kategoriid:
+                com.category = Category.objects.get(pk=item.kategoriid.pk)
+            if item.sira:
+                com.sira = item.sira
+            if item.grupid:
+                com.grupid = item.grupid
+
+            com.save()
+
+    print(com.count())
 
     return redirect('sbs:admin')
