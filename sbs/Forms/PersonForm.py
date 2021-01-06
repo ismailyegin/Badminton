@@ -9,14 +9,51 @@ class PersonForm(ModelForm):
         model = Person
 
         fields = (
-            'tc', 'profileImage', 'height', 'weight', 'birthDate', 'bloodType', 'gender', 'birthplace', 'motherName',
-            'profileImage',
-            'fatherName')
-        labels = {'tc': 'T.C.', 'gender': 'Cinsiyet', 'profileImage': 'Profil Resmi'}
+            'tc', 'profileImage',
+            'height', 'weight',
+            'birthDate', 'bloodType',
+            'gender', 'birthplace',
+            'motherName',
+            'profileImage', 'fatherName',
+            'meslek', 'kurum', 'is_unvani',
+            'education', 'mezunokul',
+            'uyrukid', 'nufus_ailesirano',
+            'nufus_sirano', 'nufus_ciltno')
+
+        labels = {'tc': 'T.C.',
+                  'gender': 'Cinsiyet',
+                  'profileImage': 'Profil Resmi',
+                  'uyrukid': 'Uyruk ',
+                  'nufus_ailesirano': 'Nufus Aile Sıra No',
+                  'nufus_sirano': 'Nufus Sıra No',
+                  'nufus_ciltno': 'Nufus Cilt No',
+                  'kurum': 'kurum',
+                  'is_unvani': 'İs Unvanı ',
+                  'education': 'Eğitim',
+                  'mezunokul': 'Mezun Okul ',
+                  'meslek': 'Meslek',
+                  'height': 'Boy',
+                  'weight': 'Kilo',
+
+                  }
 
         widgets = {
 
             'profileImage': forms.FileInput(),
+
+            'uyrukid': forms.TextInput(attrs={'class': 'form-control '}),
+
+            'is_unvani': forms.TextInput(attrs={'class': 'form-control '}),
+
+            'nufus_ailesirano': forms.TextInput(attrs={'class': 'form-control'}),
+
+            'nufus_sirano': forms.TextInput(attrs={'class': 'form-control'}),
+
+            'nufus_ciltno': forms.TextInput(attrs={'class': 'form-control ', }),
+
+            'kurum': forms.TextInput(attrs={'class': 'form-control'}),
+
+            'meslek': forms.TextInput(attrs={'class': 'form-control'}),
 
             'tc': forms.TextInput(attrs={'class': 'form-control ', 'required': 'required'}),
 
@@ -42,6 +79,9 @@ class PersonForm(ModelForm):
 
             'gender': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                           'style': 'width: 100%;'}),
+            'education': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
+                                             'style': 'width: 100%;'}),
+            'mezunokul': forms.TextInput(attrs={'class': 'form-control'}),
 
         }
 
