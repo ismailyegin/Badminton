@@ -4,7 +4,8 @@ from django.contrib.auth.models import User, Group
 from django.shortcuts import redirect
 
 from sbs.models import *
-from sbs.models.FedsportalModels import Sporcular, Turnuvalar, TurnSporculari, TurnHakemleri
+from sbs.models.FedsportalModels import Sporcular, Turnuvalar, TurnSporculari, TurnHakemleri, TurnSporcuAntrenorleri, \
+    TurnKategorileri, Malzemeler
 from sbs.models.EnumFields import EnumFields
 from sbs.models.Material import Material
 from sbs.services import general_methods
@@ -12,8 +13,12 @@ from sbs.services import general_methods
 from sbs.models.CompetitionsAthlete import CompetitionsAthlete
 
 from sbs.models.Category import Category
+from sbs.models.CompetitionCoach import CompetitionCoach
 
 from datetime import date, datetime
+
+from sbs.models.Products import Products
+
 
 
 @login_required
@@ -141,7 +146,7 @@ def antrenor_aktar(request):
         logout(request)
         return redirect('accounts:login')
 
-    eskihakemler = Sporcular.objects.filter(antrenor=1).exclude(tcno=None)
+    eskihakemler = Sporcular.objects.filter(sporcuid=89).exclude(tcno=None)
     # print(eskihakemler.count())
 
     grup = Group.objects.get(name='Antrenor')
@@ -151,6 +156,7 @@ def antrenor_aktar(request):
         if User.objects.filter(username=e.tcno):
             if User.objects.filter(username=e.tcno)[0].groups.filter(name="Hakem"):
                 if not (Coach.objects.filter(user=User.objects.filter(username=e.tcno)[0])):
+                    print('if ')
                     judge = Judge.objects.get(user=User.objects.filter(username=e.tcno)[0])
                     user = judge.user
                     coach = Coach(
@@ -171,6 +177,7 @@ def antrenor_aktar(request):
 
 
         else:
+            print('eklendi')
             user = User(
                 first_name=e.adi,
                 last_name=e.soyadi,
@@ -183,7 +190,7 @@ def antrenor_aktar(request):
             # print(user)
             user.groups.add(grup)
             # print(grup)
-            meterial = Meterial(ayakkabi=e.ayakkabi,
+            meterial = Material(ayakkabi=e.ayakkabi,
                                 esofman=e.esofman,
                                 tshirt=e.tshirt,
                                 raket=e.raket
@@ -619,5 +626,152 @@ def musabaka_sporcu_aktar(request):
             com.save()
 
     print(com.count())
+
+    return redirect('sbs:admin')
+
+
+@login_required
+def musabaka_antrenor_aktar(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+
+    coachs = TurnSporcuAntrenorleri.objects.all()
+    print(coachs.count())
+
+    for item in coachs:
+
+        com = CompetitionCoach(pk=item.turnsporcuid)
+        com.pk = item.turnsporcuantrenorid
+
+        if not CompetitionCoach.objects.filter(pk=com.pk):
+
+            if item.turnsporcuid:
+                com.athlete = Athlete.objects.get(oldpk=item.turnsporcuid.sporcuid.pk)
+            if item.antrenorid:
+                com.coach = Coach.objects.get(oldpk=item.antrenorid.sporcuid)
+            if item.sira:
+                com.sira = item.sira
+
+            com.save()
+
+            #
+            # try:
+            #
+            #
+            # except:
+            #     print(item.turnsporcuantrenorid)
+
+    print(coachs.count())
+    return redirect('sbs:admin')
+
+
+@login_required
+def musabaka_hakem_aktar(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+
+    turn = TurnHakemleri.objects.all()
+
+    for item in turn:
+        com = Competition.objects.get(pk=item.turnuvaid.turnuvaid)
+        judge = Judge.objects.get(oldpk=item.hakemid.sporcuid)
+
+        com.judges.add(judge)
+        com.save()
+
+    print(turn.count())
+
+    return redirect('sbs:admin')
+
+
+@login_required
+def musabaka_kademe_aktar(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+
+    turn = TurnKategorileri.objects.all()
+
+    for item in turn:
+        com = Competition.objects.get(pk=item.turnuvaid.turnuvaid)
+        category = Category.objects.get(pk=item.kategoriid.kategoriid)
+
+        com.categoryies.add(category)
+        com.save()
+
+    print(com.count())
+
+    return redirect('sbs:admin')
+
+
+@login_required
+def control2(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+
+    athletes = Athlete.objects.all()
+
+    for item in athletes:
+        if not Sporcular.objects.filter(sporcuid=item.oldpk):
+            print(item.oldpk)
+
+    return redirect('sbs:admin')
+
+
+@login_required
+def mazeme_aktar(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+
+    product = Malzemeler.objects.all()
+
+    for item in product:
+        product = Products(
+            pk=item.malzemeid,
+            name=item.malzemeadi
+
+        )
+        if item.aciklama:
+            product.description = item.aciklama
+
+        if item.kategori == 'Raket':
+            product.category == Products.RAKET
+        if item.kategori == 'Raket Aksesuar':
+            product.category == Products.AKSESUAR
+        if item.kategori == 'Raket Germe':
+            product.category = Products.KORDAJ
+        if item.kategori == 'Raketler':
+            product.category == Products.RAKET
+        if item.kategori == 'Saha Gereçleri':
+            product.category = Products.EKİPMAN
+        if item.kategori == 'Tişört':
+            product.category = Products.KIYAFET
+        if item.kategori == 'TOP' or item.kategori == 'Toplar':
+            product.category == Products.TOPLAR
+        if item.kategori == 'Çanta':
+            product.category == Products.CANTA
+        if item.kategori == 'Şort':
+            product.category == Products.KIYAFET
+        if item.kategori == 'Ayakkabı':
+            product.category == Products.AYAKKABI
+        if item.kategori == 'KİTAP':
+            product.category == Products.KITAP
+        if item.kategori == 'Eşofman':
+            product.category == Products.KIYAFET
+        product.save()
 
     return redirect('sbs:admin')

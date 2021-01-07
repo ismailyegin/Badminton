@@ -616,10 +616,6 @@ def updateathletes(request, pk):
     licenses_form = athlete.licenses.all()
     user = User.objects.get(pk=athlete.user.pk)
     person = Person.objects.get(pk=athlete.person.pk)
-    communication = Communication.objects.get(pk=athlete.communication.pk)
-    communicationHome = Communication.objects.get(pk=athlete.communicationHome.pk)
-    communicationWork = Communication.objects.get(pk=athlete.communicationJop.pk)
-    metarial = Material.objects.get(pk=athlete.person.material.pk)
 
     competitions = CompetitionsAthlete.objects.filter(athlete=athlete)
     #
@@ -630,6 +626,11 @@ def updateathletes(request, pk):
         user.email = ''
     user_form = UserForm(request.POST or None, instance=user)
     person_form = PersonForm(request.POST or None, request.FILES or None, instance=person)
+
+    communication = Communication.objects.get(pk=athlete.communication.pk)
+    communicationHome = Communication.objects.get(pk=athlete.communicationHome.pk)
+    communicationWork = Communication.objects.get(pk=athlete.communicationJop.pk)
+    metarial = Material.objects.get(pk=athlete.person.material.pk)
 
     communication_form = CommunicationForm(request.POST or None, instance=communication)
     communicationHome_form = CommunicationHomeForm(request.POST or None, instance=communicationHome)

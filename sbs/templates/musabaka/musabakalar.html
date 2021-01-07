@@ -342,18 +342,8 @@
                                     {{ query.name }}
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label> {{ query.compType.label }}</label>
-                                    {{ query.compType }}
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label> {{ query.compGeneralType.label }}</label>
-                                    {{ query.compGeneralType }}
-                                </div>
-                            </div>
+
+
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label> {{ query.startDate.label }}</label>
@@ -407,11 +397,10 @@
                             <tr>
                                 <th>#</th>
                                 <th>İsim</th>
-                                <th>YIl</th>
+
                                 <th>Başl. Tarihi</th>
                                 <th>Bitiş. Tarihi</th>
-                                <th>Genel Türü</th>
-                                <th>Türü</th>
+
                                 <td>işlemler</td>
 
 
@@ -423,11 +412,10 @@
                                     <tr>
                                         <td>{{ forloop.counter }} </td>
                                         <td>{{ competition.name }}</td>
-                                        <td>{{ competition.year }}</td>
+
                                         <td>{{ competition.startDate | date }} </td>
                                         <td>{{ competition.finishDate | date }}</td>
-                                        <td>{{ competition.get_compGeneralType_display }}</td>
-                                        <td>{{ competition.get_compType_display }}</td>
+
                                         <td>
                                             <div class="btn-group">
                                                 <a href="{% url "sbs:sonuc-liste" competition.pk %}"

@@ -41,6 +41,12 @@ from sbs.models.ReferenceReferee import ReferenceReferee
 from sbs.models.VisaSeminar import VisaSeminar
 from sbs.services import general_methods
 
+from sbs.models.Material import Material
+from sbs.Forms.ComminicationWorkFrom import CommunicationWorkForm
+from sbs.Forms.CommunicationHomeForm import CommunicationHomeForm
+from sbs.Forms.MaterialForm import MaterialForm
+from sbs.models.Competition import Competition
+
 
 @login_required
 def return_add_referee(request):
@@ -495,10 +501,22 @@ def updateReferee(request, pk):
 
     user = User.objects.get(pk=judge.user.pk)
     person = Person.objects.get(pk=judge.person.pk)
-    communication = Communication.objects.get(pk=judge.communication.pk)
+
     user_form = UserForm(request.POST or None, instance=user)
     person_form = PersonForm(request.POST or None, request.FILES or None, instance=person)
+
+    communication = Communication.objects.get(pk=judge.communication.pk)
+    communicationHome = Communication.objects.get(pk=judge.communicationHome.pk)
+    communicationWork = Communication.objects.get(pk=judge.communicationJop.pk)
+    metarial = Material.objects.get(pk=judge.person.material.pk)
+
     communication_form = CommunicationForm(request.POST or None, instance=communication)
+    communicationHome_form = CommunicationHomeForm(request.POST or None, instance=communicationHome)
+    communicationWork_form = CommunicationWorkForm(request.POST or None, instance=communicationWork)
+    metarial_form = MaterialForm(request.POST or None, instance=metarial)
+    competitions = Competition.objects.filter(judges=judge).distinct()
+
+
     iban_form = IbanFormJudge(request.POST or None, instance=judge)
 
     grade_form = judge.grades.all()
@@ -516,7 +534,10 @@ def updateReferee(request, pk):
                 return render(request, 'hakem/hakemDuzenle.html',
                               {'user_form': user_form, 'communication_form': communication_form,
                                'person_form': person_form, 'judge': judge, 'grade_form': grade_form,
-                               'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups})
+                               'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
+                               'communicationHome_form': communicationHome_form,
+                               'communicationWork_form': communicationWork_form,
+                               'metarial_form': metarial_form, 'competitions': competitions})
 
         tc = request.POST.get('tc')
         if tc != judge.person.tc:
@@ -527,7 +548,11 @@ def updateReferee(request, pk):
                 return render(request, 'hakem/hakemDuzenle.html',
                               {'user_form': user_form, 'communication_form': communication_form,
                                'person_form': person_form, 'judge': judge, 'grade_form': grade_form,
-                               'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups})
+                               'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
+                               'communicationHome_form': communicationHome_form,
+                               'communicationWork_form': communicationWork_form,
+                               'metarial_form': metarial_form, 'competitions': competitions
+                               })
 
         name = request.POST.get('first_name')
         surname = request.POST.get('last_name')
@@ -540,9 +565,13 @@ def updateReferee(request, pk):
             return render(request, 'hakem/hakemDuzenle.html',
                           {'user_form': user_form, 'communication_form': communication_form,
                            'person_form': person_form, 'judge': judge, 'grade_form': grade_form,
-                           'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups})
+                           'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
+                           'communicationHome_form': communicationHome_form,
+                           'communicationWork_form': communicationWork_form,
+                           'metarial_form': metarial_form, 'competitions': competitions
+                           })
 
-        if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and iban_form.is_valid():
+        if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and iban_form.is_valid() and communicationHome_form.is_valid() and metarial_form.is_valid() and communicationWork_form.is_valid():
 
             user.username = user_form.cleaned_data['email']
             user.first_name = user_form.cleaned_data['first_name']
@@ -556,7 +585,11 @@ def updateReferee(request, pk):
             iban_form.save()
 
             person_form.save()
+
             communication_form.save()
+            communicationWork_form.save()
+            communicationHome_form.save()
+            metarial_form.save()
 
 
             messages.success(request, 'Hakem Başarıyla Güncellendi')
@@ -567,7 +600,11 @@ def updateReferee(request, pk):
     return render(request, 'hakem/hakemDuzenle.html',
                   {'user_form': user_form, 'communication_form': communication_form,
                    'person_form': person_form, 'judge': judge, 'grade_form': grade_form,
-                   'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups})
+                   'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
+                   'communicationHome_form': communicationHome_form,
+                   'communicationWork_form': communicationWork_form,
+                   'metarial_form': metarial_form, 'competitions': competitions
+                   })
 
 
 @login_required

@@ -62,17 +62,27 @@ def activeGroup(request, pk):
     group = Group.objects.get(name=request.GET.get('group'))
     pk = request.GET.get('pk')
     communication = Communication.objects.get(pk=request.GET.get('communication'))
+    communicationHome = Communication.objects.get(pk=request.GET.get('communicationHome'))
+    communicationWork = Communication.objects.get(pk=request.GET.get('communicationWork'))
     person = Person.objects.get(pk=request.GET.get('person'))
     user = User.objects.get(pk=request.GET.get('user'))
 
     if group.name == "Antrenor":
-        coach = Coach(person=person, communication=communication, user=user)
+        coach = Coach(person=person,
+                      communication=communication,
+                      communicationHome=communicationHome,
+                      communicationJop=communicationWork,
+                      user=user)
         coach.save()
         user.groups.add(group)
         user.save()
         return redirect('sbs:update-coach', pk=coach.pk)
     elif group.name == "Hakem":
-        judge = Judge(person=person, communication=communication, user=user)
+        judge = Judge(person=person,
+                      communicationHome=communicationHome,
+                      communicationJop=communicationWork,
+
+                      communication=communication, user=user)
         judge.save()
         user.groups.add(group)
         user.save()
@@ -84,8 +94,12 @@ def activeGroup(request, pk):
         user.is_active = True
         user.save()
         return redirect('sbs:admin')
-    elif group.name == "KulupUye":
-        clupuser = SportClubUser(person=person, communication=communication, user=user, role=ClubRole.objects.all()[0])
+    elif group.name == "KlupUye":
+        clupuser = SportClubUser(person=person,
+                                 communicationHome=communicationHome,
+                                 communicationJop=communicationWork,
+
+                                 communication=communication, user=user, role=ClubRole.objects.all()[0])
         clupuser.save()
         user.groups.add(group)
         user.save()
@@ -98,6 +112,8 @@ def activeGroup(request, pk):
         return redirect('sbs:update-athletes', pk=athlete.pk)
     elif group.name == "Yonetim":
         member = DirectoryMember(person=person, communication=communication, user=user,
+                                 communicationHome=communicationHome,
+                                 communicationJop=communicationWork,
                                  role=DirectoryMemberRole.objects.all()[0],
                                  commission=DirectoryCommission.objects.all()[0])
         member.save()

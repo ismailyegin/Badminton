@@ -53,8 +53,9 @@ class Competition(models.Model):
     eskimi = models.BooleanField(default=True)
     explanation = models.CharField(max_length=20, blank=True, null=True)
 
-    categoryies = models.ManyToManyField(Category, blank=True, null=True, related_name='musabakaKategoriler')
-    judges = models.ManyToManyField(Judge, blank=True, null=True, related_name='musabakaHakemler')
+    categoryies = models.ManyToManyField(Category)
+    judges = models.ManyToManyField(Judge)
+
 
     def __str__(self):
         return '%s ' % self.name

@@ -15,7 +15,8 @@ class CompetitionForm(ModelForm):
         labels = {'name': 'İsim', 'startDate': 'Başlangıç Tarihi', 'finishDate': 'Bitiş Tarihi',
                   'eventPlace': 'Etkinlik Yeri',
                   'registerStartDate': 'Ön Kayıt Başlangıç Tarihi',
-                  'registerFinishDate': 'Ön Kayıt Bitiş Tarihi', }
+                  'registerFinishDate': 'Ön Kayıt Bitiş Tarihi',
+                  'compType': 'Türü', }
 
         widgets = {
 
@@ -37,5 +38,8 @@ class CompetitionForm(ModelForm):
                        'onkeydown': 'return true', 'required': 'required'}),
 
             'name': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+
+            'compType': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
+                                            'style': 'width: 100%; '}),
 
         }

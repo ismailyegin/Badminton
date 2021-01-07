@@ -53,6 +53,13 @@ from sbs.models.Document import Document
 from sbs.Forms.PenalForm import PenalForm
 from sbs.Forms.DocumentForm import DocumentForm
 
+from sbs.models.Competition import Competition
+from sbs.models.Material import Material
+from sbs.models.CompetitionCoach import CompetitionCoach
+from sbs.Forms.CommunicationHomeForm import CommunicationHomeForm
+from sbs.Forms.ComminicationWorkFrom import CommunicationWorkForm
+from sbs.Forms.MaterialForm import MaterialForm
+
 # visaseminer ekle
 @login_required
 def visaSeminar_ekle(request):
@@ -727,8 +734,29 @@ def coachUpdate(request, pk):
     communication = Communication.objects.get(pk=coach.communication.pk)
     user_form = UserForm(request.POST or None, instance=user)
     person_form = PersonForm(request.POST or None, request.FILES or None, instance=person)
-    communication_form = CommunicationForm(request.POST or None, instance=communication)
     iban_form = IbanCoachForm(request.POST or None, instance=coach)
+
+    communication = Communication.objects.get(pk=coach.communication.pk)
+    communicationHome = Communication.objects.get(pk=coach.communicationHome.pk)
+    communicationWork = Communication.objects.get(pk=coach.communicationJop.pk)
+    metarial = Material.objects.get(pk=coach.person.material.pk)
+
+    communication_form = CommunicationForm(request.POST or None, instance=communication)
+    communicationHome_form = CommunicationHomeForm(request.POST or None, instance=communicationHome)
+    communicationWork_form = CommunicationWorkForm(request.POST or None, instance=communicationWork)
+    metarial_form = MaterialForm(request.POST or None, instance=metarial)
+
+    #
+    # coa = []
+    # for item in CompetitionCoach.objects.filter(coach=coach):
+    #     coa.append(item)
+
+    competitions = Competition.objects.none()
+
+
+
+
+
     if request.method == 'POST':
         user = User.objects.get(pk=coach.user.pk)
         user_form = UserForm(request.POST or None, instance=user)
@@ -747,7 +775,10 @@ def coachUpdate(request, pk):
                 return render(request, 'antrenor/antrenorDuzenle.html',
                               {'user_form': user_form, 'communication_form': communication_form,
                                'person_form': person_form, 'grades_form': grade_form, 'coach': coach.pk,
-                               'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups})
+                               'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
+                               'communicationHome_form': communicationHome_form,
+                               'communicationWork_form': communicationWork_form,
+                               'metarial_form': metarial_form, 'competitions': competitions})
 
         tc = request.POST.get('tc')
         if tc != coach.person.tc:
@@ -758,7 +789,11 @@ def coachUpdate(request, pk):
                 return render(request, 'antrenor/antrenorDuzenle.html',
                               {'user_form': user_form, 'communication_form': communication_form,
                                'person_form': person_form, 'grades_form': grade_form, 'coach': coach.pk,
-                               'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups})
+                               'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
+                               'communicationHome_form': communicationHome_form,
+                               'communicationWork_form': communicationWork_form,
+                               'metarial_form': metarial_form, 'competitions': competitions
+                               })
 
         name = request.POST.get('first_name')
         surname = request.POST.get('last_name')
@@ -771,9 +806,13 @@ def coachUpdate(request, pk):
             return render(request, 'antrenor/antrenorDuzenle.html',
                           {'user_form': user_form, 'communication_form': communication_form,
                            'person_form': person_form, 'grades_form': grade_form, 'coach': coach.pk,
-                           'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups})
+                           'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
+                           'communicationHome_form': communicationHome_form,
+                           'communicationWork_form': communicationWork_form,
+                           'metarial_form': metarial_form, 'competitions': competitions
+                           })
 
-        if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and iban_form.is_valid():
+        if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and iban_form.is_valid() and metarial_form.is_valid() and communicationHome_form.is_valid() and communicationWork_form.is_valid():
 
             user.username = user_form.cleaned_data['email']
             user.first_name = user_form.cleaned_data['first_name']
@@ -785,13 +824,19 @@ def coachUpdate(request, pk):
             user.username = user_form.cleaned_data['email']
             user.save()
 
-            log = str(user.get_full_name()) + " Antrenor güncelledi"
-            log = general_methods.logwrite(request, request.user, log)
+
 
 
             iban_form.save()
             person_form.save()
             communication_form.save()
+            communicationWork_form.save()
+            communicationHome_form.save()
+            com
+
+            log = str(user.get_full_name()) + " Antrenor güncelledi"
+            log = general_methods.logwrite(request, request.user, log)
+
 
             messages.success(request, 'Antrenör Başarıyla Güncellendi')
             # return redirect('sbs:antrenorler')
@@ -801,7 +846,11 @@ def coachUpdate(request, pk):
     return render(request, 'antrenor/antrenorDuzenle.html',
                   {'user_form': user_form, 'communication_form': communication_form,
                    'person_form': person_form, 'grades_form': grade_form, 'coach': coach,
-                   'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups})
+                   'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
+                   'communicationHome_form': communicationHome_form,
+                   'communicationWork_form': communicationWork_form,
+                   'metarial_form': metarial_form, 'competitions': competitions
+                   })
 
 
 @login_required

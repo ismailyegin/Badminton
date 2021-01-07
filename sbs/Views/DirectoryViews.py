@@ -30,6 +30,11 @@ from sbs.models.PreRegistration import PreRegistration
 from sbs.models.ReferenceReferee import ReferenceReferee
 from sbs.models.ReferenceCoach import ReferenceCoach
 
+from sbs.models.Material import Material
+from sbs.Forms.MaterialForm import MaterialForm
+from sbs.Forms.CommunicationHomeForm import CommunicationHomeForm
+from sbs.Forms.ComminicationWorkFrom import CommunicationWorkForm
+
 
 @login_required
 def add_directory_member(request):
@@ -204,11 +209,22 @@ def update_directory_member(request, pk):
 
     user = User.objects.get(pk=member.user.pk)
     person = Person.objects.get(pk=member.person.pk)
-    communication = Communication.objects.get(pk=member.communication.pk)
+
     user_form = UserForm(request.POST or None, instance=user)
     person_form = PersonForm(request.POST or None, request.FILES or None, instance=person)
-    communication_form = CommunicationForm(request.POST or None, instance=communication)
     member_form = DirectoryForm(request.POST or None, instance=member)
+
+    communication = Communication.objects.get(pk=member.communication.pk)
+    communicationHome = Communication.objects.get(pk=member.communicationHome.pk)
+    communicationWork = Communication.objects.get(pk=member.communicationJop.pk)
+    metarial = Material.objects.get(pk=member.person.material.pk)
+
+    communication_form = CommunicationForm(request.POST or None, instance=communication)
+    communicationHome_form = CommunicationHomeForm(request.POST or None, instance=communicationHome)
+    communicationWork_form = CommunicationWorkForm(request.POST or None, instance=communicationWork)
+    metarial_form = MaterialForm(request.POST or None, instance=metarial)
+
+
     if request.method == 'POST':
 
         # controller tc email
@@ -222,7 +238,11 @@ def update_directory_member(request, pk):
                 messages.warning(request, 'Mail adresi başka bir kullanici tarafından kullanilmaktadir.')
                 return render(request, 'yonetim/kurul-uyesi-duzenle.html',
                               {'user_form': user_form, 'communication_form': communication_form, 'member': member,
-                               'person_form': person_form, 'member_form': member_form, 'groups': groups})
+                               'person_form': person_form, 'member_form': member_form, 'groups': groups,
+                               'communicationHome_form': communicationHome_form,
+                               'communicationWork_form': communicationWork_form,
+                               'metarial_form': metarial_form,
+                               })
         tc = request.POST.get('tc')
 
         if person.tc != tc:
@@ -232,7 +252,11 @@ def update_directory_member(request, pk):
                 messages.warning(request, 'Tc kimlik numarasi sistemde kayıtlıdır. ')
                 return render(request, 'yonetim/kurul-uyesi-duzenle.html',
                               {'user_form': user_form, 'communication_form': communication_form, 'member': member,
-                               'person_form': person_form, 'member_form': member_form, 'groups': groups})
+                               'person_form': person_form, 'member_form': member_form, 'groups': groups,
+                               'communicationHome_form': communicationHome_form,
+                               'communicationWork_form': communicationWork_form,
+                               'metarial_form': metarial_form,
+                               })
 
         name = request.POST.get('first_name')
         surname = request.POST.get('last_name')
@@ -244,7 +268,11 @@ def update_directory_member(request, pk):
             messages.warning(request, 'Tc kimlik numarasi ile isim  soyisim dogum yılı  bilgileri uyuşmamaktadır. ')
             return render(request, 'yonetim/kurul-uyesi-duzenle.html',
                           {'user_form': user_form, 'communication_form': communication_form, 'member': member,
-                           'person_form': person_form, 'member_form': member_form, 'groups': groups})
+                           'person_form': person_form, 'member_form': member_form, 'groups': groups,
+                           'communicationHome_form': communicationHome_form,
+                           'communicationWork_form': communicationWork_form,
+                           'metarial_form': metarial_form,
+                           })
 
         if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and member_form.is_valid():
 
@@ -267,7 +295,11 @@ def update_directory_member(request, pk):
 
     return render(request, 'yonetim/kurul-uyesi-duzenle.html',
                   {'user_form': user_form, 'communication_form': communication_form, 'member': member,
-                   'person_form': person_form, 'member_form': member_form, 'groups': groups})
+                   'person_form': person_form, 'member_form': member_form, 'groups': groups,
+                   'communicationHome_form': communicationHome_form,
+                   'communicationWork_form': communicationWork_form,
+                   'metarial_form': metarial_form,
+                   })
 
 
 @login_required

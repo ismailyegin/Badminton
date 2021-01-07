@@ -43,6 +43,16 @@ from sbs.models.ReferenceCoach import ReferenceCoach
 
 from django.contrib.auth.models import Group, Permission, User
 from operator import itemgetter
+
+from sbs.models.Material import Material
+from sbs.Forms.MaterialForm import MaterialForm
+from sbs.Forms.ComminicationWorkFrom import CommunicationWorkForm
+from sbs.Forms.CommunicationHomeForm import CommunicationHomeForm
+
+
+
+
+
 @login_required
 def return_add_club(request):
     perm = general_methods.control_access(request)
@@ -271,6 +281,16 @@ def updateClubPersons(request, pk):
     sportClubUser_form = SportClubUserForm(request.POST or None, instance=athlete)
     clubs = SportsClub.objects.filter(clubUser__user=user)
 
+    communication = Communication.objects.get(pk=athlete.communication.pk)
+    communicationHome = Communication.objects.get(pk=athlete.communicationHome.pk)
+    communicationWork = Communication.objects.get(pk=athlete.communicationJop.pk)
+    metarial = Material.objects.get(pk=athlete.person.material.pk)
+
+    communication_form = CommunicationForm(request.POST or None, instance=communication)
+    communicationHome_form = CommunicationHomeForm(request.POST or None, instance=communicationHome)
+    communicationWork_form = CommunicationWorkForm(request.POST or None, instance=communicationWork)
+    metarial_form = MaterialForm(request.POST or None, instance=metarial)
+
     if request.method == 'POST':
         mail = request.POST.get('email')
         if mail != athlete.user.email:
@@ -283,7 +303,11 @@ def updateClubPersons(request, pk):
                 return render(request, 'kulup/kulup-uyesi-duzenle.html',
                               {'user_form': user_form, 'communication_form': communication_form, 'groups': groups,
                                'clupUser': athlete,
-                               'person_form': person_form, 'sportClubUser_form': sportClubUser_form, 'clubs': clubs})
+                               'person_form': person_form, 'sportClubUser_form': sportClubUser_form, 'clubs': clubs,
+                               'communicationHome_form': communicationHome_form,
+                               'communicationWork_form': communicationWork_form,
+                               'metarial_form': metarial_form,
+                               })
 
         tc = request.POST.get('tc')
         if tc != athlete.person.tc:
@@ -294,7 +318,11 @@ def updateClubPersons(request, pk):
                 return render(request, 'kulup/kulup-uyesi-duzenle.html',
                               {'user_form': user_form, 'communication_form': communication_form, 'groups': groups,
                                'clupUser': athlete,
-                               'person_form': person_form, 'sportClubUser_form': sportClubUser_form, 'clubs': clubs})
+                               'person_form': person_form, 'sportClubUser_form': sportClubUser_form, 'clubs': clubs,
+                               'communicationHome_form': communicationHome_form,
+                               'communicationWork_form': communicationWork_form,
+                               'metarial_form': metarial_form,
+                               })
 
         name = request.POST.get('first_name')
         surname = request.POST.get('last_name')
@@ -307,7 +335,11 @@ def updateClubPersons(request, pk):
             return render(request, 'kulup/kulup-uyesi-duzenle.html',
                           {'user_form': user_form, 'communication_form': communication_form, 'groups': groups,
                            'clupUser': athlete,
-                           'person_form': person_form, 'sportClubUser_form': sportClubUser_form, 'clubs': clubs})
+                           'person_form': person_form, 'sportClubUser_form': sportClubUser_form, 'clubs': clubs,
+                           'communicationHome_form': communicationHome_form,
+                           'communicationWork_form': communicationWork_form,
+                           'metarial_form': metarial_form,
+                           })
 
         if user_form.is_valid() and communication_form.is_valid() and person_form.is_valid() and sportClubUser_form.is_valid():
 
@@ -336,7 +368,11 @@ def updateClubPersons(request, pk):
     return render(request, 'kulup/kulup-uyesi-duzenle.html',
                   {'user_form': user_form, 'communication_form': communication_form, 'groups': groups,
                    'clupUser': athlete,
-                   'person_form': person_form, 'sportClubUser_form': sportClubUser_form, 'clubs': clubs})
+                   'person_form': person_form, 'sportClubUser_form': sportClubUser_form, 'clubs': clubs,
+                   'communicationHome_form': communicationHome_form,
+                   'communicationWork_form': communicationWork_form,
+                   'metarial_form': metarial_form,
+                   })
 
 
 @login_required

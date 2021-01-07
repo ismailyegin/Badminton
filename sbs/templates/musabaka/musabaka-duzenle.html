@@ -244,13 +244,14 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label> {{ competition_form.eventDate.label }}</label>
-                                        {{ competition_form.eventDate }}
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label> {{ competition_form.juryCount.label }}</label>
-                                        {{ competition_form.juryCount }}
+                                        <label>Kategoriler</label>
+                                        <select class="form-control select2" multiple="multiple " name="jobDesription"
+                                                id="multipleSelect"
+                                                data-placeholder="Kategorileri  Seçiniz">
+                                            {% for item in category %}
+                                                <option value="{{ item.pk }}">{{ item.kategoriadi }}</option>
+                                            {% endfor %}
+                                        </select>
                                     </div>
 
                                     <div class="form-group">
@@ -305,16 +306,13 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Ad Soyad</th>
-                                    <th>Doğum Tarihi</th>
+                                    <th>Kategori</th>
 
-                                    <th>Silklet</th>
-                                    <th>Koparma</th>
-                                    <th>Silkme</th>
-                                    <th>Giriş Toplamı</th>
+
                                     {% if aktif == 'Admin' %}
                                         <th>Kulüp</th>
                                     {% endif %}
-                                    <th>İşlemler</th>
+                                    {#                                    <th>İşlemler</th>#}
 
 
                                 </tr>
@@ -325,29 +323,26 @@
                                         <tr>
                                             <td>{{ forloop.counter }} </td>
                                             <td>{{ compathlete.athlete.user.first_name }} {{ compathlete.athlete.user.last_name }} </td>
-                                            <td>{{ compathlete.athlete.person.birthDate | date }} </td>
-                                            <td>{{ compathlete.sıklet.weight }}</td>
-                                            <td>{{ compathlete.kop1 }}</td>
-                                            <td>{{ compathlete.silk1 }}</td>
-                                            <td>{{ compathlete.total }}</td>
+                                            <td>{{ compathlete.category }} </td>
+
 
                                             {% if aktif == 'Admin' %}
                                                 <td>{{ compathlete.athlete.licenses.last.sportsClub }}</td>
                                             {% endif %}
-                                            <td>
-                                                <div class="btn-group">
-                                                    <a onclick="addPlayer({{ compathlete.id }},{{ competition.pk }},{{ compathlete.sıklet.weight }},{{ compathlete.total }}, {{ compathlete.silk1 }}, {{ compathlete.kop1 }})"
-                                                       type="button" class="btn btn-primary"><i
-                                                            class="fa fa-edit"></i>Güncelle
-                                                    </a>
-                                                    <a onclick="deleteAthlete({{ compathlete.id }})"
-                                                       type="button" class="btn btn-danger"><i
-                                                            class="fa fa-remove"></i>Kaldır
-                                                    </a>
-
-
-                                                </div>
-                                            </td>
+                                            {#                                            <td>#}
+                                            {#                                                <div class="btn-group">#}
+                                            {#                                                    <a onclick="addPlayer({{ compathlete.id }},{{ competition.pk }},{{ compathlete.sıklet.weight }},{{ compathlete.total }}, {{ compathlete.silk1 }}, {{ compathlete.kop1 }})"#}
+                                            {#                                                       type="button" class="btn btn-primary"><i#}
+                                            {#                                                            class="fa fa-edit"></i>Güncelle#}
+                                            {#                                                    </a>#}
+                                            {#                                                    <a onclick="deleteAthlete({{ compathlete.id }})"#}
+                                            {#                                                       type="button" class="btn btn-danger"><i#}
+                                            {#                                                            class="fa fa-remove"></i>Kaldır#}
+                                            {#                                                    </a>#}
+                                            {##}
+                                            {##}
+                                            {#                                                </div>#}
+                                            {#                                            </td>#}
 
                                         </tr>
 
@@ -375,6 +370,17 @@
 
 
         $(function () {
+
+            var jop = new Array();
+            {% for item in competition.categoryies.all %}
+                jop.push("{{ item.pk }}");
+            {% endfor %}
+            $('#multipleSelect').val(jop);
+
+
+
+
+
             $('#sporcular').DataTable({
 
                 dom: 'Bfrtip',

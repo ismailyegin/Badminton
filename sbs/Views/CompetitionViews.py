@@ -17,12 +17,15 @@ from sbs.models import SportClubUser, SportsClub, Competition, Athlete, CompAthl
 from sbs.models.SimpleCategory import SimpleCategory
 from sbs.models.EnumFields import EnumFields
 from sbs.models.SandaAthlete import SandaAthlete
+from sbs.models.Category import Category
 from sbs.models.TaoluAthlete import TaoluAthlete
 from sbs.services import general_methods
 from sbs.Forms.SimplecategoryForm import SimplecategoryForm
 
 from datetime import date, datetime
 from django.utils import timezone
+
+from sbs.models.CompetitionsAthlete import CompetitionsAthlete
 
 
 @login_required
@@ -173,13 +176,26 @@ def musabaka_duzenle(request, pk):
         return redirect('accounts:login')
 
     musabaka = Competition.objects.get(pk=pk)
-    athletes = CompAthlete.objects.filter(competition=pk)
+    athletes = CompetitionsAthlete.objects.filter(competition=musabaka)
 
 
     weights = Weight.objects.all()
     competition_form = CompetitionForm(request.POST or None, instance=musabaka)
+    category = Category.objects.all()
+
     if request.method == 'POST':
         if competition_form.is_valid():
+
+            for item in musabaka.categoryies.all():
+                musabaka.categoryies.remove(item)
+                musabaka.save()
+            if request.POST.getlist('jobDesription'):
+                for item in request.POST.getlist('jobDesription'):
+                    musabaka.categoryies.add(Category.objects.get(pk=item))
+                    musabaka.save()
+
+
+
             competition_form.save()
             messages.success(request, 'Müsabaka Başarıyla Güncellenmiştir.')
 
@@ -193,7 +209,7 @@ def musabaka_duzenle(request, pk):
 
     return render(request, 'musabaka/musabaka-duzenle.html',
                   {'competition_form': competition_form, 'competition': musabaka, 'athletes': athletes,
-                   'weights': weights})
+                   'weights': weights, 'category': category})
 
 
 @login_required
@@ -571,28 +587,28 @@ def update_athlete(request, pk, competition):
     if not perm:
         logout(request)
         return redirect('accounts:login')
-    if request.method == 'POST' and request.is_ajax():
+    # if request.method == 'POST' and request.is_ajax():
 
-        try:
-            user = User.objects.get(pk=login_user.pk)
-            compAthlete = CompAthlete.objects.get(pk=competition)
-            total = request.POST.get('total')
-            siklet = request.POST.get('weight')
-            silk = request.POST.get('silk')
-            kop = request.POST.get('kop')
-            if total is not None:
-                compAthlete.total = total
-            if siklet is not None:
-                compAthlete.sıklet = Weight.objects.get(pk=siklet)
-            if silk is not None:
-                compAthlete.silk1 = silk
-            if kop is not None:
-                compAthlete.kop1 = kop
-            compAthlete.save()
+    # try:
+    # user = User.objects.get(pk=login_user.pk)
+    # compAthlete = CompAthlete.objects.get(pk=competition)
+    # total = request.POST.get('total')
+    # siklet = request.POST.get('weight')
+    # silk = request.POST.get('silk')
+    # kop = request.POST.get('kop')
+    # if total is not None:
+    #     compAthlete.total = total
+    # if siklet is not None:
+    #     compAthlete.sıklet = Weight.objects.get(pk=siklet)
+    # if silk is not None:
+    #     compAthlete.silk1 = silk
+    # if kop is not None:
+    #     compAthlete.kop1 = kop
+    # compAthlete.save()
 
-            return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
-        except SandaAthlete.DoesNotExist:
-            return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
+    #     return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
+    # except SandaAthlete.DoesNotExist:
+    #     return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
 
     else:
         return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})

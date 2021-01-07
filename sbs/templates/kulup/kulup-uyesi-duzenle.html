@@ -161,6 +161,8 @@
                 <div class="col-lg-7">
 
                     <div class="box box-info collapsed-box">
+
+
                         <div class="box-header with-border">
                             <h3 class="box-title">İLETİŞİM BİLGİLERİ</h3>
 
@@ -168,58 +170,393 @@
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
                                         class="fa fa-plus"></i>
                                 </button>
+
                             </div>
+
+
                             <!-- /.box-tools -->
                         </div>
                         <!-- /.box-header -->
-                        <div class="box-body">
+                        <div class="box-body" style="display: none;">
+
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label> {{ user_form.email.label }}</label>
-                                        {{ user_form.email }}
-                                    </div>
-                                    <div class="form-group">
-                                        <label> {{ communication_form.phoneNumber.label }}</label>
-                                        {{ communication_form.phoneNumber }}
-                                    </div>
-                                    <div class="form-group">
-                                        <label> {{ communication_form.phoneNumber2.label }}</label>
-                                        {{ communication_form.phoneNumber2 }}
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label> {{ communication_form.country.label }}</label>
-                                        {{ communication_form.country }}
-                                    </div>
-                                    <div class="form-group">
-                                        <label> {{ communication_form.city.label }}</label>
-                                        {{ communication_form.city }}
-                                    </div>
-                                    <div class="form-group">
-                                        <label> {{ communication_form.postalCode.label }}</label>
-                                        {{ communication_form.postalCode }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
+
+
                                 <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label> {{ communication_form.address.label }}</label>
-                                        {{ communication_form.address }}
+                                    <!-- Custom Tabs -->
+                                    <div class="nav-tabs-custom">
+                                        <ul class="nav nav-tabs">
+                                            <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">
+                                                İkametgah Adresi</a></li>
+                                            <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">
+                                                Ev Adresi</a></li>
+                                            <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="false">İş
+                                                Adresi</a></li>
+
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane active" id="tab_1">
+                                                <div class="row">
+
+
+                                                    <div class="col-lg-12">
+
+                                                        <div class="form-group">
+                                                            <label> {{ communication_form.address.label }}</label>
+                                                            {{ communication_form.address }}
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+
+                                                        <div class="form-group">
+                                                            <label> {{ communication_form.phoneNumber.label }}</label>
+                                                            {{ communication_form.phoneNumber }}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label> {{ communication_form.phoneNumber2.label }}</label>
+                                                            {{ communication_form.phoneNumber2 }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label> {{ communication_form.country.label }}</label>
+                                                            {{ communication_form.country }}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label> {{ communication_form.city.label }}</label>
+                                                            {{ communication_form.city }}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label> {{ communication_form.postalCode.label }}</label>
+                                                            {{ communication_form.postalCode }}
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="box-footer">
+                                                        <button class="btn btn-primary" type="submit">Kaydet</button>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <!-- /.tab-pane -->
+                                            <div class="tab-pane" id="tab_2">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+
+                                                        <div class="form-group">
+                                                            <label> {{ communicationHome_form.address.label }}</label>
+                                                            {{ communicationHome_form.address }}
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+
+                                                        {#                                                        <div class="form-group">#}
+                                                        {#                                                            <label> {{ communicationHome_form.phoneNumber.label }}</label>#}
+                                                        {#                                                            {{ communicationHome_form.phoneNumber }}#}
+                                                        {#                                                        </div>#}
+
+
+                                                        <div class="form-group">
+                                                            <label> {{ communicationHome_form.phoneNumber2.label }}</label>
+                                                            {{ communicationHome_form.phoneNumber2 }}
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label> {{ communicationHome_form.postalCode.label }}</label>
+                                                            {{ communicationHome_form.postalCode }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label> {{ communicationHome_form.country.label }}</label>
+                                                            {{ communicationHome_form.country }}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label> {{ communicationHome_form.city.label }}</label>
+                                                            {{ communicationHome_form.city }}
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="box-footer">
+                                                        <button class="btn btn-primary" type="submit">Kaydet</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="tab-pane" id="tab_3"
+                                            ">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+
+                                                    <div class="form-group">
+                                                        <label> {{ communicationWork_form.address.label }}</label>
+                                                        {{ communicationWork_form.address }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-6">
+
+                                                    {#                                                    <div class="form-group">#}
+                                                    {#                                                        <label> {{ communicationWork_form.phoneNumber.label }}</label>#}
+                                                    {#                                                        {{ communicationWork_form.phoneNumber }}#}
+                                                    {#                                                    </div>#}
+                                                    <div class="form-group">
+                                                        <label> {{ communicationWork_form.phoneNumber2.label }}</label>
+                                                        {{ communicationWork_form.phoneNumber2 }}
+
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label> {{ communicationWork_form.postalCode.label }}</label>
+                                                        {{ communicationWork_form.postalCode }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label> {{ communicationWork_form.country.label }}</label>
+                                                        {{ communicationWork_form.country }}
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label> {{ communicationWork_form.city.label }}</label>
+                                                        {{ communicationWork_form.city }}
+                                                    </div>
+
+                                                </div>
+
+
+                                                <div class="box-footer">
+                                                    <button class="btn btn-primary" type="submit">Kaydet</button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
                                     </div>
+                                    <!-- /.tab-content -->
+                                </div>
+                                <!-- nav-tabs-custom -->
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+
+            </div>
+
+
+            {#            nufus   bilgileri#}
+            <div class="col-lg-7">
+
+                <div class="box box-info collapsed-box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">NUFUS BİLGİLERİ</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                    class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                        <!-- /.box-tools -->
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+
+                                <div class="form-group">
+                                    <label> {{ person_form.uyrukid.label }}</label>
+                                    {{ person_form.uyrukid }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label> {{ person_form.nufus_ailesirano.label }}</label>
+                                    {{ person_form.nufus_ailesirano }}
+                                </div>
+                                <div class="form-group">
+                                    <label> {{ person_form.nufus_ciltno.label }}</label>
+                                    {{ person_form.nufus_ciltno }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label> {{ person_form.nufus_sirano.label }}</label>
+                                    {{ person_form.nufus_sirano }}
+                                </div>
+
+
+                                <div class="box-footer">
+                                    <button class="btn btn-primary" type="submit">Kaydet</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="box-footer">
-                            <button class="btn btn-primary" type="submit">Kaydet</button>
-                        </div>
-                        <!-- /.box-body -->
+
                     </div>
-
-
+                    <!-- /.box-body -->
                 </div>
+
+
+            </div>
+            {#            iş  bilgileri#}
+            <div class="col-lg-7">
+
+                <div class="box box-info collapsed-box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">İŞ BİLGİLERİ</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                    class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                        <!-- /.box-tools -->
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+
+                                <div class="form-group">
+                                    <label> {{ person_form.meslek.label }}</label>
+                                    {{ person_form.meslek }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label> {{ person_form.is_unvani.label }}</label>
+                                    {{ person_form.is_unvani }}
+                                </div>
+                                <div class="form-group">
+                                    <label> {{ person_form.kurum.label }}</label>
+                                    {{ person_form.kurum }}
+                                </div>
+
+
+                                <div class="box-footer">
+                                    <button class="btn btn-primary" type="submit">Kaydet</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+
+
+            </div>
+
+
+            {#            egitim   bilgileri#}
+            <div class="col-lg-7">
+
+                <div class="box box-info collapsed-box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">EGİTİM BİLGİLERİ</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                    class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                        <!-- /.box-tools -->
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+
+                                <div class="form-group">
+                                    <label> {{ person_form.education.label }}</label>
+                                    {{ person_form.education }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label> {{ person_form.mezunokul.label }}</label>
+                                    {{ person_form.mezunokul }}
+                                </div>
+
+
+                                <div class="box-footer">
+                                    <button class="btn btn-primary" type="submit">Kaydet</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+
+
+            </div>
+
+            {#            beden bilgileri#}
+            <div class="col-lg-7">
+
+
+                <div class="box box-info collapsed-box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">BEDEN BİLGİLERİ</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                    class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                        <!-- /.box-tools -->
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+
+
+                        <div class="row">
+                            <div class="col-lg-12">
+
+                                <div class="form-group">
+                                    <label> {{ person_form.height.label }}</label>
+                                    {{ person_form.height }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label> {{ person_form.weight.label }}</label>
+                                    {{ person_form.weight }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label> {{ metarial_form.ayakkabi.label }}</label>
+                                    {{ metarial_form.ayakkabi }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label> {{ metarial_form.esofman.label }}</label>
+                                    {{ metarial_form.esofman }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label> {{ metarial_form.tshirt.label }}</label>
+                                    {{ metarial_form.tshirt }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label> {{ metarial_form.raket.label }}</label>
+                                    {{ metarial_form.raket }}
+                                </div>
+
+                                <div class="box-footer">
+                                    <button class="btn btn-primary" type="submit">Kaydet</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+
+
+            </div>
                 {#            Klup  bilgileri #}
                 <div class="col-lg-7">
 
@@ -319,7 +656,7 @@
 
                                                 <div class="col-md-2 ">
                                                     <div class="form-group">
-                                                        <a href="{% url "sbs:sporcu-aktive-group" pk=clupUser.user.pk %}?group={{ group.name }}&pk={{ clupUser.pk }}&person={{ clupUser.person.pk }}&communication={{ clupUser.communication.pk }}&user={{ clupUser.user.pk }}"
+                                                        <a href="{% url "sbs:sporcu-aktive-group" pk=clupUser.user.pk %}?group={{ group.name }}&pk={{ clupUser.pk }}&person={{ clupUser.person.pk }}&communication={{ clupUser.communication.pk }}&user={{ clupUser.user.pk }}&communicationHome={{ clupUser.communicationHome.pk }}&communicationWork={{ clupUser.communicationJop.pk }}"
                                                            type="button" class="btn btn-block  btn-danger text-center"
                                                            id="{{ group.name }}">{{ group }}
                                                         </a>

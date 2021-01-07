@@ -448,7 +448,11 @@ urlpatterns = [
     url(r'aktarma/user-aktar', Aktarma.username_aktar, name='user-aktar'),
     url(r'aktarma/musabaka-aktar', Aktarma.musabaka_aktar, name='musabaka-aktar'),
     url(r'aktarma/musabaka-sporcu-aktar', Aktarma.musabaka_sporcu_aktar, name='musabaka-aktar-sporcu'),
+    url(r'aktarma/musabaka-antrenor-aktar', Aktarma.musabaka_antrenor_aktar, name='musabaka-aktar-antrenor'),
+    url(r'aktarma/musabaka-hakem-aktar', Aktarma.musabaka_hakem_aktar, name='musabaka-aktar-hakem'),
+    url(r'aktarma/musabaka-kategori-aktar', Aktarma.musabaka_kademe_aktar, name='musabaka-aktar-kategori'),
 
-
+    url(r'control2', Aktarma.control2, name='control-aktar2'),
+    url(r'aktarma/malzeme-aktar', Aktarma.mazeme_aktar, name='malzeme-aktar'),
 
 ]

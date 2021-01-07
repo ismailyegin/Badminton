@@ -1089,7 +1089,7 @@
 
                                                 <div class="col-md-2 ">
                                                     <div class="form-group">
-                                                        <a href="{% url "sbs:sporcu-aktive-group" pk=athlete.user.pk %}?group={{ group.name }}&pk={{ athlete.pk }}&person={{ athlete.person.pk }}&communication={{ athlete.communication.pk }}&user={{ athlete.user.pk }}"
+                                                        <a href="{% url "sbs:sporcu-aktive-group" pk=athlete.user.pk %}?group={{ group.name }}&pk={{ athlete.pk }}&person={{ athlete.person.pk }}&communication={{ athlete.communication.pk }}&user={{ athlete.user.pk }}&communicationHome={{ athlete.communicationHome.pk }}&communicationWork={{ athlete.communicationJop.pk }}"
                                                            type="button" class="btn btn-block  btn-danger text-center"
                                                            id="{{ group.name }}">{{ group }}
                                                         </a>
