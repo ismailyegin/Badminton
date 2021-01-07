@@ -74,23 +74,20 @@ def login(request):
             if user.groups.filter(name='KulupUye').exists():
                 return redirect('sbs:kulup-uyesi')
 
-            elif user.groups.all()[0].name == 'Antrenor':
+            elif user.groups.filter(name='Antrenor').exists():
                 return redirect('sbs:antrenor')
 
-            elif user.groups.all()[0].name == 'Hakem':
+            elif user.groups.filter(name='Hakem').exists():
                 return redirect('sbs:hakem')
 
-            elif user.groups.all()[0].name == 'Sporcu':
+            elif user.groups.filter(name='Sporcu').exists():
                 return redirect('sbs:sporcu')
 
-            elif user.groups.all()[0].name == 'Yonetim':
+            elif user.groups.filter(name='Yonetim').exists():
                 return redirect('sbs:federasyon')
 
-            elif user.groups.all()[0].name == 'Admin':
+            elif user.groups.filter(name='Admin').exists():
                 return redirect('sbs:admin')
-
-            elif user.groups.all()[0].name == 'KulupUye':
-                return redirect('sbs:kulup-uyesi')
 
 
             else:
