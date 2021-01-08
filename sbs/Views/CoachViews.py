@@ -56,8 +56,7 @@ from sbs.Forms.DocumentForm import DocumentForm
 from sbs.models.Competition import Competition
 from sbs.models.Material import Material
 from sbs.models.CompetitionCoach import CompetitionCoach
-from sbs.Forms.CommunicationHomeForm import CommunicationHomeForm
-from sbs.Forms.ComminicationWorkFrom import CommunicationWorkForm
+
 from sbs.Forms.MaterialForm import MaterialForm
 
 # visaseminer ekle
@@ -737,13 +736,9 @@ def coachUpdate(request, pk):
     iban_form = IbanCoachForm(request.POST or None, instance=coach)
 
     communication = Communication.objects.get(pk=coach.communication.pk)
-    communicationHome = Communication.objects.get(pk=coach.communicationHome.pk)
-    communicationWork = Communication.objects.get(pk=coach.communicationJop.pk)
     metarial = Material.objects.get(pk=coach.person.material.pk)
 
     communication_form = CommunicationForm(request.POST or None, instance=communication)
-    communicationHome_form = CommunicationHomeForm(request.POST or None, instance=communicationHome)
-    communicationWork_form = CommunicationWorkForm(request.POST or None, instance=communicationWork)
     metarial_form = MaterialForm(request.POST or None, instance=metarial)
 
     #
@@ -776,8 +771,6 @@ def coachUpdate(request, pk):
                               {'user_form': user_form, 'communication_form': communication_form,
                                'person_form': person_form, 'grades_form': grade_form, 'coach': coach.pk,
                                'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
-                               'communicationHome_form': communicationHome_form,
-                               'communicationWork_form': communicationWork_form,
                                'metarial_form': metarial_form, 'competitions': competitions})
 
         tc = request.POST.get('tc')
@@ -790,8 +783,6 @@ def coachUpdate(request, pk):
                               {'user_form': user_form, 'communication_form': communication_form,
                                'person_form': person_form, 'grades_form': grade_form, 'coach': coach.pk,
                                'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
-                               'communicationHome_form': communicationHome_form,
-                               'communicationWork_form': communicationWork_form,
                                'metarial_form': metarial_form, 'competitions': competitions
                                })
 
@@ -807,12 +798,10 @@ def coachUpdate(request, pk):
                           {'user_form': user_form, 'communication_form': communication_form,
                            'person_form': person_form, 'grades_form': grade_form, 'coach': coach.pk,
                            'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
-                           'communicationHome_form': communicationHome_form,
-                           'communicationWork_form': communicationWork_form,
                            'metarial_form': metarial_form, 'competitions': competitions
                            })
 
-        if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and iban_form.is_valid() and metarial_form.is_valid() and communicationHome_form.is_valid() and communicationWork_form.is_valid():
+        if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and iban_form.is_valid() and metarial_form.is_valid():
 
             user.username = user_form.cleaned_data['email']
             user.first_name = user_form.cleaned_data['first_name']
@@ -830,9 +819,6 @@ def coachUpdate(request, pk):
             iban_form.save()
             person_form.save()
             communication_form.save()
-            communicationWork_form.save()
-            communicationHome_form.save()
-            com
 
             log = str(user.get_full_name()) + " Antrenor güncelledi"
             log = general_methods.logwrite(request, request.user, log)
@@ -847,8 +833,6 @@ def coachUpdate(request, pk):
                   {'user_form': user_form, 'communication_form': communication_form,
                    'person_form': person_form, 'grades_form': grade_form, 'coach': coach,
                    'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
-                   'communicationHome_form': communicationHome_form,
-                   'communicationWork_form': communicationWork_form,
                    'metarial_form': metarial_form, 'competitions': competitions
                    })
 

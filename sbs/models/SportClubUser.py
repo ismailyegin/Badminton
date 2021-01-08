@@ -13,10 +13,6 @@ class SportClubUser(models.Model):
 
     communication = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
                                       related_name='KlupikametAdres')
-    communicationHome = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
-                                          related_name='KlupEvAdres')
-    communicationJop = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
-                                         related_name='KlupisAdres')
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.ForeignKey(ClubRole, on_delete=models.CASCADE, verbose_name='Üye Rolü')
     creationDate = models.DateTimeField(auto_now_add=True)

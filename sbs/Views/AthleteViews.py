@@ -27,8 +27,7 @@ from sbs.Forms.UserForm import UserForm
 from sbs.Forms.PersonForm import PersonForm
 from sbs.Forms.UserSearchForm import UserSearchForm
 from sbs.Forms.SearchClupForm import SearchClupForm
-from sbs.Forms.CommunicationHomeForm import CommunicationHomeForm
-from sbs.Forms.ComminicationWorkFrom import CommunicationWorkForm
+
 from sbs.Forms.MaterialForm import MaterialForm
 from sbs.models import Athlete, CategoryItem, Person, Communication, License, SportClubUser, SportsClub, City, Country, \
     Coach, CompAthlete, Competition
@@ -628,13 +627,11 @@ def updateathletes(request, pk):
     person_form = PersonForm(request.POST or None, request.FILES or None, instance=person)
 
     communication = Communication.objects.get(pk=athlete.communication.pk)
-    communicationHome = Communication.objects.get(pk=athlete.communicationHome.pk)
-    communicationWork = Communication.objects.get(pk=athlete.communicationJop.pk)
+
     metarial = Material.objects.get(pk=athlete.person.material.pk)
 
     communication_form = CommunicationForm(request.POST or None, instance=communication)
-    communicationHome_form = CommunicationHomeForm(request.POST or None, instance=communicationHome)
-    communicationWork_form = CommunicationWorkForm(request.POST or None, instance=communicationWork)
+
     metarial_form = MaterialForm(request.POST or None, instance=metarial)
 
     say = 0
@@ -654,8 +651,6 @@ def updateathletes(request, pk):
                               {'user_form': user_form, 'communication_form': communication_form,
                                'person_form': person_form, 'licenses_form': licenses_form,
                                'athlete': athlete, 'say': say, 'competition': competition, 'groups': group,
-                               'communicationHome_form': communicationHome_form,
-                               'communicationWork_form': communicationWork_form,
                                'metarial_form': metarial_form, 'competitions': competitions
                                })
 
@@ -670,8 +665,6 @@ def updateathletes(request, pk):
                               {'user_form': user_form, 'communication_form': communication_form,
                                'person_form': person_form, 'licenses_form': licenses_form,
                                'athlete': athlete, 'say': say, 'competition': competition, 'groups': group,
-                               'communicationHome_form': communicationHome_form,
-                               'communicationWork_form': communicationWork_form,
                                'metarial_form': metarial_form, 'competitions': competitions
                                })
 
@@ -688,8 +681,6 @@ def updateathletes(request, pk):
                           {'user_form': user_form, 'communication_form': communication_form,
                            'person_form': person_form, 'licenses_form': licenses_form,
                            'athlete': athlete, 'say': say, 'competition': competition, 'groups': group,
-                           'communicationHome_form': communicationHome_form,
-                           'communicationWork_form': communicationWork_form,
                            'metarial_form': metarial_form, 'competitions': competitions
                            })
 
@@ -721,8 +712,6 @@ def updateathletes(request, pk):
                   {'user_form': user_form, 'communication_form': communication_form,
                    'person_form': person_form, 'licenses_form': licenses_form,
                    'athlete': athlete, 'say': say, 'competition': competition, 'groups': group,
-                   'communicationHome_form': communicationHome_form,
-                   'communicationWork_form': communicationWork_form,
                    'metarial_form': metarial_form, 'competitions': competitions
                    })
 

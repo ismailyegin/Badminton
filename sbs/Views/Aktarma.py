@@ -775,3 +775,50 @@ def mazeme_aktar(request):
         product.save()
 
     return redirect('sbs:admin')
+
+
+@login_required
+def comminacations_aktar(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+
+    users = User.objects.all()
+    print(users.count())
+
+    for user in users:
+        if user.groups.filter(name='Antrenor').exists():
+            if Coach.objects.filter(user=user):
+                athlete = Coach.objects.get(user=user)
+                athlete.communication.phoneHome = athlete.communicationHome.phoneNumber2
+                athlete.communication.addressHome = athlete.communicationHome.address
+                athlete.communication.phoneJop = athlete.communicationJop.phoneNumber2
+                athlete.communication.addressJop = athlete.communicationJop.address
+                athlete.communication.save()
+
+
+
+        elif user.groups.filter(name='Hakem').exists():
+            if Judge.objects.filter(user=user):
+                athlete = Judge.objects.get(user=user)
+                athlete.communication.phoneHome = athlete.communicationHome.phoneNumber2
+                athlete.communication.addressHome = athlete.communicationHome.address
+                athlete.communication.phoneJop = athlete.communicationJop.phoneNumber2
+                athlete.communication.addressJop = athlete.communicationJop.address
+                athlete.communication.save()
+
+
+
+
+        elif user.groups.filter(name='Sporcu').exists():
+            if Athlete.objects.filter(user=user):
+                athlete = Athlete.objects.get(user=user)
+                athlete.communication.phoneHome = athlete.communicationHome.phoneNumber2
+                athlete.communication.addressHome = athlete.communicationHome.address
+                athlete.communication.phoneJop = athlete.communicationJop.phoneNumber2
+                athlete.communication.addressJop = athlete.communicationJop.address
+                athlete.communication.save()
+
+    return redirect('sbs:admin')

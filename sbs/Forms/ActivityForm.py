@@ -35,6 +35,4 @@ class ActivityForm(ModelForm):
             'type': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                         'style': 'width: 100%; '}),
 
-
-
         }

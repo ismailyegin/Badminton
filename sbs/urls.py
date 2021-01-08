@@ -454,5 +454,6 @@ urlpatterns = [
 
     url(r'control2', Aktarma.control2, name='control-aktar2'),
     url(r'aktarma/malzeme-aktar', Aktarma.mazeme_aktar, name='malzeme-aktar'),
+    url(r'aktarma/iletisim-aktar', Aktarma.comminacations_aktar, name='iletisim-aktar'),
 
 ]

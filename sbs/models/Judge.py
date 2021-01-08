@@ -12,11 +12,6 @@ class Judge(models.Model):
 
     communication = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
                                       related_name='HakemikametAdres')
-    communicationHome = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
-                                          related_name='HakemEvAdres')
-    communicationJop = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
-                                         related_name='HakemIsAdres')
-
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     creationDate = models.DateTimeField(auto_now_add=True)

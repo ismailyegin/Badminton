@@ -14,10 +14,6 @@ class Athlete(models.Model):
 
     communication = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
                                       related_name='SporcuikametAdres')
-    communicationHome = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
-                                          related_name='SporcuEvAdres')
-    communicationJop = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
-                                         related_name='SporcuisAdres')
     user = models.OneToOneField(User, on_delete=models.CASCADE, db_column='user')
     licenses = models.ManyToManyField(License)
     creationDate = models.DateTimeField(auto_now_add=True)

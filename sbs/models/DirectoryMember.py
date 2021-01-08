@@ -12,10 +12,6 @@ class DirectoryMember(models.Model):
 
     communication = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
                                       related_name='YoneticikametAdres')
-    communicationHome = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
-                                          related_name='YoneticiEvAdres')
-    communicationJop = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
-                                         related_name='YoneticiİsAdres')
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     creationDate = models.DateTimeField(auto_now_add=True)
     modificationDate = models.DateTimeField(auto_now=True)

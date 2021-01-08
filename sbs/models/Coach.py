@@ -11,10 +11,7 @@ class Coach(models.Model):
 
     communication = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
                                       related_name='AntrenorikametAdres')
-    communicationHome = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
-                                          related_name='AntrenorEvAdres')
-    communicationJop = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
-                                         related_name='AntrenorİsAdres')
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     grades = models.ManyToManyField(Level, related_name='CoachGrades')
     visa = models.ManyToManyField(Level, related_name='CoachVisa')

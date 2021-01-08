@@ -46,12 +46,6 @@ from operator import itemgetter
 
 from sbs.models.Material import Material
 from sbs.Forms.MaterialForm import MaterialForm
-from sbs.Forms.ComminicationWorkFrom import CommunicationWorkForm
-from sbs.Forms.CommunicationHomeForm import CommunicationHomeForm
-
-
-
-
 
 @login_required
 def return_add_club(request):
@@ -282,13 +276,10 @@ def updateClubPersons(request, pk):
     clubs = SportsClub.objects.filter(clubUser__user=user)
 
     communication = Communication.objects.get(pk=athlete.communication.pk)
-    communicationHome = Communication.objects.get(pk=athlete.communicationHome.pk)
-    communicationWork = Communication.objects.get(pk=athlete.communicationJop.pk)
+
     metarial = Material.objects.get(pk=athlete.person.material.pk)
 
     communication_form = CommunicationForm(request.POST or None, instance=communication)
-    communicationHome_form = CommunicationHomeForm(request.POST or None, instance=communicationHome)
-    communicationWork_form = CommunicationWorkForm(request.POST or None, instance=communicationWork)
     metarial_form = MaterialForm(request.POST or None, instance=metarial)
 
     if request.method == 'POST':
@@ -304,8 +295,6 @@ def updateClubPersons(request, pk):
                               {'user_form': user_form, 'communication_form': communication_form, 'groups': groups,
                                'clupUser': athlete,
                                'person_form': person_form, 'sportClubUser_form': sportClubUser_form, 'clubs': clubs,
-                               'communicationHome_form': communicationHome_form,
-                               'communicationWork_form': communicationWork_form,
                                'metarial_form': metarial_form,
                                })
 
@@ -319,8 +308,6 @@ def updateClubPersons(request, pk):
                               {'user_form': user_form, 'communication_form': communication_form, 'groups': groups,
                                'clupUser': athlete,
                                'person_form': person_form, 'sportClubUser_form': sportClubUser_form, 'clubs': clubs,
-                               'communicationHome_form': communicationHome_form,
-                               'communicationWork_form': communicationWork_form,
                                'metarial_form': metarial_form,
                                })
 
@@ -336,8 +323,6 @@ def updateClubPersons(request, pk):
                           {'user_form': user_form, 'communication_form': communication_form, 'groups': groups,
                            'clupUser': athlete,
                            'person_form': person_form, 'sportClubUser_form': sportClubUser_form, 'clubs': clubs,
-                           'communicationHome_form': communicationHome_form,
-                           'communicationWork_form': communicationWork_form,
                            'metarial_form': metarial_form,
                            })
 
@@ -369,8 +354,6 @@ def updateClubPersons(request, pk):
                   {'user_form': user_form, 'communication_form': communication_form, 'groups': groups,
                    'clupUser': athlete,
                    'person_form': person_form, 'sportClubUser_form': sportClubUser_form, 'clubs': clubs,
-                   'communicationHome_form': communicationHome_form,
-                   'communicationWork_form': communicationWork_form,
                    'metarial_form': metarial_form,
                    })
 

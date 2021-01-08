@@ -32,8 +32,6 @@ from sbs.models.ReferenceCoach import ReferenceCoach
 
 from sbs.models.Material import Material
 from sbs.Forms.MaterialForm import MaterialForm
-from sbs.Forms.CommunicationHomeForm import CommunicationHomeForm
-from sbs.Forms.ComminicationWorkFrom import CommunicationWorkForm
 
 
 @login_required
@@ -215,13 +213,9 @@ def update_directory_member(request, pk):
     member_form = DirectoryForm(request.POST or None, instance=member)
 
     communication = Communication.objects.get(pk=member.communication.pk)
-    communicationHome = Communication.objects.get(pk=member.communicationHome.pk)
-    communicationWork = Communication.objects.get(pk=member.communicationJop.pk)
     metarial = Material.objects.get(pk=member.person.material.pk)
 
     communication_form = CommunicationForm(request.POST or None, instance=communication)
-    communicationHome_form = CommunicationHomeForm(request.POST or None, instance=communicationHome)
-    communicationWork_form = CommunicationWorkForm(request.POST or None, instance=communicationWork)
     metarial_form = MaterialForm(request.POST or None, instance=metarial)
 
 
@@ -239,8 +233,6 @@ def update_directory_member(request, pk):
                 return render(request, 'yonetim/kurul-uyesi-duzenle.html',
                               {'user_form': user_form, 'communication_form': communication_form, 'member': member,
                                'person_form': person_form, 'member_form': member_form, 'groups': groups,
-                               'communicationHome_form': communicationHome_form,
-                               'communicationWork_form': communicationWork_form,
                                'metarial_form': metarial_form,
                                })
         tc = request.POST.get('tc')
@@ -253,8 +245,6 @@ def update_directory_member(request, pk):
                 return render(request, 'yonetim/kurul-uyesi-duzenle.html',
                               {'user_form': user_form, 'communication_form': communication_form, 'member': member,
                                'person_form': person_form, 'member_form': member_form, 'groups': groups,
-                               'communicationHome_form': communicationHome_form,
-                               'communicationWork_form': communicationWork_form,
                                'metarial_form': metarial_form,
                                })
 
@@ -269,8 +259,6 @@ def update_directory_member(request, pk):
             return render(request, 'yonetim/kurul-uyesi-duzenle.html',
                           {'user_form': user_form, 'communication_form': communication_form, 'member': member,
                            'person_form': person_form, 'member_form': member_form, 'groups': groups,
-                           'communicationHome_form': communicationHome_form,
-                           'communicationWork_form': communicationWork_form,
                            'metarial_form': metarial_form,
                            })
 
@@ -296,8 +284,6 @@ def update_directory_member(request, pk):
     return render(request, 'yonetim/kurul-uyesi-duzenle.html',
                   {'user_form': user_form, 'communication_form': communication_form, 'member': member,
                    'person_form': person_form, 'member_form': member_form, 'groups': groups,
-                   'communicationHome_form': communicationHome_form,
-                   'communicationWork_form': communicationWork_form,
                    'metarial_form': metarial_form,
                    })
 
