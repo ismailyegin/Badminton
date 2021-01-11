@@ -2,7 +2,7 @@ from django.conf.urls import url
 
 from sbs.Views import DashboardViews, AthleteViews, RefereeViews, ClubViews, CoachViews, DirectoryViews, UserViews, \
     CompetitionViews, AdminViews, HelpViews, PageViews, PreRegistration, ActivityView, ReferenceView, QuestionViews, \
-    LogViews, ProductView, Aktarma
+    LogViews, ProductView, Aktarma, ClaimView
 
 app_name = 'sbs'
 
@@ -430,6 +430,21 @@ urlpatterns = [
 
     url(r'rol/degisitir/(?P<pk>\d+)$', AdminViews.activeGroup,
         name='sporcu-aktive-group'),
+
+    #     destek ve talep
+
+    url(r'destek-talep-listesi', ClaimView.return_claim, name='destek-talep-listesi'),
+    url(r'destek/Destekekle', ClaimView.claim_add, name='destek-talep-ekle'),
+    url(r'destek/sil/(?P<pk>\d+)$', ClaimView.claim_delete, name='destek-delete'),
+    url(r'destek/guncelle/(?P<pk>\d+)$', ClaimView.claim_update, name='destek-guncelle'),
+
+    url(r'menu', ClaimView.menu, name='destek-talep-menu'),
+
+
+
+
+
+
 
     #     products
     url(r'urun/ekle', ProductView.add_product, name='urun-ekle'),
