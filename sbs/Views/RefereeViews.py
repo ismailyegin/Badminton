@@ -505,7 +505,7 @@ def updateReferee(request, pk):
 
     communication = Communication.objects.get(pk=judge.communication.pk)
     if person.material:
-        metarial = Material.objects.get(pk=athlete.person.material.pk)
+        metarial = Material.objects.get(pk=judge.person.material.pk)
     else:
         metarial = Material()
         metarial.save()

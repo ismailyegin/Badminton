@@ -147,7 +147,6 @@ def visaSeminar_sil(request, pk):
 @login_required
 def return_add_coach(request):
     perm = general_methods.control_access(request)
-
     if not perm:
         logout(request)
         return redirect('accounts:login')
@@ -237,7 +236,7 @@ def return_add_coach(request):
 
             html_content = ''
             subject, from_email, to = 'Bilgi Sistemi Kullanıcı Bilgileri', 'no-reply@halter.gov.tr', user.email
-            html_content = '<h2>TÜRKİYE HALTER FEDERASYONU BİLGİ SİSTEMİ</h2>'
+            html_content = '<h2>TÜRKİYE BADMİNTON FEDERASYONU BİLGİ SİSTEMİ</h2>'
             html_content = html_content + '<p><strong>Kullanıcı Adınız :' + str(fdk.user.username) + '</strong></p>'
             html_content = html_content + '<p> <strong>Site adresi:</strong> <a href="http://sbs.halter.gov.tr:81/newpassword?query=' + str(
                 fdk.uuid) + '">http://sbs.halter.gov.tr:81/sbs/profil-guncelle/?query=' + str(fdk.uuid) + '</p></a>'
@@ -247,7 +246,7 @@ def return_add_coach(request):
 
             messages.success(request, 'Antrenör Başarıyla Kayıt Edilmiştir.')
 
-            return redirect('sbs:antrenorler')
+            return redirect('sbs:update-coach', coach.pk)
 
         else:
 
@@ -737,7 +736,13 @@ def coachUpdate(request, pk):
     iban_form = IbanCoachForm(request.POST or None, instance=coach)
 
     communication = Communication.objects.get(pk=coach.communication.pk)
-    metarial = Material.objects.get(pk=coach.person.material.pk)
+    if person.material:
+        metarial = Material.objects.get(pk=coach.person.material.pk)
+    else:
+        metarial = Material()
+        metarial.save()
+        person.material = metarial
+        person.save()
 
     communication_form = CommunicationForm(request.POST or None, instance=communication)
     metarial_form = MaterialForm(request.POST or None, instance=metarial)

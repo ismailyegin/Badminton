@@ -238,7 +238,7 @@ def return_add_club_person(request):
 
             messages.success(request, 'Kulüp Üyesi Başarıyla Kayıt Edilmiştir.')
 
-            return redirect('sbs:kulup-uyeleri')
+            return redirect('sbs:kulup-uyesi-guncelle', club_person.pk)
 
         else:
 
@@ -278,7 +278,13 @@ def updateClubPersons(request, pk):
 
     communication = Communication.objects.get(pk=athlete.communication.pk)
 
-    metarial = Material.objects.get(pk=athlete.person.material.pk)
+    if person.material:
+        metarial = Material.objects.get(pk=athlete.person.material.pk)
+    else:
+        metarial = Material()
+        metarial.save()
+        person.material = metarial
+        person.save()
 
     communication_form = CommunicationForm(request.POST or None, instance=communication)
     metarial_form = MaterialForm(request.POST or None, instance=metarial)

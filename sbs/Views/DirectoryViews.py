@@ -124,7 +124,7 @@ def add_directory_member(request):
 
             messages.success(request, 'Kurul Üyesi Başarıyla Kayıt Edilmiştir.')
 
-            return redirect('sbs:kurul-uyeleri')
+            return redirect('sbs:kurul-uyesi-duzenle', directoryMember.pk)
 
         else:
 
@@ -213,7 +213,13 @@ def update_directory_member(request, pk):
     member_form = DirectoryForm(request.POST or None, instance=member)
 
     communication = Communication.objects.get(pk=member.communication.pk)
-    metarial = Material.objects.get(pk=member.person.material.pk)
+    if person.material:
+        metarial = Material.objects.get(pk=member.person.material.pk)
+    else:
+        metarial = Material()
+        metarial.save()
+        person.material = metarial
+        person.save()
 
     communication_form = CommunicationForm(request.POST or None, instance=communication)
     metarial_form = MaterialForm(request.POST or None, instance=metarial)
