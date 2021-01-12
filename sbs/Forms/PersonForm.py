@@ -65,10 +65,10 @@ class PersonForm(ModelForm):
                 attrs={'class': 'form-control ', 'value': '', 'required': 'required'}),
 
             'motherName': forms.TextInput(
-                attrs={'class': 'form-control ', 'value': '', 'required': 'required'}),
+                attrs={'class': 'form-control ', 'value': ''}),
 
             'fatherName': forms.TextInput(
-                attrs={'class': 'form-control ', 'value': '', 'required': 'required'}),
+                attrs={'class': 'form-control ', 'value': ''}),
 
             'birthDate': forms.DateInput(
                 attrs={'class': 'form-control  pull-right', 'id': 'datepicker', 'autocomplete': 'off',
@@ -78,7 +78,7 @@ class PersonForm(ModelForm):
                                              'style': 'width: 100%; '}),
 
             'gender': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
-                                          'style': 'width: 100%;'}),
+                                          'style': 'width: 100%;', 'required': 'required'}),
             'education': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                              'style': 'width: 100%;'}),
             'mezunokul': forms.TextInput(attrs={'class': 'form-control'}),

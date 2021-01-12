@@ -28,7 +28,7 @@ class CommunicationForm(ModelForm):
             'addressJop': forms.Textarea(
                 attrs={'class': 'form-control ', 'rows': '2'}),
 
-            'phoneNumber': forms.TextInput(attrs={'class': 'form-control '}),
+            'phoneNumber': forms.TextInput(attrs={'class': 'form-control ', 'required': 'required'}),
 
             'phoneNumber2': forms.TextInput(attrs={'class': 'form-control '}),
 

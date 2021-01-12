@@ -151,7 +151,7 @@ def return_add_referee(request):
 
             messages.success(request, 'Hakem Başarıyla Kayıt Edilmiştir.')
 
-            return redirect('sbs:hakemler')
+            return redirect('sbs:hakem-duzenle', judge.pk)
 
         else:
 
