@@ -3,6 +3,8 @@ from sbs.models.Document import Document
 from sbs.models.Penal import Penal
 from sbs.models.Material import Material
 
+from unicode_tr import unicode_tr
+
 class Person(models.Model):
     ILKOKUL = 10
     lISE = 15
@@ -108,13 +110,15 @@ class Person(models.Model):
 
     # class Meta:
     #     default_permissions = ()
-    #     db_table = 'person'
 
-    # def save(self, force_insert=False, force_update=False):
-    #     if self.birthplace:
-    #         self.birthplace = self.birthplace.upper()
-    #     if self.motherName:
-    #         self.motherName = self.motherName.upper()
-    #     if self.fatherName:
-    #         self.fatherName = self.fatherName.upper()
-    #     super(Person, self).save(force_insert, force_update)
+    def save(self, force_insert=False, force_update=False):
+        if self.birthplace:
+            self.birthplace = unicode_tr(self.birthplace)
+            self.birthplace = self.birthplace.upper()
+        if self.motherName:
+            self.motherName = unicode_tr(self.motherName)
+            self.motherName = self.motherName.upper()
+        if self.fatherName:
+            self.fatherName = unicode_tr(self.fatherName)
+            self.fatherName = self.fatherName.upper()
+        super(Person, self).save(force_insert, force_update)
