@@ -294,7 +294,7 @@
 
                 </div>
 
-            </div>
+
 
 
             {#            nufus   bilgileri#}
@@ -528,7 +528,7 @@
 
                                                 <div class="col-md-2 ">
                                                     <div class="form-group">
-                                                        <a href="{% url "sbs:sporcu-aktive-group" pk=member.user.pk %}?group={{ group.name }}&pk={{ member.pk }}&person={{ member.person.pk }}&communication={{ member.communication.pk }}&user={{ member.user.pk }}&communicationHome={{ member.communicationHome.pk }}&communicationWork={{ member.communicationJop.pk }}"
+                                                        <a id="group-{{ group.pk }}"
                                                            type="button" class="btn btn-block  btn-danger text-center"
                                                            id="{{ group.name }}">{{ group }}
                                                         </a>
@@ -571,7 +571,7 @@
                         if (e.handled !== true) { // This will prevent event triggering more then once
                             e.handled = true;
                             $("#btn-group").click(function () {
-                                window.location.replace("{% url "sbs:sporcu-aktive-group" pk=coach.user.pk %}?group={{ group.name }}&pk={{ coach.pk }}&person={{ coach.person.pk }}&communication={{ coach.communication.pk }}&user={{ coach.user.pk }}&communicationHome={{ coach.communicationHome.pk }}&communicationWork={{ coach.communicationJop.pk }}");
+                                window.location.replace("{% url "sbs:sporcu-aktive-group" pk=member.user.pk %}?group={{ group.name }}&pk={{ member.pk }}&person={{ member.person.pk }}&communication={{ member.communication.pk }}&user={{ member.user.pk }}");
 
                             });
                         }

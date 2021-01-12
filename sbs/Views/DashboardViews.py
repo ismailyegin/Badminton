@@ -109,7 +109,7 @@ def return_club_user_dashboard(request):
 
     # Sporcu bilgilerinde eksik var mı diye control
     athletes = Athlete.objects.none()
-    if active == 'KulupUye':
+    if active == 'KlupUye':
         sc_user = SportClubUser.objects.get(user=user)
         if sc_user.dataAccessControl == False or sc_user.dataAccessControl == None:
             clubsPk = []
