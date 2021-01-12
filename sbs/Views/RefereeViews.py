@@ -504,7 +504,13 @@ def updateReferee(request, pk):
     person_form = PersonForm(request.POST or None, request.FILES or None, instance=person)
 
     communication = Communication.objects.get(pk=judge.communication.pk)
-    metarial = Material.objects.get(pk=judge.person.material.pk)
+    if person.material:
+        metarial = Material.objects.get(pk=athlete.person.material.pk)
+    else:
+        metarial = Material()
+        metarial.save()
+        person.material = metarial
+        person.save()
 
     communication_form = CommunicationForm(request.POST or None, instance=communication)
 

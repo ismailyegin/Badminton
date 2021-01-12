@@ -437,7 +437,7 @@ def return_add_athlete(request):
 
             messages.success(request, 'Sporcu Başarıyla Kayıt Edilmiştir.')
 
-            return redirect('sbs:sporcular')
+            return redirect('sbs:update-athletes', athlete.pk)
 
         else:
             for x in user_form.errors.as_data():
@@ -618,9 +618,13 @@ def updateathletes(request, pk):
     person_form = PersonForm(request.POST or None, request.FILES or None, instance=person)
 
     communication = Communication.objects.get(pk=athlete.communication.pk)
-
-    metarial = Material.objects.get(pk=athlete.person.material.pk)
-
+    if person.material:
+        metarial = Material.objects.get(pk=athlete.person.material.pk)
+    else:
+        metarial = Material()
+        metarial.save()
+        person.material = metarial
+        person.save()
     communication_form = CommunicationForm(request.POST or None, instance=communication)
 
     metarial_form = MaterialForm(request.POST or None, instance=metarial)
