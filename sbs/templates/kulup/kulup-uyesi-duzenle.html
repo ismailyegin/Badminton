@@ -283,7 +283,7 @@
 
                 </div>
 
-            </div>
+
 
 
             {#            nufus   bilgileri#}
@@ -591,7 +591,6 @@
                                                 <div class="col-md-2 ">
                                                     <div class="form-group">
                                                         <a id="group-{{ group.pk }}"
-                                                                {#                                                                href="{% url "sbs:sporcu-aktive-group" pk=clupUser.user.pk %}?group={{ group.name }}&pk={{ clupUser.pk }}&person={{ clupUser.person.pk }}&communication={{ clupUser.communication.pk }}&user={{ clupUser.user.pk }}&communicationHome={{ clupUser.communicationHome.pk }}&communicationWork={{ clupUser.communicationJop.pk }}"#}
                                                            type="button" class="btn btn-block  btn-danger text-center"
                                                            id="{{ group.name }}">{{ group }}
                                                         </a>
@@ -631,8 +630,7 @@
                     if (e.handled !== true) { // This will prevent event triggering more then once
                         e.handled = true;
                         $("#btn-group").click(function () {
-                            window.location.replace("{% url "sbs:sporcu-aktive-group" pk=clupUser.user.pk %}?group={{ group.name }}&pk={{ clupUser.pk }}&person={{ clupUser.person.pk }}&communication={{ clupUser.communication.pk }}&user={{ clupUser.user.pk }}&communicationHome={{ clupUser.communicationHome.pk }}&communicationWork=
-                            {{ clupUser.communicationJop.pk });
+                            window.location.replace("{% url "sbs:sporcu-aktive-group" pk=clupUser.user.pk %}?group={{ group.name }}&pk={{ clupUser.pk }}&person={{ clupUser.person.pk }}&communication={{ clupUser.communication.pk }}&user={{ clupUser.user.pk }}");
                                                         });
                                                     }
 

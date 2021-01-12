@@ -262,6 +262,7 @@ def return_add_coach(request):
 @login_required
 def return_coachs(request):
     perm = general_methods.control_access(request)
+    active = general_methods.controlGroup(request)
 
     if not perm:
         logout(request)
@@ -283,14 +284,14 @@ def return_coachs(request):
         email = request.POST.get('email')
 
         if not (firstName or lastName or email or branch or grade or visa):
-            if user.groups.filter(name='KulupUye'):
+            if active == 'KulupUye':
                 sc_user = SportClubUser.objects.get(user=user)
                 clubsPk = []
                 clubs = SportsClub.objects.filter(clubUser=sc_user)
                 for club in clubs:
                     clubsPk.append(club.pk)
                 coachs = Coach.objects.filter(sportsclub__in=clubsPk).distinct()
-            elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+            elif active == 'Yonetim' or active == 'Admin':
                 coachs = Coach.objects.all()
         else:
             query = Q()
@@ -307,14 +308,14 @@ def return_coachs(request):
             if visa == 'VISA':
                 query &= Q(visa__startDate__year=timezone.now().year, visa__status='Onaylandı')
 
-            if user.groups.filter(name='KulupUye'):
+            if active == 'KulupUye':
                 sc_user = SportClubUser.objects.get(user=user)
                 clubsPk = []
                 clubs = SportsClub.objects.filter(clubUser=sc_user)
                 for club in clubs:
                     clubsPk.append(club.pk)
                 coachs = Coach.objects.filter(query).filter(sportsclub__in=clubsPk).distinct()
-            elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+            elif active == 'Yonetim' or active == 'Admin':
                 coachs = Coach.objects.filter(query)
             if visa == 'NONE':
                 coachs = coachs.exclude(visa__startDate__year=timezone.now().year, visa__status='Onaylandı')

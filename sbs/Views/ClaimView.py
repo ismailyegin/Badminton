@@ -89,16 +89,5 @@ def menu(request):
     if not perm:
         logout(request)
         return redirect('accounts:login')
-    admin = MenuAdmin.objects.all()
-    for m in admin:
-        item = MenuDirectory(
-            name=m.name,
-            is_show=m.is_show,
-            is_parent=m.is_parent
-        )
-        item.url = m.url if m.url else None
-        item.fa_icon = m.fa_icon if m.fa_icon else None
-        # item.parent=int(MenuDirectory.objects.get(pk=m.parent.pk).pk) if m.parent  else None
-        item.sorting = m.sorting if m.sorting else None
-        item.save()
+
     return render(request, 'Destek/Desktek-ekle.html', {})

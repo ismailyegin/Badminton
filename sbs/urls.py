@@ -466,9 +466,15 @@ urlpatterns = [
     url(r'aktarma/musabaka-antrenor-aktar', Aktarma.musabaka_antrenor_aktar, name='musabaka-aktar-antrenor'),
     url(r'aktarma/musabaka-hakem-aktar', Aktarma.musabaka_hakem_aktar, name='musabaka-aktar-hakem'),
     url(r'aktarma/musabaka-kategori-aktar', Aktarma.musabaka_kademe_aktar, name='musabaka-aktar-kategori'),
-
     url(r'control2', Aktarma.control2, name='control-aktar2'),
     url(r'aktarma/malzeme-aktar', Aktarma.mazeme_aktar, name='malzeme-aktar'),
     url(r'aktarma/iletisim-aktar', Aktarma.comminacations_aktar, name='iletisim-aktar'),
+    url(r'aktarma/sporcu', Aktarma.SporcuControl, name='control-aktar-sporcu'),
+    url(r'aktarma/antrenor', Aktarma.AntenorControl, name='control-aktar-antrenor'),
+    url(r'aktarma/TcnoControl', Aktarma.TcnoControl, name='control-aktar-TcnoControl'),
+    url(r'aktarma/kanspor', Aktarma.KangrubuSporcu, name='control-kan'),
+    url(r'aktarma/kanantrenor', Aktarma.KangrubuAntrenor, name='control-kan-antrenor'),
+    url(r'aktarma/kanhakem', Aktarma.KangrubuHakem, name='control-kan-hakem'),
+
 
 ]

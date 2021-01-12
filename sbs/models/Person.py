@@ -21,14 +21,14 @@ class Person(models.Model):
     MALE = 1
     FEMALE = 0
 
-    AB1 = 'AB Rh+'
-    AB2 = 'AB Rh-'
-    A1 = 'A Rh+'
-    A2 = 'A Rh-'
-    B1 = 'B Rh+'
-    B2 = 'B Rh-'
-    O1 = '0 Rh+'
-    O2 = '0 Rh-'
+    AB1 = 'AB(+)'
+    AB2 = 'AB(-)'
+    A1 = 'A(+)'
+    A2 = 'A(-)'
+    B1 = 'B(+)'
+    B2 = 'B(-)'
+    O1 = '0(+)'
+    O2 = '0(-)'
 
     GENDER_CHOICES = (
         (MALE, 'Erkek'),
@@ -46,7 +46,31 @@ class Person(models.Model):
         (O2, '0 Rh-'),
 
     )
-
+    # AB1 = 'AB Rh+'
+    # AB2 = 'AB Rh-'
+    # A1 = 'A Rh+'
+    # A2 = 'A Rh-'
+    # B1 = 'B Rh+'
+    # B2 = 'B Rh-'
+    # O1 = '0 Rh+'
+    # O2 = '0 Rh-'
+    #
+    # GENDER_CHOICES = (
+    #     (MALE, 'Erkek'),
+    #     (FEMALE, 'Kadın'),
+    # )
+    #
+    # BLOODTYPE = (
+    #     (AB1, 'AB Rh+'),
+    #     (AB2, 'AB Rh-'),
+    #     (A1, 'A Rh+'),
+    #     (A2, 'A Rh-'),
+    #     (B1, 'B Rh+'),
+    #     (B2, 'B Rh-'),
+    #     (O1, '0 Rh+'),
+    #     (O2, '0 Rh-'),
+    #
+    # )
     tc = models.CharField(max_length=120, null=True, blank=True)
     height = models.CharField(max_length=120, null=True, blank=True)
     weight = models.CharField(max_length=120, null=True, blank=True)

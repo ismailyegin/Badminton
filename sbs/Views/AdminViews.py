@@ -95,7 +95,9 @@ def activeGroup(request, pk):
         user.save()
         return redirect('sbs:kulup-uyesi-guncelle', pk=clupuser.pk)
     elif group.name == "Sporcu":
-        athlete = Athlete(person=person, communication=communication, user=user)
+        athlete = Athlete(person=person,
+                          communication=communication,
+                          user=user)
         athlete.save()
         user.groups.add(group)
         user.save()

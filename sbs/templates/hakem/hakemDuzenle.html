@@ -1043,7 +1043,7 @@
                         if (e.handled !== true) { // This will prevent event triggering more then once
                             e.handled = true;
                             $("#btn-group").click(function () {
-                                window.location.replace("{% url "sbs:sporcu-aktive-group" pk=judge.user.pk %}?group={{ group.name }}&pk={{ judge.pk }}&person={{ judge.person.pk }}&communication={{ judge.communication.pk }}&user={{ judge.user.pk }}&communicationHome={{ judge.communicationHome.pk }}&communicationWork={{ judge.communicationJop.pk }}");
+                                window.location.replace("{% url "sbs:sporcu-aktive-group" pk=judge.user.pk %}?group={{ group.name }}&pk={{ judge.pk }}&person={{ judge.person.pk }}&communication={{ judge.communication.pk }}&user={{ judge.user.pk }}");
 
                             });
                         }

@@ -318,6 +318,7 @@ def sporcu_sec(request, pk):
 @login_required
 def return_add_athlete(request):
     perm = general_methods.control_access_klup(request)
+    active = general_methods.controlGroup(request)
 
     if not perm:
         logout(request)
@@ -333,7 +334,7 @@ def return_add_athlete(request):
     user = request.user
     license_form = LicenseForm(request.POST, request.FILES or None)
 
-    if user.groups.filter(name='KulupUye'):
+    if active == 'KulupUye':
         sc_user = SportClubUser.objects.get(user=user)
         clubs = SportsClub.objects.filter(clubUser=sc_user)
 
@@ -342,7 +343,7 @@ def return_add_athlete(request):
             clubsPk.append(club.pk)
         license_form.fields['sportsClub'].queryset = SportsClub.objects.filter(id__in=clubsPk)
 
-    elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+    elif active == 'Yonetim' or active == 'Admin':
         license_form.fields['sportsClub'].queryset = SportsClub.objects.all()
 
     # lisan ekleme son alani bu alanlar sadece form bileselerinin sisteme gidebilmesi icin post ile gelen veride gene ayni şekilde  karşılama ve kaydetme islemi yapilacak
@@ -452,6 +453,7 @@ def return_add_athlete(request):
 @login_required
 def return_athletes_antrenor(request):
     perm = general_methods.control_access_klup(request)
+    active = general_methods.controlGroup(request)
 
     if not perm:
         logout(request)
@@ -481,7 +483,7 @@ def return_athletes_antrenor(request):
                     athletes |= Athlete.objects.filter(licenses__coach=coach).distinct()
 
 
-                elif user.groups.filter(name='Admin'):
+                elif active == 'Yonetim' or active == 'Admin':
                     athletes = Athlete.objects.all()
             elif firstName or lastName or email or sportsclup or brans:
                 query = Q()
@@ -492,7 +494,7 @@ def return_athletes_antrenor(request):
                 if email:
                     query &= Q(user__email__icontains=email)
 
-                if user.groups.filter(name='Antrenor'):
+                if active == 'Antrenor':
                     coach = Coach.objects.get(user=user)
                     clup = SportsClub.objects.filter(coachs=coach)
                     clupsPk = []
@@ -500,7 +502,7 @@ def return_athletes_antrenor(request):
                         clupsPk.append(item.pk)
                     athletes = Athlete.objects.filter(licenses__sportsClub_id__in=clupsPk).filter(query).distinct()
                     athletes |= Athlete.objects.filter(licenses__coach=coach).filter(query).distinct()
-                elif user.groups.filter(name='Admin'):
+                elif active == 'Yonetim' or active == 'Admin':
                     athletes = Athlete.objects.filter(query).distinct()
 
     return render(request, 'sporcu/sporcularAntrenor.html', {'athletes': athletes, 'user_form': user_form})
@@ -509,24 +511,13 @@ def return_athletes_antrenor(request):
 @login_required
 def return_athletes(request):
     perm = general_methods.control_access_klup(request)
-
+    active = general_methods.controlGroup(request)
     if not perm:
         logout(request)
         return redirect('accounts:login')
     login_user = request.user
     user = User.objects.get(pk=login_user.pk)
     user_form = UserSearchForm()
-    # # arama açıldıgı zaman burasi sillinecek
-    # if user.groups.filter(name='KulupUye'):
-    #     sc_user = SportClubUser.objects.get(user=user)
-    #     clubsPk = []
-    #     clubs = SportsClub.objects.filter(clubUser=sc_user)
-    #     for club in clubs:
-    #         clubsPk.append(club.pk)
-    #     athletes = Athlete.objects.filter(licenses__sportsClub__in=clubsPk).distinct()
-    # elif user.groups.filter(name__in=['Yonetim', 'Admin']):
-    #     athletes = Athlete.objects.all()
-    # #     silinecek son
 
     athletes = Athlete.objects.none()
     if request.method == 'POST':
@@ -542,14 +533,14 @@ def return_athletes(request):
             email = user_form.cleaned_data.get('email')
             if not (firstName or lastName or email or sportsclup or coach):
 
-                if user.groups.filter(name='KulupUye'):
+                if active == 'KulupUye':
                     sc_user = SportClubUser.objects.get(user=user)
                     clubsPk = []
                     clubs = SportsClub.objects.filter(clubUser=sc_user)
                     for club in clubs:
                         clubsPk.append(club.pk)
                     athletes = Athlete.objects.filter(licenses__sportsClub__in=clubsPk).distinct()
-                elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+                elif active == 'Yonetim' or active == 'Admin':
                     athletes = Athlete.objects.all()
             elif firstName or lastName or email or sportsclup or coach:
                 query = Q()
@@ -567,11 +558,11 @@ def return_athletes(request):
                 if sportsclup:
                     query &= Q(licenses__sportsClub__in=clubsPk)
 
-                if user.groups.filter(name__in=['Yonetim', 'Admin']):
+                if active == 'Yonetim' or active == 'Admin':
                     if coach:
                         query &= Q(licenses__coach=coach)
 
-                if user.groups.filter(name='KulupUye'):
+                if active == 'KulupUye':
                     sc_user = SportClubUser.objects.get(user=user)
                     clubsPk = []
                     clubs = SportsClub.objects.filter(clubUser=sc_user)
@@ -579,18 +570,18 @@ def return_athletes(request):
                         clubsPk.append(club.pk)
                     athletes = Athlete.objects.filter(licenses__sportsClub__in=clubsPk).filter(query).distinct()
 
-                elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+                elif active == 'Yonetim' or active == 'Admin':
                     athletes = Athlete.objects.filter(query).distinct()
 
     sportclup = SearchClupForm(request.POST, request.FILES or None)
-    if user.groups.filter(name='KulupUye'):
+    if active == 'KulupUye':
         sc_user = SportClubUser.objects.get(user=user)
         clubs = SportsClub.objects.filter(clubUser=sc_user)
         clubsPk = []
         for club in clubs:
             clubsPk.append(club.pk)
         sportclup.fields['sportsClub'].queryset = SportsClub.objects.filter(id__in=clubsPk)
-    elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+    elif active == 'Yonetim' or active == 'Admin':
         sportclup.fields['sportsClub'].queryset = SportsClub.objects.all()
 
     return render(request, 'sporcu/sporcular.html',
@@ -1118,6 +1109,7 @@ def sporcu_belge_ekle(request, pk):
 @login_required
 def sporcu_lisans_ekle(request, pk):
     perm = general_methods.control_access(request)
+    active = general_methods.controlGroup(request)
 
     if not perm:
         logout(request)
@@ -1127,7 +1119,7 @@ def sporcu_lisans_ekle(request, pk):
 
     license_form = LicenseForm(request.POST, request.FILES or None)
 
-    if user.groups.filter(name='KulupUye'):
+    if active == 'KulupUye':
         sc_user = SportClubUser.objects.get(user=user)
         clubs = SportsClub.objects.filter(clubUser=sc_user)
         clubsPk = []
@@ -1135,7 +1127,7 @@ def sporcu_lisans_ekle(request, pk):
             clubsPk.append(club.pk)
         license_form.fields['sportsClub'].queryset = SportsClub.objects.filter(id__in=clubsPk)
 
-    elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+    elif active == 'Yonetim' or active == 'Admin':
         license_form.fields['sportsClub'].queryset = SportsClub.objects.all()
 
     if request.method == 'POST':
@@ -1506,6 +1498,7 @@ def sporcu_lisans_duzenle_antrenor(request, license_pk, athlete_pk):
 @login_required
 def sporcu_lisans_duzenle(request, license_pk, athlete_pk):
     perm = general_methods.control_access(request)
+    active = general_methods.controlGroup(request)
 
     if not perm:
         logout(request)
@@ -1518,7 +1511,7 @@ def sporcu_lisans_duzenle(request, license_pk, athlete_pk):
         license_form = LicenseForm(request.POST or None, request.FILES or None, instance=license)
 
     user = request.user
-    if user.groups.filter(name='KulupUye'):
+    if active == 'KulupUye':
         sc_user = SportClubUser.objects.get(user=user)
         clubs = SportsClub.objects.filter(clubUser=sc_user)
         clubsPk = []
@@ -1526,7 +1519,7 @@ def sporcu_lisans_duzenle(request, license_pk, athlete_pk):
             clubsPk.append(club.pk)
         license_form.fields['sportsClub'].queryset = SportsClub.objects.filter(id__in=clubsPk)
 
-    elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+    elif active == 'Yonetim' or active == 'Admin':
         license_form.fields['sportsClub'].queryset = SportsClub.objects.all()
 
     if request.method == 'POST':
@@ -1559,12 +1552,13 @@ def sporcu_lisans_duzenle_mobil_ilet(request):
 @login_required
 def sporcu_lisans_duzenle_mobil(request, count):
     perm = general_methods.control_access(request)
+    active = general_methods.controlGroup(request)
     if not perm:
         logout(request)
         return redirect('accounts:login')
     login_user = request.user
     user = User.objects.get(pk=login_user.pk)
-    if user.groups.filter(name__in=['Yonetim', 'Admin']):
+    if active == 'Yonetim' or active == 'Admin':
         ileri = int(count) + 1
         geri = int(count) - 1
 
@@ -1608,6 +1602,9 @@ def sporcu_lisans_sil(request, pk, athlete_pk):
 @login_required
 def sporcu_kusak_listesi(request):
     perm = general_methods.control_access(request)
+    active = general_methods.controlGroup(request)
+
+
 
     if not perm:
         logout(request)
@@ -1634,14 +1631,14 @@ def sporcu_kusak_listesi(request):
                 try:
                     query &= Q(athlete__licenses__sportsClub=SportsClub.objects.get(name=sportsclup).pk)
                 except:
-                    if user.groups.filter(name__in=['Yonetim', 'Admin']):
+                    if active == 'Yonetim' or active == 'Admin':
                         messages.warning(request,
                                          'Bu kulube bir başkan atamasi gerçeklesmemiştir. Bütün degerler gösterilecek')
             if brans:
                 query &= Q(branch__icontains=brans)
             if status:
                 query &= Q(status=status)
-            if user.groups.filter(name='KulupUye'):
+            if active == 'KulupUye':
                 clubuser = SportClubUser.objects.get(user=user)
                 clubs = SportsClub.objects.filter(clubUser=clubuser)
                 clubsPk = []
@@ -1649,28 +1646,28 @@ def sporcu_kusak_listesi(request):
                     clubsPk.append(club.pk)
                 belts = Level.objects.filter(query).filter(athlete__licenses__sportsClub__in=clubsPk).filter(
                     levelType=EnumFields.LEVELTYPE.BELT).distinct()
-            elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+            elif active == 'Yonetim' or active == 'Admin':
                 belts = Level.objects.filter(query).filter(levelType=EnumFields.LEVELTYPE.BELT).distinct()
         else:
-            if user.groups.filter(name='KulupUye'):
+            if active == 'KulupUye':
                 clubuser = SportClubUser.objects.get(user=user)
                 clubs = SportsClub.objects.filter(clubUser=clubuser)
                 clubsPk = []
                 for club in clubs:
                     clubsPk.append(club.pk)
                 belts = Level.objects.filter(athlete__licenses__sportsClub__in=clubsPk).distinct()
-            elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+            elif active == 'Yonetim' or active == 'Admin':
                 belts = Level.objects.filter(levelType=EnumFields.LEVELTYPE.BELT).distinct()
 
     sportclup = SearchClupForm(request.POST, request.FILES or None)
-    if user.groups.filter(name='KulupUye'):
+    if active == 'KulupUye':
         sc_user = SportClubUser.objects.get(user=user)
         clubs = SportsClub.objects.filter(clubUser=sc_user)
         clubsPk = []
         for club in clubs:
             clubsPk.append(club.pk)
         sportclup.fields['sportsClub'].queryset = SportsClub.objects.filter(id__in=clubsPk)
-    elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+    elif active == 'Yonetim' or active == 'Admin':
         sportclup.fields['sportsClub'].queryset = SportsClub.objects.all()
     return render(request, 'sporcu/sporcu-kusak-listesi.html', {'belts': belts, 'Sportclup': sportclup})
 
@@ -1678,6 +1675,7 @@ def sporcu_kusak_listesi(request):
 @login_required
 def sporcu_lisans_listesi(request):
     perm = general_methods.control_access_klup(request)
+    active = general_methods.controlGroup(request)
 
     if not perm:
         logout(request)
@@ -1729,7 +1727,7 @@ def sporcu_lisans_listesi(request):
             if status:
                 query &= Q(status=status)
 
-            if user.groups.filter(name='KulupUye'):
+            if active == 'KulupUye':
 
                 sc_user = SportClubUser.objects.get(user=user)
                 clubsPk = []
@@ -1737,10 +1735,10 @@ def sporcu_lisans_listesi(request):
                 for club in clubs:
                     clubsPk.append(club.pk)
                 licenses = License.objects.filter(sportsClub_id__in=clubsPk).filter(query).distinct()
-            elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+            elif active == 'Yonetim' or active == 'Admin':
                 licenses = License.objects.filter(query).distinct()
         else:
-            if user.groups.filter(name='KulupUye'):
+            if active == 'KulupUye':
 
                 sc_user = SportClubUser.objects.get(user=user)
                 clubsPk = []
@@ -1748,18 +1746,18 @@ def sporcu_lisans_listesi(request):
                 for club in clubs:
                     clubsPk.append(club.pk)
                 licenses = License.objects.filter(sportsClub_id__in=clubsPk).distinct()
-            elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+            elif active == 'Yonetim' or active == 'Admin':
                 licenses = License.objects.all().distinct()
 
     sportclup = SearchClupForm(request.POST, request.FILES or None)
-    if user.groups.filter(name='KulupUye'):
+    if active == 'KulupUye':
         sc_user = SportClubUser.objects.get(user=user)
         clubs = SportsClub.objects.filter(clubUser=sc_user)
         clubsPk = []
         for club in clubs:
             clubsPk.append(club.pk)
         sportclup.fields['sportsClub'].queryset = SportsClub.objects.filter(id__in=clubsPk)
-    elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+    elif active == 'Yonetim' or active == 'Admin':
         sportclup.fields['sportsClub'].queryset = SportsClub.objects.all()
     return render(request, 'sporcu/sporcu-lisans-listesi.html',
                   {'licenses': licenses, 'user_form': user_form, 'Sportclup': sportclup})

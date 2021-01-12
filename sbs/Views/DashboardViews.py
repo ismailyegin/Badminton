@@ -50,7 +50,8 @@ def return_coach_dashboard(request):
     perm = general_methods.control_access_klup(request)
     login_user = request.user
     user = User.objects.get(pk=login_user.pk)
-    coach = Coach.objects.get(user=user)
+    print(request.user.pk)
+    coach = Coach.objects.get(user_id=request.user.pk)
     clup = SportsClub.objects.filter(coachs=coach)
     clupsPk = []
     for item in clup:
@@ -65,21 +66,21 @@ def return_coach_dashboard(request):
 
 @login_required
 def return_directory_dashboard(request):
-    group = request.user.groups.all()[0]
-    if not group.name == "Yonetim":
+    perm = general_methods.control_access(request)
+
+    if not perm:
         logout(request)
         return redirect('accounts:login')
+
     return render(request, 'anasayfa/federasyon.html')
 
 
 @login_required
 def return_club_user_dashboard(request):
+    active = general_methods.controlGroup(request)
     perm = general_methods.control_access_klup(request)
     # x = general_methods.import_csv()
 
-    if not perm:
-        logout(request)
-        return redirect('accounts:login')
 
     if not perm:
         logout(request)
@@ -89,11 +90,16 @@ def return_club_user_dashboard(request):
     user = User.objects.get(pk=login_user.pk)
     current_user = request.user
     clubuser = SportClubUser.objects.get(user=current_user)
-    club = SportsClub.objects.filter(clubUser=clubuser)[0]
+    club = SportsClub.objects.none()
 
+    if SportsClub.objects.filter(clubUser=clubuser):
+        club = SportsClub.objects.filter(clubUser=clubuser)[0]
+    total_club_user = 0
+    total_coach = 0
+    if SportsClub.objects.filter(clubUser=clubuser):
+        total_club_user = club.clubUser.count()
+        total_coach = Coach.objects.filter(sportsclub=club).count()
 
-    total_club_user = club.clubUser.count()
-    total_coach = Coach.objects.filter(sportsclub=club).count()
     sc_user = SportClubUser.objects.get(user=user)
     clubsPk = []
     clubs = SportsClub.objects.filter(clubUser=sc_user)
@@ -103,7 +109,7 @@ def return_club_user_dashboard(request):
 
     # Sporcu bilgilerinde eksik var mı diye control
     athletes = Athlete.objects.none()
-    if user.groups.filter(name='KulupUye'):
+    if active == 'KulupUye':
         sc_user = SportClubUser.objects.get(user=user)
         if sc_user.dataAccessControl == False or sc_user.dataAccessControl == None:
             clubsPk = []
@@ -228,7 +234,7 @@ def activeGroup(request, pk):
         return redirect('sbs:antrenor')
     elif group.name == 'Hakem':
         return redirect('sbs:hakem', )
-    elif group.name == 'KulupUye':
+    elif group.name == 'KlupUye':
         return redirect('sbs:kulup-uyesi')
     elif group.name == 'Sporcu':
         return redirect('sbs:sporcu')

@@ -52,6 +52,7 @@ def categori_ekle(request):
 @login_required
 def aplication(request, pk):
     perm = general_methods.control_access_klup(request)
+    active = general_methods.controlGroup(request)
 
     if not perm:
         logout(request)
@@ -63,10 +64,10 @@ def aplication(request, pk):
     login_user = request.user
     user = User.objects.get(pk=login_user.pk)
     weights = Weight.objects.all()
-    if user.groups.filter(name='KulupUye'):
+    if active == 'KulupUye':
         sc_user = SportClubUser.objects.get(user=user)
         if sc_user.dataAccessControl == True:
-            if user.groups.filter(name='KulupUye'):
+            if active == 'KulupUye':
                 clubsPk = []
                 clubs = SportsClub.objects.filter(clubUser=sc_user)
                 for club in clubs:
@@ -79,10 +80,10 @@ def aplication(request, pk):
         else:
             messages.warning(request, 'Lütfen Eksik olan Sporcu Bilgilerini tamamlayiniz.')
             return redirect('sbs:musabakalar')
-    elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+    elif active == 'Yonetim' or active == 'Admin':
         comAthlete = CompAthlete.objects.filter(competition=pk).distinct()
 
-    elif user.groups.filter(name='Antrenor'):
+    elif active == 'Antrenor':
         coach = Coach.objects.get(user=user)
         comAthlete = CompAthlete.objects.filter(competition=pk, athlete__licenses__coach=coach).distinct()
     return render(request, 'musabaka/basvuru.html',
@@ -407,6 +408,7 @@ def return_sporcu_ajax(request):
 
 @login_required
 def return_sporcu(request):
+    active = general_methods.controlGroup(request)
     # print('ben geldim')
     login_user = request.user
     user = User.objects.get(pk=login_user.pk)
@@ -448,8 +450,7 @@ def return_sporcu(request):
             if comp.athlete:
                 athletes.append(comp.athlete.pk)
 
-
-        if user.groups.filter(name='KulupUye'):
+        if active == 'KulupUye':
             sc_user = SportClubUser.objects.get(user=user)
             clubsPk = []
             clubs = SportsClub.objects.filter(clubUser=sc_user)
@@ -460,11 +461,11 @@ def return_sporcu(request):
             modeldata = Athlete.objects.exclude(pk__in=athletes).filter(licenses__sportsClub__in=clubsPk).distinct()
             total = modeldata.count()
 
-        elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+        elif active == 'Yonetim' or active == 'Admin':
             modeldata = Athlete.objects.exclude(pk__in=athletes)
             total = Athlete.objects.exclude(pk__in=athletes).count()
 
-        elif user.groups.filter(name='Antrenor'):
+        elif active == 'Antrenor':
             modeldata = Athlete.objects.filter(licenses__coach__user=user).exclude(pk__in=athletes).distinct()[
                         start:start + length]
 
@@ -487,7 +488,7 @@ def return_sporcu(request):
             for comp in compAthlete:
                 if comp.athlete:
                     athletes.append(comp.athlete.pk)
-            if user.groups.filter(name='KulupUye'):
+            if active == 'KulupUye':
                 sc_user = SportClubUser.objects.get(user=user)
                 clubsPk = []
                 clubs = SportsClub.objects.filter(clubUser=sc_user)
@@ -497,11 +498,11 @@ def return_sporcu(request):
                     licenses__sportsClub__in=clubsPk).distinct()
                 total = modeldata.exclude(pk__in=athletes).filter(
                     licenses__sportsClub__in=clubsPk).distinct().count()
-            elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+            elif active == 'Yonetim' or active == 'Admin':
                 modeldata = modeldata.exclude(pk__in=athletes)
 
 
-            elif user.groups.filter(name='Antrenor'):
+            elif active == 'Antrenor':
                 modeldata = modeldata.filter(licenses__coach__user=user).exclude(pk__in=athletes).distinct()
 
             total = modeldata.count()
@@ -514,7 +515,7 @@ def return_sporcu(request):
                 if comp.athlete:
                     athletes.append(comp.athlete.pk)
                     print(comp.athlete)
-            if user.groups.filter(name='KulupUye'):
+            if active == 'KulupUye':
                 sc_user = SportClubUser.objects.get(user=user)
                 clubsPk = []
                 clubs = SportsClub.objects.filter(clubUser=sc_user)
@@ -524,12 +525,12 @@ def return_sporcu(request):
                     licenses__sportsClub__in=clubsPk).distinct()[start:start + length]
                 total = Athlete.objects.exclude(pk__in=athletes).filter(
                     licenses__sportsClub__in=clubsPk).distinct().count()
-            elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+            elif active == 'Yonetim' or active == 'Admin':
                 modeldata = Athlete.objects.exclude(pk__in=athletes)[start:start + length]
                 total = Athlete.objects.exclude(pk__in=athletes).distinct().count()
 
 
-            elif user.groups.filter(name='Antrenor'):
+            elif active == 'Antrenor':
                 modeldata = Athlete.objects.filter(licenses__coach__user=user).exclude(pk__in=athletes).distinct()[
                             start:start + length]
 
@@ -766,6 +767,7 @@ def result_list(request, pk):
 
 @login_required
 def return_competition_ajax(request):
+    active = general_methods.controlGroup(request)
     # print('ben geldim')
     login_user = request.user
     user = User.objects.get(pk=login_user.pk)
@@ -827,7 +829,7 @@ def return_competition_ajax(request):
             # for comp in compAthlete:
             #     if comp.athlete:
             #             athletes.append(comp.athlete.pk)
-            if user.groups.filter(name='KulupUye'):
+            if active == 'KulupUye':
                 print('klüp üye ')
                 # sc_user = SportClubUser.objects.get(user=user)
                 # clubsPk = []
@@ -836,7 +838,7 @@ def return_competition_ajax(request):
                 #     clubsPk.append(club.pk)
                 # modeldata = Athlete.objects.exclude(pk__in=athletes).filter(licenses__sportsClub__in=clubsPk).distinct()[start:start + length]
                 # total = mAthlete.objects.exclude(pk__in=athletes).filter(licenses__sportsClub__in=clubsPk).distinct().count()
-            elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+            elif active == 'Yonetim' or active == 'Admin':
 
                 modeldata = Competition.objects.filter(year=pk)
                 total = modeldata.count()
