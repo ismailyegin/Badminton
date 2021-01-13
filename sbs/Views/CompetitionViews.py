@@ -64,10 +64,10 @@ def aplication(request, pk):
     login_user = request.user
     user = User.objects.get(pk=login_user.pk)
     weights = Weight.objects.all()
-    if active == 'KulupUye':
+    if active == 'KlupUye':
         sc_user = SportClubUser.objects.get(user=user)
         if sc_user.dataAccessControl == True:
-            if active == 'KulupUye':
+            if active == 'KlupUye':
                 clubsPk = []
                 clubs = SportsClub.objects.filter(clubUser=sc_user)
                 for club in clubs:
@@ -450,7 +450,7 @@ def return_sporcu(request):
             if comp.athlete:
                 athletes.append(comp.athlete.pk)
 
-        if active == 'KulupUye':
+        if active == 'KlupUye':
             sc_user = SportClubUser.objects.get(user=user)
             clubsPk = []
             clubs = SportsClub.objects.filter(clubUser=sc_user)
@@ -488,7 +488,7 @@ def return_sporcu(request):
             for comp in compAthlete:
                 if comp.athlete:
                     athletes.append(comp.athlete.pk)
-            if active == 'KulupUye':
+            if active == 'KlupUye':
                 sc_user = SportClubUser.objects.get(user=user)
                 clubsPk = []
                 clubs = SportsClub.objects.filter(clubUser=sc_user)
@@ -515,7 +515,7 @@ def return_sporcu(request):
                 if comp.athlete:
                     athletes.append(comp.athlete.pk)
                     print(comp.athlete)
-            if active == 'KulupUye':
+            if active == 'KlupUye':
                 sc_user = SportClubUser.objects.get(user=user)
                 clubsPk = []
                 clubs = SportsClub.objects.filter(clubUser=sc_user)
@@ -829,7 +829,7 @@ def return_competition_ajax(request):
             # for comp in compAthlete:
             #     if comp.athlete:
             #             athletes.append(comp.athlete.pk)
-            if active == 'KulupUye':
+            if active == 'KlupUye':
                 print('klüp üye ')
                 # sc_user = SportClubUser.objects.get(user=user)
                 # clubsPk = []

@@ -283,7 +283,7 @@ def return_coachs(request):
         email = request.POST.get('email')
 
         if not (firstName or lastName or email or branch or grade or visa):
-            if active == 'KulupUye':
+            if active == 'KlupUye':
                 sc_user = SportClubUser.objects.get(user=user)
                 clubsPk = []
                 clubs = SportsClub.objects.filter(clubUser=sc_user)
@@ -307,7 +307,7 @@ def return_coachs(request):
             if visa == 'VISA':
                 query &= Q(visa__startDate__year=timezone.now().year, visa__status='Onaylandı')
 
-            if active == 'KulupUye':
+            if active == 'KlupUye':
                 sc_user = SportClubUser.objects.get(user=user)
                 clubsPk = []
                 clubs = SportsClub.objects.filter(clubUser=sc_user)

@@ -334,7 +334,7 @@ def return_add_athlete(request):
     user = request.user
     license_form = LicenseForm(request.POST, request.FILES or None)
 
-    if active == 'KulupUye':
+    if active == 'KlupUye':
         sc_user = SportClubUser.objects.get(user=user)
         clubs = SportsClub.objects.filter(clubUser=sc_user)
 
@@ -533,7 +533,7 @@ def return_athletes(request):
             email = user_form.cleaned_data.get('email')
             if not (firstName or lastName or email or sportsclup or coach):
 
-                if active == 'KulupUye':
+                if active == 'KlupUye':
                     sc_user = SportClubUser.objects.get(user=user)
                     clubsPk = []
                     clubs = SportsClub.objects.filter(clubUser=sc_user)
@@ -562,7 +562,7 @@ def return_athletes(request):
                     if coach:
                         query &= Q(licenses__coach=coach)
 
-                if active == 'KulupUye':
+                if active == 'KlupUye':
                     sc_user = SportClubUser.objects.get(user=user)
                     clubsPk = []
                     clubs = SportsClub.objects.filter(clubUser=sc_user)
@@ -574,7 +574,7 @@ def return_athletes(request):
                     athletes = Athlete.objects.filter(query).distinct()
 
     sportclup = SearchClupForm(request.POST, request.FILES or None)
-    if active == 'KulupUye':
+    if active == 'KlupUye':
         sc_user = SportClubUser.objects.get(user=user)
         clubs = SportsClub.objects.filter(clubUser=sc_user)
         clubsPk = []
@@ -1123,7 +1123,7 @@ def sporcu_lisans_ekle(request, pk):
 
     license_form = LicenseForm(request.POST, request.FILES or None)
 
-    if active == 'KulupUye':
+    if active == 'KlupUye':
         sc_user = SportClubUser.objects.get(user=user)
         clubs = SportsClub.objects.filter(clubUser=sc_user)
         clubsPk = []
@@ -1515,7 +1515,7 @@ def sporcu_lisans_duzenle(request, license_pk, athlete_pk):
         license_form = LicenseForm(request.POST or None, request.FILES or None, instance=license)
 
     user = request.user
-    if active == 'KulupUye':
+    if active == 'KlupUye':
         sc_user = SportClubUser.objects.get(user=user)
         clubs = SportsClub.objects.filter(clubUser=sc_user)
         clubsPk = []
@@ -1642,7 +1642,7 @@ def sporcu_kusak_listesi(request):
                 query &= Q(branch__icontains=brans)
             if status:
                 query &= Q(status=status)
-            if active == 'KulupUye':
+            if active == 'KlupUye':
                 clubuser = SportClubUser.objects.get(user=user)
                 clubs = SportsClub.objects.filter(clubUser=clubuser)
                 clubsPk = []
@@ -1653,7 +1653,7 @@ def sporcu_kusak_listesi(request):
             elif active == 'Yonetim' or active == 'Admin':
                 belts = Level.objects.filter(query).filter(levelType=EnumFields.LEVELTYPE.BELT).distinct()
         else:
-            if active == 'KulupUye':
+            if active == 'KlupUye':
                 clubuser = SportClubUser.objects.get(user=user)
                 clubs = SportsClub.objects.filter(clubUser=clubuser)
                 clubsPk = []
@@ -1664,7 +1664,7 @@ def sporcu_kusak_listesi(request):
                 belts = Level.objects.filter(levelType=EnumFields.LEVELTYPE.BELT).distinct()
 
     sportclup = SearchClupForm(request.POST, request.FILES or None)
-    if active == 'KulupUye':
+    if active == 'KlupUye':
         sc_user = SportClubUser.objects.get(user=user)
         clubs = SportsClub.objects.filter(clubUser=sc_user)
         clubsPk = []
@@ -1731,7 +1731,7 @@ def sporcu_lisans_listesi(request):
             if status:
                 query &= Q(status=status)
 
-            if active == 'KulupUye':
+            if active == 'KlupUye':
 
                 sc_user = SportClubUser.objects.get(user=user)
                 clubsPk = []
@@ -1742,7 +1742,7 @@ def sporcu_lisans_listesi(request):
             elif active == 'Yonetim' or active == 'Admin':
                 licenses = License.objects.filter(query).distinct()
         else:
-            if active == 'KulupUye':
+            if active == 'KlupUye':
 
                 sc_user = SportClubUser.objects.get(user=user)
                 clubsPk = []
@@ -1754,7 +1754,7 @@ def sporcu_lisans_listesi(request):
                 licenses = License.objects.all().distinct()
 
     sportclup = SearchClupForm(request.POST, request.FILES or None)
-    if active == 'KulupUye':
+    if active == 'KlupUye':
         sc_user = SportClubUser.objects.get(user=user)
         clubs = SportsClub.objects.filter(clubUser=sc_user)
         clubsPk = []

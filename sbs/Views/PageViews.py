@@ -77,7 +77,7 @@ def return_athletesdeneme(request):
         length = 10
 
     if length == -1:
-        if active == 'KulupUye':
+        if active == 'KlupUye':
             sc_user = SportClubUser.objects.get(user=user)
             clubsPk = []
             clubs = SportsClub.objects.filter(clubUser=sc_user)
@@ -99,7 +99,7 @@ def return_athletesdeneme(request):
             total = modeldata.count();
 
         else:
-            if active == 'KulupUye':
+            if active == 'KlupUye':
                 sc_user = SportClubUser.objects.get(user=user)
                 clubsPk = []
                 clubs = SportsClub.objects.filter(clubUser=sc_user)

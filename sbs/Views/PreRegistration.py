@@ -118,7 +118,7 @@ def approve_preRegistration(request, pk):
             user.email = basvuru.email
             user.is_active = True
             user.is_staff = basvuru.is_staff
-            group = Group.objects.get(name='KulupUye')
+            group = Group.objects.get(name='KlupUye')
             password = User.objects.make_random_password()
             user.set_password(password)
             user.save()
