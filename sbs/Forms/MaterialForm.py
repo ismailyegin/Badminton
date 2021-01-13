@@ -13,12 +13,12 @@ class MaterialForm(ModelForm):
         labels = {'raket': 'Raket', 'tshirt': 'Tshirt', 'esofman': 'Esofman', 'ayakkabi': 'Ayakkabi'}
         widgets = {
 
-            'ayakkabi': forms.TextInput(attrs={'class': 'form-control '}),
+            'ayakkabi': forms.TextInput(attrs={'class': 'form-control ', "style": "text-transform:uppercase"}),
 
-            'esofman': forms.TextInput(attrs={'class': 'form-control '}),
+            'esofman': forms.TextInput(attrs={'class': 'form-control ', "style": "text-transform:uppercase"}),
 
-            'tshirt': forms.TextInput(attrs={'class': 'form-control '}),
+            'tshirt': forms.TextInput(attrs={'class': 'form-control ', "style": "text-transform:uppercase"}),
 
-            'raket': forms.TextInput(attrs={'class': 'form-control '}),
+            'raket': forms.TextInput(attrs={'class': 'form-control ', "style": "text-transform:uppercase"}),
 
         }

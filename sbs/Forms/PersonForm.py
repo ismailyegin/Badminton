@@ -41,34 +41,37 @@ class PersonForm(ModelForm):
 
             'profileImage': forms.FileInput(),
 
-            'uyrukid': forms.TextInput(attrs={'class': 'form-control '}),
+            'uyrukid': forms.TextInput(attrs={'class': 'form-control ', 'onkeypress': 'validate(event)'}),
 
-            'is_unvani': forms.TextInput(attrs={'class': 'form-control '}),
+            'is_unvani': forms.TextInput(attrs={'class': 'form-control ', "style": "text-transform:uppercase"}),
 
-            'nufus_ailesirano': forms.TextInput(attrs={'class': 'form-control'}),
+            'nufus_ailesirano': forms.TextInput(attrs={'class': 'form-control', 'onkeypress': 'validate(event)'}),
 
-            'nufus_sirano': forms.TextInput(attrs={'class': 'form-control'}),
+            'nufus_sirano': forms.TextInput(attrs={'class': 'form-control', 'onkeypress': 'validate(event)'}),
 
-            'nufus_ciltno': forms.TextInput(attrs={'class': 'form-control ', }),
+            'nufus_ciltno': forms.TextInput(attrs={'class': 'form-control ', 'onkeypress': 'validate(event)'}),
 
-            'kurum': forms.TextInput(attrs={'class': 'form-control'}),
+            'kurum': forms.TextInput(attrs={'class': 'form-control', "style": "text-transform:uppercase"}),
 
-            'meslek': forms.TextInput(attrs={'class': 'form-control'}),
+            'meslek': forms.TextInput(attrs={'class': 'form-control', "style": "text-transform:uppercase"}),
 
-            'tc': forms.TextInput(attrs={'class': 'form-control ', 'required': 'required'}),
+            'tc': forms.TextInput(
+                attrs={'class': 'form-control ', 'required': 'required', 'onkeypress': 'validate(event)',
+                       'onkeyup': 'if(this.value.length >11){this.value=this.value.substr(0, 11);}'}),
 
-            'height': forms.TextInput(attrs={'class': 'form-control'}),
+            'height': forms.TextInput(attrs={'class': 'form-control', 'onkeypress': 'validate(event)'}),
 
-            'weight': forms.TextInput(attrs={'class': 'form-control'}),
+            'weight': forms.TextInput(attrs={'class': 'form-control', 'onkeypress': 'validate(event)'}),
 
             'birthplace': forms.TextInput(
-                attrs={'class': 'form-control ', 'value': '', 'required': 'required'}),
+                attrs={'class': 'form-control ', 'value': '', 'required': 'required',
+                       "style": "text-transform:uppercase"}),
 
             'motherName': forms.TextInput(
-                attrs={'class': 'form-control ', 'value': ''}),
+                attrs={'class': 'form-control ', 'value': '', "style": "text-transform:uppercase"}),
 
             'fatherName': forms.TextInput(
-                attrs={'class': 'form-control ', 'value': ''}),
+                attrs={'class': 'form-control ', 'value': '', "style": "text-transform:uppercase"}),
 
             'birthDate': forms.DateInput(
                 attrs={'class': 'form-control  pull-right', 'id': 'datepicker', 'autocomplete': 'off',
@@ -81,7 +84,7 @@ class PersonForm(ModelForm):
                                           'style': 'width: 100%;', 'required': 'required'}),
             'education': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                              'style': 'width: 100%;'}),
-            'mezunokul': forms.TextInput(attrs={'class': 'form-control'}),
+            'mezunokul': forms.TextInput(attrs={'class': 'form-control', "style": "text-transform:uppercase"}),
 
         }
 

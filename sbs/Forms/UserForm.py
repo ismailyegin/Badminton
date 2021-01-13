@@ -11,9 +11,10 @@ class UserForm(ModelForm):
         labels = {'first_name': 'Ad', 'last_name': 'Soyad', 'email': 'Email'}
         widgets = {
             'first_name': forms.TextInput(
-                attrs={'class': 'form-control ', 'value': '', 'required': 'required'}),
+                attrs={'class': 'form-control ', 'value': '', "style": "text-transform:uppercase",
+                       'required': 'required'}),
             'last_name': forms.TextInput(
-                attrs={'class': 'form-control ', 'required': 'required'}),
+                attrs={'class': 'form-control ', 'required': 'required', "style": "text-transform:uppercase"}),
             'email': forms.TextInput(attrs={'class': 'form-control ', 'required': 'required'}),
 
             'is_active': forms.CheckboxInput(attrs={'class': 'iCheck-helper'}),

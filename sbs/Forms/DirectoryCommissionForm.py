@@ -11,5 +11,5 @@ class DirectoryCommissionForm(ModelForm):
         labels = {'name': 'Kurul Adı'}
         widgets = {
             'name': forms.TextInput(
-                attrs={'class': 'form-control ', 'required': 'required'})
+                attrs={'class': 'form-control ', 'required': 'required', "style": "text-transform:uppercase"})
         }

@@ -25,8 +25,8 @@ class ClaimForm(ModelForm):
                                                   'style': 'width: 100%; '}),
             'project': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                            'style': 'width: 100%; '}),
-            'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'definition': forms.TextInput(attrs={'class': 'form-control'}),
-            'pay': forms.NumberInput(attrs={'class': 'form-control'}),
+            'title': forms.TextInput(attrs={'class': 'form-control', "style": "text-transform:uppercase"}),
+            'definition': forms.TextInput(attrs={'class': 'form-control', "style": "text-transform:uppercase"}),
+            'pay': forms.NumberInput(attrs={'class': 'form-control', 'onkeypress': 'validate(event)'}),
 
         }

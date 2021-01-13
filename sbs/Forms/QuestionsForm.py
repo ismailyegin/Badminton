@@ -15,8 +15,9 @@ class QuestionsForm(ModelForm):
 
         widgets = {
 
-            'question': forms.TextInput(attrs={'class': 'form-control ', 'required': 'required'}),
+            'question': forms.TextInput(
+                attrs={'class': 'form-control ', 'required': 'required', "style": "text-transform:uppercase"}),
 
-            'reaply': forms.TextInput(attrs={'class': 'form-control'}),
+            'reaply': forms.TextInput(attrs={'class': 'form-control', "style": "text-transform:uppercase"}),
 
         }

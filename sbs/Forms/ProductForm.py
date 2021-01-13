@@ -16,14 +16,15 @@ class ProductForm(ModelForm):
 
         widgets = {
 
-            'suppeliers': forms.TextInput(attrs={'class': 'form-control'}),
+            'suppeliers': forms.TextInput(attrs={'class': 'form-control', "style": "text-transform:uppercase"}),
 
-            'name': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'name': forms.TextInput(
+                attrs={'class': 'form-control', 'required': 'required', "style": "text-transform:uppercase"}),
 
             'stock': forms.TextInput(attrs={'class': 'form-control', "onkeypress": "return isNumberKey(event)"}),
             'category': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                             'style': 'width: 100%; '}),
             'description': forms.Textarea(
-                attrs={'class': 'form-control ', 'rows': '2'}),
+                attrs={'class': 'form-control ', 'rows': '2', "style": "text-transform:uppercase"}),
 
         }

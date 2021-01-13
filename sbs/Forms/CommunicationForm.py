@@ -22,15 +22,16 @@ class CommunicationForm(ModelForm):
         widgets = {
 
             'address': forms.Textarea(
-                attrs={'class': 'form-control ', 'rows': '2'}),
+                attrs={'class': 'form-control ', 'rows': '2', "style": "text-transform:uppercase"}),
             'addressHome': forms.Textarea(
-                attrs={'class': 'form-control ', 'rows': '2'}),
+                attrs={'class': 'form-control ', 'rows': '2', "style": "text-transform:uppercase"}),
             'addressJop': forms.Textarea(
-                attrs={'class': 'form-control ', 'rows': '2'}),
+                attrs={'class': 'form-control ', 'rows': '2', "style": "text-transform:uppercase"}),
 
-            'phoneNumber': forms.TextInput(attrs={'class': 'form-control ', 'required': 'required'}),
+            'phoneNumber': forms.TextInput(
+                attrs={'class': 'form-control ', 'required': 'required', 'onkeypress': 'validate(event)'}),
 
-            'phoneNumber2': forms.TextInput(attrs={'class': 'form-control '}),
+            'phoneNumber2': forms.TextInput(attrs={'class': 'form-control ', 'onkeypress': 'validate(event)'}),
 
             'postalCode': forms.TextInput(attrs={'class': 'form-control '}),
 
@@ -40,8 +41,8 @@ class CommunicationForm(ModelForm):
             'country': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                            'style': 'width: 100%;', 'required': 'required'}),
 
-            'phoneHome': forms.TextInput(attrs={'class': 'form-control '}),
+            'phoneHome': forms.TextInput(attrs={'class': 'form-control ', 'onkeypress': 'validate(event)'}),
 
-            'phoneJop': forms.TextInput(attrs={'class': 'form-control '}),
+            'phoneJop': forms.TextInput(attrs={'class': 'form-control ', 'onkeypress': 'validate(event)'}),
 
         }
