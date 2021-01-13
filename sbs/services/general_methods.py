@@ -194,14 +194,13 @@ def getProfileImage(request):
     if (request.user.id):
         current_user = request.user
 
-        if current_user.groups.filter(name='KlupUye').exists():
-
-            athlete = SportClubUser.objects.get(user=current_user)
-            person = Person.objects.get(id=athlete.person.id)
-
-        elif current_user.groups.filter(name='Admin').exists():
+        if current_user.groups.filter(name='Admin').exists():
             person = dict()
             person['profileImage'] = "profile/logo.png"
+
+        elif current_user.groups.filter(name='KlupUye').exists():
+            athlete = SportClubUser.objects.get(user=current_user)
+            person = Person.objects.get(id=athlete.person.id)
 
 
         elif current_user.groups.filter(name='Sporcu').exists():
@@ -219,8 +218,6 @@ def getProfileImage(request):
         elif current_user.groups.filter(name='Yonetim').exists():
             athlete = DirectoryMember.objects.get(user=current_user)
             person = Person.objects.get(id=athlete.person.id)
-
-
 
         else:
             person = None
@@ -282,7 +279,7 @@ def import_csv():
             user.set_password(password)
             user.save()
 
-            user.groups.add(Group.objects.get(name='KulupUye'))
+            user.groups.add(Group.objects.get(name='KlupUye'))
             user.save()
 
             person = Person()

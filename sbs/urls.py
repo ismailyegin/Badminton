@@ -452,6 +452,12 @@ urlpatterns = [
     url(r'urun/urun-sil(?P<pk>\d+)$', ProductView.product_delete, name='urun-sil'),
     url(r'urun/urun-duzenle/(?P<pk>\d+)$', ProductView.product_update, name='urun-duzenle'),
 
+    #     products deposit
+    url(r'emanet/ekle-emanet', ProductView.add_product_deposit, name='urun-ekle-emanet'),
+    url(r'emanet/urunler-emanet', ProductView.return_products_deposit, name='urunler-emanet'),
+    url(r'emanet/urun-sil-emanet/(?P<pk>\d+)$', ProductView.product_delete_deposit, name='urun-sil-emanet'),
+    url(r'emanet/urun-duzenle-emanet/(?P<pk>\d+)$', ProductView.product_update_deposit, name='urun-duzenle-emanet'),
+
     # aktarma
     url(r'aktarma/kulup-aktar', Aktarma.kulup_aktar, name='kulup-aktar'),
     url(r'aktarma/hakem-aktar', Aktarma.hakem_aktar, name='hakem-aktar'),

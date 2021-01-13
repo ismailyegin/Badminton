@@ -270,11 +270,7 @@ def update_directory_member(request, pk):
 
         if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and member_form.is_valid():
 
-            user.username = user_form.cleaned_data['email']
-            user.first_name = user_form.cleaned_data['first_name']
-            user.last_name = user_form.cleaned_data['last_name']
-            user.email = user_form.cleaned_data['email']
-            user.save()
+            user_form.save()
             person_form.save()
             communication_form.save()
             member_form.save()
