@@ -9,7 +9,7 @@ from sbs.models.Person import Person
 class Coach(models.Model):
     person = models.OneToOneField(Person, on_delete=models.CASCADE)
 
-    communication = models.OneToOneField(Communication, on_delete=models.CASCADE, null=True, blank=True)
+    communication = models.OneToOneField(Communication, on_delete=models.CASCADE, db_column='communication')
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     grades = models.ManyToManyField(Level, related_name='CoachGrades')
