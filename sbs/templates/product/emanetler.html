@@ -222,7 +222,7 @@
                                     <th>Tarih</th>
                                     <th>Miktar</th>
                                     <th>Malzeme</th>
-                                    <th>Klup</th>
+                                    <th>Kulüp</th>
                                     <th>Açıklama</th>
                                     <td>işlemler</td>
 
@@ -234,11 +234,11 @@
                                     {% for product in products %}
                                         <tr>
                                             <td>{{ forloop.counter }} </td>
-                                            <td>{{ product.date }}</td>
+                                            <td>{{ product.date |date }}</td>
                                             <td>{{ product.count }}</td>
                                             <td>{{ product.product }} </td>
                                             <td>{{ product.club }}</td>
-                                            <td>{{ product.description }}</td>
+                                            <td>{{ product.description |upper }}</td>
 
 
                                             <td>

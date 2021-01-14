@@ -120,18 +120,14 @@ def return_competitions(request):
     if request.method == 'POST':
         name = request.POST.get('name')
         startDate = request.POST.get('startDate')
-        compType = request.POST.get('compType')
-        compGeneralType = request.POST.get('compGeneralType')
-        if name or startDate or compType or compGeneralType:
+
+        if name or startDate:
             query = Q()
             if name:
                 query &= Q(name__icontains=name)
             if startDate:
-                query &= Q(year=int(startDate))
-            if compType:
-                query &= Q(compType__in=compType)
-            if compGeneralType:
-                query &= Q(compGeneralType__in=compGeneralType)
+                query &= Q(finishDate__year=int(startDate))
+
             competitions = Competition.objects.filter(query).order_by('-startDate').distinct()
         else:
             competitions = Competition.objects.all().order_by('-startDate')
@@ -262,28 +258,14 @@ def musabaka_sporcu_sec(request, pk):
         logout(request)
         return redirect('accounts:login')
 
-    weights = Weight.objects.all()
+    category = Category.objects.all()
 
     competition = Competition.objects.filter(registerStartDate__lte=timezone.now(),
                                              registerFinishDate__gte=timezone.now())
 
-    # login_user = request.user
-    # user = User.objects.get(pk=login_user.pk)
-    # competition = Competition.objects.get(pk=pk)
-    # weights = Weight.objects.all()
-    # if user.groups.filter(name='KulupUye'):
-    #     sc_user = SportClubUser.objects.get(user=user)
-    #     clubsPk = []
-    #     clubs = SportsClub.objects.filter(clubUser=sc_user)
-    #     for club in clubs:
-    #         clubsPk.append(club.pk)
-    #     athletes = Athlete.objects.filter(licenses__sportsClub__in=clubsPk).distinct()
-    # elif user.groups.filter(name__in=['Yonetim', 'Admin']):
-    #     athletes = Athlete.objects.all()
-    print(pk)
+
     return render(request, 'musabaka/musabaka-sporcu-sec.html',
-                  {'pk': pk, 'weights': weights, 'application': competition})
-    # ,{'athletes': athletes, 'competition': competition, })
+                  {'pk': pk, 'weights': category, 'application': competition})
 
 
 @login_required
@@ -669,9 +651,7 @@ def choose_athlete(request, pk, competition):
     if request.method == 'POST' and request.is_ajax():
 
         try:
-
-            if (request.POST.get('total') and request.POST.get('silk') and request.POST.get('kop') and request.POST.get(
-                    'weight')):
+            if request.POST.get('weight'):
 
                 user = User.objects.get(pk=login_user.pk)
                 competition = Competition.objects.get(pk=competition)
@@ -679,20 +659,13 @@ def choose_athlete(request, pk, competition):
                 compAthlete = CompAthlete()
                 compAthlete.athlete = athlete
                 compAthlete.competition = competition
-                compAthlete.total = request.POST.get('total')
-                compAthlete.sıklet = Weight.objects.get(pk=request.POST.get('weight'))
-                compAthlete.silk1 = request.POST.get('silk')
-                compAthlete.kop1 = request.POST.get('kop')
+                compAthlete.category = Category.objects.get(pk=request.POST.get('weight'))
+                compAthlete.save()
+                log = str(athlete.user.get_full_name()) + "  Musabaka sporcu eklendi "
+                log = general_methods.logwrite(request, request.user, log)
+                return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
 
-                if (int(request.POST.get('silk')) + int(request.POST.get('kop'))) - 20 <= int(
-                        request.POST.get('total')):
-                    compAthlete.save()
-                    log = str(athlete.user.get_full_name()) + "  Musabaka sporcu eklendi "
-                    log = general_methods.logwrite(request, request.user, log)
 
-                    return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
-                else:
-                    return JsonResponse({'status': 'Fail', 'msg': 'Kural20'})
             else:
                 return JsonResponse({'status': 'Fail', 'msg': 'Eksik'})
 

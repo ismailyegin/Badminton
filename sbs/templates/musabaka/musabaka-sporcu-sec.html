@@ -26,27 +26,7 @@
         <!-- /.modal-dialog -->
     </div>
 
-    <div class="modal modal-danger fade in deneme22" tabindex="-1" role="dialog" id="modal-kural"
-         aria-hidden="true" style="display: none;">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">Uyarı</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Girilen veriler 20 kg kuralına uygun degildir.</p>
-                </div>
-                <div class="modal-footer">
 
-                    <button type="button" class="btn  btn-outline btn-ok" id="btn-kural ">Kapat</button>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
 
     <!-- success modal -->
     <div class="modal modal-success modal-success-food fade in" id="modal-success" style="display: none;">
@@ -104,22 +84,14 @@
                     <h4 class="modal-title">Ek Bilgileri Giriniz</h4>
                 </div>
                 <div class="modal-body">
-                    <label for="inputState">Siklet</label>
+                    <label for="inputState">Kategori</label>
                     <select id="weight" class="form-control">
                         <option selected>Seçiniz...</option>
                         {% for weight in weights %}
-                            <option value="{{ weight.pk }}">{{ weight.weight }}</option>
+                            <option value="{{ weight.pk }}">{{ weight.kategoriadi }}</option>
                         {% endfor %}
                     </select>
-                    <label for="kop">Koparma</label>
-                    <input type="number" name="kop" id="kop" class="form-control" required>
 
-                    <label for="silk">Silkme </label>
-                    <input type="number" name="silk" id="silk" class="form-control" required>
-
-
-                    <label for="total">Total</label>
-                    <input type="number" name="total" id="total" class="form-control" required>
 
                 </div>
 
@@ -492,10 +464,9 @@
                                 type: "POST",
                                 data: {
                                     'csrfmiddlewaretoken': "{{  csrf_token  }}",
-                                    total: $('#total').val(),
+
                                     weight: $('#weight').val(),
-                                    silk: $('#silk').val(),
-                                    kop: $('#kop').val(),
+
                                     isActive: 'False',
 
                                 },

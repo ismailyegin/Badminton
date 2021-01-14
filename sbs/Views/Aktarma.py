@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 
 from sbs.models import *
 from sbs.models.FedsportalModels import Sporcular, Turnuvalar, TurnSporculari, TurnHakemleri, TurnSporcuAntrenorleri, \
-    TurnKategorileri, Malzemeler
+    TurnKategorileri, Malzemeler, MalzHareket
 from sbs.models.EnumFields import EnumFields
 from sbs.models.Material import Material
 from sbs.services import general_methods
@@ -13,6 +13,7 @@ from sbs.services import general_methods
 from sbs.models.CompetitionsAthlete import CompetitionsAthlete
 
 from sbs.models.Category import Category
+from sbs.models.Deposit import Deposit
 from sbs.models.CompetitionCoach import CompetitionCoach
 
 from datetime import date, datetime
@@ -1144,6 +1145,37 @@ def KangrubuHakem(request):
                     elif sporcu == "AB(-)":
                         item.person.bloodType = Person.AB2
                         item.save()
+
+    print(sayi)
+
+    return redirect('sbs:admin')
+
+
+@login_required
+def Emanet(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    sayi = 0
+    test = MalzHareket.objects.all()
+    print(test.count())
+    for item in test:
+        deposit = Deposit(
+            date=item.tarih,
+            count=item.miktar,
+
+        )
+        if item.aciklama:
+            deposit.description = item.aciklama
+        if item.malzemeid:
+            deposit.product = Products.objects.get(pk=item.malzemeid.malzemeid)
+        if item.kulupid:
+            deposit.club = SportsClub.objects.get(pk=item.kulupid.kulupid)
+        if item.aciklama:
+            deposit.description = item.aciklama
+        deposit.save()
 
     print(sayi)
 

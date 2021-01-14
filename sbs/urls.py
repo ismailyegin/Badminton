@@ -481,6 +481,7 @@ urlpatterns = [
     url(r'aktarma/kanspor', Aktarma.KangrubuSporcu, name='control-kan'),
     url(r'aktarma/kanantrenor', Aktarma.KangrubuAntrenor, name='control-kan-antrenor'),
     url(r'aktarma/kanhakem', Aktarma.KangrubuHakem, name='control-kan-hakem'),
+    url(r'aktarma/emanet', Aktarma.Emanet, name='control-emanet'),
 
 
 ]
