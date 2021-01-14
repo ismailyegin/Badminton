@@ -440,12 +440,6 @@ urlpatterns = [
 
     url(r'menu', ClaimView.menu, name='destek-talep-menu'),
 
-
-
-
-
-
-
     #     products
     url(r'urun/ekle', ProductView.add_product, name='urun-ekle'),
     url(r'urun/urunler', ProductView.return_products, name='urunler'),
@@ -482,6 +476,5 @@ urlpatterns = [
     url(r'aktarma/kanantrenor', Aktarma.KangrubuAntrenor, name='control-kan-antrenor'),
     url(r'aktarma/kanhakem', Aktarma.KangrubuHakem, name='control-kan-hakem'),
     url(r'aktarma/emanet', Aktarma.Emanet, name='control-emanet'),
-
-
+    url(r'aktarma/com', Aktarma.communicationAktar, name='control-aktarmatest'),
 ]

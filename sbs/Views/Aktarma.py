@@ -1180,3 +1180,42 @@ def Emanet(request):
     print(sayi)
 
     return redirect('sbs:admin')
+
+
+@login_required
+def communicationAktar(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    sayi = 0
+    test = Athlete.objects.filter(communication2=None)
+    print(test.count())
+    for item in test:
+        item.communication2 = item.communication
+        item.save()
+    test = Coach.objects.filter(communication2=None)
+    print(test.count())
+    for item in test:
+        item.communication2 = item.communication
+        item.save()
+    test = Judge.objects.filter(communication2=None)
+    print(test.count())
+    for item in test:
+        item.communication2 = item.communication
+        item.save()
+    test = DirectoryMember.objects.filter(communication2=None)
+    print(test.count())
+    for item in test:
+        item.communication2 = item.communication
+        item.save()
+    test = SportClubUser.objects.filter(communication2=None)
+    print(test.count())
+    for item in test:
+        item.communication2 = item.communication
+        item.save()
+
+    print(sayi)
+
+    return redirect('sbs:admin')
