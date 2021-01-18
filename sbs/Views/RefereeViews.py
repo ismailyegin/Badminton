@@ -35,6 +35,7 @@ from sbs.models.EnumFields import EnumFields
 from sbs.models.Penal import Penal
 from sbs.models.Person import Person
 from sbs.models.PreRegistration import PreRegistration
+from sbs.models.Country import Country
 # from sbs.models.ReferenceReferee import ReferenceReferee
 from sbs.models.ReferenceCoach import ReferenceCoach
 from sbs.models.ReferenceReferee import ReferenceReferee
@@ -55,7 +56,11 @@ def return_add_referee(request):
         return redirect('accounts:login')
     user_form = UserForm()
     person_form = PersonForm()
-    communication_form = CommunicationForm()
+
+    country = Country.objects.filter(name="TÜRKİYE")[0]
+    communication_form = CommunicationForm(initial={'country': country})
+
+
     iban_form = IbanFormJudge()
 
     if request.method == 'POST':
