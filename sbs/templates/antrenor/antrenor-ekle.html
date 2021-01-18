@@ -62,186 +62,186 @@
         <form method="post" enctype="multipart/form-data" role="form">
             {% csrf_token %}
             <div class="row">
+                <div class="col-lg-12">
 
-                <div class="col-lg-6">
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Genel Bilgiler</h3>
-                        </div>
-                        <div class="box-body">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label> {{ person_form.profileImage.label }}</label>
-                                        {{ person_form.profileImage }}
+                    <div class="col-lg-6">
+                        <div class="box box-solid box-info">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Genel Bilgiler</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+
+                                    <div class="col-lg-12">
+                                        <center>
+                                            <label> {{ person_form.profileImage.label }}</label>
+                                            {% load static %}
+
+                                            <img src="{% static 'images/user.png' %} " id="preview"
+                                                 class="img-responsive img-rounded"
+                                                 style=" height: 125px;width: 130px;">
+                                            <p>
+                                                <input type="file" name="profileImage" accept="image/*"
+                                                       id="id_profileImage"
+                                                       onchange="previewImage()">
+                                        </center>
                                     </div>
 
+                                    <div class="col-lg-12">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label> {{ person_form.tc.label }}</label>
+                                                {{ person_form.tc }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label> {{ user_form.last_name.label }}</label>
+                                                {{ user_form.last_name }}
+                                            </div>
 
-                                    <div class="form-group">
-                                        <label> {{ user_form.first_name.label }}</label>
-                                        {{ user_form.first_name }}
-                                    </div>
-
-
-                                    <div class="form-group">
-                                        <label> {{ user_form.last_name.label }}</label>
-                                        {{ user_form.last_name }}
-                                    </div>
-
-
-                                    <div class="form-group">
-                                        <label> {{ person_form.birthplace.label }}</label>
-                                        {{ person_form.birthplace }}
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label style="padding-top: 16px"> {{ person_form.bloodType.label }}</label>
-                                        {{ person_form.bloodType }}
-                                    </div>
+                                            <div class="form-group">
+                                                <label> {{ person_form.gender.label }}</label>
+                                                {{ person_form.gender }}
+                                            </div>
 
 
-                                </div>
-                                <br>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label> {{ person_form.tc.label }}</label>
-                                        {{ person_form.tc }}
-                                    </div>
+                                        </div>
 
 
-                                    <div class="form-group">
-                                        <label> {{ person_form.motherName.label }}</label>
-                                        {{ person_form.motherName }}
-                                    </div>
+                                        <div class="col-lg-6">
 
-                                    <div class="form-group">
-                                        <label> {{ person_form.fatherName.label }}</label>
-                                        {{ person_form.fatherName }}
-                                    </div>
+                                            <div class="form-group">
+                                                <label> {{ user_form.first_name.label }}</label>
+                                                {{ user_form.first_name }}
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="fa fa-calendar"> {{ person_form.birthDate.label }}</label>
+                                                {{ person_form.birthDate }}
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <div class="form-group">
+                                                <label> {{ person_form.uyrukid.label }}</label>
+                                                {{ person_form.uyrukid }}
+                                            </div>
 
 
-                                    <div class="form-group">
-                                        <label> {{ person_form.birthDate.label }}</label>
-                                        {{ person_form.birthDate }}
-                                    </div>
+                                        </div>
+                                        <div class="col-lg-12">
 
-
-                                    <div class="form-group">
-                                        <label> {{ person_form.gender.label }}</label>
-                                        {{ person_form.gender }}
+                                            <div class="form-group">
+                                                <label> {{ iban_form.iban.label }}</label>
+                                                {{ iban_form.iban }}
+                                            </div>
+                                        </div>
                                     </div>
 
 
                                 </div>
                                 <div class="col-lg-12">
-
-                                    <div class="form-group">
-                                        <label> {{ iban_form.iban.label }}</label>
-                                        {{ iban_form.iban }}
-                                    </div>
-
+                                    <p class="text-light-blue"> Lütfen (*) zorunlu alanları dordurunuz.</p>
 
                                 </div>
-
                             </div>
-                        </div>
-                        <div class="box-footer">
-                            <button class="btn btn-primary" type="submit">Kaydet</button>
                         </div>
 
 
                     </div>
+                    <div class="col-lg-6">
+                        <div class="box box-solid box-success">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">İletişim Bilgileri</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label> {{ user_form.email.label }}</label>
+                                            {{ user_form.email }}
+                                        </div>
+                                        <div class="form-group">
+                                            <label> {{ communication_form.phoneNumber.label }}</label>
+                                            {{ communication_form.phoneNumber }}
+                                        </div>
 
-                </div>
-                <div class="col-lg-6">
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">İletişim Bilgileri</h3>
+
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label> {{ communication_form.country.label }}</label>
+                                            {{ communication_form.country }}
+                                        </div>
+                                        <div class="form-group">
+                                            <label> {{ communication_form.city.label }}</label>
+                                            {{ communication_form.city }}
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label> {{ communication_form.address.label }}</label>
+                                            {{ communication_form.address }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
                         </div>
-                        <div class="box-body">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label> {{ user_form.email.label }}</label>
-                                        {{ user_form.email }}
-                                    </div>
-                                    <div class="form-group">
-                                        <label> {{ communication_form.phoneNumber.label }}</label>
-                                        {{ communication_form.phoneNumber }}
-                                    </div>
-                                    <div class="form-group">
-                                        <label> {{ communication_form.phoneNumber2.label }}</label>
-                                        {{ communication_form.phoneNumber2 }}
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label> {{ communication_form.phoneHome.label }}</label>
-                                        {{ communication_form.phoneHome }}
-                                    </div>
-
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label> {{ communication_form.country.label }}</label>
-                                        {{ communication_form.country }}
-                                    </div>
-                                    <div class="form-group">
-                                        <label> {{ communication_form.city.label }}</label>
-                                        {{ communication_form.city }}
-                                    </div>
-                                    <div class="form-group">
-                                        <label> {{ communication_form.postalCode.label }}</label>
-                                        {{ communication_form.postalCode }}
-                                    </div>
-                                    <div class="form-group">
-                                        <label> {{ communication_form.phoneJop.label }}</label>
-                                        {{ communication_form.phoneJop }}
-                                    </div>
-
-                                </div>
-
-
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label> {{ communication_form.address.label }}</label>
-                                        {{ communication_form.address }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label> {{ communication_form.addressHome.label }}</label>
-                                        {{ communication_form.addressHome }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label> {{ communication_form.addressJop.label }}</label>
-                                        {{ communication_form.addressJop }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="box-footer">
-                            <button class="btn btn-primary" type="submit">Kaydet</button>
-                        </div>
-
 
                     </div>
-
+                    <div class="col-lg-6">
+                        <div class="box box-solid box-danger">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Kademe Bilgileri</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label> {{ grade_form.definition.label }}</label>
+                                            {{ grade_form.definition }}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label> {{ grade_form.startDate.label }}</label>
+                                            {{ grade_form.startDate }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                    <button class="btn btn-danger pull-right" type="submit">Kaydet</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
             </div>
+
 
         </form>
 
 
     </section>
+    <script>
+        function previewImage() {
+            var file = document.getElementById("id_profileImage").files;
+            if (file.length > 0) {
+                var fileReader = new FileReader();
+                fileReader.onload = function (event) {
+                    document.getElementById("preview").setAttribute("src", event.target.result);
+                }
+                fileReader.readAsDataURL(file[0]);
+            }
+        }
+    </script>
 
 {% endblock %}
 

@@ -147,17 +147,19 @@
                                 <div class="col-lg-12 text-center">
                                     <div class="form-group">
 
-                                        <label> {{ person_form.profileImage.label }}</label>
-
                                         <center>
-                                            <img
-                                                    src="/media/{{ person_form.instance.athlete.person.profileImage }}"
-                                                    class="img-responsive img-bordered imagesize" alt="Resim Yok"
-                                                    style=" max-width: 60%; height: auto;"
+                                            <label> {{ person_form.profileImage.label }}</label>
+                                            {% load static %}
 
-                                            ><br>
+                                            <img src="{% static 'images/user.png' %} " id="preview"
+                                                 class="img-responsive img-rounded"
+                                                 style=" height: 125px;width: 130px;">
+                                            <p>
+                                                <input type="file" name="profileImage" accept="image/*"
+                                                       id="id_profileImage"
+                                                       onchange="previewImage()">
+
                                         </center>
-                                        {{ person_form.profileImage }}
 
 
                                     </div>
@@ -226,9 +228,6 @@
                                         <label> {{ person_form.birthDate.label }}</label>
                                         {{ person_form.birthDate }}
                                     </div>
-
-
-
 
 
                                 </div>
@@ -344,214 +343,214 @@
                 </div>
 
 
-            {#            nufus   bilgileri#}
-            <div class="col-lg-7">
+                {#            nufus   bilgileri#}
+                <div class="col-lg-7">
 
-                <div class="box box-info collapsed-box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">NUFUS BİLGİLERİ</h3>
+                    <div class="box box-info collapsed-box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">NUFUS BİLGİLERİ</h3>
 
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                    class="fa fa-plus"></i>
-                            </button>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                            <!-- /.box-tools -->
                         </div>
-                        <!-- /.box-tools -->
-                    </div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-lg-12">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-lg-12">
 
-                                <div class="form-group">
-                                    <label> {{ person_form.uyrukid.label }}</label>
-                                    {{ person_form.uyrukid }}
-                                </div>
+                                    <div class="form-group">
+                                        <label> {{ person_form.uyrukid.label }}</label>
+                                        {{ person_form.uyrukid }}
+                                    </div>
 
-                                <div class="form-group">
-                                    <label> {{ person_form.nufus_ailesirano.label }}</label>
-                                    {{ person_form.nufus_ailesirano }}
-                                </div>
-                                <div class="form-group">
-                                    <label> {{ person_form.nufus_ciltno.label }}</label>
-                                    {{ person_form.nufus_ciltno }}
-                                </div>
+                                    <div class="form-group">
+                                        <label> {{ person_form.nufus_ailesirano.label }}</label>
+                                        {{ person_form.nufus_ailesirano }}
+                                    </div>
+                                    <div class="form-group">
+                                        <label> {{ person_form.nufus_ciltno.label }}</label>
+                                        {{ person_form.nufus_ciltno }}
+                                    </div>
 
-                                <div class="form-group">
-                                    <label> {{ person_form.nufus_sirano.label }}</label>
-                                    {{ person_form.nufus_sirano }}
-                                </div>
+                                    <div class="form-group">
+                                        <label> {{ person_form.nufus_sirano.label }}</label>
+                                        {{ person_form.nufus_sirano }}
+                                    </div>
 
 
-                                <div class="box-footer">
-                                    <button class="btn btn-primary" type="submit">Kaydet</button>
+                                    <div class="box-footer">
+                                        <button class="btn btn-primary" type="submit">Kaydet</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
+                        <!-- /.box-body -->
                     </div>
-                    <!-- /.box-body -->
+
+
+                </div>
+                {#            iş  bilgileri#}
+                <div class="col-lg-7">
+
+                    <div class="box box-info collapsed-box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">İŞ BİLGİLERİ</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                            <!-- /.box-tools -->
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+
+                                    <div class="form-group">
+                                        <label> {{ person_form.meslek.label }}</label>
+                                        {{ person_form.meslek }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label> {{ person_form.is_unvani.label }}</label>
+                                        {{ person_form.is_unvani }}
+                                    </div>
+                                    <div class="form-group">
+                                        <label> {{ person_form.kurum.label }}</label>
+                                        {{ person_form.kurum }}
+                                    </div>
+
+
+                                    <div class="box-footer">
+                                        <button class="btn btn-primary" type="submit">Kaydet</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+
+
                 </div>
 
 
-            </div>
-            {#            iş  bilgileri#}
-            <div class="col-lg-7">
+                {#            egitim   bilgileri#}
+                <div class="col-lg-7">
 
-                <div class="box box-info collapsed-box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">İŞ BİLGİLERİ</h3>
+                    <div class="box box-info collapsed-box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">EGİTİM BİLGİLERİ</h3>
 
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                    class="fa fa-plus"></i>
-                            </button>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                            <!-- /.box-tools -->
                         </div>
-                        <!-- /.box-tools -->
-                    </div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-lg-12">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-lg-12">
 
-                                <div class="form-group">
-                                    <label> {{ person_form.meslek.label }}</label>
-                                    {{ person_form.meslek }}
-                                </div>
+                                    <div class="form-group">
+                                        <label> {{ person_form.education.label }}</label>
+                                        {{ person_form.education }}
+                                    </div>
 
-                                <div class="form-group">
-                                    <label> {{ person_form.is_unvani.label }}</label>
-                                    {{ person_form.is_unvani }}
-                                </div>
-                                <div class="form-group">
-                                    <label> {{ person_form.kurum.label }}</label>
-                                    {{ person_form.kurum }}
-                                </div>
+                                    <div class="form-group">
+                                        <label> {{ person_form.mezunokul.label }}</label>
+                                        {{ person_form.mezunokul }}
+                                    </div>
 
 
-                                <div class="box-footer">
-                                    <button class="btn btn-primary" type="submit">Kaydet</button>
+                                    <div class="box-footer">
+                                        <button class="btn btn-primary" type="submit">Kaydet</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
+                        <!-- /.box-body -->
                     </div>
-                    <!-- /.box-body -->
+
+
+                </div>
+
+                {#            beden bilgileri#}
+                <div class="col-lg-7">
+
+
+                    <div class="box box-info collapsed-box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">BEDEN BİLGİLERİ</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                            <!-- /.box-tools -->
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+
+
+                            <div class="row">
+                                <div class="col-lg-12">
+
+                                    <div class="form-group">
+                                        <label> {{ person_form.height.label }}</label>
+                                        {{ person_form.height }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label> {{ person_form.weight.label }}</label>
+                                        {{ person_form.weight }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label> {{ metarial_form.ayakkabi.label }}</label>
+                                        {{ metarial_form.ayakkabi }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label> {{ metarial_form.esofman.label }}</label>
+                                        {{ metarial_form.esofman }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label> {{ metarial_form.tshirt.label }}</label>
+                                        {{ metarial_form.tshirt }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label> {{ metarial_form.raket.label }}</label>
+                                        {{ metarial_form.raket }}
+                                    </div>
+
+                                    <div class="box-footer">
+                                        <button class="btn btn-primary" type="submit">Kaydet</button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+
+
                 </div>
 
 
-            </div>
-
-
-            {#            egitim   bilgileri#}
-            <div class="col-lg-7">
-
-                <div class="box box-info collapsed-box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">EGİTİM BİLGİLERİ</h3>
-
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                    class="fa fa-plus"></i>
-                            </button>
-                        </div>
-                        <!-- /.box-tools -->
-                    </div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-lg-12">
-
-                                <div class="form-group">
-                                    <label> {{ person_form.education.label }}</label>
-                                    {{ person_form.education }}
-                                </div>
-
-                                <div class="form-group">
-                                    <label> {{ person_form.mezunokul.label }}</label>
-                                    {{ person_form.mezunokul }}
-                                </div>
-
-
-                                <div class="box-footer">
-                                    <button class="btn btn-primary" type="submit">Kaydet</button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <!-- /.box-body -->
-                </div>
-
-
-            </div>
-
-            {#            beden bilgileri#}
-            <div class="col-lg-7">
-
-
-                <div class="box box-info collapsed-box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">BEDEN BİLGİLERİ</h3>
-
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                    class="fa fa-plus"></i>
-                            </button>
-                        </div>
-                        <!-- /.box-tools -->
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-
-
-                        <div class="row">
-                            <div class="col-lg-12">
-
-                                <div class="form-group">
-                                    <label> {{ person_form.height.label }}</label>
-                                    {{ person_form.height }}
-                                </div>
-
-                                <div class="form-group">
-                                    <label> {{ person_form.weight.label }}</label>
-                                    {{ person_form.weight }}
-                                </div>
-
-                                <div class="form-group">
-                                    <label> {{ metarial_form.ayakkabi.label }}</label>
-                                    {{ metarial_form.ayakkabi }}
-                                </div>
-
-                                <div class="form-group">
-                                    <label> {{ metarial_form.esofman.label }}</label>
-                                    {{ metarial_form.esofman }}
-                                </div>
-
-                                <div class="form-group">
-                                    <label> {{ metarial_form.tshirt.label }}</label>
-                                    {{ metarial_form.tshirt }}
-                                </div>
-
-                                <div class="form-group">
-                                    <label> {{ metarial_form.raket.label }}</label>
-                                    {{ metarial_form.raket }}
-                                </div>
-
-                                <div class="box-footer">
-                                    <button class="btn btn-primary" type="submit">Kaydet</button>
-                                </div>
-
-                            </div>
-                        </div>
-
-
-                    </div>
-                    <!-- /.box-body -->
-                </div>
-
-
-            </div>
-
-
-            {#            lisans  bilgileri#}
+                {#            lisans  bilgileri#}
                 <div class="col-lg-7">
 
 
@@ -613,7 +612,7 @@
                                             <td>{{ forloop.counter }} </td>
                                             <td>
 
-                                                    {{ license.sportsClub }}
+                                                {{ license.sportsClub }}
 
                                             </td>
                                             <td> {{ license.coach }} <br>
@@ -708,7 +707,7 @@
 
 
                 </div>
-            {#            müsabaka  bilgileri#}
+                {#            müsabaka  bilgileri#}
 
                 <div class="col-lg-7">
 
@@ -962,8 +961,8 @@
                 </div>
 
 
-            {#grup  bilgileri #}
-            {% if aktif == "Admin" %}
+                {#grup  bilgileri #}
+                {% if aktif == "Admin" %}
                     <div class="col-lg-7">
 
                         <div class="box box-info collapsed-box">
@@ -1012,8 +1011,6 @@
                 {% endif %}
 
 
-
-
             </div>
 
 
@@ -1027,6 +1024,17 @@
 
 
     <script>
+        function previewImage() {
+            var file = document.getElementById("id_profileImage").files;
+            if (file.length > 0) {
+                var fileReader = new FileReader();
+                fileReader.onload = function (event) {
+                    document.getElementById("preview").setAttribute("src", event.target.result);
+                }
+                fileReader.readAsDataURL(file[0]);
+            }
+        }
+
         $(function () {
             $('#lisans').DataTable({
                 'paging': true,
