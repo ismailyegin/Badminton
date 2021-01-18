@@ -195,7 +195,7 @@ def return_add_coach(request):
                           {'user_form': user_form, 'person_form': person_form,
                            'communication_form': communication_form, 'iban_form': iban_form, 'grade_form': grade_form})
 
-        if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and iban_form.is_valid():
+        if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and iban_form.is_valid() and grade_form.is_valid():
             user = User()
             user.username = user_form.cleaned_data['email']
             user.first_name = user_form.cleaned_data['first_name']
@@ -220,6 +220,10 @@ def return_add_coach(request):
 
             coach = Coach(user=user, person=person, communication=communication)
             coach.iban = iban_form.cleaned_data['iban']
+            coach.save()
+            grade = grade_form.save(commit=False)
+            grade.save
+            coach.grades.add(grade)
             coach.save()
             # antroner kaydından sonra mail gönderilmeyecek
 
