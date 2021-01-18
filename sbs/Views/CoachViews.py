@@ -1073,17 +1073,71 @@ def kademe_update(request, grade_pk, coach_pk):
 @login_required
 def kademe_list(request):
     perm = general_methods.control_access(request)
+    active = general_methods.controlGroup(request)
 
     if not perm:
         logout(request)
         return redirect('accounts:login')
 
-    coa = []
-    for item in CategoryItem.objects.filter(forWhichClazz='COACH_GRADE'):
-        coa.append(item.pk)
-    grade = Level.objects.filter(definition_id__in=coa, levelType=EnumFields.LEVELTYPE.GRADE).distinct()
+    user_form = CoachSearchForm()
+    searchClupForm = SearchClupForm()
+    coachs = Coach.objects.none()
+    user_form = CoachSearchForm()
+    searchClupForm = SearchClupForm()
+
+    if request.method == 'POST':
+        user_form = CoachSearchForm(request.POST)
+        searchClupForm = SearchClupForm(request.POST)
+        branch = request.POST.get('branch')
+        grade = request.POST.get('definition')
+        visa = request.POST.get('visa')
+        firstName = request.POST.get('first_name')
+        lastName = request.POST.get('last_name')
+        email = request.POST.get('email')
+
+        if not (firstName or lastName or email or branch or grade or visa):
+            if active == 'KlupUye':
+                sc_user = SportClubUser.objects.get(user=user)
+                clubsPk = []
+                clubs = SportsClub.objects.filter(clubUser=sc_user)
+                for club in clubs:
+                    clubsPk.append(club.pk)
+                coachs = Coach.objects.filter(sportsclub__in=clubsPk).distinct()
+            elif active == 'Yonetim' or active == 'Admin':
+                coachs = Coach.objects.all()
+        else:
+            query = Q()
+            if lastName:
+                query &= Q(user__last_name__icontains=lastName)
+            if firstName:
+                query &= Q(user__first_name__icontains=firstName)
+            if email:
+                query &= Q(user__email__icontains=email)
+            if branch:
+                query &= Q(grades__branch=branch, grades__status='Onaylandı')
+            if grade:
+                query &= Q(grades__definition__name=grade, grades__status='Onaylandı')
+            if visa == 'VISA':
+                query &= Q(visa__startDate__year=timezone.now().year, visa__status='Onaylandı')
+
+            if active == 'KlupUye':
+                sc_user = SportClubUser.objects.get(user=user)
+                clubsPk = []
+                clubs = SportsClub.objects.filter(clubUser=sc_user)
+                for club in clubs:
+                    clubsPk.append(club.pk)
+                coachs = Coach.objects.filter(query).filter(sportsclub__in=clubsPk).distinct()
+            elif active == 'Yonetim' or active == 'Admin':
+                coachs = Coach.objects.filter(query)
+            if visa == 'NONE':
+                coachs = coachs.exclude(visa__startDate__year=timezone.now().year, visa__status='Onaylandı')
+
+    # coa = []
+    # for item in CategoryItem.objects.filter(forWhichClazz='COACH_GRADE'):
+    #     coa.append(item.pk)
+    # grade = Level.objects.filter(definition_id__in=coa, levelType=EnumFields.LEVELTYPE.GRADE).distinct()
     return render(request, 'antrenor/Kademe-Listesi.html',
-                  {'belts': grade})
+                  {'coachs': coachs, 'user_form': user_form, 'branch': searchClupForm})
 
 
 
@@ -1091,17 +1145,64 @@ def kademe_list(request):
 @login_required
 def vize_list(request):
     perm = general_methods.control_access(request)
+    active = general_methods.controlGroup(request)
 
     if not perm:
         logout(request)
         return redirect('accounts:login')
 
-    coa = []
-    for item in CategoryItem.objects.filter(forWhichClazz='VISA'):
-        coa.append(item.pk)
-    grade = Level.objects.filter(definition_id__in=coa, levelType=EnumFields.VISA).distinct()
+    coachs = Coach.objects.none()
+    user_form = CoachSearchForm()
+    searchClupForm = SearchClupForm()
+
+    if request.method == 'POST':
+        user_form = CoachSearchForm(request.POST)
+        searchClupForm = SearchClupForm(request.POST)
+        branch = request.POST.get('branch')
+        grade = request.POST.get('definition')
+        visa = request.POST.get('visa')
+        firstName = request.POST.get('first_name')
+        lastName = request.POST.get('last_name')
+        email = request.POST.get('email')
+
+        if not (firstName or lastName or email or branch or grade or visa):
+            if active == 'KlupUye':
+                sc_user = SportClubUser.objects.get(user=user)
+                clubsPk = []
+                clubs = SportsClub.objects.filter(clubUser=sc_user)
+                for club in clubs:
+                    clubsPk.append(club.pk)
+                coachs = Coach.objects.filter(sportsclub__in=clubsPk).distinct()
+            elif active == 'Yonetim' or active == 'Admin':
+                coachs = Coach.objects.all()
+        else:
+            query = Q()
+            if lastName:
+                query &= Q(user__last_name__icontains=lastName)
+            if firstName:
+                query &= Q(user__first_name__icontains=firstName)
+            if email:
+                query &= Q(user__email__icontains=email)
+            if branch:
+                query &= Q(grades__branch=branch, grades__status='Onaylandı')
+            if grade:
+                query &= Q(grades__definition__name=grade, grades__status='Onaylandı')
+            if visa == 'VISA':
+                query &= Q(visa__startDate__year=timezone.now().year, visa__status='Onaylandı')
+
+            if active == 'KlupUye':
+                sc_user = SportClubUser.objects.get(user=user)
+                clubsPk = []
+                clubs = SportsClub.objects.filter(clubUser=sc_user)
+                for club in clubs:
+                    clubsPk.append(club.pk)
+                coachs = Coach.objects.filter(query).filter(sportsclub__in=clubsPk).distinct()
+            elif active == 'Yonetim' or active == 'Admin':
+                coachs = Coach.objects.filter(query)
+            if visa == 'NONE':
+                coachs = coachs.exclude(visa__startDate__year=timezone.now().year, visa__status='Onaylandı')
     return render(request, 'antrenor/Vize-Listesi.html',
-                  {'belts': grade})
+                  {'coachs': coachs, 'user_form': user_form, 'branch': searchClupForm})
 
 
 

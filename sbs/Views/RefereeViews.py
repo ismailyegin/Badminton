@@ -56,9 +56,10 @@ def return_add_referee(request):
         return redirect('accounts:login')
     user_form = UserForm()
     person_form = PersonForm()
-
-    country = Country.objects.filter(name="TÜRKİYE")[0]
-    communication_form = CommunicationForm(initial={'country': country})
+    #
+    # country = Country.objects.filter(name="TÜRKİYE")[0]
+    # communication_form = CommunicationForm(initial={'country': country})
+    communication_form = CommunicationForm()
 
 
     iban_form = IbanFormJudge()
@@ -1212,12 +1213,41 @@ def kademe_list(request):
         logout(request)
         return redirect('accounts:login')
 
-    coa = []
-    for item in CategoryItem.objects.filter(forWhichClazz='REFEREE_GRADE'):
-        coa.append(item.pk)
-    grade = Level.objects.filter(definition_id__in=coa, levelType=EnumFields.LEVELTYPE.GRADE).distinct()
+    referees = Judge.objects.none()
+    searchClupForm = SearchClupForm()
+    user_form = RefereeSearchForm()
+    if request.method == 'POST':
+        searchClupForm = SearchClupForm(request.POST)
+        user_form = RefereeSearchForm(request.POST)
+        branch = request.POST.get('branch')
+        grade = request.POST.get('definition')
+        visa = request.POST.get('visa')
+        firstName = request.POST.get('first_name')
+        lastName = request.POST.get('last_name')
+        email = request.POST.get('email')
+        # print(firstName, lastName, email, branch, grade, visa)
+        if not (firstName or lastName or email or branch or grade or visa):
+            referees = Judge.objects.all()
+        else:
+            query = Q()
+            if lastName:
+                query &= Q(user__last_name__icontains=lastName)
+            if firstName:
+                query &= Q(user__first_name__icontains=firstName)
+            if email:
+                query &= Q(user__email__icontains=email)
+            if branch:
+                query &= Q(grades__branch=branch, grades__status='Onaylandı')
+            if grade:
+                query &= Q(grades__definition__name=grade, grades__status='Onaylandı')
+            if visa == 'VISA':
+                print('visa ')
+                query &= Q(visa__startDate__year=timezone.now().year)
+            referees = Judge.objects.filter(query).distinct()
+            if visa == 'NONE':
+                referees = referees.exclude(visa__startDate__year=timezone.now().year).distinct()
     return render(request, 'hakem/hakem-KademeListesi.html',
-                  {'belts': grade})
+                  {'referees': referees, 'user_form': user_form, 'branch': searchClupForm})
 
 
 @login_required
@@ -1311,12 +1341,43 @@ def vize_list(request):
     if not perm:
         logout(request)
         return redirect('accounts:login')
-    coa = []
-    for item in CategoryItem.objects.filter(forWhichClazz='VISA'):
-        coa.append(item.pk)
-    grade = Level.objects.filter(definition_id__in=coa, levelType=EnumFields.VISA).distinct()
+
+    referees = Judge.objects.none()
+    searchClupForm = SearchClupForm()
+    user_form = RefereeSearchForm()
+    if request.method == 'POST':
+        searchClupForm = SearchClupForm(request.POST)
+        user_form = RefereeSearchForm(request.POST)
+        branch = request.POST.get('branch')
+        grade = request.POST.get('definition')
+        visa = request.POST.get('visa')
+        firstName = request.POST.get('first_name')
+        lastName = request.POST.get('last_name')
+        email = request.POST.get('email')
+        # print(firstName, lastName, email, branch, grade, visa)
+        if not (firstName or lastName or email or branch or grade or visa):
+            referees = Judge.objects.all()
+        else:
+            query = Q()
+            if lastName:
+                query &= Q(user__last_name__icontains=lastName)
+            if firstName:
+                query &= Q(user__first_name__icontains=firstName)
+            if email:
+                query &= Q(user__email__icontains=email)
+            if branch:
+                query &= Q(grades__branch=branch, grades__status='Onaylandı')
+            if grade:
+                query &= Q(grades__definition__name=grade, grades__status='Onaylandı')
+            if visa == 'VISA':
+                print('visa ')
+                query &= Q(visa__startDate__year=timezone.now().year)
+            referees = Judge.objects.filter(query).distinct()
+            if visa == 'NONE':
+                referees = referees.exclude(visa__startDate__year=timezone.now().year).distinct()
+
     return render(request, 'hakem/hakem-Vize-Listesi.html',
-                  {'belts': grade})
+                  {'referees': referees, 'user_form': user_form, 'branch': searchClupForm})
 
 
 @login_required
