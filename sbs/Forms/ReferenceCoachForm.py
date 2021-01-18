@@ -40,13 +40,16 @@ class RefereeCoachForm(ModelForm):
                                          'required': 'required'}),
 
             'birthplace': forms.TextInput(
-                attrs={'class': 'form-control ', 'value': '', 'required': 'required'}),
+                attrs={'class': 'form-control ', 'value': '', 'required': 'required',
+                       "style": "text-transform:uppercase"}),
 
             'motherName': forms.TextInput(
-                attrs={'class': 'form-control ', 'value': '', 'required': 'required'}),
+                attrs={'class': 'form-control ', 'value': '', 'required': 'required',
+                       "style": "text-transform:uppercase"}),
 
             'fatherName': forms.TextInput(
-                attrs={'class': 'form-control ', 'value': '', 'required': 'required'}),
+                attrs={'class': 'form-control ', 'value': '', 'required': 'required',
+                       "style": "text-transform:uppercase"}),
             'iban': forms.TextInput(
                 attrs={'id': 'iban', 'class': 'form-control  iban',
                        'onkeyup': 'if(this.value.length > 34){this.value=this.value.substr(0, 34);}', 'value': '',
@@ -63,17 +66,18 @@ class RefereeCoachForm(ModelForm):
                                           'style': 'width: 100%; '}),
 
             'first_name': forms.TextInput(
-                attrs={'class': 'form-control ', 'value': '', 'required': 'required'}),
+                attrs={'class': 'form-control ', 'value': '', 'required': 'required',
+                       "style": "text-transform:uppercase"}),
             'last_name': forms.TextInput(
-                attrs={'class': 'form-control ', 'required': 'required'}),
+                attrs={'class': 'form-control ', 'required': 'required', "style": "text-transform:uppercase"}),
             'email': forms.TextInput(attrs={'class': 'form-control ', 'required': 'required'}),
 
             'address': forms.Textarea(
-                attrs={'class': 'form-control ', 'rows': '2'}),
+                attrs={'class': 'form-control ', 'rows': '2', "style": "text-transform:uppercase"}),
 
-            'phoneNumber': forms.TextInput(attrs={'class': 'form-control '}),
+            'phoneNumber': forms.TextInput(attrs={'class': 'form-control ', 'onkeypress': 'validate(event)'}),
 
-            'phoneNumber2': forms.TextInput(attrs={'class': 'form-control '}),
+            'phoneNumber2': forms.TextInput(attrs={'class': 'form-control ', 'onkeypress': 'validate(event)'}),
 
             'postalCode': forms.TextInput(attrs={'class': 'form-control '}),
 

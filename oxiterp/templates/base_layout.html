@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -192,12 +192,11 @@
                                 <img src="/media/{{ person.profileImage }}" class="img-circle" alt="KOBİLTEK">
 
                                 <p>
-                                    {{ user.first_name }} {{ user.last_name }}
+                                    {{ user.first_name }}{{ user.last_name }}
 
-                                    {% if clupcontrol %}
-                                        <small> Kulüp Üyesi - Antrenör </small>
 
-                                    {% elif aktif == "KulupUye" %}
+
+                                    {% if aktif == "KlupUye" %}
                                         <small> Kulüp Üyesi </small>
 
 
@@ -460,7 +459,7 @@
 
 
 
-                {% elif  aktif == 'KulupUye' %}
+                {% elif  aktif == 'KlupUye' %}
 
                     {% for menu in clubusermenus %}
 
@@ -1053,6 +1052,24 @@
         // my parameters here
     });
 
+
+    function validate(evt) {
+        var theEvent = evt || window.event;
+
+        // Handle paste
+        if (theEvent.type === 'paste') {
+            key = event.clipboardData.getData('text/plain');
+        } else {
+            // Handle key press
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+        }
+        var regex = /[0-9]|\./;
+        if (!regex.test(key)) {
+            theEvent.returnValue = false;
+            if (theEvent.preventDefault) theEvent.preventDefault();
+        }
+    }
 
 </script>
 

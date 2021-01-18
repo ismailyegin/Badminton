@@ -10,4 +10,5 @@ class PenalForm(ModelForm):
         fields = ('file',
                   'penal',)
         labels = {'file': 'Döküman', 'penal': 'Ceza İsmi ', }
-        widgets = {'penal': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}), }
+        widgets = {'penal': forms.TextInput(
+            attrs={'class': 'form-control', 'required': 'required', "style": "text-transform:uppercase"}), }

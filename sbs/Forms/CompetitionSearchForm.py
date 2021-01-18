@@ -19,6 +19,6 @@ class CompetitionSearchForm(ModelForm):
                 attrs={'class': 'form-control  pull-right', 'id': 'datepicker5', 'autocomplete': 'on',
                        'onkeydown': 'return true'}),
 
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', "style": "text-transform:uppercase"}),
 
         }

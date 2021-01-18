@@ -2,6 +2,9 @@ from django.db import models
 from sbs.models.Document import Document
 from sbs.models.Penal import Penal
 from sbs.models.Material import Material
+from sbs.models.Nationnality import Nationnality
+
+from unicode_tr import unicode_tr
 
 class Person(models.Model):
     ILKOKUL = 10
@@ -21,14 +24,14 @@ class Person(models.Model):
     MALE = 1
     FEMALE = 0
 
-    AB1 = 'AB Rh+'
-    AB2 = 'AB Rh-'
-    A1 = 'A Rh+'
-    A2 = 'A Rh-'
-    B1 = 'B Rh+'
-    B2 = 'B Rh-'
-    O1 = '0 Rh+'
-    O2 = '0 Rh-'
+    AB1 = 'AB(+)'
+    AB2 = 'AB(-)'
+    A1 = 'A(+)'
+    A2 = 'A(-)'
+    B1 = 'B(+)'
+    B2 = 'B(-)'
+    O1 = '0(+)'
+    O2 = '0(-)'
 
     GENDER_CHOICES = (
         (MALE, 'Erkek'),
@@ -46,7 +49,31 @@ class Person(models.Model):
         (O2, '0 Rh-'),
 
     )
-
+    # AB1 = 'AB Rh+'
+    # AB2 = 'AB Rh-'
+    # A1 = 'A Rh+'
+    # A2 = 'A Rh-'
+    # B1 = 'B Rh+'
+    # B2 = 'B Rh-'
+    # O1 = '0 Rh+'
+    # O2 = '0 Rh-'
+    #
+    # GENDER_CHOICES = (
+    #     (MALE, 'Erkek'),
+    #     (FEMALE, 'Kadın'),
+    # )
+    #
+    # BLOODTYPE = (
+    #     (AB1, 'AB Rh+'),
+    #     (AB2, 'AB Rh-'),
+    #     (A1, 'A Rh+'),
+    #     (A2, 'A Rh-'),
+    #     (B1, 'B Rh+'),
+    #     (B2, 'B Rh-'),
+    #     (O1, '0 Rh+'),
+    #     (O2, '0 Rh-'),
+    #
+    # )
     tc = models.CharField(max_length=120, null=True, blank=True)
     height = models.CharField(max_length=120, null=True, blank=True)
     weight = models.CharField(max_length=120, null=True, blank=True)
@@ -84,13 +111,15 @@ class Person(models.Model):
 
     # class Meta:
     #     default_permissions = ()
-    #     db_table = 'person'
 
-    # def save(self, force_insert=False, force_update=False):
-    #     if self.birthplace:
-    #         self.birthplace = self.birthplace.upper()
-    #     if self.motherName:
-    #         self.motherName = self.motherName.upper()
-    #     if self.fatherName:
-    #         self.fatherName = self.fatherName.upper()
-    #     super(Person, self).save(force_insert, force_update)
+    def save(self, force_insert=False, force_update=False):
+        if self.birthplace:
+            self.birthplace = unicode_tr(self.birthplace)
+            self.birthplace = self.birthplace.upper()
+        if self.motherName:
+            self.motherName = unicode_tr(self.motherName)
+            self.motherName = self.motherName.upper()
+        if self.fatherName:
+            self.fatherName = unicode_tr(self.fatherName)
+            self.fatherName = self.fatherName.upper()
+        super(Person, self).save(force_insert, force_update)

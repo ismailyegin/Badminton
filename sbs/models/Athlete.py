@@ -10,18 +10,15 @@ from sbs.models.Communication import Communication
 
 
 class Athlete(models.Model):
-    person = models.OneToOneField(Person, on_delete=models.CASCADE, db_column='person')
 
-    communication = models.ForeignKey(Communication, on_delete=models.CASCADE, null=True, blank=True,
-                                      related_name='SporcuikametAdres')
+    person = models.OneToOneField(Person, on_delete=models.CASCADE, db_column='person')
+    communication = models.OneToOneField(Communication, on_delete=models.CASCADE, db_column='communication')
     user = models.OneToOneField(User, on_delete=models.CASCADE, db_column='user')
     licenses = models.ManyToManyField(License)
     creationDate = models.DateTimeField(auto_now_add=True)
     operationDate = models.DateTimeField(auto_now=True)
     oldpk = models.IntegerField(null=True, blank=True)
-
     iban = models.CharField(max_length=120, null=True, blank=True, verbose_name='İban Adresi')
-
 
     def __str__(self):
         return '%s %s' % (self.user.first_name, self.user.last_name)

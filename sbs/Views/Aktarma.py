@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 
 from sbs.models import *
 from sbs.models.FedsportalModels import Sporcular, Turnuvalar, TurnSporculari, TurnHakemleri, TurnSporcuAntrenorleri, \
-    TurnKategorileri, Malzemeler
+    TurnKategorileri, Malzemeler, MalzHareket
 from sbs.models.EnumFields import EnumFields
 from sbs.models.Material import Material
 from sbs.services import general_methods
@@ -13,6 +13,7 @@ from sbs.services import general_methods
 from sbs.models.CompetitionsAthlete import CompetitionsAthlete
 
 from sbs.models.Category import Category
+from sbs.models.Deposit import Deposit
 from sbs.models.CompetitionCoach import CompetitionCoach
 
 from datetime import date, datetime
@@ -820,5 +821,401 @@ def comminacations_aktar(request):
                 athlete.communication.phoneJop = athlete.communicationJop.phoneNumber2
                 athlete.communication.addressJop = athlete.communicationJop.address
                 athlete.communication.save()
+
+    return redirect('sbs:admin')
+
+
+@login_required
+def SporcuControl(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    sayi = 0
+    athletes = Athlete.objects.all()
+    print(athletes.count())
+    for item in athletes:
+
+        if Sporcular.objects.filter(sporcuid=item.oldpk, sporcu=1):
+            sayi = sayi + 1
+        else:
+
+            item.delete()
+            print(item)
+    print(sayi)
+
+    return redirect('sbs:admin')
+
+
+@login_required
+def AntenorControl(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    sayi = 0
+    athletes = Coach.objects.all()
+    print(athletes.count())
+    for item in athletes:
+
+        if Sporcular.objects.filter(sporcuid=item.oldpk, sporcu=0):
+
+            for group in item.user.groups.all():
+
+                if group.name == "Sporcu":
+                    print(item)
+                    item.user.groups.remove(group)
+                    sayi = sayi + 1
+
+    print(sayi)
+
+    return redirect('sbs:admin')
+
+
+@login_required
+def TcnoControl(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    sayi = 0
+    athletes = Athlete.objects.all()
+    print(athletes.count())
+    for item in athletes:
+
+        if Sporcular.objects.get(sporcuid=item.oldpk):
+            if item.person.tc != Sporcular.objects.get(sporcuid=item.oldpk).tcno:
+                print(item)
+                e = Sporcular.objects.get(sporcuid=item.oldpk)
+                person = Person(
+                    tc=e.tcno,
+                    birthplace=e.dogumyeri,
+                    motherName=e.anneadi,
+                    fatherName=e.babaadi,
+                    birthDate=e.dogumtarihi,
+                    bloodType=e.kangrubu,
+                    # profileImage=e.resim,
+                    gender=e.cinsiyet,
+                    uyrukid=e.uyrukid,
+                    nufus_ailesirano=e.nufus_ailesirano,
+                    nufus_ciltno=e.nufus_ciltno,
+                    nufus_sirano=e.nufus_sirano,
+                    meslek=e.meslek,
+                    kurum=e.kurum,
+                    is_unvani=e.is_unvani,
+                    # meterial=meterial.id,
+                    # education=e.egitimid
+
+                )
+                person.save()
+                item.person = person
+                item.save()
+                sayi += 1
+
+    print(sayi)
+
+    return redirect('sbs:admin')
+
+
+@login_required
+def KangrubuSporcu(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    sayi = 0
+    athletes = Athlete.objects.all()
+    print(athletes.count())
+    for item in athletes:
+
+        if Sporcular.objects.filter(sporcuid=item.oldpk):
+            if item.person.tc != Sporcular.objects.get(sporcuid=item.oldpk).tcno:
+                print(item)
+                e = Sporcular.objects.get(sporcuid=item.oldpk)
+                person = Person(
+                    tc=e.tcno,
+                    birthplace=e.dogumyeri,
+                    motherName=e.anneadi,
+                    fatherName=e.babaadi,
+                    birthDate=e.dogumtarihi,
+                    bloodType=e.kangrubu,
+                    # profileImage=e.resim,
+                    gender=e.cinsiyet,
+                    uyrukid=e.uyrukid,
+                    nufus_ailesirano=e.nufus_ailesirano,
+                    nufus_ciltno=e.nufus_ciltno,
+                    nufus_sirano=e.nufus_sirano,
+                    meslek=e.meslek,
+                    kurum=e.kurum,
+                    is_unvani=e.is_unvani,
+                    # meterial=meterial.id,
+                    # education=e.egitimid
+
+                )
+                person.save()
+                item.person = person
+                item.save()
+                sayi += 1
+            else:
+                if Sporcular.objects.get(sporcuid=item.oldpk).kangrubu:
+                    sporcu = Sporcular.objects.get(sporcuid=item.oldpk).kangrubu
+                    if sporcu == "A(+)":
+                        item.person.bloodType = Person.A1
+                        item.save()
+                    elif sporcu == "AB(+)":
+                        item.person.bloodType = Person.AB1
+                        item.save()
+                    elif sporcu == "0(+)":
+                        item.person.bloodType = Person.O1
+                        item.save()
+                    elif sporcu == "B(+)":
+                        item.person.bloodType = Person.B1
+                        item.save()
+                    elif sporcu == "B(-)":
+                        item.person.bloodType = Person.B2
+                        item.save()
+                    elif sporcu == "0(-)":
+                        item.person.bloodType = Person.O2
+                        item.save()
+                    elif sporcu == "A(-)":
+                        item.person.bloodType = Person.A2
+                        item.save()
+                    elif sporcu == "AB(-)":
+                        item.person.bloodType = Person.AB2
+                        item.save()
+
+    print(sayi)
+
+    return redirect('sbs:admin')
+
+
+@login_required
+def KangrubuAntrenor(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    sayi = 0
+    test = Coach.objects.exclude(person__bloodType=None)
+    print(test.count())
+    athletes = Coach.objects.all()
+    print(athletes.count())
+    for item in athletes:
+
+        if Coach.objects.filter(oldpk=item.oldpk):
+            if item.person.tc != Sporcular.objects.get(sporcuid=item.oldpk).tcno:
+                print(item)
+
+                if Coach.objects.filter(oldpk=item.oldpk):
+                    e = Coach.objects.get(oldpk=item.oldpk)
+                    person = Person(
+                        tc=e.tcno,
+                        birthplace=e.dogumyeri,
+                        motherName=e.anneadi,
+                        fatherName=e.babaadi,
+                        birthDate=e.dogumtarihi,
+                        bloodType=e.kangrubu,
+                        # profileImage=e.resim,
+                        gender=e.cinsiyet,
+                        uyrukid=e.uyrukid,
+                        nufus_ailesirano=e.nufus_ailesirano,
+                        nufus_ciltno=e.nufus_ciltno,
+                        nufus_sirano=e.nufus_sirano,
+                        meslek=e.meslek,
+                        kurum=e.kurum,
+                        is_unvani=e.is_unvani,
+                        # meterial=meterial.id,
+                        # education=e.egitimid
+
+                    )
+                    person.save()
+                    item.person = person
+                    item.save()
+                    sayi += 1
+
+
+            else:
+                if Sporcular.objects.get(sporcuid=item.oldpk).kangrubu:
+                    sporcu = Sporcular.objects.get(sporcuid=item.oldpk).kangrubu
+                    if sporcu == "A(+)":
+                        item.person.bloodType = Person.A1
+                        item.save()
+                    elif sporcu == "AB(+)":
+                        item.person.bloodType = Person.AB1
+                        item.save()
+                    elif sporcu == "0(+)":
+                        item.person.bloodType = Person.O1
+                        item.save()
+                    elif sporcu == "B(+)":
+                        item.person.bloodType = Person.B1
+                        item.save()
+                    elif sporcu == "B(-)":
+                        item.person.bloodType = Person.B2
+                        item.save()
+                    elif sporcu == "0(-)":
+                        item.person.bloodType = Person.O2
+                        item.save()
+                    elif sporcu == "A(-)":
+                        item.person.bloodType = Person.A2
+                        item.save()
+                    elif sporcu == "AB(-)":
+                        item.person.bloodType = Person.AB2
+                        item.save()
+
+    print(sayi)
+
+    return redirect('sbs:admin')
+
+
+@login_required
+def KangrubuHakem(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    sayi = 0
+    test = Judge.objects.exclude(person__bloodType=None)
+    print(test.count())
+    athletes = Judge.objects.all()
+    print(athletes.count())
+    for item in athletes:
+
+        if Judge.objects.filter(oldpk=item.oldpk):
+            if item.person.tc != Sporcular.objects.get(sporcuid=item.oldpk).tcno:
+                print(item)
+
+                if Judge.objects.filter(oldpk=item.oldpk):
+                    e = Judge.objects.get(oldpk=item.oldpk)
+                    person = Person(
+                        tc=e.tcno,
+                        birthplace=e.dogumyeri,
+                        motherName=e.anneadi,
+                        fatherName=e.babaadi,
+                        birthDate=e.dogumtarihi,
+                        bloodType=e.kangrubu,
+                        # profileImage=e.resim,
+                        gender=e.cinsiyet,
+                        uyrukid=e.uyrukid,
+                        nufus_ailesirano=e.nufus_ailesirano,
+                        nufus_ciltno=e.nufus_ciltno,
+                        nufus_sirano=e.nufus_sirano,
+                        meslek=e.meslek,
+                        kurum=e.kurum,
+                        is_unvani=e.is_unvani,
+                        # meterial=meterial.id,
+                        # education=e.egitimid
+
+                    )
+                    person.save()
+                    item.person = person
+                    item.save()
+                    sayi += 1
+
+
+            else:
+                if Sporcular.objects.get(sporcuid=item.oldpk).kangrubu:
+                    sporcu = Sporcular.objects.get(sporcuid=item.oldpk).kangrubu
+                    if sporcu == "A(+)":
+                        item.person.bloodType = Person.A1
+                        item.save()
+                    elif sporcu == "AB(+)":
+                        item.person.bloodType = Person.AB1
+                        item.save()
+                    elif sporcu == "0(+)":
+                        item.person.bloodType = Person.O1
+                        item.save()
+                    elif sporcu == "B(+)":
+                        item.person.bloodType = Person.B1
+                        item.save()
+                    elif sporcu == "B(-)":
+                        item.person.bloodType = Person.B2
+                        item.save()
+                    elif sporcu == "0(-)":
+                        item.person.bloodType = Person.O2
+                        item.save()
+                    elif sporcu == "A(-)":
+                        item.person.bloodType = Person.A2
+                        item.save()
+                    elif sporcu == "AB(-)":
+                        item.person.bloodType = Person.AB2
+                        item.save()
+
+    print(sayi)
+
+    return redirect('sbs:admin')
+
+
+@login_required
+def Emanet(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    sayi = 0
+    test = MalzHareket.objects.all()
+    print(test.count())
+    for item in test:
+        deposit = Deposit(
+            date=item.tarih,
+            count=item.miktar,
+
+        )
+        if item.aciklama:
+            deposit.description = item.aciklama
+        if item.malzemeid:
+            deposit.product = Products.objects.get(pk=item.malzemeid.malzemeid)
+        if item.kulupid:
+            deposit.club = SportsClub.objects.get(pk=item.kulupid.kulupid)
+        if item.aciklama:
+            deposit.description = item.aciklama
+        deposit.save()
+
+    print(sayi)
+
+    return redirect('sbs:admin')
+
+
+@login_required
+def communicationAktar(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    sayi = 0
+    test = Athlete.objects.filter(communication2=None)
+    print(test.count())
+    for item in test:
+        item.communication2 = item.communication
+        item.save()
+    test = Coach.objects.filter(communication2=None)
+    print(test.count())
+    for item in test:
+        item.communication2 = item.communication
+        item.save()
+    test = Judge.objects.filter(communication2=None)
+    print(test.count())
+    for item in test:
+        item.communication2 = item.communication
+        item.save()
+    test = DirectoryMember.objects.filter(communication2=None)
+    print(test.count())
+    for item in test:
+        item.communication2 = item.communication
+        item.save()
+    test = SportClubUser.objects.filter(communication2=None)
+    print(test.count())
+    for item in test:
+        item.communication2 = item.communication
+        item.save()
+
+    print(sayi)
 
     return redirect('sbs:admin')

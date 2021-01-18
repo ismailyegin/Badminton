@@ -17,8 +17,10 @@ class VisaSeminarForm(ModelForm):
                        'onkeydown': 'return true'}),
             'branch': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                           'style': 'width: 100%; '}),
-            'name': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'name': forms.TextInput(
+                attrs={'class': 'form-control', 'required': 'required', "style": "text-transform:uppercase"}),
 
-            'location': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'location': forms.TextInput(
+                attrs={'class': 'form-control', 'required': 'required', "style": "text-transform:uppercase"}),
 
         }

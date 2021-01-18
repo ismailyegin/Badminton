@@ -49,11 +49,11 @@
 
     <section class="content-header">
         <h1>
-            Sporcu Ceza Ekle
+            Dagıtım Düzenle
 
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i>Sporcu Ceza Ekle</a></li>
+            <li><a href="#"><i class="fa fa-dashboard"></i>Dagıtım Düzenle</a></li>
 
         </ol>
     </section>
@@ -66,20 +66,46 @@
                 <div class="col-lg-3">
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Bilgiler</h3>
+                            <h3 class="box-title">Dagıtım Bilgileri</h3>
                         </div>
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label> {{ ceza.penal.label }}</label>
-                                        {{ ceza.penal }}
+
+                                        <label> {{ product_form.date.label }}</label>
+                                        {{ product_form.date }}
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label> {{ product_form.club.label }}</label>
+                                        {{ product_form.club }}
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label> {{ product_form.product.label }}</label>
+                                        {{ product_form.product }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label> {{ product_form.description.label }}</label>
+                                        {{ product_form.description }}
                                     </div>
                                     <div class="form-group">
-                                        <label> {{ ceza.file.label }}</label>
-                                        {{ ceza.file }}
+                                        <label> {{ product_form.delivery.label }}</label>
+                                        {{ product_form.delivery }}
                                     </div>
+                                    <div class="form-group">
+                                        <label> {{ product_form.count.label }}</label>
+                                        {{ product_form.count }}
+                                    </div>
+
+
                                 </div>
+
+
                             </div>
                         </div>
                         <div class="box-footer">
@@ -96,6 +122,15 @@
 
 
     </section>
+
+    <script>
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+            return true;
+        }
+    </script>
 
 {% endblock %}
 

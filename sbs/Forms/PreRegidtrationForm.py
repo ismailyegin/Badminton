@@ -52,7 +52,8 @@ class PreRegistrationForm(ModelForm):
             'role': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                         'style': 'width: 100%; ', 'required': 'required'}),
 
-            'name': forms.TextInput(attrs={'class': 'form-control ', 'required': 'required'}),
+            'name': forms.TextInput(
+                attrs={'class': 'form-control ', 'required': 'required', "style": "text-transform:uppercase"}),
 
             'shortName': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
 
@@ -62,11 +63,12 @@ class PreRegistrationForm(ModelForm):
                 attrs={'class': 'form-control  pull-right', 'id': 'datepicker2', 'autocomplete': 'off',
                        'onkeydown': 'return false', 'required': 'required'}),
 
-            'clubaddress': forms.Textarea(attrs={'class': 'form-control ', 'rows': '2'}),
+            'clubaddress': forms.Textarea(
+                attrs={'class': 'form-control ', 'rows': '2', "style": "text-transform:uppercase"}),
 
-            'clubphoneNumber': forms.TextInput(attrs={'class': 'form-control '}),
+            'clubphoneNumber': forms.TextInput(attrs={'class': 'form-control ', 'onkeypress': 'validate(event)'}),
 
-            'clubphoneNumber2': forms.TextInput(attrs={'class': 'form-control '}),
+            'clubphoneNumber2': forms.TextInput(attrs={'class': 'form-control ', 'onkeypress': 'validate(event)'}),
 
             'clubpostalCode': forms.TextInput(attrs={'class': 'form-control '}),
 
@@ -83,7 +85,7 @@ class PreRegistrationForm(ModelForm):
 
             'phoneNumber': forms.TextInput(attrs={'class': 'form-control '}),
 
-            'phoneNumber2': forms.TextInput(attrs={'class': 'form-control '}),
+            'phoneNumber2': forms.TextInput(attrs={'class': 'form-control ', 'onkeypress': 'validate(event)'}),
 
             'postalCode': forms.TextInput(attrs={'class': 'form-control '}),
 
@@ -104,22 +106,24 @@ class PreRegistrationForm(ModelForm):
                                          'onkeyup': 'if(this.value.length >11){this.value=this.value.substr(0, 11);}',
                                          'id': 'tc',
                                          'onkeypress': 'return isNumberKey(event)',
-
                                          'value': '',
                                          'required': 'required'}),
 
-            'height': forms.TextInput(attrs={'class': 'form-control'}),
+            'height': forms.TextInput(attrs={'class': 'form-control', 'onkeypress': 'validate(event)'}),
 
-            'weight': forms.TextInput(attrs={'class': 'form-control'}),
+            'weight': forms.TextInput(attrs={'class': 'form-control', 'onkeypress': 'validate(event)'}),
 
             'birthplace': forms.TextInput(
-                attrs={'class': 'form-control ', 'value': '', 'required': 'required'}),
+                attrs={'class': 'form-control ', 'value': '', 'required': 'required',
+                       "style": "text-transform:uppercase"}),
 
             'motherName': forms.TextInput(
-                attrs={'class': 'form-control ', 'value': '', 'required': 'required'}),
+                attrs={'class': 'form-control ', 'value': '', 'required': 'required',
+                       "style": "text-transform:uppercase"}),
 
             'fatherName': forms.TextInput(
-                attrs={'class': 'form-control ', 'value': '', 'required': 'required'}),
+                attrs={'class': 'form-control ', 'value': '', 'required': 'required',
+                       "style": "text-transform:uppercase"}),
 
             'birthDate': forms.DateInput(
                 attrs={'class': 'form-control  pull-right', 'id': 'datepicker', 'autocomplete': 'off',

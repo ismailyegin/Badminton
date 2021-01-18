@@ -42,7 +42,7 @@ class ClubSearchForm(ModelForm):
             # 'isFormal': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
             #                                 'style': 'width: 100%; '}),
 
-            'name': forms.TextInput(attrs={'class': 'form-control '}),
+            'name': forms.TextInput(attrs={'class': 'form-control ', "style": "text-transform:uppercase"}),
 
             'shortName': forms.TextInput(attrs={'class': 'form-control'}),
 

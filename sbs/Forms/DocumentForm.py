@@ -11,5 +11,6 @@ class DocumentForm(ModelForm):
             'file', 'name',)
         labels = {'file ': 'Dosya Seçiniz', 'name ': 'Döküman İsmi', }
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'name': forms.TextInput(
+                attrs={'class': 'form-control', 'required': 'required', "style": "text-transform:uppercase"}),
         }

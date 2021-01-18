@@ -117,7 +117,7 @@ def control_access_judge(request):
             if request.resolver_match.url_name == perm.name:
                 is_exist = True
 
-        if group.name == "Admin" or group.name == "Hakem":
+        if group.name == "Admin" or group.name == "Hakem" or group.name == "Yonetim":
             is_exist = True
 
     return is_exist
@@ -134,7 +134,7 @@ def control_access(request):
             if request.resolver_match.url_name == perm.name:
                 is_exist = True
 
-        if group.name == "Admin":
+        if group.name == "Admin" or group.name == "Yonetim":
             is_exist = True
 
     return is_exist
@@ -152,7 +152,7 @@ def control_access_klup(request):
             if request.resolver_match.url_name == perm.name:
                 is_exist = True
 
-        if group.name == "Admin" or group.name == "Hakem" or group.name == "Antrenor":
+        if group.name == "Admin" or group.name == "Hakem" or group.name == "Antrenor" or group.name == "Yonetim":
             is_exist = True
 
     return is_exist
@@ -174,7 +174,18 @@ def aktif(request):
         return {}
 
 
+def controlGroup(request):
+    if User.objects.filter(pk=request.user.pk):
+        if not (ActiveGroup.objects.filter(user=request.user)):
+            aktive = ActiveGroup(user=request.user, group=request.user.groups.all()[0])
+            aktive.save()
+            active = request.user.groups.all()[0]
+        else:
+            active = ActiveGroup.objects.get(user=request.user).group.name
+        return active
 
+    else:
+        return {}
 
 
 
@@ -183,8 +194,11 @@ def getProfileImage(request):
     if (request.user.id):
         current_user = request.user
 
-        if current_user.groups.filter(name='KulupUye').exists():
+        if current_user.groups.filter(name='Admin').exists():
+            person = dict()
+            person['profileImage'] = "profile/logo.png"
 
+        elif current_user.groups.filter(name='KlupUye').exists():
             athlete = SportClubUser.objects.get(user=current_user)
             person = Person.objects.get(id=athlete.person.id)
 
@@ -204,10 +218,6 @@ def getProfileImage(request):
         elif current_user.groups.filter(name='Yonetim').exists():
             athlete = DirectoryMember.objects.get(user=current_user)
             person = Person.objects.get(id=athlete.person.id)
-
-        elif current_user.groups.filter(name='Admin').exists():
-            person = dict()
-            person['profileImage'] = "profile/logo.png"
 
         else:
             person = None
@@ -269,7 +279,7 @@ def import_csv():
             user.set_password(password)
             user.save()
 
-            user.groups.add(Group.objects.get(name='KulupUye'))
+            user.groups.add(Group.objects.get(name='KlupUye'))
             user.save()
 
             person = Person()

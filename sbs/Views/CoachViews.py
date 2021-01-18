@@ -147,7 +147,6 @@ def visaSeminar_sil(request, pk):
 @login_required
 def return_add_coach(request):
     perm = general_methods.control_access(request)
-
     if not perm:
         logout(request)
         return redirect('accounts:login')
@@ -236,18 +235,18 @@ def return_add_coach(request):
             fdk.save()
 
             html_content = ''
-            subject, from_email, to = 'Bilgi Sistemi Kullanıcı Bilgileri', 'no-reply@halter.gov.tr', user.email
-            html_content = '<h2>TÜRKİYE HALTER FEDERASYONU BİLGİ SİSTEMİ</h2>'
+            subject, from_email, to = 'Bilgi Sistemi Kullanıcı Bilgileri', 'no-reply@badminton.gov.tr', user.email
+            html_content = '<h2>TÜRKİYE BADMİNTON FEDERASYONU BİLGİ SİSTEMİ</h2>'
             html_content = html_content + '<p><strong>Kullanıcı Adınız :' + str(fdk.user.username) + '</strong></p>'
-            html_content = html_content + '<p> <strong>Site adresi:</strong> <a href="http://sbs.halter.gov.tr:81/newpassword?query=' + str(
-                fdk.uuid) + '">http://sbs.halter.gov.tr:81/sbs/profil-guncelle/?query=' + str(fdk.uuid) + '</p></a>'
+            html_content = html_content + '<p> <strong>Site adresi:</strong> <a href="http://sbs.badminton.gov.tr/newpassword?query=' + str(
+                fdk.uuid) + '">http://sbs.badminton.gov.tr/sbs/profil-guncelle/?query=' + str(fdk.uuid) + '</p></a>'
             msg = EmailMultiAlternatives(subject, '', from_email, [to])
             msg.attach_alternative(html_content, "text/html")
             msg.send()
 
             messages.success(request, 'Antrenör Başarıyla Kayıt Edilmiştir.')
 
-            return redirect('sbs:antrenorler')
+            return redirect('sbs:update-coach', coach.pk)
 
         else:
 
@@ -262,6 +261,7 @@ def return_add_coach(request):
 @login_required
 def return_coachs(request):
     perm = general_methods.control_access(request)
+    active = general_methods.controlGroup(request)
 
     if not perm:
         logout(request)
@@ -283,14 +283,14 @@ def return_coachs(request):
         email = request.POST.get('email')
 
         if not (firstName or lastName or email or branch or grade or visa):
-            if user.groups.filter(name='KulupUye'):
+            if active == 'KlupUye':
                 sc_user = SportClubUser.objects.get(user=user)
                 clubsPk = []
                 clubs = SportsClub.objects.filter(clubUser=sc_user)
                 for club in clubs:
                     clubsPk.append(club.pk)
                 coachs = Coach.objects.filter(sportsclub__in=clubsPk).distinct()
-            elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+            elif active == 'Yonetim' or active == 'Admin':
                 coachs = Coach.objects.all()
         else:
             query = Q()
@@ -307,14 +307,14 @@ def return_coachs(request):
             if visa == 'VISA':
                 query &= Q(visa__startDate__year=timezone.now().year, visa__status='Onaylandı')
 
-            if user.groups.filter(name='KulupUye'):
+            if active == 'KlupUye':
                 sc_user = SportClubUser.objects.get(user=user)
                 clubsPk = []
                 clubs = SportsClub.objects.filter(clubUser=sc_user)
                 for club in clubs:
                     clubsPk.append(club.pk)
                 coachs = Coach.objects.filter(query).filter(sportsclub__in=clubsPk).distinct()
-            elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+            elif active == 'Yonetim' or active == 'Admin':
                 coachs = Coach.objects.filter(query)
             if visa == 'NONE':
                 coachs = coachs.exclude(visa__startDate__year=timezone.now().year, visa__status='Onaylandı')
@@ -506,7 +506,7 @@ def referenceCoachStatus(request, pk):
             grade = Level(definition=referenceCoach.kademe_definition,
                           startDate=referenceCoach.kademe_startDate,
                           dekont=referenceCoach.kademe_belge,
-                          branch=EnumFields.HALTER.value)
+                          branch=EnumFields.BADMİNTON.value)
             grade.levelType = EnumFields.LEVELTYPE.GRADE
             grade.status = Level.APPROVED
             grade.isActive = True
@@ -522,11 +522,11 @@ def referenceCoachStatus(request, pk):
             fdk.save()
 
             html_content = ''
-            subject, from_email, to = 'Bilgi Sistemi Kullanıcı Bilgileri', 'no-reply@halter.gov.tr', user.email
-            html_content = '<h2>TÜRKİYE HALTER FEDERASYONU BİLGİ SİSTEMİ</h2>'
+            subject, from_email, to = 'Bilgi Sistemi Kullanıcı Bilgileri', 'no-reply@badminton.gov.tr', user.email
+            html_content = '<h2>TÜRKİYE BADMİNTON FEDERASYONU BİLGİ SİSTEMİ</h2>'
             html_content = html_content + '<p><strong>Kullanıcı Adınız :' + str(fdk.user.username) + '</strong></p>'
-            html_content = html_content + '<p> <strong>Site adresi:</strong> <a href="http://sbs.halter.gov.tr:81/newpassword?query=' + str(
-                fdk.uuid) + '">http://sbs.halter.gov.tr:81/sbs/profil-guncelle/?query=' + str(fdk.uuid) + '</p></a>'
+            html_content = html_content + '<p> <strong>Site adresi:</strong> <a href="http://sbs.badminton.gov.tr/newpassword?query=' + str(
+                fdk.uuid) + '">http://sbs.badminton.gov.tr/sbs/profil-guncelle/?query=' + str(fdk.uuid) + '</p></a>'
             msg = EmailMultiAlternatives(subject, '', from_email, [to])
             msg.attach_alternative(html_content, "text/html")
             msg.send()
@@ -594,7 +594,7 @@ def referenappcoverCoach(request, pk):
                 grade = Level(definition=referenceCoach.kademe_definition,
                               startDate=referenceCoach.kademe_startDate,
                               dekont=referenceCoach.kademe_belge,
-                              branch=EnumFields.HALTER.value)
+                              branch=EnumFields.BADMİNTON.value)
                 grade.levelType = EnumFields.LEVELTYPE.GRADE
                 grade.status = Level.APPROVED
                 grade.isActive = True
@@ -610,11 +610,11 @@ def referenappcoverCoach(request, pk):
                 fdk.save()
 
                 html_content = ''
-                subject, from_email, to = 'Bilgi Sistemi Kullanıcı Bilgileri', 'no-reply@halter.gov.tr', user.email
-                html_content = '<h2>TÜRKİYE HALTER FEDERASYONU BİLGİ SİSTEMİ</h2>'
+                subject, from_email, to = 'Bilgi Sistemi Kullanıcı Bilgileri', 'no-reply@badminton.gov.tr', user.email
+                html_content = '<h2>TÜRKİYE BADMİNTON FEDERASYONU BİLGİ SİSTEMİ</h2>'
                 html_content = html_content + '<p><strong>Kullanıcı Adınız :' + str(fdk.user.username) + '</strong></p>'
-                html_content = html_content + '<p> <strong>Site adresi:</strong> <a href="http://sbs.halter.gov.tr:81/newpassword?query=' + str(
-                    fdk.uuid) + '">http://sbs.halter.gov.tr:81/sbs/profil-guncelle/?query=' + str(fdk.uuid) + '</p></a>'
+                html_content = html_content + '<p> <strong>Site adresi:</strong> <a href="http://sbs.badminton.gov.tr/newpassword?query=' + str(
+                    fdk.uuid) + '">http://sbs.badminton.gov.tr/sbs/profil-guncelle/?query=' + str(fdk.uuid) + '</p></a>'
                 msg = EmailMultiAlternatives(subject, '', from_email, [to])
                 msg.attach_alternative(html_content, "text/html")
                 msg.send()
@@ -736,7 +736,13 @@ def coachUpdate(request, pk):
     iban_form = IbanCoachForm(request.POST or None, instance=coach)
 
     communication = Communication.objects.get(pk=coach.communication.pk)
-    metarial = Material.objects.get(pk=coach.person.material.pk)
+    if person.material:
+        metarial = Material.objects.get(pk=coach.person.material.pk)
+    else:
+        metarial = Material()
+        metarial.save()
+        person.material = metarial
+        person.save()
 
     communication_form = CommunicationForm(request.POST or None, instance=communication)
     metarial_form = MaterialForm(request.POST or None, instance=metarial)
@@ -1067,17 +1073,71 @@ def kademe_update(request, grade_pk, coach_pk):
 @login_required
 def kademe_list(request):
     perm = general_methods.control_access(request)
+    active = general_methods.controlGroup(request)
 
     if not perm:
         logout(request)
         return redirect('accounts:login')
 
-    coa = []
-    for item in CategoryItem.objects.filter(forWhichClazz='COACH_GRADE'):
-        coa.append(item.pk)
-    grade = Level.objects.filter(definition_id__in=coa, levelType=EnumFields.LEVELTYPE.GRADE).distinct()
+    user_form = CoachSearchForm()
+    searchClupForm = SearchClupForm()
+    coachs = Coach.objects.none()
+    user_form = CoachSearchForm()
+    searchClupForm = SearchClupForm()
+
+    if request.method == 'POST':
+        user_form = CoachSearchForm(request.POST)
+        searchClupForm = SearchClupForm(request.POST)
+        branch = request.POST.get('branch')
+        grade = request.POST.get('definition')
+        visa = request.POST.get('visa')
+        firstName = request.POST.get('first_name')
+        lastName = request.POST.get('last_name')
+        email = request.POST.get('email')
+
+        if not (firstName or lastName or email or branch or grade or visa):
+            if active == 'KlupUye':
+                sc_user = SportClubUser.objects.get(user=user)
+                clubsPk = []
+                clubs = SportsClub.objects.filter(clubUser=sc_user)
+                for club in clubs:
+                    clubsPk.append(club.pk)
+                coachs = Coach.objects.filter(sportsclub__in=clubsPk).distinct()
+            elif active == 'Yonetim' or active == 'Admin':
+                coachs = Coach.objects.all()
+        else:
+            query = Q()
+            if lastName:
+                query &= Q(user__last_name__icontains=lastName)
+            if firstName:
+                query &= Q(user__first_name__icontains=firstName)
+            if email:
+                query &= Q(user__email__icontains=email)
+            if branch:
+                query &= Q(grades__branch=branch, grades__status='Onaylandı')
+            if grade:
+                query &= Q(grades__definition__name=grade, grades__status='Onaylandı')
+            if visa == 'VISA':
+                query &= Q(visa__startDate__year=timezone.now().year, visa__status='Onaylandı')
+
+            if active == 'KlupUye':
+                sc_user = SportClubUser.objects.get(user=user)
+                clubsPk = []
+                clubs = SportsClub.objects.filter(clubUser=sc_user)
+                for club in clubs:
+                    clubsPk.append(club.pk)
+                coachs = Coach.objects.filter(query).filter(sportsclub__in=clubsPk).distinct()
+            elif active == 'Yonetim' or active == 'Admin':
+                coachs = Coach.objects.filter(query)
+            if visa == 'NONE':
+                coachs = coachs.exclude(visa__startDate__year=timezone.now().year, visa__status='Onaylandı')
+
+    # coa = []
+    # for item in CategoryItem.objects.filter(forWhichClazz='COACH_GRADE'):
+    #     coa.append(item.pk)
+    # grade = Level.objects.filter(definition_id__in=coa, levelType=EnumFields.LEVELTYPE.GRADE).distinct()
     return render(request, 'antrenor/Kademe-Listesi.html',
-                  {'belts': grade})
+                  {'coachs': coachs, 'user_form': user_form, 'branch': searchClupForm})
 
 
 
@@ -1085,17 +1145,64 @@ def kademe_list(request):
 @login_required
 def vize_list(request):
     perm = general_methods.control_access(request)
+    active = general_methods.controlGroup(request)
 
     if not perm:
         logout(request)
         return redirect('accounts:login')
 
-    coa = []
-    for item in CategoryItem.objects.filter(forWhichClazz='VISA'):
-        coa.append(item.pk)
-    grade = Level.objects.filter(definition_id__in=coa, levelType=EnumFields.VISA).distinct()
+    coachs = Coach.objects.none()
+    user_form = CoachSearchForm()
+    searchClupForm = SearchClupForm()
+
+    if request.method == 'POST':
+        user_form = CoachSearchForm(request.POST)
+        searchClupForm = SearchClupForm(request.POST)
+        branch = request.POST.get('branch')
+        grade = request.POST.get('definition')
+        visa = request.POST.get('visa')
+        firstName = request.POST.get('first_name')
+        lastName = request.POST.get('last_name')
+        email = request.POST.get('email')
+
+        if not (firstName or lastName or email or branch or grade or visa):
+            if active == 'KlupUye':
+                sc_user = SportClubUser.objects.get(user=user)
+                clubsPk = []
+                clubs = SportsClub.objects.filter(clubUser=sc_user)
+                for club in clubs:
+                    clubsPk.append(club.pk)
+                coachs = Coach.objects.filter(sportsclub__in=clubsPk).distinct()
+            elif active == 'Yonetim' or active == 'Admin':
+                coachs = Coach.objects.all()
+        else:
+            query = Q()
+            if lastName:
+                query &= Q(user__last_name__icontains=lastName)
+            if firstName:
+                query &= Q(user__first_name__icontains=firstName)
+            if email:
+                query &= Q(user__email__icontains=email)
+            if branch:
+                query &= Q(grades__branch=branch, grades__status='Onaylandı')
+            if grade:
+                query &= Q(grades__definition__name=grade, grades__status='Onaylandı')
+            if visa == 'VISA':
+                query &= Q(visa__startDate__year=timezone.now().year, visa__status='Onaylandı')
+
+            if active == 'KlupUye':
+                sc_user = SportClubUser.objects.get(user=user)
+                clubsPk = []
+                clubs = SportsClub.objects.filter(clubUser=sc_user)
+                for club in clubs:
+                    clubsPk.append(club.pk)
+                coachs = Coach.objects.filter(query).filter(sportsclub__in=clubsPk).distinct()
+            elif active == 'Yonetim' or active == 'Admin':
+                coachs = Coach.objects.filter(query)
+            if visa == 'NONE':
+                coachs = coachs.exclude(visa__startDate__year=timezone.now().year, visa__status='Onaylandı')
     return render(request, 'antrenor/Vize-Listesi.html',
-                  {'belts': grade})
+                  {'coachs': coachs, 'user_form': user_form, 'branch': searchClupForm})
 
 
 

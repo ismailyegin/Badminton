@@ -20,7 +20,7 @@ class ActivityForm(ModelForm):
                 attrs={'class': 'form-control  pull-right', 'id': 'datepicker5', 'autocomplete': 'on',
                        'onkeydown': 'return true'}),
 
-            'eventPlace': forms.TextInput(attrs={'class': 'form-control'}),
+            'eventPlace': forms.TextInput(attrs={'class': 'form-control', "style": "text-transform:uppercase"}),
 
             'startDate': forms.DateInput(
                 attrs={'class': 'form-control  pull-right', 'id': 'datepicker2', 'autocomplete': 'on',
@@ -30,7 +30,8 @@ class ActivityForm(ModelForm):
                 attrs={'class': 'form-control  pull-right', 'id': 'datepicker4', 'autocomplete': 'on',
                        'onkeydown': 'return true'}),
 
-            'name': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'name': forms.TextInput(
+                attrs={'class': 'form-control', 'required': 'required', "style": "text-transform:uppercase"}),
 
             'type': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                         'style': 'width: 100%; '}),

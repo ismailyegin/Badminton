@@ -26,16 +26,17 @@ class LicenseForm(ModelForm):
 
             'startDate': forms.DateInput(
                 attrs={'class': 'form-control  pull-right', 'id': 'datepicker2', 'autocomplete': 'on',
-                       'onkeydown': 'return true'}),
+                       'onkeydown': 'return true', 'required': 'required'}),
 
             'expireDate': forms.DateInput(
                 attrs={'class': 'form-control  pull-right', 'id': 'datepicker4', 'autocomplete': 'on',
-                       'onkeydown': 'return true'}),
+                       'onkeydown': 'return true', 'required': 'required'}),
 
             'branch': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                           'style': 'width: 100%; '}),
 
-            'licenseNo': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'licenseNo': forms.TextInput(
+                attrs={'class': 'form-control', 'required': 'required', 'onkeypress': 'validate(event)'}),
 
             'cityHeadShip': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                                 'style': 'width: 100%;', 'required': 'required'}),

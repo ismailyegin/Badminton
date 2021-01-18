@@ -304,14 +304,21 @@
                             <table id="sporcular" class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Ad Soyad</th>
-                                    <th>Kategori</th>
-
-
+                                    <th>Sporcu No</th>
+                                    <th>Adı</th>
+                                    <th>Soyadı</th>
                                     {% if aktif == 'Admin' %}
                                         <th>Kulüp</th>
                                     {% endif %}
+                                    <th>Kategori</th>
+                                    <th>Kimlik No</th>
+                                    <th>Cinsiyet</th>
+                                    {% if aktif == 'Admin' %}
+                                        <th>Antrenör 1</th>
+                                        <th>Antrenör 2</th>
+                                    {% endif %}
+
+
                                     {#                                    <th>İşlemler</th>#}
 
 
@@ -321,14 +328,35 @@
                                 {% if athletes %}
                                     {% for compathlete in athletes %}
                                         <tr>
-                                            <td>{{ forloop.counter }} </td>
-                                            <td>{{ compathlete.athlete.user.first_name }} {{ compathlete.athlete.user.last_name }} </td>
-                                            <td>{{ compathlete.category }} </td>
-
+                                            <td>{{ compathlete.athlete.oldpk }} </td>
+                                            <td>{{ compathlete.athlete.user.first_name }}
+                                            </td>
+                                            <td>{{ compathlete.athlete.user.last_name }} </td>
 
                                             {% if aktif == 'Admin' %}
                                                 <td>{{ compathlete.athlete.licenses.last.sportsClub }}</td>
                                             {% endif %}
+                                            <td>{{ compathlete.category }} </td>
+                                            <td>{{ compathlete.athlete.person.tc }} </td>
+                                            <td>
+                                                {% if compathlete.athlete.person.gender == 1 %}
+
+                                                    M
+                                                {% else %}
+                                                    F
+
+                                                {% endif %}
+                                            </td>
+
+                                            {% if aktif == 'Admin' %}
+                                                <td>{{ compathlete.athlete.licenses.last.coach }}</td>
+                                                <td>{{ compathlete.athlete.licenses.last.coach2 }}</td>
+
+                                            {% endif %}
+
+
+
+
                                             {#                                            <td>#}
                                             {#                                                <div class="btn-group">#}
                                             {#                                                    <a onclick="addPlayer({{ compathlete.id }},{{ competition.pk }},{{ compathlete.sıklet.weight }},{{ compathlete.total }}, {{ compathlete.silk1 }}, {{ compathlete.kop1 }})"#}

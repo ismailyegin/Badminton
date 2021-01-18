@@ -47,6 +47,32 @@
     {% endif %}
 
 
+
+    <div class="modal modal-danger fade in deneme22" tabindex="-1" role="dialog" id="modal-group"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">Uyarı</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Grup degişikligine emin misiniz?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline pull-left btn-ok" id="btn-group"
+                            data-dismiss="modal">Evet
+                    </button>
+                    <button type="button" class="btn btn-outline" id="btn-close-group">Hayır</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+
     <section class="content-header">
         <h1>
             Üye Düzenle
@@ -97,11 +123,9 @@
                                         <label> {{ user_form.first_name.label }}</label>
                                         {{ user_form.first_name }}
                                     </div>
-
-
                                     <div class="form-group">
-                                        <label> {{ person_form.motherName.label }}</label>
-                                        {{ person_form.motherName }}
+                                        <label> {{ user_form.last_name.label }}</label>
+                                        {{ user_form.last_name }}
                                     </div>
 
 
@@ -129,8 +153,14 @@
 
 
                                     <div class="form-group">
-                                        <label> {{ user_form.last_name.label }}</label>
-                                        {{ user_form.last_name }}
+                                        <label> {{ user_form.email.label }}</label>
+                                        {{ user_form.email }}
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label> {{ person_form.motherName.label }}</label>
+                                        {{ person_form.motherName }}
                                     </div>
 
 
@@ -268,7 +298,7 @@
 
                 </div>
 
-            </div>
+
 
 
             {#            nufus   bilgileri#}
@@ -502,7 +532,7 @@
 
                                                 <div class="col-md-2 ">
                                                     <div class="form-group">
-                                                        <a href="{% url "sbs:sporcu-aktive-group" pk=member.user.pk %}?group={{ group.name }}&pk={{ member.pk }}&person={{ member.person.pk }}&communication={{ member.communication.pk }}&user={{ member.user.pk }}&communicationHome={{ member.communicationHome.pk }}&communicationWork={{ member.communicationJop.pk }}"
+                                                        <a id="group-{{ group.pk }}"
                                                            type="button" class="btn btn-block  btn-danger text-center"
                                                            id="{{ group.name }}">{{ group }}
                                                         </a>
@@ -537,11 +567,36 @@
 
         $(function () {
 
-            {% for item in member.user.groups.all %}
 
-                $("#{{ item.name }}").removeClass("btn-danger");
-                $("#{{ item.name }}").addClass("btn-success disabled");
-                $("#{{ item.name }}").text("{{ item.name }}");
+            {% for group in groups %}
+                $('#group-{{ group.pk }}').click(function () {
+                    {#alert('benden Selam olsun {{ group.name }}');#}
+                    $("#modal-group").on("shown.bs.modal", function (e) {
+                        if (e.handled !== true) { // This will prevent event triggering more then once
+                            e.handled = true;
+                            $("#btn-group").click(function () {
+                                window.location.replace("{% url "sbs:sporcu-aktive-group" pk=member.user.pk %}?group={{ group.name }}&pk={{ member.pk }}&person={{ member.person.pk }}&communication={{ member.communication.pk }}&user={{ member.user.pk }}");
+
+                            });
+                        }
+
+                    }).modal('show');
+
+
+                });
+
+            {% endfor %}
+
+            $('#btn-close-group').click(function () {
+                $('#modal-group').modal('hide');
+            });
+
+
+            {% for group in member.user.groups.all %}
+
+                $("#group-{{ group.pk }}").removeClass("btn-danger");
+                $("#group-{{ group.pk }}").addClass("btn-success disabled");
+                $("#group-{{ group.pk }}").text("{{ group.name}}");
 
             {% endfor %}
 

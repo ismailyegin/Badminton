@@ -35,6 +35,7 @@ from sbs.models.EnumFields import EnumFields
 from sbs.models.Penal import Penal
 from sbs.models.Person import Person
 from sbs.models.PreRegistration import PreRegistration
+from sbs.models.Country import Country
 # from sbs.models.ReferenceReferee import ReferenceReferee
 from sbs.models.ReferenceCoach import ReferenceCoach
 from sbs.models.ReferenceReferee import ReferenceReferee
@@ -55,7 +56,12 @@ def return_add_referee(request):
         return redirect('accounts:login')
     user_form = UserForm()
     person_form = PersonForm()
+    #
+    # country = Country.objects.filter(name="TÜRKİYE")[0]
+    # communication_form = CommunicationForm(initial={'country': country})
     communication_form = CommunicationForm()
+
+
     iban_form = IbanFormJudge()
 
     if request.method == 'POST':
@@ -127,31 +133,23 @@ def return_add_referee(request):
             judge.save()
 
 
-            # subject, from_email, to = 'Halter - Hakem Bilgi Sistemi Kullanıcı Giriş Bilgileri', 'no-reply@twf.gov.tr:81', user.email
-            # text_content = 'Aşağıda ki bilgileri kullanarak sisteme giriş yapabilirsiniz.'
-            # html_content = '<p> <strong>Site adresi: </strong> <a href="http://sbs.halter.gov.tr:81/"></a>sbs.halter.gov.tr<</p>'
-            # html_content = html_content + '<p><strong>Kullanıcı Adı:  </strong>' + user.username + '</p>'
-            # html_content = html_content + '<p><strong>Şifre: </strong>' + password + '</p>'
-            # msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-            # msg.attach_alternative(html_content, "text/html")
-            # msg.send()
 
             fdk = Forgot(user=user, status=False)
             fdk.save()
 
             html_content = ''
-            subject, from_email, to = 'Bilgi Sistemi Kullanıcı Bilgileri', 'no-reply@halter.gov.tr', user.email
-            html_content = '<h2>TÜRKİYE HALTER FEDERASYONU BİLGİ SİSTEMİ</h2>'
+            subject, from_email, to = 'Bilgi Sistemi Kullanıcı Bilgileri', 'no-reply@badminton.gov.tr', user.email
+            html_content = '<h2>TÜRKİYE BADMİNTON FEDERASYONU BİLGİ SİSTEMİ</h2>'
             html_content = html_content + '<p><strong>Kullanıcı Adınız :' + str(fdk.user.username) + '</strong></p>'
-            html_content = html_content + '<p> <strong>Site adresi:</strong> <a href="http://sbs.halter.gov.tr:81/newpassword?query=' + str(
-                fdk.uuid) + '">http://sbs.halter.gov.tr:81/sbs/profil-guncelle/?query=' + str(fdk.uuid) + '</p></a>'
+            html_content = html_content + '<p> <strong>Site adresi:</strong> <a href="http://sbs.badminton.gov.tr/newpassword?query=' + str(
+                fdk.uuid) + '">http://sbs.badminton.gov.tr/sbs/profil-guncelle/?query=' + str(fdk.uuid) + '</p></a>'
             msg = EmailMultiAlternatives(subject, '', from_email, [to])
             msg.attach_alternative(html_content, "text/html")
             msg.send()
 
             messages.success(request, 'Hakem Başarıyla Kayıt Edilmiştir.')
 
-            return redirect('sbs:hakemler')
+            return redirect('sbs:hakem-duzenle', judge.pk)
 
         else:
 
@@ -374,7 +372,7 @@ def refenceapprovalReferee(request, pk):
 
                 grade = Level(definition=reference.kademe_definition,
                               startDate=reference.kademe_startDate,
-                              branch=EnumFields.HALTER.value)
+                              branch=EnumFields.BADMİNTON.value)
                 grade.levelType = EnumFields.LEVELTYPE.GRADE
                 grade.status = Level.APPROVED
                 grade.isActive = True
@@ -393,11 +391,11 @@ def refenceapprovalReferee(request, pk):
                 print(fdk)
 
                 html_content = ''
-                subject, from_email, to = 'Bilgi Sistemi Kullanıcı Bilgileri', 'no-reply@halter.gov.tr', user.email
-                html_content = '<h2>TÜRKİYE HALTER FEDERASYONU BİLGİ SİSTEMİ</h2>'
+                subject, from_email, to = 'Bilgi Sistemi Kullanıcı Bilgileri', 'no-reply@badminton.gov.tr', user.email
+                html_content = '<h2>TÜRKİYE BADMİNTON FEDERASYONU BİLGİ SİSTEMİ</h2>'
                 html_content = html_content + '<p><strong>Kullanıcı Adınız :' + str(fdk.user.username) + '</strong></p>'
-                html_content = html_content + '<p> <strong>Site adresi:</strong> <a href="http://sbs.halter.gov.tr:81/newpassword?query=' + str(
-                    fdk.uuid) + '">http://sbs.halter.gov.tr:81/sbs/profil-guncelle/?query=' + str(fdk.uuid) + '</p></a>'
+                html_content = html_content + '<p> <strong>Site adresi:</strong> <a href="http://sbs.badminton.gov.tr/newpassword?query=' + str(
+                    fdk.uuid) + '">http://sbs.badminton.gov.tr/sbs/profil-guncelle/?query=' + str(fdk.uuid) + '</p></a>'
                 msg = EmailMultiAlternatives(subject, '', from_email, [to])
                 msg.attach_alternative(html_content, "text/html")
                 msg.send()
@@ -504,7 +502,13 @@ def updateReferee(request, pk):
     person_form = PersonForm(request.POST or None, request.FILES or None, instance=person)
 
     communication = Communication.objects.get(pk=judge.communication.pk)
-    metarial = Material.objects.get(pk=judge.person.material.pk)
+    if person.material:
+        metarial = Material.objects.get(pk=judge.person.material.pk)
+    else:
+        metarial = Material()
+        metarial.save()
+        person.material = metarial
+        person.save()
 
     communication_form = CommunicationForm(request.POST or None, instance=communication)
 
@@ -1076,8 +1080,8 @@ def referenceStatus_reddet(request, pk):
         reference.save()
 
         html_content = ''
-        subject, from_email, to = 'Bilgi Sistemi', 'no-reply@halter.gov.tr', reference.email
-        html_content = '<h2>TÜRKİYE HALTER FEDERASYONU BİLGİ SİSTEMİ</h2>'
+        subject, from_email, to = 'Bilgi Sistemi', 'no-reply@badminton.gov.tr', reference.email
+        html_content = '<h2>TÜRKİYE BADMİNTON FEDERASYONU BİLGİ SİSTEMİ</h2>'
         html_content = html_content + '<p><strong>Başvurunuz reddedilmiştir.</strong></p>'
 
         msg = EmailMultiAlternatives(subject, '', from_email, [to])
@@ -1136,7 +1140,7 @@ def referenceStatus(request, pk):
 
         grade = Level(definition=reference.kademe_definition,
                       startDate=reference.kademe_startDate,
-                      branch=EnumFields.HALTER.value)
+                      branch=EnumFields.BADMİNTON.value)
         grade.levelType = EnumFields.LEVELTYPE.GRADE
         grade.status = Level.APPROVED
         grade.isActive = True
@@ -1155,11 +1159,11 @@ def referenceStatus(request, pk):
         print(fdk)
 
         html_content = ''
-        subject, from_email, to = 'Bilgi Sistemi Kullanıcı Bilgileri', 'no-reply@halter.gov.tr', user.email
-        html_content = '<h2>TÜRKİYE HALTER FEDERASYONU BİLGİ SİSTEMİ</h2>'
+        subject, from_email, to = 'Bilgi Sistemi Kullanıcı Bilgileri', 'no-reply@badminton.gov.tr', user.email
+        html_content = '<h2>TÜRKİYE BADMİNTON FEDERASYONU BİLGİ SİSTEMİ</h2>'
         html_content = html_content + '<p><strong>Kullanıcı Adınız :' + str(fdk.user.username) + '</strong></p>'
-        html_content = html_content + '<p> <strong>Site adresi:</strong> <a href="http://sbs.halter.gov.tr:81/newpassword?query=' + str(
-            fdk.uuid) + '">http://sbs.halter.gov.tr:81/sbs/profil-guncelle/?query=' + str(fdk.uuid) + '</p></a>'
+        html_content = html_content + '<p> <strong>Site adresi:</strong> <a href="http://sbs.badminton.gov.tr/newpassword?query=' + str(
+            fdk.uuid) + '">http://sbs.badminton.gov.tr/sbs/profil-guncelle/?query=' + str(fdk.uuid) + '</p></a>'
         msg = EmailMultiAlternatives(subject, '', from_email, [to])
         msg.attach_alternative(html_content, "text/html")
         msg.send()
@@ -1209,12 +1213,41 @@ def kademe_list(request):
         logout(request)
         return redirect('accounts:login')
 
-    coa = []
-    for item in CategoryItem.objects.filter(forWhichClazz='REFEREE_GRADE'):
-        coa.append(item.pk)
-    grade = Level.objects.filter(definition_id__in=coa, levelType=EnumFields.LEVELTYPE.GRADE).distinct()
+    referees = Judge.objects.none()
+    searchClupForm = SearchClupForm()
+    user_form = RefereeSearchForm()
+    if request.method == 'POST':
+        searchClupForm = SearchClupForm(request.POST)
+        user_form = RefereeSearchForm(request.POST)
+        branch = request.POST.get('branch')
+        grade = request.POST.get('definition')
+        visa = request.POST.get('visa')
+        firstName = request.POST.get('first_name')
+        lastName = request.POST.get('last_name')
+        email = request.POST.get('email')
+        # print(firstName, lastName, email, branch, grade, visa)
+        if not (firstName or lastName or email or branch or grade or visa):
+            referees = Judge.objects.all()
+        else:
+            query = Q()
+            if lastName:
+                query &= Q(user__last_name__icontains=lastName)
+            if firstName:
+                query &= Q(user__first_name__icontains=firstName)
+            if email:
+                query &= Q(user__email__icontains=email)
+            if branch:
+                query &= Q(grades__branch=branch, grades__status='Onaylandı')
+            if grade:
+                query &= Q(grades__definition__name=grade, grades__status='Onaylandı')
+            if visa == 'VISA':
+                print('visa ')
+                query &= Q(visa__startDate__year=timezone.now().year)
+            referees = Judge.objects.filter(query).distinct()
+            if visa == 'NONE':
+                referees = referees.exclude(visa__startDate__year=timezone.now().year).distinct()
     return render(request, 'hakem/hakem-KademeListesi.html',
-                  {'belts': grade})
+                  {'referees': referees, 'user_form': user_form, 'branch': searchClupForm})
 
 
 @login_required
@@ -1308,12 +1341,43 @@ def vize_list(request):
     if not perm:
         logout(request)
         return redirect('accounts:login')
-    coa = []
-    for item in CategoryItem.objects.filter(forWhichClazz='VISA'):
-        coa.append(item.pk)
-    grade = Level.objects.filter(definition_id__in=coa, levelType=EnumFields.VISA).distinct()
+
+    referees = Judge.objects.none()
+    searchClupForm = SearchClupForm()
+    user_form = RefereeSearchForm()
+    if request.method == 'POST':
+        searchClupForm = SearchClupForm(request.POST)
+        user_form = RefereeSearchForm(request.POST)
+        branch = request.POST.get('branch')
+        grade = request.POST.get('definition')
+        visa = request.POST.get('visa')
+        firstName = request.POST.get('first_name')
+        lastName = request.POST.get('last_name')
+        email = request.POST.get('email')
+        # print(firstName, lastName, email, branch, grade, visa)
+        if not (firstName or lastName or email or branch or grade or visa):
+            referees = Judge.objects.all()
+        else:
+            query = Q()
+            if lastName:
+                query &= Q(user__last_name__icontains=lastName)
+            if firstName:
+                query &= Q(user__first_name__icontains=firstName)
+            if email:
+                query &= Q(user__email__icontains=email)
+            if branch:
+                query &= Q(grades__branch=branch, grades__status='Onaylandı')
+            if grade:
+                query &= Q(grades__definition__name=grade, grades__status='Onaylandı')
+            if visa == 'VISA':
+                print('visa ')
+                query &= Q(visa__startDate__year=timezone.now().year)
+            referees = Judge.objects.filter(query).distinct()
+            if visa == 'NONE':
+                referees = referees.exclude(visa__startDate__year=timezone.now().year).distinct()
+
     return render(request, 'hakem/hakem-Vize-Listesi.html',
-                  {'belts': grade})
+                  {'referees': referees, 'user_form': user_form, 'branch': searchClupForm})
 
 
 @login_required

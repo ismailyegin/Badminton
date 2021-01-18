@@ -52,6 +52,7 @@ def categori_ekle(request):
 @login_required
 def aplication(request, pk):
     perm = general_methods.control_access_klup(request)
+    active = general_methods.controlGroup(request)
 
     if not perm:
         logout(request)
@@ -63,10 +64,10 @@ def aplication(request, pk):
     login_user = request.user
     user = User.objects.get(pk=login_user.pk)
     weights = Weight.objects.all()
-    if user.groups.filter(name='KulupUye'):
+    if active == 'KlupUye':
         sc_user = SportClubUser.objects.get(user=user)
         if sc_user.dataAccessControl == True:
-            if user.groups.filter(name='KulupUye'):
+            if active == 'KlupUye':
                 clubsPk = []
                 clubs = SportsClub.objects.filter(clubUser=sc_user)
                 for club in clubs:
@@ -79,10 +80,10 @@ def aplication(request, pk):
         else:
             messages.warning(request, 'Lütfen Eksik olan Sporcu Bilgilerini tamamlayiniz.')
             return redirect('sbs:musabakalar')
-    elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+    elif active == 'Yonetim' or active == 'Admin':
         comAthlete = CompAthlete.objects.filter(competition=pk).distinct()
 
-    elif user.groups.filter(name='Antrenor'):
+    elif active == 'Antrenor':
         coach = Coach.objects.get(user=user)
         comAthlete = CompAthlete.objects.filter(competition=pk, athlete__licenses__coach=coach).distinct()
     return render(request, 'musabaka/basvuru.html',
@@ -119,18 +120,14 @@ def return_competitions(request):
     if request.method == 'POST':
         name = request.POST.get('name')
         startDate = request.POST.get('startDate')
-        compType = request.POST.get('compType')
-        compGeneralType = request.POST.get('compGeneralType')
-        if name or startDate or compType or compGeneralType:
+
+        if name or startDate:
             query = Q()
             if name:
                 query &= Q(name__icontains=name)
             if startDate:
-                query &= Q(year=int(startDate))
-            if compType:
-                query &= Q(compType__in=compType)
-            if compGeneralType:
-                query &= Q(compGeneralType__in=compGeneralType)
+                query &= Q(finishDate__year=int(startDate))
+
             competitions = Competition.objects.filter(query).order_by('-startDate').distinct()
         else:
             competitions = Competition.objects.all().order_by('-startDate')
@@ -261,28 +258,14 @@ def musabaka_sporcu_sec(request, pk):
         logout(request)
         return redirect('accounts:login')
 
-    weights = Weight.objects.all()
+    category = Category.objects.all()
 
     competition = Competition.objects.filter(registerStartDate__lte=timezone.now(),
                                              registerFinishDate__gte=timezone.now())
 
-    # login_user = request.user
-    # user = User.objects.get(pk=login_user.pk)
-    # competition = Competition.objects.get(pk=pk)
-    # weights = Weight.objects.all()
-    # if user.groups.filter(name='KulupUye'):
-    #     sc_user = SportClubUser.objects.get(user=user)
-    #     clubsPk = []
-    #     clubs = SportsClub.objects.filter(clubUser=sc_user)
-    #     for club in clubs:
-    #         clubsPk.append(club.pk)
-    #     athletes = Athlete.objects.filter(licenses__sportsClub__in=clubsPk).distinct()
-    # elif user.groups.filter(name__in=['Yonetim', 'Admin']):
-    #     athletes = Athlete.objects.all()
-    print(pk)
+
     return render(request, 'musabaka/musabaka-sporcu-sec.html',
-                  {'pk': pk, 'weights': weights, 'application': competition})
-    # ,{'athletes': athletes, 'competition': competition, })
+                  {'pk': pk, 'weights': category, 'application': competition})
 
 
 @login_required
@@ -407,6 +390,7 @@ def return_sporcu_ajax(request):
 
 @login_required
 def return_sporcu(request):
+    active = general_methods.controlGroup(request)
     # print('ben geldim')
     login_user = request.user
     user = User.objects.get(pk=login_user.pk)
@@ -448,8 +432,7 @@ def return_sporcu(request):
             if comp.athlete:
                 athletes.append(comp.athlete.pk)
 
-
-        if user.groups.filter(name='KulupUye'):
+        if active == 'KlupUye':
             sc_user = SportClubUser.objects.get(user=user)
             clubsPk = []
             clubs = SportsClub.objects.filter(clubUser=sc_user)
@@ -460,11 +443,11 @@ def return_sporcu(request):
             modeldata = Athlete.objects.exclude(pk__in=athletes).filter(licenses__sportsClub__in=clubsPk).distinct()
             total = modeldata.count()
 
-        elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+        elif active == 'Yonetim' or active == 'Admin':
             modeldata = Athlete.objects.exclude(pk__in=athletes)
             total = Athlete.objects.exclude(pk__in=athletes).count()
 
-        elif user.groups.filter(name='Antrenor'):
+        elif active == 'Antrenor':
             modeldata = Athlete.objects.filter(licenses__coach__user=user).exclude(pk__in=athletes).distinct()[
                         start:start + length]
 
@@ -487,7 +470,7 @@ def return_sporcu(request):
             for comp in compAthlete:
                 if comp.athlete:
                     athletes.append(comp.athlete.pk)
-            if user.groups.filter(name='KulupUye'):
+            if active == 'KlupUye':
                 sc_user = SportClubUser.objects.get(user=user)
                 clubsPk = []
                 clubs = SportsClub.objects.filter(clubUser=sc_user)
@@ -497,11 +480,11 @@ def return_sporcu(request):
                     licenses__sportsClub__in=clubsPk).distinct()
                 total = modeldata.exclude(pk__in=athletes).filter(
                     licenses__sportsClub__in=clubsPk).distinct().count()
-            elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+            elif active == 'Yonetim' or active == 'Admin':
                 modeldata = modeldata.exclude(pk__in=athletes)
 
 
-            elif user.groups.filter(name='Antrenor'):
+            elif active == 'Antrenor':
                 modeldata = modeldata.filter(licenses__coach__user=user).exclude(pk__in=athletes).distinct()
 
             total = modeldata.count()
@@ -514,7 +497,7 @@ def return_sporcu(request):
                 if comp.athlete:
                     athletes.append(comp.athlete.pk)
                     print(comp.athlete)
-            if user.groups.filter(name='KulupUye'):
+            if active == 'KlupUye':
                 sc_user = SportClubUser.objects.get(user=user)
                 clubsPk = []
                 clubs = SportsClub.objects.filter(clubUser=sc_user)
@@ -524,12 +507,12 @@ def return_sporcu(request):
                     licenses__sportsClub__in=clubsPk).distinct()[start:start + length]
                 total = Athlete.objects.exclude(pk__in=athletes).filter(
                     licenses__sportsClub__in=clubsPk).distinct().count()
-            elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+            elif active == 'Yonetim' or active == 'Admin':
                 modeldata = Athlete.objects.exclude(pk__in=athletes)[start:start + length]
                 total = Athlete.objects.exclude(pk__in=athletes).distinct().count()
 
 
-            elif user.groups.filter(name='Antrenor'):
+            elif active == 'Antrenor':
                 modeldata = Athlete.objects.filter(licenses__coach__user=user).exclude(pk__in=athletes).distinct()[
                             start:start + length]
 
@@ -668,9 +651,7 @@ def choose_athlete(request, pk, competition):
     if request.method == 'POST' and request.is_ajax():
 
         try:
-
-            if (request.POST.get('total') and request.POST.get('silk') and request.POST.get('kop') and request.POST.get(
-                    'weight')):
+            if request.POST.get('weight'):
 
                 user = User.objects.get(pk=login_user.pk)
                 competition = Competition.objects.get(pk=competition)
@@ -678,20 +659,13 @@ def choose_athlete(request, pk, competition):
                 compAthlete = CompAthlete()
                 compAthlete.athlete = athlete
                 compAthlete.competition = competition
-                compAthlete.total = request.POST.get('total')
-                compAthlete.sıklet = Weight.objects.get(pk=request.POST.get('weight'))
-                compAthlete.silk1 = request.POST.get('silk')
-                compAthlete.kop1 = request.POST.get('kop')
+                compAthlete.category = Category.objects.get(pk=request.POST.get('weight'))
+                compAthlete.save()
+                log = str(athlete.user.get_full_name()) + "  Musabaka sporcu eklendi "
+                log = general_methods.logwrite(request, request.user, log)
+                return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
 
-                if (int(request.POST.get('silk')) + int(request.POST.get('kop'))) - 20 <= int(
-                        request.POST.get('total')):
-                    compAthlete.save()
-                    log = str(athlete.user.get_full_name()) + "  Musabaka sporcu eklendi "
-                    log = general_methods.logwrite(request, request.user, log)
 
-                    return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
-                else:
-                    return JsonResponse({'status': 'Fail', 'msg': 'Kural20'})
             else:
                 return JsonResponse({'status': 'Fail', 'msg': 'Eksik'})
 
@@ -766,6 +740,7 @@ def result_list(request, pk):
 
 @login_required
 def return_competition_ajax(request):
+    active = general_methods.controlGroup(request)
     # print('ben geldim')
     login_user = request.user
     user = User.objects.get(pk=login_user.pk)
@@ -827,7 +802,7 @@ def return_competition_ajax(request):
             # for comp in compAthlete:
             #     if comp.athlete:
             #             athletes.append(comp.athlete.pk)
-            if user.groups.filter(name='KulupUye'):
+            if active == 'KlupUye':
                 print('klüp üye ')
                 # sc_user = SportClubUser.objects.get(user=user)
                 # clubsPk = []
@@ -836,7 +811,7 @@ def return_competition_ajax(request):
                 #     clubsPk.append(club.pk)
                 # modeldata = Athlete.objects.exclude(pk__in=athletes).filter(licenses__sportsClub__in=clubsPk).distinct()[start:start + length]
                 # total = mAthlete.objects.exclude(pk__in=athletes).filter(licenses__sportsClub__in=clubsPk).distinct().count()
-            elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+            elif active == 'Yonetim' or active == 'Admin':
 
                 modeldata = Competition.objects.filter(year=pk)
                 total = modeldata.count()

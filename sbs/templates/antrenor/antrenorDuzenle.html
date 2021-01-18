@@ -47,6 +47,30 @@
         <!-- /.modal-dialog -->
     </div>
 
+    <div class="modal modal-danger fade in deneme22" tabindex="-1" role="dialog" id="modal-group"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">Uyarı</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Grup degişikligine emin misiniz?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline pull-left btn-ok" id="btn-group"
+                            data-dismiss="modal">Evet
+                    </button>
+                    <button type="button" class="btn btn-outline" id="btn-close-group">Hayır</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
     {% if messages %}
         {% for message in messages %}
 
@@ -982,7 +1006,8 @@
 
                                                 <div class="col-md-2 ">
                                                     <div class="form-group">
-                                                        <a href="{% url "sbs:sporcu-aktive-group" pk=coach.user.pk %}?group={{ group.name }}&pk={{ coach.pk }}&person={{ coach.person.pk }}&communication={{ coach.communication.pk }}&user={{ coach.user.pk }}&communicationHome={{ coach.communicationHome.pk }}&communicationWork={{ coach.communicationJop.pk }}"
+                                                        <a id="group-{{ group.pk }}"
+                                                                {#                                                            href="{% url "sbs:sporcu-aktive-group" pk=coach.user.pk %}?group={{ group.name }}&pk={{ coach.pk }}&person={{ coach.person.pk }}&communication={{ coach.communication.pk }}&user={{ coach.user.pk }}&communicationHome={{ coach.communicationHome.pk }}&communicationWork={{ coach.communicationJop.pk }}"#}
                                                            type="button" class="btn btn-block  btn-danger text-center"
                                                            id="{{ group.name }}">{{ group }}
                                                         </a>
@@ -1024,13 +1049,56 @@
             }
         }
 
+        function modelOpen() {
+
+            alert
+
+        };
+
         $(function () {
 
-            {% for item in coach.user.groups.all %}
 
-                $("#{{ item.name }}").removeClass("btn-danger");
-                $("#{{ item.name }}").addClass("btn-success disabled");
-                $("#{{ item.name }}").text("{{ item.name }}");
+            {% for group in groups %}
+                $('#group-{{ group.pk }}').click(function () {
+                    {#alert('benden Selam olsun {{ group.name }}');#}
+                    $("#modal-group").on("shown.bs.modal", function (e) {
+                        if (e.handled !== true) { // This will prevent event triggering more then once
+                            e.handled = true;
+                            $("#btn-group").click(function () {
+                                window.location.replace("{% url "sbs:sporcu-aktive-group" pk=coach.user.pk %}?group={{ group.name }}&pk={{ coach.pk }}&person={{ coach.person.pk }}&communication={{ coach.communication.pk }}&user={{ coach.user.pk }}&communicationHome={{ coach.communicationHome.pk }}&communicationWork={{ coach.communicationJop.pk }}");
+
+                            });
+                        }
+
+                    }).modal('show');
+
+
+                });
+
+            {% endfor %}
+
+            $('#btn-close-group').click(function () {
+                $('#modal-group').modal('hide');
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            {% for group in coach.user.groups.all %}
+
+                $("#group-{{ group.pk }}").removeClass("btn-danger");
+                $("#group-{{ group.pk }}").addClass("btn-success disabled");
+                $("#group-{{ group.pk }}").text("{{ group.name }}");
 
             {% endfor %}
 
@@ -1205,7 +1273,51 @@
                 $('#modal-danger').modal('hide');
             });
 
+        };
+
+        function deletepenal(id, competitionId) {
+
+            var html = '';
+            $("#modal-danger").on("shown.bs.modal", function (e) {
+                $("#btn-conf").click(function (e) {
+
+
+                    $.ajax({
+                        url: "{% url "sbs:antrenor-ceza-kaldir" athlete_pk=212121223232323232 document_pk=999999999999999 %}".replace(/212121223232323232/, id.toString()).replace(/999999999999999/, competitionId.toString()),
+                        type: "POST",
+                        data: {
+                            'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                            isActive: 'False'
+                        },
+                        success: function (result) {
+                            html = 'Ceza başarıyla kaldırıldı.';
+                            $(".successModal").html(html);
+                            $('#modal-success').on("shown.bs.modal", function () {
+
+                                $(".btn-ok").click(function () {
+                                    if (e.handled !== true) { // This will prevent event triggering more then once
+                                        e.handled = true;
+                                        $('#modal-success').modal('hide');
+                                        $('#penalDocuments-' + competitionId).hide();
+                                    }
+                                });
+
+                            }).modal('show');
+
+
+                            console.log(result.status)
+                        }
+                    });
+
+                });
+            }).modal('show');
+            $('#btn-close').click(function () {
+                $('#modal-danger').modal('hide');
+            });
+
         }
+
+
     </script>
 
 

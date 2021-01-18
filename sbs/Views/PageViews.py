@@ -43,6 +43,7 @@ def deneme(request):
 
 @login_required
 def return_athletesdeneme(request):
+    active = general_methods.controlGroup(request)
     login_user = request.user
     user = User.objects.get(pk=login_user.pk)
 
@@ -76,7 +77,7 @@ def return_athletesdeneme(request):
         length = 10
 
     if length == -1:
-        if user.groups.filter(name='KulupUye'):
+        if active == 'KlupUye':
             sc_user = SportClubUser.objects.get(user=user)
             clubsPk = []
             clubs = SportsClub.objects.filter(clubUser=sc_user)
@@ -85,7 +86,7 @@ def return_athletesdeneme(request):
             modeldata = Athlete.objects.filter(licenses__sportsClub__in=clubsPk).distinct()
             total = modeldata.count()
 
-        elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+        elif active == 'Yonetim' or active == 'Admin':
             modeldata = Athlete.objects.all()
             total = Athlete.objects.count()
 
@@ -98,7 +99,7 @@ def return_athletesdeneme(request):
             total = modeldata.count();
 
         else:
-            if user.groups.filter(name='KulupUye'):
+            if active == 'KlupUye':
                 sc_user = SportClubUser.objects.get(user=user)
                 clubsPk = []
                 clubs = SportsClub.objects.filter(clubUser=sc_user)
@@ -107,7 +108,7 @@ def return_athletesdeneme(request):
                 modeldata = Athlete.objects.filter(licenses__sportsClub__in=clubsPk).distinct()[start:start + length]
                 total = modeldata.count()
 
-            elif user.groups.filter(name__in=['Yonetim', 'Admin']):
+            elif active == 'Yonetim' or active == 'Admin':
                 modeldata = Athlete.objects.all()[start:start + length]
                 total = Athlete.objects.count()
 

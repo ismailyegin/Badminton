@@ -11,5 +11,5 @@ class DirectoryMemberRoleForm(ModelForm):
         labels = {'name': 'Kurul Üye Rol Adı'}
         widgets = {
             'name': forms.TextInput(
-                attrs={'class': 'form-control ', 'required': 'required'})
+                attrs={'class': 'form-control ', 'required': 'required', "style": "text-transform:uppercase"})
         }
