@@ -1,10 +1,21 @@
 from django import forms
 from django.forms import ModelForm
+from sbs.models.Nationnality import Nationnality
 
 from sbs.models import Person
 
 
 class PersonForm(ModelForm):
+    uyrukid = forms.ModelChoiceField(queryset=Nationnality.objects.all(),
+                                     to_field_name='name',
+                                     empty_label="Seçiniz",
+                                     label="Uyruk",
+                                     required=True,
+                                     widget=forms.Select(
+                                         attrs={'class': 'form-control select2 select2-hidden-accessible',
+                                                'style': 'width: 100%; '}))
+
+
     class Meta:
         model = Person
 
@@ -14,16 +25,17 @@ class PersonForm(ModelForm):
             'birthDate', 'bloodType',
             'gender', 'birthplace',
             'motherName',
+            'uyrukid',
             'profileImage', 'fatherName',
             'meslek', 'kurum', 'is_unvani',
             'education', 'mezunokul',
-            'uyrukid', 'nufus_ailesirano',
+            'nufus_ailesirano',
             'nufus_sirano', 'nufus_ciltno')
 
         labels = {'tc': 'T.C.',
                   'gender': 'Cinsiyet',
                   'profileImage': 'Profil Resmi',
-                  'uyrukid': 'Uyruk ',
+
                   'nufus_ailesirano': 'Nufus Aile Sıra No',
                   'nufus_sirano': 'Nufus Sıra No',
                   'nufus_ciltno': 'Nufus Cilt No',
@@ -40,8 +52,6 @@ class PersonForm(ModelForm):
         widgets = {
 
             'profileImage': forms.FileInput(),
-
-            'uyrukid': forms.TextInput(attrs={'class': 'form-control ', 'onkeypress': 'validate(event)'}),
 
             'is_unvani': forms.TextInput(attrs={'class': 'form-control ', "style": "text-transform:uppercase"}),
 

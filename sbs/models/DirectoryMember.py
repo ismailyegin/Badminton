@@ -9,7 +9,7 @@ from sbs.models.Communication import Communication
 
 class DirectoryMember(models.Model):
     person = models.OneToOneField(Person, on_delete=models.CASCADE)
-    communication = models.OneToOneField(Communication, on_delete=models.CASCADE, db_column='communication')
+    communication = models.OneToOneField(Communication, on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     creationDate = models.DateTimeField(auto_now_add=True)
     modificationDate = models.DateTimeField(auto_now=True)
