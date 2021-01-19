@@ -456,7 +456,7 @@
                     if (e.handled !== true) {
                         e.handled = true;
 
-                        if ($('#weight').val() && $('#total').val() && $('#silk').val() && $('#kop').val()) {
+                        if ($('#weight').val()) {
                             // This will prevent event triggering more then once
 
                             $.ajax({
@@ -473,37 +473,10 @@
 
                                 success: function (result) {
 
-                                    if (result.msg == "Kural20") {
-
-                                        $('#modal-kural').on("shown.bs.modal", function (e) {
-                                            $(".btn-ok").click(function () {
-
-
-                                                $('#modal-warning').modal('hide');
-                                                $('.modal').modal('hide');
-                                            });
-
-                                        }).modal('show');
-                                    } else if (result.msg == "Eksik") {
-                                        $('#modal-eksik').on("shown.bs.modal", function (e) {
-                                            $(".btn-ok").click(function () {
-
-
-                                                $('#modal-warning').modal('hide');
-                                                $('.modal').modal('hide');
-                                            });
-
-                                        }).modal('show');
-
-
-                                    } else {
-                                        html = 'Sporcu Başarıyla Eklendi .';
+                                    html = 'Sporcu Başarıyla Eklendi .';
                                         debugger;
                                         $(".successModal").html(html);
                                         window.location.replace("{% url "sbs:musabaka-sporcu-sec" pk %}");
-
-
-                                    }
 
 
                                 }
