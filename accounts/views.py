@@ -1,51 +1,35 @@
-from urllib import request
-
+from django.contrib import auth, messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.models import Group, Permission, User
-from django.contrib.auth.forms import PasswordChangeForm, SetPasswordForm
 from django.core.mail import EmailMultiAlternatives
-from django.db.models import Q
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from accounts.forms import LoginForm, PermForm
+from zeep import Client
+
 from accounts.models import Forgot
-
-
-from sbs.Forms.PreRegidtrationForm import PreRegistrationForm
-
-from django.contrib import auth, messages
-
 from sbs import urls
-from sbs.models import MenuAthlete, MenuCoach, MenuReferee, MenuDirectory, MenuAdmin, MenuClubUser, SportsClub, \
-    SportClubUser, CategoryItem, Coach
-from sbs.models.PreRegistration import PreRegistration
-from sbs.services import general_methods
-from sbs.services.general_methods import show_urls
-
 from sbs.Forms.ClubForm import ClubForm
-from sbs.Forms.ClubRoleForm import ClubRoleForm
 from sbs.Forms.CommunicationForm import CommunicationForm
-from sbs.Forms.DisabledCommunicationForm import DisabledCommunicationForm
-from sbs.Forms.DisabledPersonForm import DisabledPersonForm
-from sbs.Forms.DisabledSportClubUserForm import DisabledSportClubUserForm
-from sbs.Forms.DisabledUserForm import DisabledUserForm
 from sbs.Forms.PersonForm import PersonForm
+from sbs.Forms.PreRegidtrationForm import PreRegistrationForm
+from sbs.Forms.ReferenceCoachForm import RefereeCoachForm
+from sbs.Forms.ReferenceRefereeForm import RefereeForm
 from sbs.Forms.SportClubUserForm import SportClubUserForm
 from sbs.Forms.UserForm import UserForm
-from sbs.Forms.ReferenceRefereeForm import RefereeForm
-from sbs.Forms.ReferenceCoachForm import RefereeCoachForm
-
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
-
-from sbs.models.ReferenceReferee import ReferenceReferee
-from sbs.models.ReferenceCoach import ReferenceCoach
-from sbs.models.PreRegistration import PreRegistration
-
+from sbs.models import SportsClub, \
+    SportClubUser, CategoryItem, Coach
+from sbs.models.Judge import Judge
 from sbs.models.Person import Person
-from zeep import Client
-import datetime
-import os
+from sbs.models.PreRegistration import PreRegistration
+from sbs.models.ReferenceCoach import ReferenceCoach
+from sbs.models.ReferenceReferee import ReferenceReferee
+from sbs.services import general_methods
+from sbs.models.Communication import Communication
+from sbs.Forms.IbanCoachForm import IbanCoachForm
+from sbs.models.Material import Material
+from sbs.Forms.MaterialForm import MaterialForm
 
 
 def index(request):
@@ -609,3 +593,100 @@ def referenceAthlete(request):
 
     return render(request, 'registration/Athlete.html',
                   {'preRegistrationform': athlete})
+
+
+def lastlogin(request):
+    # if request.method == 'POST':
+    # last login sayfasindan giris alani
+    # tc = "51838348932"
+    # name = "tayyar"
+    # surname = "karadağ"
+    # email = "fd@fg.com"
+    # date = "12/12/1986"
+    # if request.POST.get("tcno") or tc:
+    if request.POST.get("tcno"):
+        tc = request.POST.get("tcno")
+        if Person.objects.filter(tc=tc):
+            name = request.POST.get('first_name')
+            email = request.POST.get('mail')
+            surname = request.POST.get('last_name')
+            date = request.POST.get('birthDate')
+            year = date.split('/')
+
+            client = Client('https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx?WSDL')
+            if not (client.service.TCKimlikNoDogrula(tc, name, surname, year[2])):
+                messages.warning(request,
+                                 'Tc kimlik numarasi ile isim  soyisim dogum yılı  bilgileri uyuşmamaktadır. ')
+                return render(request, 'registration/lastlogin.html')
+            else:
+                if SportClubUser.objects.filter(person__tc=tc):
+                    print('klup yöneticisi')
+                elif Coach.objects.filter(person__tc=tc):
+                    coach = Coach.objects.filter(person__tc=tc)[0]
+                    if not coach.user.groups.all():
+                        user = coach.user
+                        coach.user.groups.add(Group.objects.get(name="Antrenor"))
+                        coach.save()
+                    groups = Group.objects.all()
+                    grade_form = coach.grades.all()
+                    visa_form = coach.visa.all()
+                    user = User.objects.get(pk=coach.user.pk)
+                    person = Person.objects.get(pk=coach.person.pk)
+                    communication = Communication.objects.get(pk=coach.communication.pk)
+                    user_form = UserForm(request.POST or None, instance=user)
+                    person_form = PersonForm(request.POST or None, request.FILES or None, instance=person)
+                    iban_form = IbanCoachForm(request.POST or None, instance=coach)
+
+                    communication = Communication.objects.get(pk=coach.communication.pk)
+                    if person.material:
+                        metarial = Material.objects.get(pk=coach.person.material.pk)
+                    else:
+                        metarial = Material()
+                        metarial.save()
+                        person.material = metarial
+                        person.save()
+
+                    communication_form = CommunicationForm(request.POST or None, instance=communication)
+                    metarial_form = MaterialForm(request.POST or None, instance=metarial)
+
+                    return render(request, 'registration/CoachUpdate.html',
+                                  {'user_form': user_form, 'communication_form': communication_form,
+                                   'person_form': person_form, 'grades_form': grade_form, 'coach': coach,
+                                   'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form,
+                                   'groups': groups,
+                                   })
+
+                elif Judge.objects.filter(person__tc=tc):
+                    print('hakem')
+                    return render(request, 'registration/JudgeUpdate.html')
+                else:
+                    return redirect('accounts:login')
+        else:
+            messages.warning(request, 'Sistem de kaydınız bulunmamaktadır.')
+
+    #  gelen verinin coach verisi oldugu anlaşıldıgında  sisteme devam edilecek
+    # user_form = UserForm(request.POST or None)
+    # person_form = PersonForm(request.POST, request.FILES)
+    # communication_form = CommunicationForm(request.POST or None)
+    # iban_form = IbanCoachForm(request.POST or None)
+    # if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and iban_form.is_valid() and metarial_form.is_valid():
+    #     user.username = user_form.cleaned_data['email']
+    #     user.first_name = user_form.cleaned_data['first_name']
+    #     user.last_name = user_form.cleaned_data['last_name']
+    #     user.email = user_form.cleaned_data['email']
+    #     user.save()
+    #
+    #     user = user_form.save(commit=False)
+    #     user.username = user_form.cleaned_data['email']
+    #     user.save()
+    #
+    #     iban_form.save()
+    #     person_form.save()
+    #     communication_form.save()
+    #
+    #     log = str(user.get_full_name()) + " Antrenor güncelledi"
+    #     log = general_methods.logwrite(request, request.user, log)
+    #
+    #     messages.success(request, 'Antrenör Başarıyla Güncellendi')
+    #     # return redirect('sbs:antrenorler')
+    return render(request, 'registration/lastlogin.html')
