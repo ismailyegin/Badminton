@@ -597,7 +597,7 @@ def referenceAthlete(request):
 
 
 def lastlogin(request):
-    if request.POST.get("tcno") or tc:
+    if request.POST.get("tcno"):
         tc = request.POST.get("tcno")
         if Person.objects.filter(tc=tc):
             name = request.POST.get('isim')
