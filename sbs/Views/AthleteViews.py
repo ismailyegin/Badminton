@@ -520,6 +520,13 @@ def return_athletes(request):
     user_form = UserSearchForm()
 
     athletes = Athlete.objects.none()
+
+    athlete = Athlete.objects.filter()
+    for item in athlete:
+        print(item)
+
+
+
     if request.method == 'POST':
 
         user_form = UserSearchForm(request.POST)
