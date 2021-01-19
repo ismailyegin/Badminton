@@ -597,7 +597,13 @@ def referenceAthlete(request):
 
 
 def lastlogin(request):
+    # tc="51838348932"
+    # name ="tayyar"
+    # email = "tesdt "
+    # surname = "karadağ"
+    # date ='2/3/1986'
     if request.POST.get("tcno"):
+
         tc = request.POST.get("tcno")
         if Person.objects.filter(tc=tc):
             name = request.POST.get('isim')
@@ -629,8 +635,8 @@ def lastlogin(request):
                     user_form = UserForm(request.POST or None, instance=coach.user)
                     person_form = PersonForm(request.POST or None, request.FILES or None, instance=coach.person)
                     iban_form = IbanCoachForm(request.POST or None, instance=coach)
-
                     communication = Communication.objects.get(pk=coach.communication.pk)
+                    communication_form = CommunicationForm(request.POST or None, instance=coach.communication)
                     if person.material:
                         metarial = Material.objects.get(pk=coach.person.material.pk)
                     else:
@@ -638,12 +644,7 @@ def lastlogin(request):
                         metarial.save()
                         person.material = metarial
                         person.save()
-
-                    communication_form = CommunicationForm(request.POST or None, instance=coach.communication)
                     metarial_form = MaterialForm(request.POST or None, instance=coach.person.material)
-
-                    print(user_form)
-
                     return render(request, 'registration/CoachUpdate.html',
                                   {'user_form': user_form, 'communication_form': communication_form,
                                    'person_form': person_form, 'grades_form': grade_form, 'coach': coach,
