@@ -24,7 +24,8 @@ class Level(models.Model):
     modificationDate = models.DateTimeField(auto_now=True)
 
     levelType = models.CharField(max_length=128, verbose_name='Leveller', choices=EnumFields.LEVELTYPE.value)
-    branch = models.CharField(max_length=128, verbose_name='Branş', choices=EnumFields.BRANCH.value)
+    branch = models.CharField(max_length=128, verbose_name='Branş', choices=EnumFields.BRANCH.value, null=True,
+                              blank=True)
     isActive = models.BooleanField(default=False)
     startDate = models.DateField(null=True, blank=True)
     expireDate = models.DateField(null=True, blank=True, )
@@ -39,6 +40,11 @@ class Level(models.Model):
 
     def __str__(self):
         return '%s ' % self.levelType
+
+    def save(self, force_insert=False, force_update=False):
+        if self.branch:
+            self.branch = EnumFields.BADMİNTON.value
+        super(Level, self).save(force_insert, force_update)
 
     # class Meta:
     #     default_permissions = ()

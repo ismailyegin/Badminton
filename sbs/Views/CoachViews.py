@@ -162,6 +162,10 @@ def return_add_coach(request):
         person_form = PersonForm(request.POST, request.FILES)
         communication_form = CommunicationForm(request.POST)
         iban_form = IbanCoachForm(request.POST)
+        grade_form = GradeForm(request.POST)
+
+
+
 
         mail = request.POST.get('email')
 
@@ -222,7 +226,7 @@ def return_add_coach(request):
             coach.iban = iban_form.cleaned_data['iban']
             coach.save()
             grade = grade_form.save(commit=False)
-            grade.save
+            grade.save()
             coach.grades.add(grade)
             coach.save()
             # antroner kaydından sonra mail gönderilmeyecek
@@ -879,9 +883,6 @@ def updateCoachProfile(request):
             log = general_methods.logwrite(request, request.user, log)
 
         if password_form.is_valid():
-
-            print(user)
-
             log = str(user) + "Şifresini degiştirdi."
             log = general_methods.logwrite(request, request.user, log)
 
@@ -1497,7 +1498,6 @@ def coach_penal_add(request, pk):
     penal_form = PenalForm()
 
     if request.method == 'POST':
-        print('post')
         penal_form = PenalForm(request.POST, request.FILES or None)
         if penal_form.is_valid():
             ceza = penal_form.save()

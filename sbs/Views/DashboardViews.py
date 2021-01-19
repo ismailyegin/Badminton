@@ -50,7 +50,6 @@ def return_coach_dashboard(request):
     perm = general_methods.control_access_klup(request)
     login_user = request.user
     user = User.objects.get(pk=login_user.pk)
-    print(request.user.pk)
     coach = Coach.objects.get(user_id=request.user.pk)
     clup = SportsClub.objects.filter(coachs=coach)
     clupsPk = []

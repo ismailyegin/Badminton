@@ -196,7 +196,7 @@ def return_referees(request):
             if grade:
                 query &= Q(grades__definition__name=grade, grades__status='Onaylandı')
             if visa == 'VISA':
-                print('visa ')
+                # print('visa ')
                 query &= Q(visa__startDate__year=timezone.now().year)
             referees = Judge.objects.filter(query).distinct()
             if visa == 'NONE':
@@ -388,7 +388,7 @@ def refenceapprovalReferee(request, pk):
 
                 fdk = Forgot(user=user, status=False)
                 fdk.save()
-                print(fdk)
+                # print(fdk)
 
                 html_content = ''
                 subject, from_email, to = 'Bilgi Sistemi Kullanıcı Bilgileri', 'no-reply@badminton.gov.tr', user.email
@@ -1078,7 +1078,6 @@ def referenceStatus_reddet(request, pk):
     if reference.status == ReferenceReferee.WAITED:
         reference.status = ReferenceReferee.DENIED
         reference.save()
-
         html_content = ''
         subject, from_email, to = 'Bilgi Sistemi', 'no-reply@badminton.gov.tr', reference.email
         html_content = '<h2>TÜRKİYE BADMİNTON FEDERASYONU BİLGİ SİSTEMİ</h2>'
@@ -1087,11 +1086,8 @@ def referenceStatus_reddet(request, pk):
         msg = EmailMultiAlternatives(subject, '', from_email, [to])
         msg.attach_alternative(html_content, "text/html")
         msg.send()
+
     else:
-        messages.success(request, 'Hakem daha önce onaylanmıştır.')
-    try:
-        print()
-    except:
         messages.warning(request, 'Tekrar deneyiniz.')
 
     return redirect('sbs:basvuru-referee')
@@ -1156,7 +1152,6 @@ def referenceStatus(request, pk):
 
         fdk = Forgot(user=user, status=False)
         fdk.save()
-        print(fdk)
 
         html_content = ''
         subject, from_email, to = 'Bilgi Sistemi Kullanıcı Bilgileri', 'no-reply@badminton.gov.tr', user.email
@@ -1169,10 +1164,10 @@ def referenceStatus(request, pk):
         msg.send()
     else:
         messages.success(request, 'Hakem daha önce onaylanmıştır.')
-    try:
-        print()
-    except:
-        messages.warning(request, 'Tekrar deneyiniz.')
+    # try:
+    #     print()
+    # except:
+    #     messages.warning(request, 'Tekrar deneyiniz.')
 
     return redirect('sbs:basvuru-referee')
 
@@ -1241,7 +1236,7 @@ def kademe_list(request):
             if grade:
                 query &= Q(grades__definition__name=grade, grades__status='Onaylandı')
             if visa == 'VISA':
-                print('visa ')
+                # print('visa ')
                 query &= Q(visa__startDate__year=timezone.now().year)
             referees = Judge.objects.filter(query).distinct()
             if visa == 'NONE':
@@ -1370,7 +1365,7 @@ def vize_list(request):
             if grade:
                 query &= Q(grades__definition__name=grade, grades__status='Onaylandı')
             if visa == 'VISA':
-                print('visa ')
+                # print('visa ')
                 query &= Q(visa__startDate__year=timezone.now().year)
             referees = Judge.objects.filter(query).distinct()
             if visa == 'NONE':

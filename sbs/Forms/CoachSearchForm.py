@@ -29,9 +29,9 @@ class CoachSearchForm(ModelForm):
         widgets = {
             'first_name': forms.TextInput(
                 attrs={'class': 'form-control ', 'placeholder': ' Ad', 'value': '',
-                       "style": "text-transform:uppercase"}),
+                       }),
             'last_name': forms.TextInput(
-                attrs={'class': 'form-control ', 'placeholder': ' Soyad', "style": "text-transform:uppercase"}),
+                attrs={'class': 'form-control ', 'placeholder': ' Soyad', }),
             'email': forms.TextInput(attrs={'class': 'form-control ', 'placeholder': 'Email'}),
             'is_active': forms.CheckboxInput(attrs={'class': 'iCheck-helper'}),
 

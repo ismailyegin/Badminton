@@ -73,7 +73,7 @@ def update_preRegistration(request, pk):
 
         if form.is_valid():
             form.save()
-            print(request.POST.get('kademe_definition'))
+            # print(request.POST.get('kademe_definition'))
 
             messages.success(request, 'Basarili bir şekilde kaydedildi ')
             return redirect('sbs:basvuru-listesi')
@@ -230,13 +230,13 @@ def approve_preRegistration(request, pk):
             log = str(clup) + " Klup basvurusu onaylandi"
             log = general_methods.logwrite(request, request.user, log)
 
-            try:
-                # user kaydet
-                print()
-            except:
-                messages.warning(request, 'Lütfen sistem yöneticisi ile görüşünüz ')
-                log = str(basvuru.name) + " Klup basvurusu hata oldu"
-                log = general_methods.logwrite(request, request.user, log)
+            # try:
+            #     # user kaydet
+            #     print()
+            # except:
+            #     messages.warning(request, 'Lütfen sistem yöneticisi ile görüşünüz ')
+            #     log = str(basvuru.name) + " Klup basvurusu hata oldu"
+            #     log = general_methods.logwrite(request, request.user, log)
 
         else:
             messages.warning(request, 'Mail adresi sistem de kayıtlıdır.')

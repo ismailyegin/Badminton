@@ -143,8 +143,8 @@ urlpatterns = [
         name='kademe-onayla-hakem'),
     url(r'hakem/Kademe-Duzenle/reddet/(?P<grade_pk>\d+)/(?P<referee_pk>\d+)$', RefereeViews.kademe_reddet,
         name='kademe-reddet-hakem'),
-    url(r'hakem/Kademe-Duzenle/güncelle/(?P<grade_pk>\d+)/(?P<referee_pk>\d+)$', RefereeViews.kademe_update,
-        name='kademe-güncelle-hakem'),
+    url(r'hakem/Kademe-Duzenle/guncelle/(?P<grade_pk>\d+)/(?P<referee_pk>\d+)$', RefereeViews.kademe_update,
+        name='kademe-guncelle-hakem'),
     url(r'hakem/Kademe-Duzenle/sil/(?P<grade_pk>\d+)/(?P<referee_pk>\d+)$', RefereeViews.kademe_delete,
         name='Kademe-sil-hakem'),
     # /vize
@@ -220,7 +220,7 @@ urlpatterns = [
 
     url(r'kulup/kulup-uyesi-sec/(?P<pk>\d+)$', ClubViews.choose_sport_club_user,
         name='choose-sport-club-user'),
-    url(r'kulup/klupÜyesi-listesi-sec/(?P<pk>\d+)$', ClubViews.choose_sport_club_user,
+    url(r'kulup/klupuyesi-listesi-sec/(?P<pk>\d+)$', ClubViews.choose_sport_club_user,
         name='choose-sport-club-user'),
 
     # Antrenörler
@@ -425,7 +425,7 @@ urlpatterns = [
     url(r'message/messages/$', DashboardViews.return_message,
         name='message'),
 
-    url(r'rol/güncelle/(?P<pk>\d+)$', DashboardViews.activeGroup,
+    url(r'rol/guncelle/(?P<pk>\d+)$', DashboardViews.activeGroup,
         name='aktive-update'),
 
     url(r'rol/degisitir/(?P<pk>\d+)$', AdminViews.activeGroup,

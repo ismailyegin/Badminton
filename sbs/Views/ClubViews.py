@@ -465,7 +465,7 @@ def return_clup(request):
     # /datatablesten gelen veri kümesi datatables degiskenine alindi
     if request.method == 'GET':
         datatables = request.GET
-        print(datatables)
+        # print(datatables)
 
 
     elif request.method == 'POST':
@@ -914,10 +914,7 @@ def choose_sport_club_user(request, pk):
             firstName = user_form.cleaned_data.get('first_name')
             lastName = user_form.cleaned_data.get('last_name')
             email = user_form.cleaned_data.get('email')
-            if not (firstName or lastName or email):
-                print('')
-                # messages.warning(request, 'Lütfen Arama Kriteri Giriniz.')
-            else:
+            if (firstName or lastName or email):
                 query = Q()
                 if lastName:
                     query &= Q(user__last_name__icontains=lastName)
