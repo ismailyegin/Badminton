@@ -46,10 +46,7 @@ def return_activity(request):
                 query &= Q(name__icontains=name)
             if startDate:
                 query &= Q(startDate__year=int(startDate))
-            if compType:
-                query &= Q(compType__in=compType)
-            if compGeneralType:
-                query &= Q(compGeneralType__in=compGeneralType)
+
             activity = Activity.objects.filter(query).distinct()
         else:
             activity = Activity.objects.all()

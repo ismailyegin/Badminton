@@ -132,8 +132,11 @@
 
                             <p>Kulüp Sayısı</p>
                         </div>
-                        <div class="icon">
-                            <i class="fa fa-male"></i>
+                        <div class="icon" style="margin: -9px">
+                            {% load  static %}
+{#                            <i class="fa fa-male"></i>#}
+                            <img class="ion" style="padding: 10px;opacity: 0.5;" src="{% static 'images/Külüp.png'%}">
+
                         </div>
                         <a href="{% url "sbs:kulupler" %}" class="small-box-footer">
                             Daha Fazla <i class="fa fa-arrow-circle-right"></i>
@@ -149,8 +152,10 @@
 
                             <p>Hakem Sayısı</p>
                         </div>
-                        <div class="icon">
-                            <i class="ion ion-ios-people-outline"></i>
+                        <div class="icon" style="margin: -9px">
+                            {% load static %}
+                                <img class="ion" style="padding: 10px;opacity: 0.7;" src="{% static 'images/hakemicon.png'%}">
+{#                            <i class="ion ion-ios-people-outline"></i>#}
                         </div>
                         <a href="{% url "sbs:kulup-uyeleri" %}" class="small-box-footer">
                             Daha Fazla <i class="fa fa-arrow-circle-right"></i>
@@ -167,8 +172,10 @@
 
                             <p>Sporcu Sayısı</p>
                         </div>
-                        <div class="icon">
-                            <i class="fa fa-home"></i>
+                        <div class="icon" style="margin: -4px">
+{#                            <i class="fa fa-home"></i>#}
+                             {% load static %}
+                                <img class="ion" style="padding: 10px;opacity: 0.5;" src="{% static 'images/Sporcuicon.png'%}">
                         </div>
                         <a href="{% url "sbs:sporcular" %}" class="small-box-footer">
                             Daha Fazla <i class="fa fa-arrow-circle-right"></i>
@@ -184,8 +191,10 @@
 
                             <p>Antrenör Sayısı</p>
                         </div>
-                        <div class="icon">
-                            <i class="fa fa-home"></i>
+                        <div class="icon" style="margin: -9px">
+                             {% load static %}
+                                <img class="ion" style="padding: 10px;opacity: 0.5;" src="{% static 'images/Antrenör.png'%}">
+{#                            <i class="fa fa-home"></i>#}
                         </div>
                         <a href="{% url "sbs:antrenorler" %}" class="small-box-footer">
                             Daha Fazla <i class="fa fa-arrow-circle-right"></i>
