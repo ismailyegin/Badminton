@@ -22,7 +22,7 @@ class Person(models.Model):
     )
 
     MALE = 1
-    FEMALE = 0
+    FEMALE = 2
 
     AB1 = 'AB(+)'
     AB2 = 'AB(-)'

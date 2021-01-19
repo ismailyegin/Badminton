@@ -353,7 +353,7 @@ def return_add_athlete(request):
         user_form = UserForm(request.POST)
         person_form = PersonForm(request.POST, request.FILES)
         communication_form = CommunicationForm(request.POST)
-        license_form = LicenseForm(request.POST, request.FILES or None)
+        license_form = LicenseForm(request.POST, request.FILES)
         # controller tc email
 
         mail = request.POST.get('email')

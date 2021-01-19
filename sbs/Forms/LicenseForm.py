@@ -6,8 +6,8 @@ class LicenseForm(ModelForm):
     sportsClub = forms.ModelChoiceField(queryset=SportsClub.objects.all(),
                                         to_field_name='name',
                                         empty_label="Seçiniz",
-                                        label="Kulübü",
-                                        required=True,
+                                        label="Kulübü*",
+                                        # required=True,
                                         widget=forms.Select(
                                             attrs={'class': 'form-control select2 select2-hidden-accessible',
                                                    'style': 'width: 100%; '}))
@@ -18,8 +18,8 @@ class LicenseForm(ModelForm):
         fields = (
             'startDate', 'sportsClub', 'branch', 'licenseNo', 'cityHeadShip', 'expireDate', 'lisansPhoto')
 
-        labels = {'startDate': 'Başlangıç Tarihi', 'branch': 'Branş', 'sportsClub': 'Kulüp',
-                  'licenseNo': 'Lisans No', 'cityHeadShip': 'Verildiği İl', 'expireDate': 'Geçer. Süresi',
+        labels = {'startDate': 'Başlangıç Tarihi*', 'branch': 'Branş*',
+                  'licenseNo': 'Lisans No*', 'cityHeadShip': 'Verildiği İl*', 'expireDate': 'Bitiş Tarihi*',
                   'lisansPhoto': 'Lisans Foto'}
 
         widgets = {
@@ -36,7 +36,7 @@ class LicenseForm(ModelForm):
                                           'style': 'width: 100%; '}),
 
             'licenseNo': forms.TextInput(
-                attrs={'class': 'form-control', 'required': 'required', 'onkeypress': 'validate(event)'}),
+                attrs={'class': 'form-control', 'onkeypress': 'validate(event)', 'required': 'required'}),
 
             'cityHeadShip': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                                 'style': 'width: 100%;', 'required': 'required'}),
