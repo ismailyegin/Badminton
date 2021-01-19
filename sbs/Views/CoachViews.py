@@ -883,9 +883,6 @@ def updateCoachProfile(request):
             log = general_methods.logwrite(request, request.user, log)
 
         if password_form.is_valid():
-
-            print(user)
-
             log = str(user) + "Şifresini degiştirdi."
             log = general_methods.logwrite(request, request.user, log)
 
@@ -1501,7 +1498,6 @@ def coach_penal_add(request, pk):
     penal_form = PenalForm()
 
     if request.method == 'POST':
-        print('post')
         penal_form = PenalForm(request.POST, request.FILES or None)
         if penal_form.is_valid():
             ceza = penal_form.save()

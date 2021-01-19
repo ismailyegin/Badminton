@@ -276,7 +276,6 @@ def return_sporcu_ajax(request):
     # /datatablesten gelen veri kümesi datatables degiskenine alindi
     if request.method == 'GET':
         datatables = request.GET
-        print(request.GET)
         secilenler = request.GET.getlist('secilenler[]')
         pk = request.GET.get('athlete')
         athlete = Athlete.objects.get(pk=pk)
@@ -496,7 +495,7 @@ def return_sporcu(request):
             for comp in compAthlete:
                 if comp.athlete:
                     athletes.append(comp.athlete.pk)
-                    print(comp.athlete)
+                    # print(comp.athlete)
             if active == 'KlupUye':
                 sc_user = SportClubUser.objects.get(user=user)
                 clubsPk = []
@@ -606,32 +605,11 @@ def choose_athlete_update(request, pk, competition):
         logout(request)
         return redirect('accounts:login')
     if request.method == 'POST' and request.is_ajax():
-        if (request.POST.get('kop') and request.POST.get('silk') and request.POST.get('weight') and request.POST.get(
-                'total')):
-            user = User.objects.get(pk=login_user.pk)
-            competition = Competition.objects.get(pk=competition)
-            compAthlete = CompAthlete.objects.get(pk=pk)
-            compAthlete.competition = competition
-            compAthlete.total = request.POST.get('total')
-            compAthlete.sıklet = Weight.objects.get(weight=request.POST.get('weight'))
-            compAthlete.silk1 = request.POST.get('silk')
-            compAthlete.kop1 = request.POST.get('kop')
-            if (int(request.POST.get('silk')) + int(request.POST.get('kop'))) - 20 <= int(
-                    request.POST.get('total')):
-                compAthlete.save()
 
-                log = str(user.get_full_name()) + " müsabaka basvuru bilgileri güncellendi "
-                log = general_methods.logwrite(request, request.user, log)
-
-                return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
-            else:
-                return JsonResponse({'status': 'Fail', 'msg': 'Kural20'})
-        else:
-            return JsonResponse({'status': 'Fail', 'msg': 'Eksik'})
 
         try:
-            print('')
 
+            # bu alanda sporcu güncelleme alani olacak kategorisini güncelleme yapabilecegiz
             return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
         except SandaAthlete.DoesNotExist:
             return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
@@ -803,7 +781,10 @@ def return_competition_ajax(request):
             #     if comp.athlete:
             #             athletes.append(comp.athlete.pk)
             if active == 'KlupUye':
-                print('klüp üye ')
+                # bu alan kontrol edilecek
+                modeldata = Competition.objects.filter(year=pk)
+                total = modeldata.count()
+                # print('klüp üye ')
                 # sc_user = SportClubUser.objects.get(user=user)
                 # clubsPk = []
                 # clubs = SportsClub.objects.filter(clubUser=sc_user)
@@ -811,6 +792,8 @@ def return_competition_ajax(request):
                 #     clubsPk.append(club.pk)
                 # modeldata = Athlete.objects.exclude(pk__in=athletes).filter(licenses__sportsClub__in=clubsPk).distinct()[start:start + length]
                 # total = mAthlete.objects.exclude(pk__in=athletes).filter(licenses__sportsClub__in=clubsPk).distinct().count()
+
+
             elif active == 'Yonetim' or active == 'Admin':
 
                 modeldata = Competition.objects.filter(year=pk)

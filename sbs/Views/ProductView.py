@@ -73,12 +73,11 @@ def product_delete(request, pk):
         return redirect('accounts:login')
     if request.method == 'POST' and request.is_ajax():
 
-        print('geldim')
-        obj = Products.objects.get(pk=pk)
-        obj.delete()
-        return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
+
         try:
-            print()
+            obj = Products.objects.get(pk=pk)
+            obj.delete()
+            return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
         except:
             return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
 
@@ -174,11 +173,10 @@ def product_delete_deposit(request, pk):
         return redirect('accounts:login')
     if request.method == 'POST' and request.is_ajax():
 
-        obj = Deposit.objects.get(pk=pk)
-        obj.delete()
-        return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
         try:
-            print()
+            obj = Deposit.objects.get(pk=pk)
+            obj.delete()
+            return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
         except:
             return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
 

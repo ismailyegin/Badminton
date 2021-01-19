@@ -61,16 +61,16 @@ def return_athletesdeneme(request):
     # /Sayfanın baska bir yerden istenmesi durumunda degerlerin None dönmemesi icin degerler try boklari icerisine alindi
     try:
         draw = int(datatables.get('draw'))
-        print("draw degeri =", draw)
+        # print("draw degeri =", draw)
         # Ambil start
         start = int(datatables.get('start'))
-        print("start degeri =", start)
+        # print("start degeri =", start)
         # Ambil length (limit)
         length = int(datatables.get('length'))
-        print("lenght  degeri =", length)
+        # print("lenght  degeri =", length)
         # Ambil data search
         search = datatables.get('search[value]')
-        print("search degeri =", search)
+        # print("search degeri =", search)
     except:
         draw = 1
         start = 0

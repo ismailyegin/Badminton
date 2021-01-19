@@ -83,8 +83,6 @@ def categoryItemDelete(request, pk):
         return redirect('accounts:login')
     if request.method == 'POST' and request.is_ajax():
         try:
-            print(pk)
-            print()
             obj = Question.objects.get(pk=pk)
             obj.delete()
             return JsonResponse({'status': 'Success', 'messages': 'save successfully'})

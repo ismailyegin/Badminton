@@ -25,6 +25,6 @@ def help(request):
                 send_mail(konu, icerik, 'no-reply@badminton.gov.tr', ['fatih@kobiltek.com'])
                 messages.success(request, 'Yardım ve Destek talebi basari ile gönderilmistir.')
             except BadHeaderError:
-                print('Invalid header found.')
+                # print('Invalid header found.')
                 messages.warning(request, 'Alanları Kontrol Ediniz Bir Şeyler Ters Gitti')
     return render(request, 'yardım/help.html')

@@ -233,15 +233,10 @@ def sporcu_birlestir(request):
             for item in secilenler:
                 athleteDel = Athlete.objects.get(pk=item)
                 compAthlete = CompAthlete.objects.filter(athlete=athleteDel)
-                print('müsabakalari')
                 for comp in compAthlete:
-                    print(comp.competition)
                     comp.athlete = athlete
                     comp.save()
-                print('lisanslari')
                 for lisans in athleteDel.licenses.all():
-                    print(lisans.pk)
-
                     athleteDel.licenses.remove(lisans)
                     athleteDel.save()
 
@@ -299,14 +294,13 @@ def sporcu_sec(request, pk):
     #     competitions= Competition.objects.get(pk=item.competition.pk)
 
     if request.method == 'POST':
-        print('ben geldim')
+
 
         athletes1 = request.POST.getlist('selected_options')
-        print(athletes1)
+
 
         for item in athletes1:
             item = Athlete.objects.get(pk=item)
-            print(item)
 
         # return redirect('wushu:musabaka-duzenle', pk=pk)
     return render(request, 'sporcu/Sporcu_Sec.html',
@@ -520,13 +514,6 @@ def return_athletes(request):
     user_form = UserSearchForm()
 
     athletes = Athlete.objects.none()
-
-    athlete = Athlete.objects.filter()
-    for item in athlete:
-        print(item)
-
-
-
     if request.method == 'POST':
 
         user_form = UserSearchForm(request.POST)
@@ -1061,7 +1048,7 @@ def sporcu_ceza_ekle(request, pk):
     penal_form = PenalForm()
 
     if request.method == 'POST':
-        print('post')
+        # print('post')
         penal_form = PenalForm(request.POST, request.FILES or None)
         if penal_form.is_valid():
             ceza = penal_form.save()
@@ -1824,17 +1811,17 @@ def updateAthleteProfile(request, pk):
 @login_required
 def sporcu_lisans_listesi_hepsionay(request):
     licenses = License.objects.filter(status='Beklemede')
-    for license in licenses:
-        athlete = license.athlete_set.first()
-        for item in athlete.licenses.all():
-            if item.branch == license.branch:
-                item.isActive = False
-                item.save()
-        license.status = Level.APPROVED
-        license.isActive = True
-        license.save()
+
     try:
-        print()
+        for license in licenses:
+            athlete = license.athlete_set.first()
+            for item in athlete.licenses.all():
+                if item.branch == license.branch:
+                    item.isActive = False
+                    item.save()
+            license.status = Level.APPROVED
+            license.isActive = True
+            license.save()
     except:
         messages.warning(request, 'Yeniden deneyiniz')
 
