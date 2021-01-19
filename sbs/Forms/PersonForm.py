@@ -9,8 +9,8 @@ class PersonForm(ModelForm):
     uyrukid = forms.ModelChoiceField(queryset=Nationnality.objects.all(),
                                      to_field_name='name',
                                      empty_label="Seçiniz",
-                                     label="Uyruk",
-                                     # initial=Nationnality.objects.filter(name="T.C.")[0],
+                                     label="Uyruk*",
+                                     initial=Nationnality.objects.filter(name="T.C.")[0],
                                      required=True,
                                      widget=forms.Select(
                                          attrs={'class': 'form-control select2 select2-hidden-accessible',
@@ -33,9 +33,10 @@ class PersonForm(ModelForm):
             'nufus_ailesirano',
             'nufus_sirano', 'nufus_ciltno')
 
-        labels = {'tc': 'T.C.',
-                  'gender': 'Cinsiyet',
+        labels = {'tc': 'T.C*.',
+                  'gender': 'Cinsiyet*',
                   'profileImage': 'Profil Resmi',
+
 
                   'nufus_ailesirano': 'Nufus Aile Sıra No',
                   'nufus_sirano': 'Nufus Sıra No',
@@ -68,15 +69,15 @@ class PersonForm(ModelForm):
 
             'tc': forms.TextInput(
                 attrs={'class': 'form-control ', 'required': 'required', 'onkeypress': 'validate(event)',
-                       'onkeyup': 'if(this.value.length >11){this.value=this.value.substr(0, 11);}'}),
+                       'onkeyup': 'if(this.value.length >11){this.value=this.value.substr(0, 11);}',
+                       'placeholder': ""}),
 
             'height': forms.TextInput(attrs={'class': 'form-control', 'onkeypress': 'validate(event)'}),
 
             'weight': forms.TextInput(attrs={'class': 'form-control', 'onkeypress': 'validate(event)'}),
 
             'birthplace': forms.TextInput(
-                attrs={'class': 'form-control ', 'value': '', 'required': 'required',
-                       "style": "text-transform:uppercase"}),
+                attrs={'class': 'form-control ', 'value': '', "style": "text-transform:uppercase"}),
 
             'motherName': forms.TextInput(
                 attrs={'class': 'form-control ', 'value': '', "style": "text-transform:uppercase"}),
@@ -89,7 +90,7 @@ class PersonForm(ModelForm):
                        'onkeydown': 'return false', 'required': 'required'}),
 
             'bloodType': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
-                                             'style': 'width: 100%; '}),
+                                             'style': 'width: 100%;'}),
 
             'gender': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                           'style': 'width: 100%;', 'required': 'required'}),

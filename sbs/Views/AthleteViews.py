@@ -353,7 +353,7 @@ def return_add_athlete(request):
         user_form = UserForm(request.POST)
         person_form = PersonForm(request.POST, request.FILES)
         communication_form = CommunicationForm(request.POST)
-        license_form = LicenseForm(request.POST, request.FILES or None)
+        license_form = LicenseForm(request.POST, request.FILES)
         # controller tc email
 
         mail = request.POST.get('email')
@@ -520,6 +520,13 @@ def return_athletes(request):
     user_form = UserSearchForm()
 
     athletes = Athlete.objects.none()
+
+    athlete = Athlete.objects.filter()
+    for item in athlete:
+        print(item)
+
+
+
     if request.method == 'POST':
 
         user_form = UserSearchForm(request.POST)
