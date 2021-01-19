@@ -38,7 +38,6 @@ def return_users(request):
             lastName = user_form.cleaned_data.get('last_name')
             email = user_form.cleaned_data.get('email')
             active = request.POST.get('is_active')
-            print(active)
             if not (firstName or lastName or email or active):
                 users = User.objects.all()
             else:
@@ -50,12 +49,9 @@ def return_users(request):
                 if email:
                     query &= Q(email__icontains=email)
                 if active == 'True':
-                    print(active)
                     query &= Q(is_active=True)
                 if active == 'False':
                     query &= Q(is_active=False)
-
-                    print('geldim ')
                 users = User.objects.filter(query)
     return render(request, 'kullanici/kullanicilar.html', {'users': users, 'user_form': user_form})
 
@@ -105,7 +101,6 @@ def active_user(request, pk):
 
         log = str(obj.get_full_name()) + " ->" + str(obj.is_active) + "Durumu degiştirildi "
         log = general_methods.logwrite(request, request.user, log)
-        print(obj.is_active)
         return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
 
     else:
