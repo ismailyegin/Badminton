@@ -1078,9 +1078,6 @@ def referenceStatus_reddet(request, pk):
     if reference.status == ReferenceReferee.WAITED:
         reference.status = ReferenceReferee.DENIED
         reference.save()
-
-
-    try:
         html_content = ''
         subject, from_email, to = 'Bilgi Sistemi', 'no-reply@badminton.gov.tr', reference.email
         html_content = '<h2>TÜRKİYE BADMİNTON FEDERASYONU BİLGİ SİSTEMİ</h2>'
@@ -1089,9 +1086,8 @@ def referenceStatus_reddet(request, pk):
         msg = EmailMultiAlternatives(subject, '', from_email, [to])
         msg.attach_alternative(html_content, "text/html")
         msg.send()
+
     else:
-    messages.success(request, 'Hakem daha önce onaylanmıştır.')
-    except:
         messages.warning(request, 'Tekrar deneyiniz.')
 
     return redirect('sbs:basvuru-referee')
