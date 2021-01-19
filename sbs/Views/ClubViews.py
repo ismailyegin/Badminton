@@ -84,7 +84,7 @@ def return_add_club(request):
 
             messages.success(request, 'Kulüp Başarıyla Kayıt Edilmiştir.')
 
-            return redirect('sbs:kulupler')
+            return redirect('sbs:update-club',clubsave.pk)
 
         else:
 
