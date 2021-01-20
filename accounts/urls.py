@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'referee/$', views.referenceReferee, name='referee'),
     url(r'coach/$', views.referenceCoach, name='coach'),
     url(r'lastlogin/$', views.lastlogin, name='last-login'),
-
+    url(r'updateCoach/(?P<tc>\d+)/(?P<pk>\d+)$', views.updatecoach, name='update-coach'),
+    url(r'updateJudge/(?P<tc>\d+)/(?P<pk>\d+)$', views.updatejudge, name='update-judge'),
 ]
