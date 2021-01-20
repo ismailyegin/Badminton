@@ -123,5 +123,5 @@ def faliyet_duzenle(request, pk):
 
             messages.warning(request, 'Alanları Kontrol Ediniz')
 
-    return render(request, 'faliyet/faaliyet-güncelle.html',
+    return render(request, 'faliyet/faaliyet-guncelle.html',
                   {'competition_form': competition_form, 'competition': activity})
