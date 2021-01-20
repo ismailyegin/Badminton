@@ -279,6 +279,78 @@
                 </div>
                 <!-- /.col -->
             </div>
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"> Antrenor Kademe Bilgileri</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                        class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+
+
+                            <h3>Antrenor Kademe Bilgileri</h3>
+                            <canvas id="antrenorcanvas"></canvas>
+
+
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer clearfix">
+                            <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New
+                                Order</a>
+                            <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All
+                                Orders</a>
+                        </div>
+                        <!-- /.box-footer -->
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"> Hakem Kademe Bilgileri</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                        class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+
+
+                            <h3 id="test">Hakem Kademe Bilgileri</h3>
+                            <canvas id="hakemcanvas"></canvas>
+
+
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer clearfix">
+                            <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New
+                                Order</a>
+                            <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All
+                                Orders</a>
+                        </div>
+                        <!-- /.box-footer -->
+                    </div>
+                </div>
+
+
+            </div>
             <!-- /.row -->
 
             <!-- Main row -->
@@ -820,7 +892,56 @@
 
 
     <script>
+
+        var randomScalingFactor = function () {
+            return Math.round(Math.random() * 100)
+        };
+
+        var barChartDataantrenor = {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [
+                {
+                    fillColor: "rgba(220,220,220,0.5)",
+                    strokeColor: "rgba(220,220,220,0.8)",
+                    highlightFill: "rgba(220,220,220,0.75)",
+                    highlightStroke: "rgba(220,220,220,1)",
+                    data: [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()]
+                },
+
+            ]
+
+        };
+
+        var barChartDatahakem = {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [
+                {
+                    fillColor: "rgba(220,220,220,0.5)",
+                    strokeColor: "rgba(220,220,220,0.8)",
+                    highlightFill: "rgba(220,220,220,0.75)",
+                    highlightStroke: "rgba(220,220,220,1)",
+                    data: [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()]
+                },
+
+            ]
+
+        }
+
+
+
+
+
         $(function () {
+
+            var ctx = document.getElementById("antrenorcanvas").getContext("2d");
+            window.myBar = new Chart(ctx).Bar(barChartDataantrenor, {
+                responsive: true
+            });
+
+            var hakem = document.getElementById("hakemcanvas").getContext("2d");
+            window.myBar = new Chart(hakem).Bar(barChartDatahakem, {
+                responsive: true
+            });
 
 
             var salesChartCanvas = $('#salesChart2').get(0).getContext('2d');
