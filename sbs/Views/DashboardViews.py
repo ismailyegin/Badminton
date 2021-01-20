@@ -1,20 +1,21 @@
+from datetime import datetime
+
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
-from django.shortcuts import render, redirect
 # from rest_framework_simplejwt import views as jwt_views
 from django.http import JsonResponse
+from django.shortcuts import render, redirect
 
-from sbs.models import SportClubUser, SportsClub, Coach, Level, License, Athlete, Person, Judge
-from sbs.services import general_methods
-
-from sbs.models.ReferenceCoach import ReferenceCoach
-from sbs.models.ReferenceReferee import ReferenceReferee
-from sbs.models.PreRegistration import PreRegistration
+from sbs.models import SportClubUser, SportsClub, Coach, Level, Athlete, Person, Judge
 # from rest_framework.authtoken.models import Token
 from sbs.models.ActiveGroup import ActiveGroup
-
-from datetime import date, datetime
+from sbs.models.Competition import Competition
+from sbs.models.CompetitionsAthlete import CompetitionsAthlete
+from sbs.models.PreRegistration import PreRegistration
+from sbs.models.ReferenceCoach import ReferenceCoach
+from sbs.models.ReferenceReferee import ReferenceReferee
+from sbs.services import general_methods
 
 
 @login_required
@@ -175,22 +176,68 @@ def return_admin_dashboard(request):
     total_judge = Judge.objects.all().count()
     total_user = User.objects.all().count()
 
-    # total_notifications_refere = ReferenceReferee.objects.filter(status=ReferenceReferee.WAITED).count()
-    # total_notifications_coach = ReferenceReferee.objects.filter(status=ReferenceCoach.WAITED).count()
-    # total_notifications_clup = PreRegistration.objects.filter(status=PreRegistration.WAITED).count()
-    # notifications_tatal = total_notifications_refere + total_notifications_coach + total_notifications_clup
+    max = 0
+    maxcom = Competition.objects.none()
+    competitions = Competition.objects.filter().order_by('creationDate')
+    for item in competitions:
+        if max < int(CompetitionsAthlete.objects.filter(competition=item).count()):
+            maxcom = item
+            max = int(CompetitionsAthlete.objects.filter(competition=item).count())
+
+    max = CompetitionsAthlete.objects.filter(competition=maxcom).count()
+    max_male = CompetitionsAthlete.objects.filter(competition=maxcom, athlete__person__gender=Person.MALE).count()
+    max_female = CompetitionsAthlete.objects.filter(competition=maxcom, athlete__person__gender=Person.FEMALE).count()
+
+    competitions = Competition.objects.filter().order_by('creationDate')[:6]
+    lastcompetition = Competition.objects.filter().order_by('-creationDate')[0]
+
+    datacount = []
+    for item in competitions:
+        competition = CompetitionsAthlete.objects.filter(competition_id=item.pk)
+        beka = {
+            'count': competition.count(),
+            'competiton': item
+        }
+        datacount.append(beka)
+        # print(data)
+
+    total_notifications_refere = ReferenceReferee.objects.filter(status=ReferenceReferee.WAITED).count()
+    total_notifications_coach = ReferenceReferee.objects.filter(status=ReferenceCoach.WAITED).count()
+    total_notifications_clup = PreRegistration.objects.filter(status=PreRegistration.WAITED).count()
+    notifications_tatal = total_notifications_refere + total_notifications_coach + total_notifications_clup
 
     return render(request, 'anasayfa/admin.html',
-                  {'total_club_user': total_club_user, 'total_club': total_club,
-                   'total_athlete': total_athlete, 'total_coachs': total_coachs, 'last_athletes': last_athlete,
-                   'total_athlete_gender_man': total_athlete_gender_man,
-                   'total_athlete_gender_woman': total_athlete_gender_woman,
-                   'total_athlate_last_month': total_athlate_last_month,
-                   'total_judge': total_judge, 'total_user': total_user,
-                   # 'total_notifications_refere': total_notifications_refere,
-                   # 'total_notifications_coach': total_notifications_coach,
-                   # 'total_notifications_clup': total_notifications_clup,
-                   # 'notifications_tatal': notifications_tatal
+                  {
+                      'max_male': max_male,
+                      'max_female': max_female,
+                      'competition_male': CompetitionsAthlete.objects.filter(competition=lastcompetition,
+                                                                             athlete__person__gender=Person.MALE).count(),
+                      'competition_male_x': int((CompetitionsAthlete.objects.filter(competition=lastcompetition,
+                                                                                    athlete__person__gender=Person.MALE).count() * 100) / CompetitionsAthlete.objects.filter(
+                          competition=maxcom, athlete__person__gender=Person.MALE).count()),
+                      'competition_female': CompetitionsAthlete.objects.filter(competition=lastcompetition,
+                                                                               athlete__person__gender=Person.FEMALE).count(),
+                      'competition_female_x': int((CompetitionsAthlete.objects.filter(competition=lastcompetition,
+                                                                                      athlete__person__gender=Person.FEMALE).count() * 100) / CompetitionsAthlete.objects.filter(
+                          competition=maxcom, athlete__person__gender=Person.FEMALE).count()),
+                      'competition_athlete_count': CompetitionsAthlete.objects.filter(
+                          competition=lastcompetition).count(),
+                      'max': max,
+                      'max_x': int(
+                          (CompetitionsAthlete.objects.filter(competition=lastcompetition).count() * 100) / max),
+
+                      'lastcompetition': lastcompetition,
+                      'data': datacount, 'total_club_user': total_club_user,
+                      'total_club': total_club,
+                      'total_athlete': total_athlete, 'total_coachs': total_coachs, 'last_athletes': last_athlete,
+                      'total_athlete_gender_man': total_athlete_gender_man,
+                      'total_athlete_gender_woman': total_athlete_gender_woman,
+                      'total_athlate_last_month': total_athlate_last_month,
+                      'total_judge': total_judge, 'total_user': total_user,
+                      'total_notifications_refere': total_notifications_refere,
+                      'total_notifications_coach': total_notifications_coach,
+                      'total_notifications_clup': total_notifications_clup,
+                      'notifications_tatal': notifications_tatal
 
                    })
 
