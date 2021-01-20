@@ -59,6 +59,8 @@ from sbs.models.CompetitionCoach import CompetitionCoach
 
 from sbs.Forms.MaterialForm import MaterialForm
 
+from sbs.models.Logs import Logs
+
 # visaseminer ekle
 @login_required
 def visaSeminar_ekle(request):
@@ -744,6 +746,8 @@ def coachUpdate(request, pk):
     person_form = PersonForm(request.POST or None, request.FILES or None, instance=person)
     iban_form = IbanCoachForm(request.POST or None, instance=coach)
 
+    logs = Logs.objects.filter(user=user)
+
     communication = Communication.objects.get(pk=coach.communication.pk)
     if person.material:
         metarial = Material.objects.get(pk=coach.person.material.pk)
@@ -786,7 +790,7 @@ def coachUpdate(request, pk):
                               {'user_form': user_form, 'communication_form': communication_form,
                                'person_form': person_form, 'grades_form': grade_form, 'coach': coach.pk,
                                'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
-                               'metarial_form': metarial_form, 'competitions': competitions})
+                               'metarial_form': metarial_form, 'competitions': competitions, 'logs': logs})
 
         tc = request.POST.get('tc')
         if tc != coach.person.tc:
@@ -798,7 +802,7 @@ def coachUpdate(request, pk):
                               {'user_form': user_form, 'communication_form': communication_form,
                                'person_form': person_form, 'grades_form': grade_form, 'coach': coach.pk,
                                'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
-                               'metarial_form': metarial_form, 'competitions': competitions
+                               'metarial_form': metarial_form, 'competitions': competitions, 'logs': logs
                                })
 
         name = request.POST.get('first_name')
@@ -813,7 +817,7 @@ def coachUpdate(request, pk):
                           {'user_form': user_form, 'communication_form': communication_form,
                            'person_form': person_form, 'grades_form': grade_form, 'coach': coach.pk,
                            'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
-                           'metarial_form': metarial_form, 'competitions': competitions
+                           'metarial_form': metarial_form, 'competitions': competitions, 'logs': logs
                            })
 
         if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and iban_form.is_valid() and metarial_form.is_valid():
@@ -848,7 +852,7 @@ def coachUpdate(request, pk):
                   {'user_form': user_form, 'communication_form': communication_form,
                    'person_form': person_form, 'grades_form': grade_form, 'coach': coach,
                    'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
-                   'metarial_form': metarial_form, 'competitions': competitions
+                   'metarial_form': metarial_form, 'competitions': competitions, 'logs': logs
                    })
 
 
