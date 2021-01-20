@@ -16,6 +16,7 @@ from sbs.models.PreRegistration import PreRegistration
 from sbs.models.ReferenceCoach import ReferenceCoach
 from sbs.models.ReferenceReferee import ReferenceReferee
 from sbs.services import general_methods
+from sbs.models.CategoryItem import CategoryItem
 
 
 @login_required
@@ -206,8 +207,39 @@ def return_admin_dashboard(request):
     total_notifications_clup = PreRegistration.objects.filter(status=PreRegistration.WAITED).count()
     notifications_tatal = total_notifications_refere + total_notifications_coach + total_notifications_clup
 
+    # hakem kademe sayilari
+    judge_grades = []
+    categori = CategoryItem.objects.filter(forWhichClazz='REFEREE_GRADE')
+
+    for item in categori:
+        beka = {
+            'name': item.name,
+            'count': Judge.objects.filter(grades__definition=item).count()
+        }
+        judge_grades.append(beka)
+
+    coach_grades = []
+    categori = CategoryItem.objects.filter(forWhichClazz='COACH_GRADE')
+
+    for item in categori:
+        beka = {
+            'name': item.name,
+            'count': Coach.objects.filter(grades__definition=item).count()
+        }
+        coach_grades.append(beka)
+
+
+
+
+
+
+
+
+
     return render(request, 'anasayfa/admin.html',
                   {
+                      'coach_grades': coach_grades,
+                      'judge_grades': judge_grades,
                       'max_male': max_male,
                       'max_female': max_female,
                       'competition_male': CompetitionsAthlete.objects.filter(competition=lastcompetition,

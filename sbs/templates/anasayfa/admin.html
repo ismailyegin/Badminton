@@ -298,8 +298,6 @@
                         <!-- /.box-header -->
                         <div class="box-body">
 
-
-                            <h3>Antrenor Kademe Bilgileri</h3>
                             <canvas id="antrenorcanvas"></canvas>
 
 
@@ -307,10 +305,10 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer clearfix">
-                            <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New
-                                Order</a>
-                            <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All
-                                Orders</a>
+                            <a href="{% url 'sbs:antrenorler' %}" class="btn btn-sm btn-info btn-flat pull-left">Antrenor
+                                Listesi </a>
+                            <a href="{% url 'sbs:kademe' %}" class="btn btn-sm btn-default btn-flat pull-right">Antrenor
+                                Kademe Tanımlari</a>
                         </div>
                         <!-- /.box-footer -->
                     </div>
@@ -318,7 +316,7 @@
                 <div class="col-md-6">
                     <div class="box box-info">
                         <div class="box-header with-border">
-                            <h3 class="box-title"> Hakem Kademe Bilgileri</h3>
+                            <h3 class="box-title"> Hakem Seviye Tanımları</h3>
 
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
@@ -331,8 +329,6 @@
                         <!-- /.box-header -->
                         <div class="box-body">
 
-
-                            <h3 id="test">Hakem Kademe Bilgileri</h3>
                             <canvas id="hakemcanvas"></canvas>
 
 
@@ -340,10 +336,10 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer clearfix">
-                            <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New
-                                Order</a>
-                            <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All
-                                Orders</a>
+                            <a href="{% url 'sbs:hakemler' %}" class="btn btn-sm btn-info btn-flat pull-left">Hakem
+                                Listesi</a>
+                            <a href="{% url 'sbs:seviye' %}" class="btn btn-sm btn-default btn-flat pull-right">Hakem
+                                Seviye Tanımları</a>
                         </div>
                         <!-- /.box-footer -->
                     </div>
@@ -898,14 +894,14 @@
         };
 
         var barChartDataantrenor = {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            labels: [{% for item in coach_grades %}"{{ item.name }} Kademe",{% endfor %}],
             datasets: [
                 {
                     fillColor: "rgba(220,220,220,0.5)",
                     strokeColor: "rgba(220,220,220,0.8)",
                     highlightFill: "rgba(220,220,220,0.75)",
                     highlightStroke: "rgba(220,220,220,1)",
-                    data: [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()]
+                    data: [{% for item in coach_grades %}{{ item.count }}, {% endfor %}]
                 },
 
             ]
@@ -913,14 +909,14 @@
         };
 
         var barChartDatahakem = {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            labels: [{% for item in judge_grades %}"{{ item.name }}",{% endfor %}],
             datasets: [
                 {
                     fillColor: "rgba(220,220,220,0.5)",
                     strokeColor: "rgba(220,220,220,0.8)",
                     highlightFill: "rgba(220,220,220,0.75)",
                     highlightStroke: "rgba(220,220,220,1)",
-                    data: [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()]
+                    data: [{% for item in judge_grades %}{{ item.count }}, {% endfor %}]
                 },
 
             ]
