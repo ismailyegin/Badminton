@@ -68,12 +68,113 @@ def return_coach_dashboard(request):
 @login_required
 def return_directory_dashboard(request):
     perm = general_methods.control_access(request)
+    perm = general_methods.control_access(request)
+    # x = general_methods.import_csv()
 
     if not perm:
         logout(request)
         return redirect('accounts:login')
 
-    return render(request, 'anasayfa/federasyon.html')
+    # son eklenen 8 sporcuyu ekledik
+    last_athlete = Athlete.objects.order_by('-creationDate')[:8]
+    total_club = SportsClub.objects.all().count()
+    total_athlete = Athlete.objects.all().count()
+    total_athlete_gender_man = Athlete.objects.filter(person__gender=Person.MALE).count()
+    total_athlete_gender_woman = Athlete.objects.filter(person__gender=Person.FEMALE).count()
+    total_athlate_last_month = Athlete.objects.exclude(user__date_joined__month=datetime.now().month).count()
+    total_club_user = SportClubUser.objects.all().count()
+    total_coachs = Coach.objects.all().count()
+    total_judge = Judge.objects.all().count()
+    total_user = User.objects.all().count()
+
+    max = 0
+    maxcom = Competition.objects.none()
+    competitions = Competition.objects.filter().order_by('creationDate')
+    for item in competitions:
+        if max < int(CompetitionsAthlete.objects.filter(competition=item).count()):
+            maxcom = item
+            max = int(CompetitionsAthlete.objects.filter(competition=item).count())
+
+    max = CompetitionsAthlete.objects.filter(competition=maxcom).count()
+    max_male = CompetitionsAthlete.objects.filter(competition=maxcom, athlete__person__gender=Person.MALE).count()
+    max_female = CompetitionsAthlete.objects.filter(competition=maxcom, athlete__person__gender=Person.FEMALE).count()
+
+    competitions = Competition.objects.filter().order_by('creationDate')[:6]
+    lastcompetition = Competition.objects.filter().order_by('-creationDate')[0]
+
+    datacount = []
+    for item in competitions:
+        competition = CompetitionsAthlete.objects.filter(competition_id=item.pk)
+        beka = {
+            'count': competition.count(),
+            'competiton': item
+        }
+        datacount.append(beka)
+        # print(data)
+
+    total_notifications_refere = ReferenceReferee.objects.filter(status=ReferenceReferee.WAITED).count()
+    total_notifications_coach = ReferenceReferee.objects.filter(status=ReferenceCoach.WAITED).count()
+    total_notifications_clup = PreRegistration.objects.filter(status=PreRegistration.WAITED).count()
+    notifications_tatal = total_notifications_refere + total_notifications_coach + total_notifications_clup
+
+    # hakem kademe sayilari
+    judge_grades = []
+    categori = CategoryItem.objects.filter(forWhichClazz='REFEREE_GRADE')
+
+    for item in categori:
+        beka = {
+            'name': item.name,
+            'count': Judge.objects.filter(grades__definition=item).count()
+        }
+        judge_grades.append(beka)
+
+    coach_grades = []
+    categori = CategoryItem.objects.filter(forWhichClazz='COACH_GRADE')
+
+    for item in categori:
+        beka = {
+            'name': item.name,
+            'count': Coach.objects.filter(grades__definition=item).count()
+        }
+        coach_grades.append(beka)
+
+    return render(request, 'anasayfa/federasyon.html',
+                  {
+                      'coach_grades': coach_grades,
+                      'judge_grades': judge_grades,
+                      'max_male': max_male,
+                      'max_female': max_female,
+                      'competition_male': CompetitionsAthlete.objects.filter(competition=lastcompetition,
+                                                                             athlete__person__gender=Person.MALE).count(),
+                      'competition_male_x': int((CompetitionsAthlete.objects.filter(competition=lastcompetition,
+                                                                                    athlete__person__gender=Person.MALE).count() * 100) / CompetitionsAthlete.objects.filter(
+                          competition=maxcom, athlete__person__gender=Person.MALE).count()),
+                      'competition_female': CompetitionsAthlete.objects.filter(competition=lastcompetition,
+                                                                               athlete__person__gender=Person.FEMALE).count(),
+                      'competition_female_x': int((CompetitionsAthlete.objects.filter(competition=lastcompetition,
+                                                                                      athlete__person__gender=Person.FEMALE).count() * 100) / CompetitionsAthlete.objects.filter(
+                          competition=maxcom, athlete__person__gender=Person.FEMALE).count()),
+                      'competition_athlete_count': CompetitionsAthlete.objects.filter(
+                          competition=lastcompetition).count(),
+                      'max': max,
+                      'max_x': int(
+                          (CompetitionsAthlete.objects.filter(competition=lastcompetition).count() * 100) / max),
+
+                      'lastcompetition': lastcompetition,
+                      'data': datacount, 'total_club_user': total_club_user,
+                      'total_club': total_club,
+                      'total_athlete': total_athlete, 'total_coachs': total_coachs, 'last_athletes': last_athlete,
+                      'total_athlete_gender_man': total_athlete_gender_man,
+                      'total_athlete_gender_woman': total_athlete_gender_woman,
+                      'total_athlate_last_month': total_athlate_last_month,
+                      'total_judge': total_judge, 'total_user': total_user,
+                      'total_notifications_refere': total_notifications_refere,
+                      'total_notifications_coach': total_notifications_coach,
+                      'total_notifications_clup': total_notifications_clup,
+                      'notifications_tatal': notifications_tatal
+
+                  })
+
 
 
 @login_required
