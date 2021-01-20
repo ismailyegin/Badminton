@@ -63,7 +63,7 @@ def aplication(request, pk):
 
     login_user = request.user
     user = User.objects.get(pk=login_user.pk)
-    weights = Weight.objects.all()
+    weights = Category.objects.all()
     if active == 'KlupUye':
         sc_user = SportClubUser.objects.get(user=user)
         if sc_user.dataAccessControl == True:
@@ -569,28 +569,21 @@ def update_athlete(request, pk, competition):
     if not perm:
         logout(request)
         return redirect('accounts:login')
-    # if request.method == 'POST' and request.is_ajax():
+    if request.method == 'POST' and request.is_ajax():
 
-    # try:
-    # user = User.objects.get(pk=login_user.pk)
-    # compAthlete = CompAthlete.objects.get(pk=competition)
-    # total = request.POST.get('total')
-    # siklet = request.POST.get('weight')
-    # silk = request.POST.get('silk')
-    # kop = request.POST.get('kop')
-    # if total is not None:
-    #     compAthlete.total = total
-    # if siklet is not None:
-    #     compAthlete.sıklet = Weight.objects.get(pk=siklet)
-    # if silk is not None:
-    #     compAthlete.silk1 = silk
-    # if kop is not None:
-    #     compAthlete.kop1 = kop
-    # compAthlete.save()
+        try:
+            user = User.objects.get(pk=login_user.pk)
+            compAthlete = CompAthlete.objects.get(pk=competition)
+            category = request.POST.get('category')
+            if category is not None:
+                compAthlete.category = Category.objects.get(pk=category)
+            compAthlete.save()
 
-    #     return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
-    # except SandaAthlete.DoesNotExist:
-    #     return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
+            return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
+        except SandaAthlete.DoesNotExist:
+            return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
+
+
 
     else:
         return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})

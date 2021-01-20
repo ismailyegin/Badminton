@@ -106,8 +106,8 @@ def faliyet_duzenle(request, pk):
         logout(request)
         return redirect('accounts:login')
 
-    musabaka = Activity.objects.get(pk=pk)
-    competition_form = ActivityForm(request.POST or None, instance=musabaka)
+    activity = Activity.objects.get(pk=pk)
+    competition_form = ActivityForm(request.POST or None, instance=activity)
     if request.method == 'POST':
 
         if competition_form.is_valid():
@@ -124,4 +124,4 @@ def faliyet_duzenle(request, pk):
             messages.warning(request, 'Alanları Kontrol Ediniz')
 
     return render(request, 'faliyet/faaliyet-güncelle.html',
-                  {'competition_form': competition_form, 'competition': musabaka})
+                  {'competition_form': competition_form, 'competition': activity})

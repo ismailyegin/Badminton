@@ -248,25 +248,14 @@
                     <h4 class="modal-title">Ek Bilgileri Giriniz</h4>
                 </div>
                 <div class="modal-body">
-                    <label for="inputState">Siklet</label>
-                    <select id="weight" class="form-control">
+                    <label for="inputState">Kategori</label>
+                    <select id="category" class="form-control">
                         <option selected>Seçiniz...</option>
                         {% for weight in weights %}
-                            <option value="{{ weight.pk }}">{{ weight.weight }}</option>
+                            <option value="{{ weight.pk }}">{{ weight.kategoriadi }}</option>
                         {% endfor %}
                     </select>
 
-
-                    <label for="silk">Silkme </label>
-                    <input type="number" name="silk" id="silk" class="form-control" required>
-
-
-                    <label for="kop">Koparma</label>
-                    <input type="number" name="kop" id="kop" class="form-control" required>
-
-
-                    <label for="total">Toplam Kaldırış</label>
-                    <input type="number" name="total" id="total" class="form-control" required>
 
                 </div>
 
@@ -376,11 +365,8 @@
                             {% if aktif == 'Admin' %}
                                 <th>Kulüp</th>
                             {% endif %}
-                            <th>Siklet</th>
-                            <th>Silkme</th>
-                            <th>Koparma</th>
+                            <th>Kategori</th>
 
-                            <th>Giriş Toplamı</th>
                             <th>İşlemler</th>
 
 
@@ -396,23 +382,11 @@
                                     {% if aktif == 'Admin' %}
                                         <td>{{ compathlete.athlete.licenses.last.sportsClub }}</td>
                                     {% endif %}
-                                    <td>{{ compathlete.sıklet.weight }}</td>
-                                    <td>{{ compathlete.silk1 }}</td>
-                                    <td>{{ compathlete.kop1 }}</td>
-                                    <td>{{ compathlete.total }}</td>
+                                    <td>{{ compathlete.category }}</td>
+
                                     <td>
                                         <div class="btn-group">
-                                            <a onclick=" addPlayer( {{ compathlete.athlete.pk }},{{ compathlete.id }},
-                                                    {% if compathlete.sıklet.pk %}
-
-
-                                                        {{ compathlete.sıklet.pk }}
-                                                    {% else %}
-                                                        null
-
-                                                    {% endif %}
-
-                                                    ,{{ compathlete.total }},{{compathlete.silk1  }},{{ compathlete.kop1 }})"
+                                            <a onclick=" addPlayer( {{ compathlete.athlete.pk }},{{ compathlete.id }},{{ compathlete.category.pk }})"
                                                type="button" class="btn btn-primary"><i
                                                     class="fa fa-edit"></i>Güncelle
                                             </a>
@@ -579,32 +553,9 @@
 
         });
 
-        function addPlayer(id, competitionId, siklet, total, silk, kop) {
+        function addPlayer(id, competitionId, kategori) {
 
-            $('#weight option:selected').text();
-            $('#total').val();
-
-
-            if (siklet != null) {
-
-                $('#weight').val(siklet);
-
-            }
-            if (total != null) {
-
-                $('#total').val(total);
-
-            }
-            if (kop != null) {
-
-                $('#kop').val(kop);
-
-            }
-            if (silk != null) {
-
-                $('#silk').val(silk);
-
-            }
+            $('#category option:selected').text();
 
 
             $("#reddetwhy").on("shown.bs.modal", function (e) {
@@ -614,23 +565,14 @@
 
 
                     console.log('buradan girdi', competitionId)
-
-
-                    var kop = parseInt($('#kop').val());
-                    var silk = parseInt($('#silk').val());
-                    var toplam = kop + silk;
-                    if ((total - 20) <= toplam && (total + 20) >= toplam) {
-                        $.ajax({
+                    $.ajax({
                             url: "{% url "sbs:catagori-sporcu-guncelle-ajax" pk=212121223232323232 competition=999999999999999 %}".replace(/212121223232323232/, id.toString()).replace(/999999999999999/, competitionId.toString()),
                         type: "POST",
                         data: {
                             'csrfmiddlewaretoken': "{{  csrf_token  }}",
-                            total: $('#total').val(),
-                            weight: $('#weight').val(),
-                            silk: $('#silk').val(),
-                            kop: $('#kop').val(),
-                            isActive: 'False'
 
+                            category: $('#category').val(),
+                            isActive: 'False'
                         },
                         success: function (result) {
 
@@ -653,12 +595,8 @@
                     });
 
 
-                    } else {
 
 
-                        $('#kural20').modal('show');
-
-                    }
 
 
                 });
