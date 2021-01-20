@@ -31,6 +31,7 @@ from sbs.Forms.IbanCoachForm import IbanCoachForm
 from sbs.models.Material import Material
 from sbs.Forms.MaterialForm import MaterialForm
 from sbs.Forms.IbanFormJudge import IbanFormJudge
+from sbs.models.Competition import Competition
 
 
 def index(request):
@@ -607,7 +608,6 @@ def lastlogin(request):
         tc = request.POST.get("tcno")
         if Person.objects.filter(tc=tc):
             name = request.POST.get('isim')
-            email = request.POST.get('mail')
             surname = request.POST.get('soyisim')
             date = request.POST.get('tarih')
             year = date.split('/')
@@ -765,9 +765,8 @@ def updatecoach(request, tc, pk):
 
 
 def updatejudge(request, tc, pk):
-    judge = Judge.objects.filter(person__tc=tc)
-
-    if not judge.user.groups.all():
+    judge = Judge.objects.filter(person__tc=tc)[0]
+    if not (judge.user.groups.all()):
         user = judge.user
         judge.user.groups.add(Group.objects.get(name="Hakem"))
         judge.save()
@@ -798,88 +797,91 @@ def updatejudge(request, tc, pk):
     grade_form = judge.grades.all()
     visa_form = judge.visa.all()
 
-    name = request.POST.get('first_name')
-    surname = request.POST.get('last_name')
-    year = request.POST.get('birthDate')
-    year = year.split('/')
-    mail = request.POST.get('email')
-    if mail != judge.user.email:
+    if request.method == "POST":
+        name = request.POST.get('first_name')
+        surname = request.POST.get('last_name')
+        year = request.POST.get('birthDate')
+        year = year.split('/')
+        mail = request.POST.get('email')
+        if mail != judge.user.email:
 
-        if User.objects.filter(email=mail) or ReferenceCoach.objects.exclude(
-                status=ReferenceCoach.DENIED).filter(
-            email=mail) or ReferenceReferee.objects.exclude(status=ReferenceReferee.DENIED).filter(
-            email=mail) or PreRegistration.objects.exclude(status=PreRegistration.DENIED).filter(
-            email=mail):
-            messages.warning(request, 'Mail adresi başka bir kullanici tarafından kullanilmaktadir.')
-            return render(request, 'hakem/hakemDuzenle.html',
-                          {'user_form': user_form, 'communication_form': communication_form,
-                           'person_form': person_form, 'judge': judge, 'grade_form': grade_form,
-                           'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
-                           'metarial_form': metarial_form})
+            if User.objects.filter(email=mail) or ReferenceCoach.objects.exclude(
+                    status=ReferenceCoach.DENIED).filter(
+                email=mail) or ReferenceReferee.objects.exclude(status=ReferenceReferee.DENIED).filter(
+                email=mail) or PreRegistration.objects.exclude(status=PreRegistration.DENIED).filter(
+                email=mail):
+                messages.warning(request, 'Mail adresi başka bir kullanici tarafından kullanilmaktadir.')
+                return render(request, 'hakem/hakemDuzenle.html',
+                              {'user_form': user_form, 'communication_form': communication_form,
+                               'person_form': person_form, 'judge': judge, 'grade_form': grade_form,
+                               'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
+                               'metarial_form': metarial_form})
 
-    tc = request.POST.get('tc')
-    if tc != judge.person.tc:
-        if Person.objects.filter(tc=tc) or ReferenceCoach.objects.exclude(
-                status=ReferenceCoach.DENIED).filter(
-            tc=tc) or ReferenceReferee.objects.exclude(status=ReferenceReferee.DENIED).filter(
-            tc=tc) or PreRegistration.objects.exclude(status=PreRegistration.DENIED).filter(tc=tc):
-            messages.warning(request, 'Tc kimlik numarasi sisteme kayıtlıdır. ')
-            return render(request, 'hakem/hakemDuzenle.html',
+        tc = request.POST.get('tc')
+        if tc != judge.person.tc:
+            if Person.objects.filter(tc=tc) or ReferenceCoach.objects.exclude(
+                    status=ReferenceCoach.DENIED).filter(
+                tc=tc) or ReferenceReferee.objects.exclude(status=ReferenceReferee.DENIED).filter(
+                tc=tc) or PreRegistration.objects.exclude(status=PreRegistration.DENIED).filter(tc=tc):
+                messages.warning(request, 'Tc kimlik numarasi sisteme kayıtlıdır. ')
+                return render(request, 'hakem/hakemDuzenle.html',
+                              {'user_form': user_form, 'communication_form': communication_form,
+                               'person_form': person_form, 'judge': judge, 'grade_form': grade_form,
+                               'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
+                               'metarial_form': metarial_form,
+                               })
+
+        client = Client('https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx?WSDL')
+        if not (client.service.TCKimlikNoDogrula(tc, name, surname, year[2])):
+            messages.warning(request,
+                             'Tc kimlik numarasi ile isim  soyisim dogum yılı  bilgileri uyuşmamaktadır. ')
+            return render(request, 'registration/JudgeUpdate.html',
                           {'user_form': user_form, 'communication_form': communication_form,
                            'person_form': person_form, 'judge': judge, 'grade_form': grade_form,
                            'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
                            'metarial_form': metarial_form,
                            })
 
-    client = Client('https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx?WSDL')
-    if not (client.service.TCKimlikNoDogrula(tc, name, surname, year[2])):
-        messages.warning(request,
-                         'Tc kimlik numarasi ile isim  soyisim dogum yılı  bilgileri uyuşmamaktadır. ')
-        return render(request, 'registration/JudgeUpdate.html',
-                      {'user_form': user_form, 'communication_form': communication_form,
-                       'person_form': person_form, 'judge': judge, 'grade_form': grade_form,
-                       'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
-                       'metarial_form': metarial_form,
-                       })
+        if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and iban_form.is_valid() and metarial_form.is_valid():
 
-    if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and iban_form.is_valid() and metarial_form.is_valid():
+            user.username = user_form.cleaned_data['email']
+            user.first_name = user_form.cleaned_data['first_name']
+            user.last_name = user_form.cleaned_data['last_name']
+            user.email = user_form.cleaned_data['email']
+            user.save()
 
-        user.username = user_form.cleaned_data['email']
-        user.first_name = user_form.cleaned_data['first_name']
-        user.last_name = user_form.cleaned_data['last_name']
-        user.email = user_form.cleaned_data['email']
-        user.save()
+            log = str(user.get_full_name()) + " Hakemi güncelledi"
+            log = general_methods.logwrite(request, request.user, log)
 
-        log = str(user.get_full_name()) + " Hakemi güncelledi"
-        log = general_methods.logwrite(request, request.user, log)
+            iban_form.save()
 
-        iban_form.save()
+            person_form.save()
 
-        person_form.save()
+            communication_form.save()
+            metarial_form.save()
+            fdk = Forgot(user=user, status=False)
+            fdk.save()
 
-        communication_form.save()
-        metarial_form.save()
-        fdk = Forgot(user=user, status=False)
-        fdk.save()
+            html_content = ''
+            subject, from_email, to = 'Badminton Bilgi Sistemi Kullanıcı Bilgileri', 'no-reply@badminton.gov.tr', user.email
+            html_content = '<h2>TÜRKİYE BADMİNTON FEDERASYONU BİLGİ SİSTEMİ</h2>'
+            html_content = html_content + '<p><strong>Kullanıcı Adınız :' + str(
+                fdk.user.username) + '</strong></p>'
+            # html_content = html_content + '<p> <strong>Site adresi:</strong> <a href="http://127.0.0.1:8000/newpassword?query=' + str(
+            #     fdk.uuid) + '">http://127.0.0.1:8000/sbs/profil-guncelle/?query=' + str(fdk.uuid) + '</p></a>'
+            html_content = html_content + '<p> <strong>Site adresi:</strong> <a href="http://sbs.badminton.gov.tr/newpassword?query=' + str(
+                fdk.uuid) + '">http://sbs.badminton.gov.tr/sbs/profil-guncelle/?query=' + str(
+                fdk.uuid) + '</p></a>'
 
-        html_content = ''
-        subject, from_email, to = 'Badminton Bilgi Sistemi Kullanıcı Bilgileri', 'no-reply@badminton.gov.tr', user.email
-        html_content = '<h2>TÜRKİYE BADMİNTON FEDERASYONU BİLGİ SİSTEMİ</h2>'
-        html_content = html_content + '<p><strong>Kullanıcı Adınız :' + str(
-            fdk.user.username) + '</strong></p>'
-        # html_content = html_content + '<p> <strong>Site adresi:</strong> <a href="http://127.0.0.1:8000/newpassword?query=' + str(
-        #     fdk.uuid) + '">http://127.0.0.1:8000/sbs/profil-guncelle/?query=' + str(fdk.uuid) + '</p></a>'
-        html_content = html_content + '<p> <strong>Site adresi:</strong> <a href="http://sbs.badminton.gov.tr/newpassword?query=' + str(
-            fdk.uuid) + '">http://sbs.badminton.gov.tr/sbs/profil-guncelle/?query=' + str(
-            fdk.uuid) + '</p></a>'
+            msg = EmailMultiAlternatives(subject, '', from_email, [to])
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
+            messages.success(request, 'Giris Bilgileriniz mail adresinize Gönderildi')
+            return redirect('accounts:login')
+        else:
+            messages.warning(request, 'Alanları Kontrol Ediniz')
 
-        msg = EmailMultiAlternatives(subject, '', from_email, [to])
-        msg.attach_alternative(html_content, "text/html")
-        msg.send()
-        messages.success(request, 'Giris Bilgileriniz mail adresinize Gönderildi')
-        return redirect('accounts:login')
-    else:
-        messages.warning(request, 'Alanları Kontrol Ediniz')
+
 
     return render(request, 'registration/JudgeUpdate.html',
                   {'user_form': user_form, 'communication_form': communication_form,
