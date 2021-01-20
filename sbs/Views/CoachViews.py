@@ -353,6 +353,7 @@ def return_grade(request):
             categoryItem.save()
             return redirect('sbs:kademe')
 
+
         else:
 
             messages.warning(request, 'Alanları Kontrol Ediniz')
@@ -435,7 +436,7 @@ def categoryItemUpdate(request, pk):
         if request.POST.get('name') is not None:
             categoryItem.name = request.POST.get('name')
             categoryItem.save()
-            messages.warning(request, 'Başarıyla Güncellendi')
+            messages.success(request, 'Başarıyla Güncellendi')
             return redirect('sbs:kademe')
         else:
             messages.warning(request, 'Alanları Kontrol Ediniz')

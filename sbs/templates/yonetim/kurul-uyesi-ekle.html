@@ -64,23 +64,35 @@
             <div class="row">
 
                 <div class="col-lg-6">
-                    <div class="box box-primary">
+                    <div class="box box-solid box-info">
                         <div class="box-header with-border">
                             <h3 class="box-title">Genel Bilgiler</h3>
                         </div>
                         <div class="box-body">
                             <div class="row">
+
+                                <div class="col-lg-12 text-center">
+                                    <center>
+                                        <div class="form-group">
+                                            <label> {{ person_form.profileImage.label }}</label>
+                                            {% load static %}
+
+                                            <img src="{% static 'images/user.png' %} " id="preview"
+                                                 class="img-responsive img-rounded"
+                                                 style=" height: 125px;width: 130px;">
+                                            <input type="file" name="profileImage" accept="image/*"
+                                                   id="id_profileImage"
+                                                   onchange="previewImage()">
+                                        </div>
+                                    </center>
+                                </div>
+
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label> {{ person_form.profileImage.label }}</label>
-                                        {{ person_form.profileImage }}
+                                        <label> {{ person_form.tc.label }}</label>
+                                        {{ person_form.tc }}
                                     </div>
 
-
-                                    <div class="form-group">
-                                        <label> {{ user_form.first_name.label }}</label>
-                                        {{ user_form.first_name }}
-                                    </div>
 
                                     <div class="form-group">
                                         <label> {{ user_form.last_name.label }}</label>
@@ -93,39 +105,24 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label style="padding-top: 16px"> {{ person_form.bloodType.label }}</label>
-                                        {{ person_form.bloodType }}
-                                    </div>
-
-                                    <div class="form-group">
                                         <label> {{ member_form.role.label }}</label>
                                         {{ member_form.role }}
                                     </div>
                                 </div>
 
+
                                 <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label> {{ person_form.tc.label }}</label>
-                                        {{ person_form.tc }}
-                                    </div>
-
 
                                     <div class="form-group">
-                                        <label> {{ person_form.motherName.label }}</label>
-                                        {{ person_form.motherName }}
+                                        <label> {{ user_form.first_name.label }}</label>
+                                        {{ user_form.first_name }}
                                     </div>
-
-
-                                    <div class="form-group">
-                                        <label> {{ person_form.fatherName.label }}</label>
-                                        {{ person_form.fatherName }}
-                                    </div>
-
-
                                     <div class="form-group">
                                         <label> {{ person_form.birthDate.label }}</label>
                                         {{ person_form.birthDate }}
                                     </div>
+                                    <br>
+                                    <br>
 
 
                                     <div class="form-group">
@@ -140,10 +137,8 @@
                                     </div>
                                 </div>
 
+
                             </div>
-                        </div>
-                        <div class="box-footer">
-                            <button class="btn btn-primary" type="submit">Kaydet</button>
                         </div>
 
 
@@ -151,7 +146,7 @@
 
                 </div>
                 <div class="col-lg-6">
-                    <div class="box box-primary">
+                    <div class="box box-solid box-success">
                         <div class="box-header with-border">
                             <h3 class="box-title">İletişim Bilgileri</h3>
                         </div>
@@ -166,15 +161,7 @@
                                         <label> {{ communication_form.phoneNumber.label }}</label>
                                         {{ communication_form.phoneNumber }}
                                     </div>
-                                    <div class="form-group">
-                                        <label> {{ communication_form.phoneNumber2.label }}</label>
-                                        {{ communication_form.phoneNumber2 }}
-                                    </div>
 
-                                    <div class="form-group">
-                                        <label> {{ communication_form.phoneHome.label }}</label>
-                                        {{ communication_form.phoneHome }}
-                                    </div>
 
                                 </div>
                                 <div class="col-lg-6">
@@ -186,14 +173,8 @@
                                         <label> {{ communication_form.city.label }}</label>
                                         {{ communication_form.city }}
                                     </div>
-                                    <div class="form-group">
-                                        <label> {{ communication_form.postalCode.label }}</label>
-                                        {{ communication_form.postalCode }}
-                                    </div>
-                                    <div class="form-group">
-                                        <label> {{ communication_form.phoneJop.label }}</label>
-                                        {{ communication_form.phoneJop }}
-                                    </div>
+
+
 
                                 </div>
 
@@ -207,25 +188,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label> {{ communication_form.addressHome.label }}</label>
-                                        {{ communication_form.addressHome }}
-                                    </div>
+                             <div class="col-lg-12">
+                                    <p class="text-success"> Lütfen (*) zorunlu alanları dordurunuz.</p>
+
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label> {{ communication_form.addressJop.label }}</label>
-                                        {{ communication_form.addressJop }}
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
                         <div class="box-footer">
-                            <button class="btn btn-primary" type="submit">Kaydet</button>
+                            <button class="btn btn-success pull-right" type="submit">Kaydet</button>
                         </div>
 
 
