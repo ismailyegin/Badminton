@@ -365,10 +365,10 @@ urlpatterns = [
     url(r'kullanici/kullanicilar/kullanici-bilgi-gonder/(?P<pk>\d+)$', UserViews.send_information,
         name='kullanici-bilgi-gonder'),
     # Activity
-    url(r'faliyet/faliyetler/$', ActivityView.return_activity, name='faaliyet'),
-    url(r'faliyet/faliyet-ekle/$', ActivityView.faliyet_ekle, name='faaliyet-ekle'),
+    url(r'faliyet/faaliyetler/$', ActivityView.return_activity, name='faaliyet'),
+    url(r'faliyet/faaliyet-ekle/$', ActivityView.faliyet_ekle, name='faaliyet-ekle'),
     url(r'faliyet/faaliyet-sil(?P<pk>\d+)$', ActivityView.faaliyet_sil, name='faliyet-sil'),
-    url(r'faliyet/faliyet-duzenle/(?P<pk>\d+)$', ActivityView.faliyet_duzenle, name='faliyet-duzenle'),
+    url(r'faliyet/faaliyet-duzenle/(?P<pk>\d+)$', ActivityView.faliyet_duzenle, name='faliyet-duzenle'),
 
     # Test
     url(r'sonuclar$', CompetitionViews.return_competition, name='sonuclar'),
@@ -419,7 +419,7 @@ urlpatterns = [
 
     #   logkayıtlari
 
-    url(r'log/log-kayıtlari/$', LogViews.return_log,
+    url(r'log/log-kayitlari/$', LogViews.return_log,
         name='logs'),
 
     url(r'message/messages/$', DashboardViews.return_message,
