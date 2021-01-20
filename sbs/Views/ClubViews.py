@@ -453,7 +453,7 @@ def return_rapor_club(request):
         logout(request)
         return redirect('accounts:login')
 
-    return render(request, 'kulup/kulupRapor.html')
+    return render(request, 'kulup/KulupRapor.html')
 
 
 @login_required
