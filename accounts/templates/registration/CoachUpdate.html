@@ -585,11 +585,11 @@
                             <div class="box-body">
                                 <div class="box-header with-border">
                                     <div class="btn-group">
-
-                                        <a href="{% url 'sbs:antrenor-kademe-ekle' coach.pk %}"
-                                           type="button" class="btn btn-success"><i
-                                                class="fa fa-edit"></i> Kademe Ekle
-                                        </a>
+                                        {##}
+                                        {#                                        <a href="{% url 'sbs:antrenor-kademe-ekle' coach.pk %}"#}
+                                        {#                                           type="button" class="btn btn-success"><i#}
+                                        {#                                                class="fa fa-edit"></i> Kademe Ekle#}
+                                        {#                                        </a>#}
 
                                     </div>
                                 </div>
@@ -602,7 +602,6 @@
                                         <th> Tanımı</th>
                                         <th>Dekont</th>
                                         <th> Onay Durumu</th>
-                                        <th>İşlemler</th>
 
 
                                     </tr>
@@ -619,36 +618,36 @@
                                                          style=" width: 30px;height: 30px;"></td>
                                                 <td>{{ grade.status }}  </td>
 
-                                                <td>
-                                                    <div class="btn-group">
-
-                                                        {% if aktif == 'Admin' %}
-                                                            <a href="{% url "sbs:kademe-onayla" grade_pk=grade.pk coach_pk=coach.pk %}"
-                                                               type="button" class="btn btn-success"><i
-                                                                    class="fa fa-edit"></i>Onayla
-                                                            </a>
-
-
-                                                            <a href="{% url "sbs:kademe-reddet" grade_pk=grade.pk coach_pk=coach.pk %}"
-                                                               type="button" class="btn btn-danger"><i
-                                                                    class="fa fa-trash"></i>Reddet
-                                                            </a>
-                                                            <a href="{% url "sbs:kademe-güncelle" grade_pk=grade.pk coach_pk=coach.pk %}"
-                                                               type="button" class="btn btn-warning"><i
-                                                                    class="fa fa-edit"></i>Güncelle
-                                                            </a>
-
-                                                            <a class="btn btn-danger"
-                                                               data-toggle="modal"
-                                                               onclick=delete_grade({{ grade.pk }},{{ coach.pk }})><i
-                                                                    class="fa fa-trash"></i>Sil
-                                                            </a>
-
-                                                        {% endif %}
-
-
-                                                    </div>
-                                                </td>
+                                                {#                                                <td>#}
+                                                {#                                                    <div class="btn-group">#}
+                                                {##}
+                                                {#                                                        {% if aktif == 'Admin' %}#}
+                                                {#                                                            <a href="{% url "sbs:kademe-onayla" grade_pk=grade.pk coach_pk=coach.pk %}"#}
+                                                {#                                                               type="button" class="btn btn-success"><i#}
+                                                {#                                                                    class="fa fa-edit"></i>Onayla#}
+                                                {#                                                            </a>#}
+                                                {##}
+                                                {##}
+                                                {#                                                            <a href="{% url "sbs:kademe-reddet" grade_pk=grade.pk coach_pk=coach.pk %}"#}
+                                                {#                                                               type="button" class="btn btn-danger"><i#}
+                                                {#                                                                    class="fa fa-trash"></i>Reddet#}
+                                                {#                                                            </a>#}
+                                                {#                                                            <a href="{% url "sbs:kademe-güncelle" grade_pk=grade.pk coach_pk=coach.pk %}"#}
+                                                {#                                                               type="button" class="btn btn-warning"><i#}
+                                                {#                                                                    class="fa fa-edit"></i>Güncelle#}
+                                                {#                                                            </a>#}
+                                                {##}
+                                                {#                                                            <a class="btn btn-danger"#}
+                                                {#                                                               data-toggle="modal"#}
+                                                {#                                                               onclick=delete_grade({{ grade.pk }},{{ coach.pk }})><i#}
+                                                {#                                                                    class="fa fa-trash"></i>Sil#}
+                                                {#                                                            </a>#}
+                                                {##}
+                                                {#                                                        {% endif %}#}
+                                                {##}
+                                                {##}
+                                                {#                                                    </div>#}
+                                                {#                                                </td>#}
 
 
                                             </tr>
@@ -684,14 +683,14 @@
                             <!-- /.box-header -->
                             <div class="box-body">
                                 <div class="box-header with-border">
-                                    <div class="btn-group">
+                                    {#                                    <div class="btn-group">#}
 
-                                        <a href="{% url 'sbs:antrenor-vize-ekle' coach.pk %}"
-                                           type="button" class="btn btn-success"><i
-                                                class="fa fa-edit"></i> Vize Ekle
-                                        </a>
+                                        {#                                        <a href="{% url 'sbs:antrenor-vize-ekle' coach.pk %}"#}
+                                        {#                                           type="button" class="btn btn-success"><i#}
+                                        {#                                                class="fa fa-edit"></i> Vize Ekle#}
+                                        {#                                        </a>#}
 
-                                    </div>
+                                    {#                                    </div>#}
                                 </div>
                                 <table id="belt" class="table table-bordered table-hover">
                                     <thead>
@@ -701,7 +700,7 @@
                                         <th> Branş</th>
                                         <th> Dekont</th>
                                         <th> Onay Durumu</th>
-                                        <th>İşlemler</th>
+                                        {#                                        <th>İşlemler</th>#}
 
 
                                     </tr>
@@ -723,36 +722,36 @@
                                                          style=" width: 30px;height: 30px;"></td>
                                                 <td>{{ grade.status }}  </td>
 
-                                                <td>
-                                                    <div class="btn-group">
-
-                                                        {% if aktif == 'Admin' %}
-                                                            <a href="{% url "sbs:vize-onayla" grade_pk=grade.pk coach_pk=coach.pk %}"
-                                                               type="button" class="btn btn-success"><i
-                                                                    class="fa fa-edit"></i>Onayla
-                                                            </a>
-
-
-                                                            <a href="{% url "sbs:vize-reddet" grade_pk=grade.pk coach_pk=coach.pk %}"
-                                                               type="button" class="btn btn-danger"><i
-                                                                    class="fa fa-trash"></i>Reddet
-                                                            </a>
-                                                            <a href="{% url "sbs:vize-güncelle" grade_pk=grade.pk coach_pk=coach.pk %}"
-                                                               type="button" class="btn btn-warning"><i
-                                                                    class="fa fa-edit"></i>Güncelle
-                                                            </a>
-
-                                                            <a class="btn btn-danger"
-                                                               data-toggle="modal"
-                                                               onclick=delete_visa({{ grade.pk }},{{ coach.pk }})><i
-                                                                    class="fa fa-trash"></i>Sil
-                                                            </a>
-
-                                                        {% endif %}
-
-
-                                                    </div>
-                                                </td>
+                                                {#                                                <td>#}
+                                                {#                                                    <div class="btn-group">#}
+                                                {##}
+                                                {#                                                        {% if aktif == 'Admin' %}#}
+                                                {#                                                            <a href="{% url "sbs:vize-onayla" grade_pk=grade.pk coach_pk=coach.pk %}"#}
+                                                {#                                                               type="button" class="btn btn-success"><i#}
+                                                {#                                                                    class="fa fa-edit"></i>Onayla#}
+                                                {#                                                            </a>#}
+                                                {##}
+                                                {##}
+                                                {#                                                            <a href="{% url "sbs:vize-reddet" grade_pk=grade.pk coach_pk=coach.pk %}"#}
+                                                {#                                                               type="button" class="btn btn-danger"><i#}
+                                                {#                                                                    class="fa fa-trash"></i>Reddet#}
+                                                {#                                                            </a>#}
+                                                {#                                                            <a href="{% url "sbs:vize-güncelle" grade_pk=grade.pk coach_pk=coach.pk %}"#}
+                                                {#                                                               type="button" class="btn btn-warning"><i#}
+                                                {#                                                                    class="fa fa-edit"></i>Güncelle#}
+                                                {#                                                            </a>#}
+                                                {##}
+                                                {#                                                            <a class="btn btn-danger"#}
+                                                {#                                                               data-toggle="modal"#}
+                                                {#                                                               onclick=delete_visa({{ grade.pk }},{{ coach.pk }})><i#}
+                                                {#                                                                    class="fa fa-trash"></i>Sil#}
+                                                {#                                                            </a>#}
+                                                {##}
+                                                {#                                                        {% endif %}#}
+                                                {##}
+                                                {##}
+                                                {#                                                    </div>#}
+                                                {#                                                </td>#}
 
 
                                             </tr>
@@ -790,15 +789,15 @@
                             <!-- /.box-header -->
                             <div class="box-body">
                                 <div class="box-header with-border">
-                                    <div class="btn-group">
+                                    {#                                    <div class="btn-group">#}
 
 
-                                        <a href="{% url "sbs:antrenor-belge-ekle"  coach.pk %}" type="button"
-                                           class="btn btn-success"><i
-                                                class="fa fa-edit"></i> Yeni belge Ekle
-                                        </a>
+                                        {#                                        <a href="{% url "sbs:antrenor-belge-ekle"  coach.pk %}" type="button"#}
+                                        {#                                           class="btn btn-success"><i#}
+                                        {#                                                class="fa fa-edit"></i> Yeni belge Ekle#}
+                                        {#                                        </a>#}
 
-                                    </div>
+                                    {#                                    </div>#}
                                 </div>
                                 <table id="belge" class="table table-bordered table-hover">
                                     <thead>
@@ -806,7 +805,7 @@
                                         <th>#</th>
                                         <th>Belge İsmi</th>
                                         <th>Belge</th>
-                                        <th>İşlemler</th>
+                                        {#                                        <th>İşlemler</th>#}
 
                                     </tr>
                                     </thead>
@@ -824,22 +823,22 @@
 
                                                 </td>
 
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <a class="btn btn-success"
-                                                           data-toggle="modal"
-                                                           href="/media/{{ item.file }}"
-                                                           download><i
-                                                                class="fa fa-download"></i></a>
-
-
-                                                        <a class="btn btn-danger"
-                                                           data-toggle="modal"
-                                                           onclick=deleteneeddocument({{ coach.pk }},{{ item.pk }})><i
-                                                                class="fa fa-trash"></i></a>
-
-                                                    </div>
-                                                </td>
+                                                {#                                                <td>#}
+                                                {#                                                    <div class="btn-group">#}
+                                                {#                                                        <a class="btn btn-success"#}
+                                                {#                                                           data-toggle="modal"#}
+                                                {#                                                           href="/media/{{ item.file }}"#}
+                                                {#                                                           download><i#}
+                                                {#                                                                class="fa fa-download"></i></a>#}
+                                                {##}
+                                                {##}
+                                                {#                                                        <a class="btn btn-danger"#}
+                                                {#                                                           data-toggle="modal"#}
+                                                {#                                                           onclick=deleteneeddocument({{ coach.pk }},{{ item.pk }})><i#}
+                                                {#                                                                class="fa fa-trash"></i></a>#}
+                                                {##}
+                                                {#                                                    </div>#}
+                                                {#                                                </td>#}
 
 
                                             </tr>
@@ -874,15 +873,15 @@
                             <!-- /.box-header -->
                             <div class="box-body">
                                 <div class="box-header with-border">
-                                    <div class="btn-group">
+                                    {#                                    <div class="btn-group">#}
 
 
-                                        <a href="{% url "sbs:antrenor-ceza-ekle"  coach.pk %}" type="button"
-                                           class="btn btn-success"><i
-                                                class="fa fa-edit"></i> Yeni Ceza Ekle
-                                        </a>
+                                        {#                                        <a href="{% url "sbs:antrenor-ceza-ekle"  coach.pk %}" type="button"#}
+                                        {#                                           class="btn btn-success"><i#}
+                                        {#                                                class="fa fa-edit"></i> Yeni Ceza Ekle#}
+                                        {#                                        </a>#}
 
-                                    </div>
+                                    {#                                    </div>#}
                                 </div>
                                 <table id="ceza" class="table table-bordered table-hover">
                                     <thead>
@@ -890,7 +889,7 @@
                                         <th>#</th>
                                         <th>Ceza Adı</th>
                                         <th>Müsabaka Türü</th>
-                                        <th> işlemler</th>
+                                        {#                                        <th> işlemler</th>#}
 
 
                                     </tr>
@@ -909,22 +908,22 @@
 
                                                 </td>
 
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <a class="btn btn-success"
-                                                           data-toggle="modal"
-                                                           href="/media/{{ item.file }}"
-                                                           download><i
-                                                                class="fa fa-download"></i></a>
-
-
-                                                        <a class="btn btn-danger"
-                                                           data-toggle="modal"
-                                                           onclick=deletepenal({{ coach.pk }},{{ item.pk }})><i
-                                                                class="fa fa-trash"></i></a>
-
-                                                    </div>
-                                                </td>
+                                                {#                                                <td>#}
+                                                {#                                                    <div class="btn-group">#}
+                                                {#                                                        <a class="btn btn-success"#}
+                                                {#                                                           data-toggle="modal"#}
+                                                {#                                                           href="/media/{{ item.file }}"#}
+                                                {#                                                           download><i#}
+                                                {#                                                                class="fa fa-download"></i></a>#}
+                                                {##}
+                                                {##}
+                                                {#                                                        <a class="btn btn-danger"#}
+                                                {#                                                           data-toggle="modal"#}
+                                                {#                                                           onclick=deletepenal({{ coach.pk }},{{ item.pk }})><i#}
+                                                {#                                                                class="fa fa-trash"></i></a>#}
+                                                {##}
+                                                {#                                                    </div>#}
+                                                {#                                                </td>#}
                                             </tr>
 
                                         {% endfor %}

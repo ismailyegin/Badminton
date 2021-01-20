@@ -45,6 +45,7 @@ from sbs.services import general_methods
 from sbs.models.Material import Material
 from sbs.Forms.MaterialForm import MaterialForm
 from sbs.models.Competition import Competition
+from sbs.models.Logs import Logs
 
 
 @login_required
@@ -501,6 +502,8 @@ def updateReferee(request, pk):
     user_form = UserForm(request.POST or None, instance=user)
     person_form = PersonForm(request.POST or None, request.FILES or None, instance=person)
 
+    logs = Logs.objects.filter(user=user)
+
     communication = Communication.objects.get(pk=judge.communication.pk)
     if person.material:
         metarial = Material.objects.get(pk=judge.person.material.pk)
@@ -534,7 +537,7 @@ def updateReferee(request, pk):
                               {'user_form': user_form, 'communication_form': communication_form,
                                'person_form': person_form, 'judge': judge, 'grade_form': grade_form,
                                'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
-                               'metarial_form': metarial_form, 'competitions': competitions})
+                               'metarial_form': metarial_form, 'competitions': competitions, 'logs': logs})
 
         tc = request.POST.get('tc')
         if tc != judge.person.tc:
@@ -546,7 +549,7 @@ def updateReferee(request, pk):
                               {'user_form': user_form, 'communication_form': communication_form,
                                'person_form': person_form, 'judge': judge, 'grade_form': grade_form,
                                'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
-                               'metarial_form': metarial_form, 'competitions': competitions
+                               'metarial_form': metarial_form, 'competitions': competitions, 'logs': logs
                                })
 
         name = request.POST.get('first_name')
@@ -561,7 +564,7 @@ def updateReferee(request, pk):
                           {'user_form': user_form, 'communication_form': communication_form,
                            'person_form': person_form, 'judge': judge, 'grade_form': grade_form,
                            'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
-                           'metarial_form': metarial_form, 'competitions': competitions
+                           'metarial_form': metarial_form, 'competitions': competitions, 'logs': logs
                            })
 
         if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and iban_form.is_valid() and metarial_form.is_valid():
@@ -592,7 +595,7 @@ def updateReferee(request, pk):
                   {'user_form': user_form, 'communication_form': communication_form,
                    'person_form': person_form, 'judge': judge, 'grade_form': grade_form,
                    'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
-                   'metarial_form': metarial_form, 'competitions': competitions
+                   'metarial_form': metarial_form, 'competitions': competitions, 'logs': logs
                    })
 
 
