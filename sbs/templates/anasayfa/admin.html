@@ -795,6 +795,7 @@
                                     <th>ip</th>
 
                                     <th>işlem</th>
+                                    <th>Tarih</th>
                                 </tr>
 
                                 {% for item in logs %}
@@ -803,6 +804,7 @@
                                         <td>{{ item.ip }}</td>
 
                                         <td>{{ item.subject }}</td>
+                                        <td>{{ item.creationDate }}</td>
                                     </tr>
 
                                 {% endfor %}

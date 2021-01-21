@@ -433,8 +433,8 @@ def return_admin_dashboard(request):
             'count': Coach.objects.filter(grades__definition=item).count()
         }
         coach_grades.append(beka)
-    active = Activity.objects.all()[:10]
-    logs = Logs.objects.all()[:10]
+    active = Activity.objects.all().order_by('-creationDate')[:10]
+    logs = Logs.objects.all().order_by('-creationDate')[:10]
     return render(request, 'anasayfa/admin.html',
                   {
                       'active': active,
