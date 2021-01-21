@@ -201,7 +201,7 @@
                         <!-- /.box-header -->
                         <div class="box-body">
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-12">
                                     <p class="text-center">
                                         <strong>Badminton Müsabaka Sporcu Sayısı</strong>
                                     </p>
@@ -214,43 +214,7 @@
                                     <!-- /.chart-responsive -->
                                 </div>
                                 <!-- /.col -->
-                                <div class="col-md-4">
-                                    <p class="text-center">
-                                        <strong>{{ lastcompetition.name }}</strong>
-                                    </p>
 
-                                    <div class="progress-group">
-                                        <span class="progress-text">Toplam Sporcu</span>
-                                        <span class="progress-number"><b>{{ competition_athlete_count }}</b>/{{ max }}</span>
-
-                                        <div class="progress sm">
-                                            <div class="progress-bar progress-bar-aqua"
-                                                 style="width: {{ max_x }}%"></div>
-                                        </div>
-                                    </div>
-                                    <!-- /.progress-group -->
-                                    <div class="progress-group">
-                                        <span class="progress-text">Toplam Erkek Sporcu</span>
-                                        <span class="progress-number"><b>{{ competition_male }}</b>/{{ max_male }}</span>
-
-                                        <div class="progress sm">
-                                            <div class="progress-bar progress-bar-red"
-                                                 style="width: {{ competition_male_x }}%"></div>
-                                        </div>
-                                    </div>
-                                    <!-- /.progress-group -->
-                                    <div class="progress-group">
-                                        <span class="progress-text">Toplam Kadın Sporcu</span>
-                                        <span class="progress-number"><b>{{ competition_female }}</b>/{{ max_female }}</span>
-
-                                        <div class="progress sm">
-                                            <div class="progress-bar progress-bar-green"
-                                                 style="width: {{ competition_female_x }}%"></div>
-                                        </div>
-                                    </div>
-                                    <!-- /.progress-group -->
-
-                                </div>
 
 
                                 <!-- /.col -->
@@ -349,18 +313,75 @@
                         </div>
                     </div>
 
-
-                    <!-- /.box -->
                     <div class="row">
                         <div class="col-md-6">
+
 
                         </div>
                         <!-- /.col -->
 
-                        <div class="col-md-12">
-                            <!-- USERS LIST -->
 
-                            <!--/.box -->
+                    </div>
+                    <!-- /.box -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box box-default">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Son Müsabaka Sayılar</h3>
+
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                                class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                                class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+
+
+                                    <div class="col-md-12">
+                                        <p class="text-center">
+                                            <strong>{{ lastcompetition.name }}</strong>
+                                        </p>
+
+                                        <div class="progress-group">
+                                            <span class="progress-text">Toplam Sporcu</span>
+                                            <span class="progress-number"><b>{{ competition_athlete_count }}</b>/{{ max }}</span>
+
+                                            <div class="progress sm">
+                                                <div class="progress-bar progress-bar-aqua"
+                                                     style="width: {{ max_x }}%"></div>
+                                            </div>
+                                        </div>
+                                        <!-- /.progress-group -->
+                                        <div class="progress-group">
+                                            <span class="progress-text">Toplam Erkek Sporcu</span>
+                                            <span class="progress-number"><b>{{ competition_male }}</b>/{{ max_male }}</span>
+
+                                            <div class="progress sm">
+                                                <div class="progress-bar progress-bar-red"
+                                                     style="width: {{ competition_male_x }}%"></div>
+                                            </div>
+                                        </div>
+                                        <!-- /.progress-group -->
+                                        <div class="progress-group">
+                                            <span class="progress-text">Toplam Kadın Sporcu</span>
+                                            <span class="progress-number"><b>{{ competition_female }}</b>/{{ max_female }}</span>
+
+                                            <div class="progress sm">
+                                                <div class="progress-bar progress-bar-green"
+                                                     style="width: {{ competition_female_x }}%"></div>
+                                            </div>
+                                        </div>
+                                        <!-- /.progress-group -->
+
+                                    </div>
+
+                                </div>
+                            </div>
+
                         </div>
                         <!-- /.col -->
                     </div>
@@ -530,7 +551,7 @@
                 <div class="col-md-6">
                     <div class="box box-info">
                         <div class="box-header with-border">
-                            <h3 class="box-title"> Anternör Kademe Tanımları </h3>
+                            <h3 class="box-title"> Antrenör Kademe Tanımları </h3>
 
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
