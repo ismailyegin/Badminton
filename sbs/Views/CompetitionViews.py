@@ -45,7 +45,7 @@ def categori_ekle(request):
         else:
             messages.warning(request, 'Birşeyler ters gitti yeniden deneyiniz.')
 
-    return render(request, 'musabaka/müsabaka-Simplecategori.html',
+    return render(request, 'musabaka/musabaka-Simplecategori.html',
                   {'category_item_form': simplecategoryForm, 'categoryitem': categoryitem})
 
 

@@ -784,7 +784,7 @@ def kademe_update(request, grade_pk, referee_pk):
 
             messages.warning(request, 'Alanları Kontrol Ediniz')
 
-    return render(request, 'hakem/hakem-kademe-güncelle.html',
+    return render(request, 'hakem/hakem-kademe-guncelle.html',
                   {'grade_form': grade_form})
 
 
@@ -916,7 +916,7 @@ def vize_update(request, grade_pk, referee_pk):
             return redirect('sbs:hakem-duzenle', pk=referee_pk)
         else:
             messages.warning(request, 'Alanları Kontrol Ediniz')
-    return render(request, 'hakem/hakem-vize-güncelle.html',
+    return render(request, 'hakem/hakem-vize-guncelle.html',
                   {'grade_form': grade_form})
 
 
@@ -1007,7 +1007,7 @@ def visaSeminar_duzenle(request, pk):
 
             messages.warning(request, 'Alanları Kontrol Ediniz')
 
-    return render(request, 'hakem/hakem-VizeSeminerGüncelle.html',
+    return render(request, 'hakem/hakem-VizeSeminerGuncelle.html',
                   {'competition_form': competition_form, 'competition': seminar, 'athletes': referee})
 
 

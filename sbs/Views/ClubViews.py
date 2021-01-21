@@ -1200,7 +1200,7 @@ def update_belt_exam(request, pk):
         else:
             messages.warning(request, 'Alanları Kontrol Ediniz')
 
-    return render(request, 'kulup/kusak-sinavi-güncelle.html', {'exam_form': exam_form})
+    return render(request, 'kulup/kusak-sinavi-guncelle.html', {'exam_form': exam_form})
 
 
 @login_required
