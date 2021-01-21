@@ -44,7 +44,56 @@ def return_referee_dashboard(request):
         return redirect('accounts:login')
     user = User.objects.get(pk=request.user.pk)
     judge = Judge.objects.get(user=user)
-    return render(request, 'anasayfa/hakem.html', {'user': user, 'judge': judge})
+    max = 0
+    maxcom = Competition.objects.none()
+    competitions = Competition.objects.filter().order_by('creationDate')
+    for item in competitions:
+        if max < int(CompetitionsAthlete.objects.filter(competition=item).count()):
+            maxcom = item
+            max = int(CompetitionsAthlete.objects.filter(competition=item).count())
+
+    max = CompetitionsAthlete.objects.filter(competition=maxcom).count()
+    max_male = CompetitionsAthlete.objects.filter(competition=maxcom, athlete__person__gender=Person.MALE).count()
+    max_female = CompetitionsAthlete.objects.filter(competition=maxcom, athlete__person__gender=Person.FEMALE).count()
+
+    competitions = Competition.objects.filter().order_by('creationDate')[:6]
+    lastcompetition = Competition.objects.filter().order_by('-creationDate')[0]
+
+    datacount = []
+    for item in competitions:
+        competition = CompetitionsAthlete.objects.filter(competition_id=item.pk)
+        beka = {
+            'count': competition.count(),
+            'competiton': item
+        }
+        datacount.append(beka)
+
+    return render(request, 'anasayfa/hakem.html',
+                  {
+
+                      'max_male': max_male,
+                      'max_female': max_female,
+                      'competition_male': CompetitionsAthlete.objects.filter(competition=lastcompetition,
+                                                                             athlete__person__gender=Person.MALE).count(),
+                      'competition_male_x': int((CompetitionsAthlete.objects.filter(competition=lastcompetition,
+                                                                                    athlete__person__gender=Person.MALE).count() * 100) / CompetitionsAthlete.objects.filter(
+                          competition=maxcom, athlete__person__gender=Person.MALE).count()),
+                      'competition_female': CompetitionsAthlete.objects.filter(competition=lastcompetition,
+                                                                               athlete__person__gender=Person.FEMALE).count(),
+                      'competition_female_x': int((CompetitionsAthlete.objects.filter(competition=lastcompetition,
+                                                                                      athlete__person__gender=Person.FEMALE).count() * 100) / CompetitionsAthlete.objects.filter(
+                          competition=maxcom, athlete__person__gender=Person.FEMALE).count()),
+                      'competition_athlete_count': CompetitionsAthlete.objects.filter(
+                          competition=lastcompetition).count(),
+                      'max': max,
+                      'max_x': int(
+                          (CompetitionsAthlete.objects.filter(competition=lastcompetition).count() * 100) / max),
+
+                      'lastcompetition': lastcompetition,
+                      'data': datacount,
+                      'user': user, 'judge': judge
+                  })
+
 
 
 @login_required
@@ -374,15 +423,6 @@ def return_admin_dashboard(request):
             'count': Coach.objects.filter(grades__definition=item).count()
         }
         coach_grades.append(beka)
-
-
-
-
-
-
-
-
-
     return render(request, 'anasayfa/admin.html',
                   {
                       'coach_grades': coach_grades,
