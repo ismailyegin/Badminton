@@ -17,6 +17,7 @@ from sbs.models.ReferenceCoach import ReferenceCoach
 from sbs.models.ReferenceReferee import ReferenceReferee
 from sbs.services import general_methods
 from sbs.models.CategoryItem import CategoryItem
+from sbs.models.Category import Category
 
 
 @login_required
@@ -385,6 +386,15 @@ def return_admin_dashboard(request):
     competitions = Competition.objects.filter().order_by('creationDate')[:6]
     lastcompetition = Competition.objects.filter().order_by('-creationDate')[0]
 
+    lastcompetitionArray = []
+
+    for item in Category.objects.all():
+        beka = {
+            'name': item.kategoriadi,
+            'count': CompetitionsAthlete.objects.filter(competition=lastcompetition, category=item).count()
+
+        }
+        lastcompetitionArray.append(beka)
     datacount = []
     for item in competitions:
         competition = CompetitionsAthlete.objects.filter(competition_id=item.pk)
@@ -422,6 +432,7 @@ def return_admin_dashboard(request):
         coach_grades.append(beka)
     return render(request, 'anasayfa/admin.html',
                   {
+                      'lastcompetitionArray': lastcompetitionArray,
                       'coach_grades': coach_grades,
                       'judge_grades': judge_grades,
                       'max_male': max_male,
