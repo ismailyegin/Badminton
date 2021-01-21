@@ -42,8 +42,6 @@ def return_referee_dashboard(request):
     if not perm:
         logout(request)
         return redirect('accounts:login')
-    user = User.objects.get(pk=request.user.pk)
-    judge = Judge.objects.get(user=user)
     max = 0
     maxcom = Competition.objects.none()
     competitions = Competition.objects.filter().order_by('creationDate')
@@ -91,7 +89,6 @@ def return_referee_dashboard(request):
 
                       'lastcompetition': lastcompetition,
                       'data': datacount,
-                      'user': user, 'judge': judge
                   })
 
 
