@@ -490,6 +490,7 @@
             </div>
 
 
+
             <div class="row">
 
                 <div class="col-md-6">
@@ -722,6 +723,103 @@
                 {#                </div>#}
             </div>
             {#harita #}
+
+
+            {#        son müsabaka listesi#}
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Son Faliyetler</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                        class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+
+
+                        <div class="box-body">
+                            <table class="table table-bordered">
+                                <tbody>
+
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>Faliyet</th>
+
+                                    <th>Başlama zamanı</th>
+                                </tr>
+
+                                {% for item in active %}
+                                    <tr>
+                                        <td style="width: 10px">{{ forloop.counter }}</td>
+                                        <td>{{ item.name }}</td>
+
+                                        <td>{{ item.startDate }}</td>
+                                    </tr>
+
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <div class="col-md-8">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Log</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                        class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="box-body">
+                            <table class="table table-bordered">
+                                <tbody>
+
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>ip</th>
+
+                                    <th>işlem</th>
+                                </tr>
+
+                                {% for item in logs %}
+                                    <tr>
+                                        <td style="width: 10px">{{ forloop.counter }}</td>
+                                        <td>{{ item.ip }}</td>
+
+                                        <td>{{ item.subject }}</td>
+                                    </tr>
+
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
             <div class="row">
 
                 <div class="box box-danger">

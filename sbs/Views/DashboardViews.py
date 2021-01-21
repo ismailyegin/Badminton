@@ -18,6 +18,8 @@ from sbs.models.ReferenceReferee import ReferenceReferee
 from sbs.services import general_methods
 from sbs.models.CategoryItem import CategoryItem
 from sbs.models.Category import Category
+from sbs.models.Activity import Activity
+from sbs.models.Logs import Logs
 
 
 @login_required
@@ -66,6 +68,7 @@ def return_referee_dashboard(request):
             'competiton': item
         }
         datacount.append(beka)
+
 
     return render(request, 'anasayfa/hakem.html',
                   {
@@ -430,8 +433,12 @@ def return_admin_dashboard(request):
             'count': Coach.objects.filter(grades__definition=item).count()
         }
         coach_grades.append(beka)
+    active = Activity.objects.all()[:10]
+    logs = Logs.objects.all()[:10]
     return render(request, 'anasayfa/admin.html',
                   {
+                      'active': active,
+                      'logs': logs,
                       'lastcompetitionArray': lastcompetitionArray,
                       'coach_grades': coach_grades,
                       'judge_grades': judge_grades,
