@@ -608,7 +608,7 @@ def updateRefereeProfile(request):
         return redirect('accounts:login')
 
     user = request.user
-    referee_user = Judge.objects.get(user=user)
+    referee_user = Judge.objects.filter(user=user)[0]
     person = Person.objects.get(pk=referee_user.person.pk)
     communication = Communication.objects.get(pk=referee_user.communication.pk)
     user_form = DisabledUserForm(request.POST or None, instance=user)
