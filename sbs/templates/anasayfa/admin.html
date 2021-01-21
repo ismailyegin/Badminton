@@ -744,7 +744,7 @@
 
 
                         <div class="box-body">
-                            <table class="table table-bordered">
+                            <table class="table table-bordered " id="example2">
                                 <tbody>
 
                                 <tr>
@@ -759,7 +759,7 @@
                                         <td style="width: 10px">{{ forloop.counter }}</td>
                                         <td>{{ item.name }}</td>
 
-                                        <td>{{ item.startDate }}</td>
+                                        <td>{{ item.startDate |date }}</td>
                                     </tr>
 
                                 {% endfor %}
@@ -787,7 +787,7 @@
                         </div>
 
                         <div class="box-body">
-                            <table class="table table-bordered">
+                            <table class="table table-bordered" id="example1">
                                 <tbody>
 
                                 <tr>
