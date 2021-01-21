@@ -18,6 +18,8 @@ from sbs.models.ReferenceReferee import ReferenceReferee
 from sbs.services import general_methods
 from sbs.models.EnumFields import EnumFields
 
+from unicode_tr import unicode_tr
+
 
 def update_preRegistration(request, pk):
     perm = general_methods.control_access(request)
@@ -113,8 +115,8 @@ def approve_preRegistration(request, pk):
 
             user = User()
             user.username = basvuru.email
-            user.first_name = basvuru.first_name
-            user.last_name = basvuru.last_name
+            user.first_name = unicode_tr(basvuru.first_name).upper()
+            user.last_name = unicode_tr(basvuru.last_name).upper()
             user.email = basvuru.email
             user.is_active = True
             user.is_staff = basvuru.is_staff

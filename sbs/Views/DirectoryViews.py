@@ -33,6 +33,8 @@ from sbs.models.ReferenceCoach import ReferenceCoach
 from sbs.models.Material import Material
 from sbs.Forms.MaterialForm import MaterialForm
 
+from unicode_tr import unicode_tr
+
 
 @login_required
 def add_directory_member(request):
@@ -89,8 +91,8 @@ def add_directory_member(request):
         if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and member_form.is_valid():
             user = User()
             user.username = user_form.cleaned_data['email']
-            user.first_name = user_form.cleaned_data['first_name']
-            user.last_name = user_form.cleaned_data['last_name']
+            user.first_name = unicode_tr(user_form.cleaned_data['first_name']).upper()
+            user.last_name = unicode_tr(user_form.cleaned_data['last_name']).upper()
             user.email = user_form.cleaned_data['email']
             group = Group.objects.get(name='Yonetim')
             password = User.objects.make_random_password()
@@ -148,8 +150,8 @@ def return_directory_members(request):
     if request.method == 'POST':
         user_form = UserSearchForm(request.POST)
         if user_form.is_valid():
-            firstName = user_form.cleaned_data.get('first_name')
-            lastName = user_form.cleaned_data.get('last_name')
+            firstName = unicode_tr(user_form.cleaned_data['first_name']).upper()
+            lastName = unicode_tr(user_form.cleaned_data['last_name']).upper()
             email = user_form.cleaned_data.get('email')
             if not (firstName or lastName or email):
                 members = DirectoryMember.objects.all()
@@ -462,8 +464,8 @@ def updateDirectoryProfile(request):
         if user_form.is_valid() and communication_form.is_valid() and person_form.is_valid() and member_form.is_valid() and password_form.is_valid():
 
             user.username = user_form.cleaned_data['email']
-            user.first_name = user_form.cleaned_data['first_name']
-            user.last_name = user_form.cleaned_data['last_name']
+            user.first_name = unicode_tr(user_form.cleaned_data['first_name']).upper()
+            user.last_name = unicode_tr(user_form.cleaned_data['last_name']).upper()
             user.email = user_form.cleaned_data['email']
             user.set_password(password_form.cleaned_data['new_password1'])
             user.save()

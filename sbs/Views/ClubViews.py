@@ -47,6 +47,8 @@ from operator import itemgetter
 from sbs.models.Material import Material
 from sbs.Forms.MaterialForm import MaterialForm
 
+from unicode_tr import unicode_tr
+
 @login_required
 def return_add_club(request):
     perm = general_methods.control_access(request)
@@ -201,8 +203,8 @@ def return_add_club_person(request):
         if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and sportClubUser_form.is_valid():
             user = User()
             user.username = user_form.cleaned_data['email']
-            user.first_name = user_form.cleaned_data['first_name']
-            user.last_name = user_form.cleaned_data['last_name']
+            user.first_name = unicode_tr(user_form.cleaned_data['first_name']).upper()
+            user.last_name = unicode_tr(user_form.cleaned_data['last_name']).upper()
             user.email = user_form.cleaned_data['email']
             group = Group.objects.get(name='KlupUye')
             password = User.objects.make_random_password()
@@ -337,8 +339,8 @@ def updateClubPersons(request, pk):
 
             user = user_form.save(commit=False)
             user.username = user_form.cleaned_data['email']
-            user.first_name = user_form.cleaned_data['first_name']
-            user.last_name = user_form.cleaned_data['last_name']
+            user.first_name = unicode_tr(user_form.cleaned_data['first_name']).upper()
+            user.last_name = unicode_tr(user_form.cleaned_data['last_name']).upper()
             user.email = user_form.cleaned_data['email']
             user.save()
             person_form.save()
@@ -384,8 +386,8 @@ def return_club_coach(request):
         sportsclup = request.POST.get('sportsClub')
 
         if user_form.is_valid():
-            firstName = user_form.cleaned_data.get('first_name')
-            lastName = user_form.cleaned_data.get('last_name')
+            firstName = unicode_tr(user_form.cleaned_data['first_name']).upper()
+            lastName = unicode_tr(user_form.cleaned_data['last_name']).upper()
             email = user_form.cleaned_data.get('email')
             if not (firstName or lastName or email or sportsclup):
                 if active == 'KlupUye':
@@ -579,8 +581,8 @@ def return_club_person(request):
         sportsclup = request.POST.get('sportsClub')
 
         if user_form.is_valid():
-            firstName = user_form.cleaned_data.get('first_name')
-            lastName = user_form.cleaned_data.get('last_name')
+            firstName = unicode_tr(user_form.cleaned_data['first_name']).upper()
+            lastName = unicode_tr(user_form.cleaned_data['last_name']).upper()
             email = user_form.cleaned_data.get('email')
             if not (firstName or lastName or email or sportsclup):
                 club_user_array = []
@@ -868,8 +870,8 @@ def choose_coach(request, pk):
     if request.method == 'POST':
 
         if user_form.is_valid():
-            firstName = user_form.cleaned_data.get('first_name')
-            lastName = user_form.cleaned_data.get('last_name')
+            firstName = unicode_tr(user_form.cleaned_data['first_name']).upper()
+            lastName = unicode_tr(user_form.cleaned_data['last_name']).upper()
             email = user_form.cleaned_data.get('email')
             if not (firstName or lastName or email):
                 messages.warning(request, 'Lütfen Arama Kriteri Giriniz.')
@@ -911,8 +913,8 @@ def choose_sport_club_user(request, pk):
         user_form = UserSearchForm(request.POST)
         athletes1 = request.POST.getlist('selected_options')
         if user_form.is_valid():
-            firstName = user_form.cleaned_data.get('first_name')
-            lastName = user_form.cleaned_data.get('last_name')
+            firstName = unicode_tr(user_form.cleaned_data['first_name']).upper()
+            lastName = unicode_tr(user_form.cleaned_data['last_name']).upper()
             email = user_form.cleaned_data.get('email')
             if (firstName or lastName or email):
                 query = Q()

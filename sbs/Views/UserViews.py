@@ -21,6 +21,8 @@ from accounts.models import Forgot
 from sbs.models import SportClubUser, Person, Communication
 from sbs.services import general_methods
 
+from unicode_tr import unicode_tr
+
 
 @login_required
 def return_users(request):
@@ -34,8 +36,9 @@ def return_users(request):
     if request.method == 'POST':
         user_form = UserSearchForm(request.POST)
         if user_form.is_valid():
-            firstName = user_form.cleaned_data.get('first_name')
-            lastName = user_form.cleaned_data.get('last_name')
+
+            firstName = unicode_tr(request.POST.get('first_name')).upper()
+            lastName = unicode_tr(request.POST.get('last_name')).upper()
             email = user_form.cleaned_data.get('email')
             active = request.POST.get('is_active')
             if not (firstName or lastName or email or active):
@@ -67,8 +70,9 @@ def update_user(request, pk):
         if user_form.is_valid():
 
             user.username = user_form.cleaned_data['email']
-            user.first_name = user_form.cleaned_data['first_name']
-            user.last_name = user_form.cleaned_data['last_name']
+
+            user.first_name = unicode_tr(user_form.cleaned_data['first_name']).upper()
+            user.last_name = unicode_tr(user_form.cleaned_data['last_name']).upper()
             user.email = user_form.cleaned_data['email']
 
             user.save()

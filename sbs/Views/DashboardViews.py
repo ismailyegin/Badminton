@@ -416,7 +416,6 @@ def return_admin_dashboard(request):
     # hakem kademe sayilari
     judge_grades = []
     categori = CategoryItem.objects.filter(forWhichClazz='REFEREE_GRADE')
-
     for item in categori:
         beka = {
             'name': item.name,

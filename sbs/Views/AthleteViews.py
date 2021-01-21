@@ -56,6 +56,8 @@ from sbs.models.ReferenceCoach import ReferenceCoach
 
 from sbs.models.CompetitionsAthlete import CompetitionsAthlete
 
+from unicode_tr import unicode_tr
+
 @login_required
 def return_add_athlete_antrenor(request):
     perm = general_methods.control_access_klup(request)
@@ -158,8 +160,9 @@ def return_add_athlete_antrenor(request):
         if user_form.is_valid() and person_form.is_valid() and license_form.is_valid() and communication_form.is_valid():
             user = User()
             user.username = user_form.cleaned_data['email']
-            user.first_name = user_form.cleaned_data['first_name']
-            user.last_name = user_form.cleaned_data['last_name']
+            firstName = unicode_tr(user_form.cleaned_data['first_name']).upper()
+            lastName = unicode_tr(user_form.cleaned_data['last_name']).upper()
+
             user.email = user_form.cleaned_data['email']
             group = Group.objects.get(name='Sporcu')
             password = User.objects.make_random_password()
@@ -390,8 +393,9 @@ def return_add_athlete(request):
         if user_form.is_valid() and person_form.is_valid() and license_form.is_valid() and communication_form.is_valid():
             user = User()
             user.username = user_form.cleaned_data['email']
-            user.first_name = user_form.cleaned_data['first_name']
-            user.last_name = user_form.cleaned_data['last_name']
+            user.firstName = unicode_tr(user_form.cleaned_data['first_name']).upper()
+            user.lastName = unicode_tr(user_form.cleaned_data['last_name']).upper()
+
             user.email = user_form.cleaned_data['email']
             group = Group.objects.get(name='Sporcu')
             password = User.objects.make_random_password()
@@ -462,8 +466,9 @@ def return_athletes_antrenor(request):
     if request.method == 'POST':
         user_form = UserSearchForm(request.POST)
         if user_form.is_valid():
-            firstName = user_form.cleaned_data.get('first_name')
-            lastName = user_form.cleaned_data.get('last_name')
+            firstName = unicode_tr(user_form.cleaned_data['first_name']).upper()
+            lastName = unicode_tr(user_form.cleaned_data['last_name']).upper()
+
             email = user_form.cleaned_data.get('email')
             if not (firstName or lastName or email):
 
@@ -522,8 +527,8 @@ def return_athletes(request):
         coach = request.POST.get('coach')
 
         if user_form.is_valid():
-            firstName = user_form.cleaned_data.get('first_name')
-            lastName = user_form.cleaned_data.get('last_name')
+            firstName = unicode_tr(user_form.cleaned_data['first_name']).upper()
+            lastName = unicode_tr(user_form.cleaned_data.get('last_name')).upper()
             email = user_form.cleaned_data.get('email')
             if not (firstName or lastName or email or sportsclup or coach):
 
@@ -678,8 +683,10 @@ def updateathletes(request, pk):
             # print('user=', user.first_name)
             kisi = user_form.save(commit=False)
             kisi.username = user_form.cleaned_data['email']
-            kisi.first_name = user_form.cleaned_data['first_name']
-            kisi.last_name = user_form.cleaned_data['last_name']
+            kisi.first_name = unicode_tr(user_form.cleaned_data['first_name']).upper()
+            kisi.last_name = unicode_tr(user_form.cleaned_data['last_name']).upper()
+
+
             kisi.email = kisi.username
             kisi.save()
 
@@ -1613,8 +1620,9 @@ def sporcu_kusak_listesi(request):
     if request.method == 'POST':
         brans = request.POST.get('branch')
         sportsclup = request.POST.get('sportsClub')
-        firstName = request.POST.get('first_name')
-        lastName = request.POST.get('last_name')
+
+        firstName = unicode_tr(request.POST.get('first_name')).upper()
+        lastName = unicode_tr(request.POST.get('last_name')).upper()
         email = request.POST.get('email')
         status = request.POST.get('status')
         if firstName or lastName or email or sportsclup or brans or status:
@@ -1705,8 +1713,8 @@ def sporcu_lisans_listesi(request):
     if request.method == 'POST':
         brans = request.POST.get('branch')
         sportsclup = request.POST.get('sportsClub')
-        firstName = request.POST.get('first_name')
-        lastName = request.POST.get('last_name')
+        firstName = unicode_tr(request.POST.get('first_name')).upper()
+        lastName = unicode_tr(request.POST.get('last_name')).upper()
         email = request.POST.get('email')
         status = request.POST.get('status')
 
@@ -1783,8 +1791,8 @@ def updateAthleteProfile(request, pk):
         if user_form.is_valid() and communication_form.is_valid() and person_form.is_valid() and password_form.is_valid():
 
             user.username = user_form.cleaned_data['email']
-            user.first_name = user_form.cleaned_data['first_name']
-            user.last_name = user_form.cleaned_data['last_name']
+            user.firstName = unicode_tr(user_form.cleaned_data['first_name']).upper()
+            user.lastName = unicode_tr(user_form.cleaned_data['last_name']).upper()
             user.email = user_form.cleaned_data['email']
             user.set_password(password_form.cleaned_data['new_password1'])
             user.save()

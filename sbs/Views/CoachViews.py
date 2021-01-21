@@ -61,6 +61,8 @@ from sbs.Forms.MaterialForm import MaterialForm
 
 from sbs.models.Logs import Logs
 
+from unicode_tr import unicode_tr
+
 # visaseminer ekle
 @login_required
 def visaSeminar_ekle(request):
@@ -204,8 +206,10 @@ def return_add_coach(request):
         if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and iban_form.is_valid() and grade_form.is_valid():
             user = User()
             user.username = user_form.cleaned_data['email']
-            user.first_name = user_form.cleaned_data['first_name']
-            user.last_name = user_form.cleaned_data['last_name']
+            user.first_name = unicode_tr(user_form.cleaned_data['first_name']).upper()
+            user.last_name = unicode_tr(user_form.cleaned_data['last_name']).upper()
+
+
             user.email = user_form.cleaned_data['email']
             group = Group.objects.get(name='Antrenor')
             password = User.objects.make_random_password()
@@ -289,8 +293,8 @@ def return_coachs(request):
         branch = request.POST.get('branch')
         grade = request.POST.get('definition')
         visa = request.POST.get('visa')
-        firstName = request.POST.get('first_name')
-        lastName = request.POST.get('last_name')
+        firstName = unicode_tr(request.POST.get('first_name')).upper()
+        lastName = unicode_tr(request.POST.get('last_name')).upper()
         email = request.POST.get('email')
 
         if not (firstName or lastName or email or branch or grade or visa):
@@ -480,8 +484,8 @@ def referenceCoachStatus(request, pk):
         if referenceCoach.status != ReferenceCoach.APPROVED:
             user = User()
             user.username = referenceCoach.email
-            user.first_name = referenceCoach.first_name
-            user.last_name = referenceCoach.last_name
+            user.first_name = unicode_tr(referenceCoach.first_name).upper()
+            user.last_name = unicode_tr(referenceCoach.last_name).upper()
             user.email = referenceCoach.email
             group = Group.objects.get(name='Antrenor')
 
@@ -565,8 +569,8 @@ def referenappcoverCoach(request, pk):
             if referenceCoach.status != ReferenceCoach.APPROVED:
                 user = User()
                 user.username = referenceCoach.email
-                user.first_name = referenceCoach.first_name
-                user.last_name = referenceCoach.last_name
+                user.first_name = unicode_tr(referenceCoach.first_name).upper()
+                user.last_name = unicode_tr(referenceCoach.last_name).upper()
                 user.email = referenceCoach.email
                 user.is_active = True
                 group = Group.objects.get(name='Antrenor')
@@ -824,8 +828,9 @@ def coachUpdate(request, pk):
         if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and iban_form.is_valid() and metarial_form.is_valid():
 
             user.username = user_form.cleaned_data['email']
-            user.first_name = user_form.cleaned_data['first_name']
-            user.last_name = user_form.cleaned_data['last_name']
+            user.first_name = unicode_tr(user_form.cleaned_data['first_name']).upper()
+            user.last_name = unicode_tr(user_form.cleaned_data['last_name']).upper()
+
             user.email = user_form.cleaned_data['email']
             user.save()
 
@@ -1102,8 +1107,9 @@ def kademe_list(request):
         branch = request.POST.get('branch')
         grade = request.POST.get('definition')
         visa = request.POST.get('visa')
-        firstName = request.POST.get('first_name')
-        lastName = request.POST.get('last_name')
+
+        firstName = unicode_tr(request.POST.get('first_name')).upper()
+        lastName = unicode_tr(request.POST.get('last_name')).upper()
         email = request.POST.get('email')
 
         if not (firstName or lastName or email or branch or grade or visa):
@@ -1172,8 +1178,9 @@ def vize_list(request):
         branch = request.POST.get('branch')
         grade = request.POST.get('definition')
         visa = request.POST.get('visa')
-        firstName = request.POST.get('first_name')
-        lastName = request.POST.get('last_name')
+
+        firstName = unicode_tr(request.POST.get('first_name')).upper()
+        lastName = unicode_tr(request.POST.get('last_name')).upper()
         email = request.POST.get('email')
 
         if not (firstName or lastName or email or branch or grade or visa):

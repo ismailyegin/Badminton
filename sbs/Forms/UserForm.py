@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.db import models
 
+from unicode_tr import unicode_tr
+
 
 class UserForm(ModelForm):
     class Meta:
@@ -33,11 +35,8 @@ class UserForm(ModelForm):
             return data
 
     # def save(self, commit=False):
-    #     self.first_name=self.cleaned_data['first_name'].upper()
-    #     self.last_name=self.cleaned_data['last_name'].upper()
-    #     print(self.first_name)
-    #     # self.first_name = self.first_name.upper()
-    #     # self.last_name = self.last_name.upper()
+    #     self.first_name=unicode_tr(self.cleaned_data['first_name']).upper()
+    #     self.last_name=unicode_tr(self.cleaned_data['last_name']).upper()
     #     return ModelForm.save(self, commit=False)
 
     def __str__(self):

@@ -47,7 +47,7 @@ from sbs.Forms.MaterialForm import MaterialForm
 from sbs.models.Competition import Competition
 from sbs.models.Logs import Logs
 
-
+from unicode_tr import unicode_tr
 @login_required
 def return_add_referee(request):
     perm = general_methods.control_access(request)
@@ -107,8 +107,9 @@ def return_add_referee(request):
         if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and iban_form.is_valid():
             user = User()
             user.username = user_form.cleaned_data['email']
-            user.first_name = user_form.cleaned_data['first_name']
-            user.last_name = user_form.cleaned_data['last_name']
+
+            user.first_name = unicode_tr(user_form.cleaned_data['first_name']).upper()
+            user.last_name = unicode_tr(user_form.cleaned_data['last_name']).upper()
             user.email = user_form.cleaned_data['email']
             group = Group.objects.get(name='Hakem')
             password = User.objects.make_random_password()
@@ -178,8 +179,9 @@ def return_referees(request):
         branch = request.POST.get('branch')
         grade = request.POST.get('definition')
         visa = request.POST.get('visa')
-        firstName = request.POST.get('first_name')
-        lastName = request.POST.get('last_name')
+
+        firstName = unicode_tr(request.POST.get('first_name')).upper()
+        lastName = unicode_tr(request.POST.get('last_name')).upper()
         email = request.POST.get('email')
         # print(firstName, lastName, email, branch, grade, visa)
         if not (firstName or lastName or email or branch or grade or visa):
@@ -335,8 +337,8 @@ def refenceapprovalReferee(request, pk):
             if reference.status == ReferenceReferee.WAITED:
                 user = User()
                 user.username = reference.email
-                user.first_name = reference.first_name
-                user.last_name = reference.last_name
+                user.first_name = unicode_tr(reference.first_name).upper()
+                user.last_name = unicode_tr(reference.last_name).upper()
                 user.email = reference.email
                 user.is_active = True
                 user.save()
@@ -570,8 +572,8 @@ def updateReferee(request, pk):
         if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and iban_form.is_valid() and metarial_form.is_valid():
 
             user.username = user_form.cleaned_data['email']
-            user.first_name = user_form.cleaned_data['first_name']
-            user.last_name = user_form.cleaned_data['last_name']
+            user.first_name = unicode_tr(user_form.cleaned_data['first_name']).upper()
+            user.last_name = unicode_tr(user_form.cleaned_data['last_name']).upper()
             user.email = user_form.cleaned_data['email']
             user.save()
 
@@ -1101,8 +1103,8 @@ def referenceStatus(request, pk):
     if reference.status == ReferenceReferee.WAITED:
         user = User()
         user.username = reference.email
-        user.first_name = reference.first_name
-        user.last_name = reference.last_name
+        user.first_name = unicode_tr(reference.first_name).upper()
+        user.last_name = unicode_tr(reference.last_name).upper()
         user.email = reference.email
         group = Group.objects.get(name='Hakem')
 
@@ -1220,8 +1222,8 @@ def kademe_list(request):
         branch = request.POST.get('branch')
         grade = request.POST.get('definition')
         visa = request.POST.get('visa')
-        firstName = request.POST.get('first_name')
-        lastName = request.POST.get('last_name')
+        firstName = unicode_tr(request.POST.get('first_name')).upper()
+        lastName = unicode_tr(request.POST.get('last_name')).upper()
         email = request.POST.get('email')
         # print(firstName, lastName, email, branch, grade, visa)
         if not (firstName or lastName or email or branch or grade or visa):
@@ -1349,8 +1351,8 @@ def vize_list(request):
         branch = request.POST.get('branch')
         grade = request.POST.get('definition')
         visa = request.POST.get('visa')
-        firstName = request.POST.get('first_name')
-        lastName = request.POST.get('last_name')
+        firstName = unicode_tr(request.POST.get('first_name')).upper()
+        lastName = unicode_tr(request.POST.get('last_name')).upper()
         email = request.POST.get('email')
         # print(firstName, lastName, email, branch, grade, visa)
         if not (firstName or lastName or email or branch or grade or visa):
