@@ -449,13 +449,26 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-
-                            <canvas id="antrenorcanvas"></canvas>
+                            <div class="col-md-12">
+                                <canvas id="antrenorcanvas"></canvas>
+                            </div>
 
 
                             <!-- /.table-responsive -->
                         </div>
                         <!-- /.box-body -->
+
+                        <div class="box-footer no-padding">
+                            <ul class="nav nav-pills nav-stacked">
+
+                                {% for item in coach_grades %}
+                                    <li><a href="#">{{ item.name }}. Kademe
+                                        <span class="pull-right text-green"> {{ item.count }}</span></a>
+                                    </li>
+                                {% endfor %}
+
+                            </ul>
+                        </div>
                         <div class="box-footer clearfix">
                             <a href="{% url 'sbs:antrenorler' %}" class="btn btn-sm btn-info btn-flat pull-left">Antrenor
                                 Listesi </a>
@@ -480,13 +493,25 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-
-                            <canvas id="hakemcanvas"></canvas>
+                            <div class="col-md-12">
+                                <canvas id="hakemcanvas"></canvas>
+                            </div>
 
 
                             <!-- /.table-responsive -->
                         </div>
                         <!-- /.box-body -->
+                        <div class="box-footer no-padding">
+                            <ul class="nav nav-pills nav-stacked">
+
+                                {% for item in judge_grades %}
+                                    <li><a href="#">{{ item.name }}
+                                        <span class="pull-right text-green">{{ item.count }}</span></a>
+                                    </li>
+                                {% endfor %}
+
+                            </ul>
+                        </div>
                         <div class="box-footer clearfix">
                             <a href="{% url 'sbs:hakemler' %}" class="btn btn-sm btn-info btn-flat pull-left">Hakem
                                 Listesi</a>
@@ -497,6 +522,98 @@
                     </div>
                 </div>
 
+
+            </div>
+            {#pie area gösterimi#}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"> Anternör Kademe Tanımları </h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                        class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+
+
+                            <canvas id="coachcanvas-area"></canvas>
+
+
+                            <!-- /.table-responsive -->
+                        </div>
+                        <div class="box-footer no-padding">
+                            <ul class="nav nav-pills nav-stacked">
+
+                                {% for item in coach_grades %}
+                                    <li><a href="#">{{ item.name }}. Kademe
+                                        <span class="pull-right text-green">{{ item.count }}</span></a>
+                                    </li>
+                                {% endfor %}
+
+                            </ul>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer clearfix">
+                            <a href="{% url 'sbs:antrenorler' %}" class="btn btn-sm btn-info btn-flat pull-left">Antrenör
+                                Listesi</a>
+                            <a href="{% url 'sbs:kademe' %}" class="btn btn-sm btn-default btn-flat pull-right">Antrenör
+                                Kademe Tanımları</a>
+                        </div>
+                        <!-- /.box-footer -->
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"> Hakem Seviye Tanımları</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                        class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+
+
+                            <canvas id="hakemcanvas-area"></canvas>
+
+
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.box-body -->
+
+                        <div class="box-footer no-padding">
+                            <ul class="nav nav-pills nav-stacked">
+
+                                {% for item in judge_grades %}
+                                    <li><a href="#">{{ item.name }}
+                                        <span class="pull-right text-green">{{ item.count }}</span></a>
+                                    </li>
+                                {% endfor %}
+
+                            </ul>
+                        </div>
+                        <div class="box-footer clearfix">
+                            <a href="{% url 'sbs:hakemler' %}" class="btn btn-sm btn-info btn-flat pull-left">Hakem
+                                Listesi</a>
+                            <a href="{% url 'sbs:seviye' %}" class="btn btn-sm btn-default btn-flat pull-right">Hakem
+                                Seviye Tanımları</a>
+                        </div>
+                        <!-- /.box-footer -->
+                    </div>
+                </div>
 
             </div>
 
@@ -546,7 +663,7 @@
                 {#                    <!-- /.box-footer -->#}
                 {#                </div>#}
             </div>
-
+            {#harita #}
             <div class="row">
 
                 <div class="box box-danger">
@@ -856,38 +973,37 @@
     </section>
 
 
-
     <script>
 
+        var color = ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360", "#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360", "#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360", "#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"];
 
-        {#var myLineChart = new Chart(ctxL, {#}
-        {#    type: 'line',#}
-        {#    data: {#}
-        {#        labels: ["January", "February", "March", "April", "May", "June", "July"],#}
-        {#        datasets: [#}
-        {#            {#}
-        {#                label: "My First dataset",#}
-        {#                data: [0, 65, 45, 65, 35, 65, 0],#}
-        {#                backgroundColor: '#AD35BA',#}
-        {#                borderColor: [#}
-        {#                    '#AD35BA',#}
-        {#                ],#}
-        {#                borderWidth: 2,#}
-        {#                pointBorderColor: "#fff",#}
-        {#                pointBackgroundColor: "rgba(173, 53, 186, 0.1)",#}
-        {#            }#}
-        {#        ]#}
-        {#    },#}
-        {#    options: {#}
-        {#        responsive: true#}
-        {#    }#}
-        {# }) #}
-        {#;#}
-        {#        #}
-    </script>
+        var pieDataJudge = [
+
+            {% for item in judge_grades %}
+                {
+                    value: {{ item.count }},
+                    color: color[{{forloop.counter}}],
+                    highlight: "#FF5A5E",
+                    label: "{{item.name}}"
+                },
+            {% endfor %}
 
 
-    <script>
+        ];
+        var pieDataCoach = [
+
+            {% for item in coach_grades %}
+                {
+                    value: {{ item.count }},
+                    color: color[{{forloop.counter}}],
+                    highlight: "#FF5A5E",
+                    label: "{{item.name}}. Kademe"
+                },
+            {% endfor %}
+
+
+        ];
+
 
         var randomScalingFactor = function () {
             return Math.round(Math.random() * 100)
@@ -928,6 +1044,12 @@
 
 
         $(function () {
+
+            var ctx = document.getElementById("coachcanvas-area").getContext("2d");
+            window.myPie = new Chart(ctx).Pie(pieDataCoach);
+
+            var ctx = document.getElementById("hakemcanvas-area").getContext("2d");
+            window.myPie = new Chart(ctx).Pie(pieDataJudge);
 
             var ctx = document.getElementById("antrenorcanvas").getContext("2d");
             window.myBar = new Chart(ctx).Bar(barChartDataantrenor, {
