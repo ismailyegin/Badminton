@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 
 from sbs.models import *
 from sbs.models.FedsportalModels import Sporcular, Turnuvalar, TurnSporculari, TurnHakemleri, TurnSporcuAntrenorleri, \
-    TurnKategorileri, Malzemeler, MalzHareket
+    TurnKategorileri, Malzemeler, MalzHareket, Vizeler
 from sbs.models.EnumFields import EnumFields
 from sbs.models.Material import Material
 from sbs.services import general_methods
@@ -1217,5 +1217,47 @@ def communicationAktar(request):
         item.save()
 
     print(sayi)
+
+    return redirect('sbs:admin')
+
+
+@login_required
+def judgeAktar(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+
+    for item in Vizeler.objects.all():
+        print(item.sporcuid.sporcuid)
+        if Judge.objects.filter(oldpk=item.sporcuid.sporcuid):
+            judge = Judge.objects.get(oldpk=item.sporcuid.sporcuid)
+            grade = Level(
+                definition=CategoryItem.objects.get(pk=7),
+                expireDate=item.gecerliliktarihi,
+                startDate=item.belgetarihi,
+                branch=EnumFields.BADMİNTON.value
+            )
+            grade.levelType = EnumFields.LEVELTYPE.GRADE
+            grade.status = Level.APPROVED
+            grade.isActive = True
+            grade.save()
+            judge.grades.add(grade)
+            judge.save()
+
+            visa = Level(
+                branch=EnumFields.BADMİNTON.value
+            )
+            visa.startDate = item.belgetarihi
+            visa.expireDate = item.gecerliliktarihi
+            visa.definition = CategoryItem.objects.get(forWhichClazz='VISA_REFEREE')
+            visa.levelType = EnumFields.LEVELTYPE.VISA
+            visa.status = Level.APPROVED
+
+            visa.isActive = True
+            visa.save()
+            judge.visa.add(visa)
+            judge.save()
 
     return redirect('sbs:admin')

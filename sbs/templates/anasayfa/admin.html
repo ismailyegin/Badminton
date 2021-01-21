@@ -793,6 +793,7 @@
                                 <tr>
                                     <th style="width: 10px">#</th>
                                     <th>ip</th>
+                                    <th>Kullanıcı</th>
 
                                     <th>işlem</th>
                                     <th>Tarih</th>
@@ -802,6 +803,8 @@
                                     <tr>
                                         <td style="width: 10px">{{ forloop.counter }}</td>
                                         <td>{{ item.ip }}</td>
+
+                                        <td>{{ item.user.get_full_name }}</td>
 
                                         <td>{{ item.subject }}</td>
                                         <td>{{ item.creationDate }}</td>

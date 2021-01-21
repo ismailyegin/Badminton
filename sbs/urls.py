@@ -477,4 +477,5 @@ urlpatterns = [
     url(r'aktarma/kanhakem', Aktarma.KangrubuHakem, name='control-kan-hakem'),
     url(r'aktarma/emanet', Aktarma.Emanet, name='control-emanet'),
     url(r'aktarma/com', Aktarma.communicationAktar, name='control-aktarmatest'),
+    url(r'aktarma/hakem', Aktarma.judgeAktar, name='control-aktarhakemvize'),
 ]
