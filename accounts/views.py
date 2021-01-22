@@ -747,7 +747,9 @@ def updatecoach(request, tc, pk):
                 msg = EmailMultiAlternatives(subject, '', from_email, [to])
                 msg.attach_alternative(html_content, "text/html")
                 msg.send()
-                messages.success(request, 'Giris Bilgileriniz mail adresinize Gönderildi')
+                user.is_active = True
+                user.save()
+                messages.success(request, 'Giris Bilgileriniz Mail Adresinize Gönderildi')
                 return redirect('accounts:login')
             else:
                 messages.warning(request, 'Alanlari Kontrol Ediniz')
@@ -876,6 +878,8 @@ def updatejudge(request, tc, pk):
             msg = EmailMultiAlternatives(subject, '', from_email, [to])
             msg.attach_alternative(html_content, "text/html")
             msg.send()
+            user.is_active = True
+            user.save()
             messages.success(request, 'Giris Bilgileriniz mail adresinize Gönderildi')
             return redirect('accounts:login')
         else:
