@@ -125,7 +125,10 @@
             <div class="row">
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
+                        <span class="info-box-icon bg-aqua">
+                            {% load static %}
+                                <img class="ion" src="{% static 'images/Sporcuicon.png'%}">
+                            </span>
 
                         <div class="info-box-content">
                             <span class="info-box-text">Sporcu Sayısı</span>
@@ -138,7 +141,10 @@
                 <!-- /.col -->
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-red"><i class="ion ion-ios-people-outline"></i></span>
+                        <span class="info-box-icon bg-red">
+                            {% load static %}
+                                <img class="ion" src="{% static 'images/Antrenr.png'%}">
+                        </span>
 
                         <div class="info-box-content">
                             <span class="info-box-text">Antrenör Sayısı</span>
@@ -156,7 +162,10 @@
 
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
+                        <span class="info-box-icon bg-yellow">
+                             {% load static %}
+                                <img class="ion" src="{% static 'images/hakemicon.png'%}">
+                        </span>
 
                         <div class="info-box-content">
                             <span class="info-box-text">Hakem Sayısı</span>
@@ -169,7 +178,10 @@
                 <!-- /.col -->
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-green"><i class="ion ion-android-menu"></i></span>
+                        <span class="info-box-icon bg-green">
+                             {% load static %}
+                                <img class="ion" src="{% static 'images/Kulup.png'%}">
+                            </span>
 
                         <div class="info-box-content">
                             <span class="info-box-text">Kulüp Sayısı</span>
