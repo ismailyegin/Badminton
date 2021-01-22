@@ -16,11 +16,11 @@ class LicenseForm(ModelForm):
         model = License
 
         fields = (
-            'startDate', 'sportsClub', 'branch', 'licenseNo', 'cityHeadShip', 'expireDate', 'lisansPhoto')
+            'startDate', 'sportsClub', 'branch', 'licenseNo', 'cityHeadShip', 'expireDate', 'lisansPhoto','coach','coach2')
 
         labels = {'startDate': 'Başlangıç Tarihi*', 'branch': 'Branş*',
                   'licenseNo': 'Lisans No*', 'cityHeadShip': 'Verildiği İl*', 'expireDate': 'Bitiş Tarihi*',
-                  'lisansPhoto': 'Lisans Foto'}
+                  'lisansPhoto': 'Lisans Foto','coach':'Antrenör 1','coach2':'Antrenör 2'}
 
         widgets = {
 
@@ -34,12 +34,17 @@ class LicenseForm(ModelForm):
 
             'branch': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                           'style': 'width: 100%; '}),
+            'coach':forms.Select(attrs={'class':'form-control select2 select2-hidden-accessible', 'style': 'width: 100%; '}),
+
+            'coach2': forms.Select(
+                attrs={'class': 'form-control select2 select2-hidden-accessible', 'style': 'width: 100%; '}),
 
             'licenseNo': forms.TextInput(
                 attrs={'class': 'form-control', 'onkeypress': 'validate(event)', 'required': 'required'}),
 
             'cityHeadShip': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                                 'style': 'width: 100%;', 'required': 'required'}),
+
 
 
 

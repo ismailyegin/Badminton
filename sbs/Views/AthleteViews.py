@@ -1524,6 +1524,7 @@ def sporcu_lisans_duzenle(request, license_pk, athlete_pk):
             clubsPk.append(club.pk)
         license_form.fields['sportsClub'].queryset = SportsClub.objects.filter(id__in=clubsPk)
 
+
     elif active == 'Yonetim' or active == 'Admin':
         license_form.fields['sportsClub'].queryset = SportsClub.objects.all()
 
