@@ -377,6 +377,7 @@ urlpatterns = [
     url(r'musabaka/basvuru/(?P<pk>\d+)$', CompetitionViews.aplication, name='basvuru'),
 
     # Competition
+
     url(r'musabaka/musabakalar/$', CompetitionViews.return_competitions, name='musabakalar'),
     url(r'musabaka/musabaka-ekle/$', CompetitionViews.musabaka_ekle, name='musabaka-ekle'),
     url(r'musabaka/musabaka-duzenle/(?P<pk>\d+)$', CompetitionViews.musabaka_duzenle, name='musabaka-duzenle'),
@@ -399,6 +400,7 @@ urlpatterns = [
     url(r'musabaka/musabaka-duzenle/kaldir/(?P<pk>\d+)/$', CompetitionViews.musabaka_sporcu_sil,
         name='musabaka-sporcu-kaldir'),
     url(r'musabaka/KategoriEkle/$', CompetitionViews.categori_ekle, name='kategori-ekle'),
+    url(r'musabaka/sonucal/(?P<pk>\d+)$', CompetitionViews.upload, name='competition-result'),
     #     Yardım ve destek
 
     url(r'yardim$', HelpViews.help, name='help'),
