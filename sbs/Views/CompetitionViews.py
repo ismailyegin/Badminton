@@ -832,7 +832,7 @@ def upload(request, pk):
         competition = Competition.objects.filter(pk=pk)[0]
     else:
         return redirect('sbs:musabakalar')
-    if request.method == "POST":
+    # if request.method == "POST":
 
     # excel_file = request.FILES["file"]
     # data = None
