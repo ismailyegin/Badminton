@@ -27,6 +27,13 @@ from django.utils import timezone
 
 from sbs.models.CompetitionsAthlete import CompetitionsAthlete
 
+# from pyexcel_xls import get_data as xls_get
+# from pyexcel_xlsx import get_data as xlsx_get
+from django.utils.datastructures import MultiValueDictKeyError
+
+
+
+
 
 @login_required
 def categori_ekle(request):
@@ -817,3 +824,32 @@ def return_competition_ajax(request):
 
     }
     return JsonResponse(response)
+
+
+@login_required
+def upload(request, pk):
+    if Competition.objects.filter(pk=pk):
+        competition = Competition.objects.filter(pk=pk)[0]
+    else:
+        return redirect('sbs:musabakalar')
+    # if request.method == "POST":
+
+    # excel_file = request.FILES["file"]
+    # data = None
+    # if (str(excel_file).split('.')[-1] == "xls"):
+    #     data = xls_get(excel_file)
+    #
+    # elif (str(excel_file).split('.')[-1] == "xlsx"):
+    #     data = xlsx_get(excel_file)
+    # else:
+    #     messages.warning(request, 'Lütfen bir excel dosyasi seçiniz (.xls -.xlsx)')
+    #
+    # if data:
+    #     for item in data.items():
+    #         count = 0
+    #         for count in range(len(item[1])):
+    #             # bir row alınmıs oldu
+    #             print(item[1][count][0])
+    #         print(len(item[1]))
+
+    return render(request, 'musabaka/SonucAktar.html', {'competition': competition})
