@@ -221,9 +221,9 @@
                                         <tr>
                                             <td>{{ forloop.counter }} </td>
                                             <td>{{ competition.name }}</td>
-                                            <td>{{ competition.startDate }} </td>
+                                            <td>{{ competition.startDate|date }} </td>
                                             <td>{{ competition.finishDate  | date }}</td>
-                                            <td>{{ competition.location |date }}</td>
+                                            <td>{{ competition.location }}</td>
 
                                             <td>
                                                 <div class="btn-group">

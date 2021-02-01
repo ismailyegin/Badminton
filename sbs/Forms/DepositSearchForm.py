@@ -4,7 +4,7 @@ from django.forms import ModelForm
 from sbs.models.Deposit import Deposit
 
 
-class ProductSearhForm(ModelForm):
+class DepositSearchForm(ModelForm):
     class Meta:
         model = Deposit
 
