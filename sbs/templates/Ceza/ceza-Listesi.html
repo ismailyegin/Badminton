@@ -142,26 +142,26 @@
 
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Sporcu Ceza Filtrele</h3>
+                            <h3 class="box-title"> Ceza Filtrele</h3>
                         </div>
                         <form method="post" role="form">
 
                             <div class="box-body">
                                 {% csrf_token %}
 
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label> {{ user_form.first_name.label }}</label>
                                         {{ user_form.first_name }}
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label> {{ user_form.last_name.label }}</label>
                                         {{ user_form.last_name }}
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label> T.C.</label>
                                         <input type="text" name="tc" class="form-control " placeholder="T.C."
@@ -170,7 +170,7 @@
                                                placeholder="" maxlength="11" id="id_tc">
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label> {{ user_form.email.label }}</label>
                                         {{ user_form.email }}

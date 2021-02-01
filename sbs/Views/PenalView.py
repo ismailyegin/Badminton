@@ -17,6 +17,10 @@ from sbs.models.EnumFields import EnumFields
 from sbs.services import general_methods
 from sbs.Forms.SimplecategoryForm import SimplecategoryForm
 from sbs.models.Person import Person
+from sbs.models.Coach import Coach
+from sbs.models.Judge import Judge
+from sbs.models.SportClubUser import SportClubUser
+from sbs.models.DirectoryMember import DirectoryMember
 from sbs.Forms.UserSearchForm import UserSearchForm
 from sbs.Forms.SearchClupForm import SearchClupForm
 
@@ -33,17 +37,50 @@ def return_penal_athlete(request):
         logout(request)
         return redirect('accounts:login')
     user_form = UserSearchForm()
-    sportclup = SearchClupForm(request.POST, request.FILES or None)
     data = []
     if request.method == 'POST':
-        sportsclup = request.POST.get('sportsClub')
-        coach = request.POST.get('coach')
         firstName = unicode_tr(request.POST.get('first_name')).upper()
         lastName = unicode_tr(request.POST.get('last_name')).upper()
         tcno = request.POST.get('tc')
         email = request.POST.get('email')
-        if not (firstName or lastName or email or sportsclup or coach or tcno):
+        if not (firstName or lastName or email or tcno):
             test = Athlete.objects.exclude(person__penal__penal=None)
+            for item in test:
+                for penals in item.person.penal.all():
+                    beka = {
+                        'name': item.user.get_full_name(),
+                        'penal': penals.penal,
+                        'document': penals.file,
+                    }
+                    data.append(beka)
+            test = Coach.objects.exclude(person__penal__penal=None)
+            for item in test:
+                for penals in item.person.penal.all():
+                    beka = {
+                        'name': item.user.get_full_name(),
+                        'penal': penals.penal,
+                        'document': penals.file,
+                    }
+                    data.append(beka)
+            test = Judge.objects.exclude(person__penal__penal=None)
+            for item in test:
+                for penals in item.person.penal.all():
+                    beka = {
+                        'name': item.user.get_full_name(),
+                        'penal': penals.penal,
+                        'document': penals.file,
+                    }
+                    data.append(beka)
+            test = SportClubUser.objects.exclude(person__penal__penal=None)
+            for item in test:
+                for penals in item.person.penal.all():
+                    beka = {
+                        'name': item.user.get_full_name(),
+                        'penal': penals.penal,
+                        'document': penals.file,
+                    }
+                    data.append(beka)
+            test = DirectoryMember.objects.exclude(person__penal__penal=None)
             for item in test:
                 for penals in item.person.penal.all():
                     beka = {
@@ -56,12 +93,6 @@ def return_penal_athlete(request):
 
             query = Q()
 
-            clubsPk = []
-
-            clubs = SportsClub.objects.filter(name=request.POST.get('sportsClub'))
-
-            for club in clubs:
-                clubsPk.append(club.pk)
 
             if firstName:
                 query &= Q(user__first_name__icontains=firstName)
@@ -75,10 +106,6 @@ def return_penal_athlete(request):
             if email:
                 query &= Q(user__email__icontains=email)
 
-            if sportsclup:
-                query &= Q(licenses__sportsClub__in=clubsPk)
-            if coach:
-                query &= Q(licenses__coach=coach)
             test = Athlete.objects.exclude(person__penal__penal=None).filter(query).distinct()
             for item in test:
                 for penals in item.person.penal.all():
@@ -88,6 +115,41 @@ def return_penal_athlete(request):
                         'document': penals.file,
                     }
                     data.append(beka)
-    return render(request, 'Ceza/ceza-Listesi-Sporcu.html', {'activity': data,
-                                                             'user_form': user_form,
-                                                             'Sportclup': sportclup})
+            test = Coach.objects.exclude(person__penal__penal=None).filter(query).distinct()
+            for item in test:
+                for penals in item.person.penal.all():
+                    beka = {
+                        'name': item.user.get_full_name(),
+                        'penal': penals.penal,
+                        'document': penals.file,
+                    }
+                    data.append(beka)
+            test = Judge.objects.exclude(person__penal__penal=None).filter(query).distinct()
+            for item in test:
+                for penals in item.person.penal.all():
+                    beka = {
+                        'name': item.user.get_full_name(),
+                        'penal': penals.penal,
+                        'document': penals.file,
+                    }
+                    data.append(beka)
+            test = SportClubUser.objects.exclude(person__penal__penal=None).filter(query).distinct()
+            for item in test:
+                for penals in item.person.penal.all():
+                    beka = {
+                        'name': item.user.get_full_name(),
+                        'penal': penals.penal,
+                        'document': penals.file,
+                    }
+                    data.append(beka)
+            test = DirectoryMember.objects.exclude(person__penal__penal=None).filter(query).distinct()
+            for item in test:
+                for penals in item.person.penal.all():
+                    beka = {
+                        'name': item.user.get_full_name(),
+                        'penal': penals.penal,
+                        'document': penals.file,
+
+                    }
+                    data.append(beka)
+    return render(request, 'Ceza/ceza-Listesi.html', {'activity': data, 'user_form': user_form, })

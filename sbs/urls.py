@@ -483,11 +483,8 @@ urlpatterns = [
 
     #     ceza görüntüleme modulleri
 
-    url(r'ceza/ceza-listesi/Sporcu', PenalView.return_penal_athlete, name='ceza-listesi-sporcu'),
-    url(r'ceza/ceza-listesi/Antrenor', PenalView.return_penal_coach, name='ceza-listesi-antrenor'),
-    url(r'ceza/ceza-listesi/Hakem', PenalView.return_penal_judge, name='ceza-listesi-hakem'),
-    url(r'ceza/ceza-listesi/KlupUye', PenalView.return_penal_clup, name='ceza-listesi-klupUye'),
-    url(r'ceza/ceza-listesi/KurulUye', PenalView.return_penal_members, name='ceza-listesi-kurulUye'),
+    url(r'ceza/ceza-listesi/', PenalView.return_penal_athlete, name='ceza-listesi-sporcu'),
+
 
 
 ]
