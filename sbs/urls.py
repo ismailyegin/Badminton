@@ -112,9 +112,9 @@ urlpatterns = [
     url(r'sporcu/sporcu-profil-guncelle/$', AthleteViews.updateAthleteProfile,
         name='sporcu-profil-guncelle'),
 
-    url(r'sporcu/sporcuBelgeKaldır/(?P<athlete_pk>\d+)/(?P<document_pk>\d+)$', AthleteViews.athlete_document_delete,
+    url(r'sporcu/sporcuBelgeKaldir/(?P<athlete_pk>\d+)/(?P<document_pk>\d+)$', AthleteViews.athlete_document_delete,
         name='sporcu-belge-kaldir'),
-    url(r'sporcu/sporcuCezaKaldır/(?P<athlete_pk>\d+)/(?P<document_pk>\d+)$', AthleteViews.athlete_penal_delete,
+    url(r'sporcu/sporcuCezaKaldir/(?P<athlete_pk>\d+)/(?P<document_pk>\d+)$', AthleteViews.athlete_penal_delete,
         name='sporcu-ceza-kaldir'),
 
     # Hakemler
@@ -148,7 +148,7 @@ urlpatterns = [
     url(r'hakem/Kademe-Duzenle/sil/(?P<grade_pk>\d+)/(?P<referee_pk>\d+)$', RefereeViews.kademe_delete,
         name='Kademe-sil-hakem'),
     # /vize
-    url(r'hakem/hakem-vize-ekle/(?P<pk>\d+)$', RefereeViews.vısa_ekle, name='hakem-vize-ekle'),
+    url(r'hakem/hakem-vize-ekle/(?P<pk>\d+)$', RefereeViews.visa_ekle, name='hakem-vize-ekle'),
     url(r'hakem/Vize-Duzenle/onayla/(?P<grade_pk>\d+)/(?P<referee_pk>\d+)$', RefereeViews.visa_onay,
         name='hakem-vize-onayla'),
     url(r'hakem/Vize-Duzenle/reddet/(?P<grade_pk>\d+)/(?P<referee_pk>\d+)$', RefereeViews.visa_reddet,
@@ -158,7 +158,7 @@ urlpatterns = [
     url(r'hakem/Vize-Duzenle/sil/(?P<grade_pk>\d+)/(?P<referee_pk>\d+)$', RefereeViews.vize_delete,
         name='hakem-vize-sil'),
     url(r'hakem/hakemBelgeEkle/(?P<pk>\d+)$', RefereeViews.hakem_belge_ekle, name='hakem-belge-ekle'),
-    url(r'hakem/hakemBelgeKaldır/(?P<athlete_pk>\d+)/(?P<document_pk>\d+)$', RefereeViews.judje_document_delete,
+    url(r'hakem/hakemBelgeKaldir/(?P<athlete_pk>\d+)/(?P<document_pk>\d+)$', RefereeViews.judje_document_delete,
         name='hakem-belge-kaldir'),
     url(r'hakem/hakemCezaEkle/(?P<pk>\d+)$', RefereeViews.judge_ceza_ekle, name='hakem-ceza-ekle'),
 

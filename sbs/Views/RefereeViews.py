@@ -815,7 +815,7 @@ def kademe_delete(request, grade_pk, referee_pk):
 
 
 @login_required
-def vısa_ekle(request, pk):
+def visa_ekle(request, pk):
     perm = general_methods.control_access(request)
 
     if not perm:
