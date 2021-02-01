@@ -11,7 +11,9 @@ from sbs.models.Deposit import Deposit
 from sbs.models.Products import Products
 from sbs.services import general_methods
 
+from sbs.Forms.ProductSearcForm import ProductSearhForm
 
+from datetime import timedelta, datetime
 
 #
 @login_required
@@ -41,7 +43,8 @@ def return_products(request):
         return redirect('accounts:login')
 
     # comquery = CompetitionSearchForm()
-    products = Products.objects.all()
+    # products = Products.objects.all()
+
 
     # if request.method == 'POST':
     #     name = request.POST.get('name')
@@ -141,27 +144,30 @@ def return_products_deposit(request):
         return redirect('accounts:login')
 
     # comquery = CompetitionSearchForm()
-    products = Deposit.objects.all()
+    products = Deposit.objects.none()
+    search = ProductSearhForm(request.POST or None)
 
-    # if request.method == 'POST':
-    #     name = request.POST.get('name')
-    #     startDate = request.POST.get('startDate')
-    #     compType = request.POST.get('compType')
-    #     compGeneralType = request.POST.get('compGeneralType')
-    #     if name or startDate or compType or compGeneralType:
-    #         query = Q()
-    #         if name:
-    #             query &= Q(name__icontains=name)
-    #         if startDate:
-    #             query &= Q(startDate__year=int(startDate))
-    #         if compType:
-    #             query &= Q(compType__in=compType)
-    #         if compGeneralType:
-    #             query &= Q(compGeneralType__in=compGeneralType)
-    #         activity = Activity.objects.filter(query).distinct()
-    #     else:
-    #         activity = Activity.objects.all()
-    return render(request, 'product/emanetler.html', {'products': products})
+    if request.method == 'POST':
+        product = request.POST.get('product')
+        club = request.POST.get('club')
+        date = request.POST.get('date')
+
+        if date:
+            date = datetime.strptime(date, "%d/%m/%Y").date()
+
+        if product or club or date:
+            query = Q()
+            if product:
+                query &= Q(product__in=product)
+            if club:
+                query &= Q(club__in=club)
+            if date:
+                query &= Q(date=date)
+
+            products = Deposit.objects.filter(query).distinct()
+        else:
+            products = Deposit.objects.all()
+    return render(request, 'product/emanetler.html', {'search_form': search, 'products': products})
 
 
 @login_required
