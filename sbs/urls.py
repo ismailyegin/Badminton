@@ -2,7 +2,7 @@ from django.conf.urls import url
 
 from sbs.Views import DashboardViews, AthleteViews, RefereeViews, ClubViews, CoachViews, DirectoryViews, UserViews, \
     CompetitionViews, AdminViews, HelpViews, PageViews, PreRegistration, ActivityView, ReferenceView, QuestionViews, \
-    LogViews, ProductView, Aktarma, ClaimView
+    LogViews, ProductView, Aktarma, ClaimView, PenalView
 
 app_name = 'sbs'
 
@@ -287,7 +287,7 @@ urlpatterns = [
     # visa seminar
     # Antrenör
     url(r'antrenor/visa-Seminar$', CoachViews.return_visaSeminar, name='visa-seminar'),
-    url(r'antrenor/visa-Seminar-ekle$', CoachViews.visaSeminar_ekle, name='visa-seminar-ekle'),
+    url(r'antrenor/visa-Seminar-ekle/$', CoachViews.visaSeminar_ekle, name='visa-seminar-ekle'),
     url(r'antrenor/visa-Seminar-duzenle/(?P<pk>\d+)$', CoachViews.visaSeminar_duzenle, name='seminar-duzenle'),
     url(r'antrenor/visa-Seminar-Onayla/(?P<pk>\d+)$', CoachViews.visaSeminar_onayla, name='seminar-onayla'),
     url(r'antrenor/visa-Seminar/Seminer-sil(?P<pk>\d+)$', CoachViews.visaSeminar_sil, name='seminar-sil'),
@@ -480,4 +480,14 @@ urlpatterns = [
     url(r'aktarma/emanet', Aktarma.Emanet, name='control-emanet'),
     url(r'aktarma/com', Aktarma.communicationAktar, name='control-aktarmatest'),
     url(r'aktarma/hakem', Aktarma.judgeAktar, name='control-aktarhakemvize'),
+
+    #     ceza görüntüleme modulleri
+
+    url(r'ceza/ceza-listesi/Sporcu', PenalView.return_penal_athlete, name='ceza-listesi-sporcu'),
+    url(r'ceza/ceza-listesi/Antrenor', PenalView.return_penal_coach, name='ceza-listesi-antrenor'),
+    url(r'ceza/ceza-listesi/Hakem', PenalView.return_penal_judge, name='ceza-listesi-hakem'),
+    url(r'ceza/ceza-listesi/KlupUye', PenalView.return_penal_clup, name='ceza-listesi-klupUye'),
+    url(r'ceza/ceza-listesi/KurulUye', PenalView.return_penal_members, name='ceza-listesi-kurulUye'),
+
+
 ]

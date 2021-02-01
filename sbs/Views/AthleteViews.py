@@ -468,9 +468,10 @@ def return_athletes_antrenor(request):
         if user_form.is_valid():
             firstName = unicode_tr(user_form.cleaned_data['first_name']).upper()
             lastName = unicode_tr(user_form.cleaned_data['last_name']).upper()
+            tcno = request.POST.get('tc')
 
             email = user_form.cleaned_data.get('email')
-            if not (firstName or lastName or email):
+            if not (firstName or lastName or email or tcno):
 
                 if user.groups.filter(name='Antrenor'):
                     coach = Coach.objects.get(user=user)
@@ -484,7 +485,7 @@ def return_athletes_antrenor(request):
 
                 elif active == 'Yonetim' or active == 'Admin':
                     athletes = Athlete.objects.all()
-            elif firstName or lastName or email or sportsclup or brans:
+            elif firstName or lastName or email or sportsclup or brans or tcno:
                 query = Q()
                 if firstName:
                     query &= Q(user__first_name__icontains=firstName)
@@ -492,7 +493,8 @@ def return_athletes_antrenor(request):
                     query &= Q(user__last_name__icontains=lastName)
                 if email:
                     query &= Q(user__email__icontains=email)
-
+                if tcno:
+                    query &= Q(person__tc__icontains=tcno)
                 if active == 'Antrenor':
                     coach = Coach.objects.get(user=user)
                     clup = SportsClub.objects.filter(coachs=coach)
@@ -529,8 +531,10 @@ def return_athletes(request):
         if user_form.is_valid():
             firstName = unicode_tr(user_form.cleaned_data['first_name']).upper()
             lastName = unicode_tr(user_form.cleaned_data.get('last_name')).upper()
+            tcno = request.POST.get('tc')
             email = user_form.cleaned_data.get('email')
-            if not (firstName or lastName or email or sportsclup or coach):
+
+            if not (firstName or lastName or email or sportsclup or coach or tcno):
 
                 if active == 'KlupUye':
                     sc_user = SportClubUser.objects.get(user=user)
@@ -541,7 +545,7 @@ def return_athletes(request):
                     athletes = Athlete.objects.filter(licenses__sportsClub__in=clubsPk).distinct()
                 elif active == 'Yonetim' or active == 'Admin':
                     athletes = Athlete.objects.all()
-            elif firstName or lastName or email or sportsclup or coach:
+            elif firstName or lastName or email or sportsclup or coach or tcno:
                 query = Q()
                 clubsPk = []
                 clubs = SportsClub.objects.filter(name=request.POST.get('sportsClub'))
@@ -550,6 +554,8 @@ def return_athletes(request):
 
                 if firstName:
                     query &= Q(user__first_name__icontains=firstName)
+                if tcno:
+                    query &= Q(person__tc__icontains=tcno)
                 if lastName:
                     query &= Q(user__last_name__icontains=lastName)
                 if email:
