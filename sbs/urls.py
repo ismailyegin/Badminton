@@ -483,7 +483,7 @@ urlpatterns = [
 
     #     ceza görüntüleme modulleri
 
-    url(r'ceza/ceza-listesi/', PenalView.return_penal_athlete, name='ceza-listesi-sporcu'),
+    url(r'ceza/ceza-listesi/', PenalView.return_penal_athlete, name='ceza-listesi'),
 
 
 
