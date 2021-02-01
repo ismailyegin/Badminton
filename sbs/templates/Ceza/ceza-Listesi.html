@@ -315,18 +315,14 @@
                         extend: 'print',
                         title: 'Sbs Bilgi Sistemi',
                         text: '<i class="fa  fa-print"></i>',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5]
-                        },
+
                         titleAttr: 'Yazdır'
                     },
                     {
                         extend: 'pdfHtml5',
                         download: 'open',
                         text: '<i class="fa fa-file-pdf-o"></i>',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5]
-                        },
+
                         titleAttr: 'Pfd Kaydet'
                     },
 
@@ -336,11 +332,7 @@
                         text: '<i class="fa fa-file-excel-o"></i>',
                         messageTop: 'Sbs Bilgi Sistemi ',
                         {#footer: true,#}
-                        exportOptions: {
-                            {#     yer degisimi de yapilabilir.#}
-                            columns: [0, 2, 1, 3, 4, 5]
 
-                        },
                         titleAttr: 'Excel Kaydet'
                     },
                     {
