@@ -47,6 +47,8 @@ from sbs.Forms.MaterialForm import MaterialForm
 from sbs.models.Competition import Competition
 from sbs.models.Logs import Logs
 
+from sbs.Forms.VisaSeminarSearchForm import VisaSeminarSearchForm
+
 from unicode_tr import unicode_tr
 @login_required
 def return_add_referee(request):
@@ -956,9 +958,37 @@ def return_visaSeminar(request):
         logout(request)
         return redirect('accounts:login')
 
-    Seminar = VisaSeminar.objects.filter(forWhichClazz='REFEREE')
+    Seminar = VisaSeminar.objects.none()
 
-    return render(request, 'hakem/Hakem-VizeSeminer.html', {'competitions': Seminar})
+    search_form = VisaSeminarSearchForm(request.POST or None)
+    Seminar = VisaSeminar.objects.none()
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        location = request.POST.get('location')
+        startDate = request.POST.get('startDate')
+        finishDate = request.POST.get('finishDate')
+
+        if search_form.is_valid():
+            finishDate = search_form.cleaned_data['finishDate']
+            startDate = search_form.cleaned_data['startDate']
+            if not (name or location or startDate or finishDate):
+                Seminar = VisaSeminar.objects.filter(forWhichClazz='REFEREE')
+                test = VisaSeminar.objects.filter()
+
+            else:
+                query = Q()
+                if name:
+                    query &= Q(name__icontains=name)
+                if location:
+                    query &= Q(location__icontains=location)
+                if finishDate:
+                    query &= Q(finishDate=finishDate)
+                if startDate:
+                    query &= Q(startDate=startDate)
+                Seminar = VisaSeminar.objects.filter(query).filter(forWhichClazz='REFEREE').distinct()
+
+    return render(request, 'hakem/Hakem-VizeSeminer.html', {'competitions': Seminar, 'search_form': search_form})
 
 
 # visaseminer ekle

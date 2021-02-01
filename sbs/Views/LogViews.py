@@ -65,6 +65,7 @@ def return_log(request):
         email = request.POST.get('email')
         playDate = request.POST.get('playDate')
         finishDate = request.POST.get('finishDate')
+
         if playDate:
             playDate = datetime.strptime(playDate, '%d/%m/%Y').date()
 

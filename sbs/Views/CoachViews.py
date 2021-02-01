@@ -63,6 +63,8 @@ from sbs.models.Logs import Logs
 
 from unicode_tr import unicode_tr
 
+from sbs.Forms.VisaSeminarSearchForm import VisaSeminarSearchForm
+
 # visaseminer ekle
 @login_required
 def visaSeminar_ekle(request):
@@ -99,9 +101,35 @@ def return_visaSeminar(request):
         logout(request)
         return redirect('accounts:login')
 
-    Seminar = VisaSeminar.objects.filter(forWhichClazz='COACH')
+    search_form = VisaSeminarSearchForm(request.POST or None)
+    Seminar = VisaSeminar.objects.none()
 
-    return render(request, 'antrenor/VisaSeminar.html', {'competitions': Seminar})
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        location = request.POST.get('location')
+        startDate = request.POST.get('startDate')
+        finishDate = request.POST.get('finishDate')
+
+        if search_form.is_valid():
+            finishDate = search_form.cleaned_data['finishDate']
+            startDate = search_form.cleaned_data['startDate']
+            if not (name or location or startDate or finishDate):
+                Seminar = VisaSeminar.objects.filter(forWhichClazz='COACH')
+                test = VisaSeminar.objects.filter()
+
+            else:
+                query = Q()
+                if name:
+                    query &= Q(name__icontains=name)
+                if location:
+                    query &= Q(location__icontains=location)
+                if finishDate:
+                    query &= Q(finishDate=finishDate)
+                if startDate:
+                    query &= Q(startDate=startDate)
+                Seminar = VisaSeminar.objects.filter(query).filter(forWhichClazz='COACH').distinct()
+
+    return render(request, 'antrenor/VisaSeminar.html', {'competitions': Seminar, 'search_form': search_form})
 
 @login_required
 def visaSeminar_duzenle(request, pk):
