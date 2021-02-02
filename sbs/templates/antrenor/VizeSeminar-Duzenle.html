@@ -254,12 +254,147 @@
                 </div>
             </div>
 
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"> Basvuru Yapan Antrenörler</h3>
+                        </div>
+
+                        <div class="box-body">
+                            <table id="sporcular" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Ad Soyad</th>
+                                    <th>T.C.</th>
+                                    <th>Mail Adresi</th>
+                                    <th>Telefon</th>
+                                    <th>Dekont</th>
+
+                                    <th>Onay Durumu</th>
+
+                                    <th>İşlemler</th>
+
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% if competition %}
+                                    {% for athlete in competition.coachApplication.all %}
+                                        <tr>
+                                            <td>{{ forloop.counter }} </td>
+                                            <td>{{ athlete.coach.user.first_name }} {{ athlete.coach.user.last_name }} </td>
+                                            <td>{{ athlete.coach.person.tc }} </td>
+                                            <td>{{ athlete.coach.user.email }} </td>
+                                            <td>{{ athlete.coach.communication.phoneNumber }} </td>
+                                            <td><a href="/media/{{ athlete.dekont }}">{{ athlete.dekont }}</a>
+                                            </td>
+                                            <td> {{ athlete.status }}</td>
+
+
+                                            <td>
+                                                <div class="btn-group">
+
+                                                    <a onclick="onayla({{ athlete.id }}, {{ competition.pk }})"
+                                                       type="button" class="btn btn-success"><i
+                                                            class="fa fa-edit"></i>Onayla
+                                                    </a>
+                                                    <a onclick="reddet({{ athlete.id }}, {{ competition.pk }})"
+                                                       type="button" class="btn btn-danger"><i
+                                                            class="fa fa-edit"></i>Reddet
+                                                    </a>
+
+
+                                                </div>
+                                            </td>
+
+                                        </tr>
+
+                                    {% endfor %}
+                                {% endif %}
+
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
         </form>
 
 
     </section>
 
     <script>
+
+        function reddet(coachApplicationPk, seminerpk) {
+            $.ajax({
+                url: "{% url "sbs:visaSeminar-antrenorbasvuru-reddet" pk=212121223232323232 competition=999999999999999 %}".replace(/212121223232323232/, coachApplicationPk.toString()).replace(/999999999999999/, seminerpk.toString()),
+                type: "POST",
+                data: {
+                    'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                    isActive: 'False'
+                },
+                success: function (result) {
+
+                    html = ' Reddedildi.';
+                    debugger;
+                    $(".successModal").html(html);
+                    $('#modal-success').on("shown.bs.modal", function (e) {
+                        $(".btn-ok").click(function () {
+
+                            window.location.replace("{% url "sbs:seminar-duzenle" competition.pk %}");
+
+                        });
+
+                    }).modal('show');
+
+
+                    console.log(result.status)
+                }
+            });
+
+
+        }
+
+        function onayla(coachApplicationPk, seminerpk) {
+            $.ajax({
+                url: "{% url "sbs:visaSeminar-antrenorbasvuru-onayla" pk=212121223232323232 competition=999999999999999 %}".replace(/212121223232323232/, coachApplicationPk.toString()).replace(/999999999999999/, seminerpk.toString()),
+                type: "POST",
+                data: {
+                    'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                    isActive: 'False'
+                },
+                success: function (result) {
+
+                    html = ' Antrenör  eklendi';
+                    debugger;
+                    $(".successModal").html(html);
+                    $('#modal-success').on("shown.bs.modal", function (e) {
+                        $(".btn-ok").click(function () {
+
+                            window.location.replace("{% url "sbs:seminar-duzenle" competition.pk %}");
+
+                        });
+
+                    }).modal('show');
+
+
+                    console.log(result.status)
+                }
+            });
+        }
+
+
+
+
         function deleteAthlete(id, competition) {
 
             console.log(id);

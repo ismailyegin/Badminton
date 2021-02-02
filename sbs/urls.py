@@ -287,6 +287,7 @@ urlpatterns = [
     # visa seminar
     # Antrenör
     url(r'antrenor/visa-Seminar$', CoachViews.return_visaSeminar, name='visa-seminar'),
+    url(r'antrenor/visa-Seminar/basvuruListesi$', CoachViews.return_visaSeminar_Basvuru, name='visa-seminar-basvuru'),
     url(r'antrenor/visa-Seminar-ekle/$', CoachViews.visaSeminar_ekle, name='visa-seminar-ekle'),
     url(r'antrenor/visa-Seminar-duzenle/(?P<pk>\d+)$', CoachViews.visaSeminar_duzenle, name='seminar-duzenle'),
     url(r'antrenor/visa-Seminar-Onayla/(?P<pk>\d+)$', CoachViews.visaSeminar_onayla, name='seminar-onayla'),
@@ -294,6 +295,13 @@ urlpatterns = [
     url(r'antrenor/visa-Seminar/antroner-sec/(?P<pk>\d+)$', CoachViews.choose_coach, name='vize-semineri-antroner-sec'),
     url(r'antrenor/visa-Seminar/antroner-sil/(?P<pk>\d+)/(?P<competition>\d+)$', CoachViews.visaSeminar_Delete_Coach,
         name='visaSeminar-antrenör-sil'),
+
+    url(r'antrenor/visa-Seminar/antroner-basvuru-onayla/(?P<pk>\d+)/(?P<competition>\d+)$',
+        CoachViews.visaSeminar_Onayla_Coach_application,
+        name='visaSeminar-antrenorbasvuru-onayla'),
+    url(r'antrenor/visa-Seminar/antroner-basvuru-reddet/(?P<pk>\d+)/(?P<competition>\d+)$',
+        CoachViews.visaSeminar_Delete_Coach_application,
+        name='visaSeminar-antrenorbasvuru-reddet'),
 
     url(r'antrenor/antrenorCezaEkle/(?P<pk>\d+)$', CoachViews.coach_penal_add, name='antrenor-ceza-ekle'),
     url(r'antrenor/antrenorCezaKaldır/(?P<athlete_pk>\d+)/(?P<document_pk>\d+)$', CoachViews.coach_penal_delete,

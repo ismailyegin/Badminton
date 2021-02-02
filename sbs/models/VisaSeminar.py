@@ -6,6 +6,9 @@ from sbs.models.Coach import Coach
 from sbs.models.Judge import Judge
 from sbs.models.EnumFields import EnumFields
 
+from sbs.models.CoachApplication import CoachApplication
+from sbs.models.JudgeApplication import JudgeApplication
+
 
 class VisaSeminar(models.Model):
 
@@ -30,6 +33,10 @@ class VisaSeminar(models.Model):
     location = models.CharField(blank=False, null=False, max_length=1000)
     branch = models.CharField(max_length=128, verbose_name='Branş', choices=EnumFields.BRANCH.value)
     status = models.CharField(max_length=128, verbose_name='Kayıt Durumu', choices=STATUS_CHOICES, default=WAITED)
+
+    coachApplication = models.ManyToManyField(CoachApplication, related_name='coachApplication')
+    judgeApplication = models.ManyToManyField(JudgeApplication, related_name='JudgeApplication')
+
     coach = models.ManyToManyField(Coach)
     referee = models.ManyToManyField(Judge)
     forWhichClazz = models.CharField(blank=False, null=False, max_length=255)

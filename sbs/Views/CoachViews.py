@@ -64,6 +64,7 @@ from sbs.models.Logs import Logs
 from unicode_tr import unicode_tr
 
 from sbs.Forms.VisaSeminarSearchForm import VisaSeminarSearchForm
+from sbs.models.CoachApplication import CoachApplication
 
 # visaseminer ekle
 @login_required
@@ -92,44 +93,88 @@ def visaSeminar_ekle(request):
                   {'competition_form': visaSeminar})
 
 
-# visaseminar liste
+# # visaseminar liste
+# @login_required
+# def return_visaSeminar(request):
+#     perm = general_methods.control_access_klup(request)
+#
+#     if not perm:
+#         logout(request)
+#         return redirect('accounts:login')
+#
+#     search_form = VisaSeminarSearchForm(request.POST or None)
+#     Seminar = VisaSeminar.objects.none()
+#
+#     if request.method == 'POST':
+#         name = request.POST.get('name')
+#         location = request.POST.get('location')
+#         startDate = request.POST.get('startDate')
+#         finishDate = request.POST.get('finishDate')
+#
+#         if search_form.is_valid():
+#             finishDate = search_form.cleaned_data['finishDate']
+#             startDate = search_form.cleaned_data['startDate']
+#             if not (name or location or startDate or finishDate):
+#                 Seminar = VisaSeminar.objects.filter(forWhichClazz='COACH')
+#                 test = VisaSeminar.objects.filter()
+#
+#             else:
+#                 query = Q()
+#                 if name:
+#                     query &= Q(name__icontains=name)
+#                 if location:
+#                     query &= Q(location__icontains=location)
+#                 if finishDate:
+#                     query &= Q(finishDate=finishDate)
+#                 if startDate:
+#                     query &= Q(startDate=startDate)
+#                 Seminar = VisaSeminar.objects.filter(query).filter(forWhichClazz='COACH').distinct()
+#
+#     return render(request, 'antrenor/VisaSeminar.html', {'competitions': Seminar, 'search_form': search_form})
+
+
 @login_required
 def return_visaSeminar(request):
-    perm = general_methods.control_access(request)
-
+    perm = general_methods.control_access_klup(request)
     if not perm:
         logout(request)
         return redirect('accounts:login')
+    user = request.user
 
-    search_form = VisaSeminarSearchForm(request.POST or None)
-    Seminar = VisaSeminar.objects.none()
+    seminar = VisaSeminar.objects.filter(forWhichClazz='COACH')
+    # işlemlere bakılacak
+    # if request.user.groups.filter(name='Antrenor').exists():
+    #     seminar = VisaSeminar.objects.filter(forWhichClazz='COACH').exclude(coachApplication__coach__user=user)
+    #     seminar |= VisaSeminar.objects.filter(forWhichClazz='COACH').filter(coachApplication__coach__user=user).exclude(coachApplication__status=CoachApplication.APPROVED).exclude(coachApplication__status=CoachApplication.WAITED)
+    #     seminar=seminar.distinct()
+    # else:
+    #     seminar = VisaSeminar.objects.filter(forWhichClazz='COACH')
 
     if request.method == 'POST':
-        name = request.POST.get('name')
-        location = request.POST.get('location')
-        startDate = request.POST.get('startDate')
-        finishDate = request.POST.get('finishDate')
+        if user.groups.filter(name='Antrenor').exists():
+            vizeSeminer = VisaSeminar.objects.get(pk=request.POST.get('pk'))
+            coach = Coach.objects.get(user=request.user)
+            try:
+                if request.FILES['file']:
+                    document = request.FILES['file']
+                    data = CoachApplication()
+                    data.dekont = document
+                    data.coach = coach
+                    data.save()
+                    vizeSeminer.coachApplication.add(data)
+                    vizeSeminer.save()
 
-        if search_form.is_valid():
-            finishDate = search_form.cleaned_data['finishDate']
-            startDate = search_form.cleaned_data['startDate']
-            if not (name or location or startDate or finishDate):
-                Seminar = VisaSeminar.objects.filter(forWhichClazz='COACH')
-                test = VisaSeminar.objects.filter()
+                    messages.success(request, 'Vize Seminerine Başvuru  gerçekleşmiştir.')
+                    return redirect('sbs:visa-seminar-basvuru')
 
-            else:
-                query = Q()
-                if name:
-                    query &= Q(name__icontains=name)
-                if location:
-                    query &= Q(location__icontains=location)
-                if finishDate:
-                    query &= Q(finishDate=finishDate)
-                if startDate:
-                    query &= Q(startDate=startDate)
-                Seminar = VisaSeminar.objects.filter(query).filter(forWhichClazz='COACH').distinct()
 
-    return render(request, 'antrenor/VisaSeminar.html', {'competitions': Seminar, 'search_form': search_form})
+            except:
+                messages.warning(request, 'Lütfen yeniden deneyiniz')
+
+    return render(request, 'antrenor/VisaSeminarAplication.html', {'competitions': seminar})
+
+
+
 
 @login_required
 def visaSeminar_duzenle(request, pk):
@@ -1635,3 +1680,100 @@ def coach_document_delete(request, athlete_pk, document_pk):
 
     else:
         return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+
+
+@login_required
+def visaSeminar_Onayla_Coach_application(request, pk, competition):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    if request.method == 'POST' and request.is_ajax():
+
+        try:
+            coachApplication = CoachApplication.objects.get(pk=pk)
+            seminer = VisaSeminar.objects.get(pk=competition)
+            seminer.coach.add(coachApplication.coach)
+            seminer.save()
+            coachApplication.status = CoachApplication.APPROVED
+            coachApplication.save()
+
+            html_content = ''
+            subject, from_email, to = 'Badminton Bilgi Sistemi', 'no-reply@badminton.gov.tr', coachApplication.coach.user.email
+            html_content = '<h2>TÜRKİYE BADMİNTON FEDERASYONU BİLGİ SİSTEMİ</h2>'
+            html_content = '<p><strong>' + str(seminer.name) + '</strong> Başvurunuz onaylanmıştır.</p>'
+
+            msg = EmailMultiAlternatives(subject, '', from_email, [to])
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
+
+            log = str(seminer.name) + "    seminer basvusu onaylanmıştır    " + str(
+                coachApplication.coach.user.get_full_name())
+            log = general_methods.logwrite(request, request.user, log)
+
+            return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
+        except:
+            return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
+
+    else:
+        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+
+
+@login_required
+def visaSeminar_Delete_Coach_application(request, pk, competition):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    if request.method == 'POST' and request.is_ajax():
+        coachApplication = CoachApplication.objects.get(pk=pk)
+        coachApplication.status = CoachApplication.DENIED
+        coachApplication.save()
+
+        seminer = VisaSeminar.objects.get(pk=competition)
+
+        html_content = ''
+        subject, from_email, to = 'Sbs Bilgi Sistemi', 'no-reply@badminton.gov.tr', coachApplication.coach.user.email
+        html_content = '<h2>TÜRKİYE BADMİNTON FEDERASYONU BİLGİ SİSTEMİ</h2>'
+        html_content = '<p><strong>' + str(seminer.name) + '</strong> Başvurunuz reddilmiştir.</p>'
+
+        msg = EmailMultiAlternatives(subject, '', from_email, [to])
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+
+        log = str(seminer.name) + "    Seminer basvusu reddedilmiştir.    " + str(
+            coachApplication.coach.user.get_full_name())
+        log = general_methods.logwrite(request, request.user, log)
+
+        try:
+            print()
+
+            return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
+        except:
+            return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
+
+    else:
+        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+
+
+@login_required
+def return_visaSeminar_Basvuru(request):
+    perm = general_methods.control_access_klup(request)
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    user = request.user
+    basvurularim = CoachApplication.objects.none()
+    if request.user.groups.filter(name='Antrenor').exists():
+        seminar = VisaSeminar.objects.filter(coachApplication__coach__user=user).filter(
+            forWhichClazz='COACH').distinct()
+        basvurularim = CoachApplication.objects.filter(coach__user=user)
+
+    else:
+        seminar = VisaSeminar.objects.filter(forWhichClazz='COACH')
+
+    return render(request, 'antrenor/VizeSeminerBasvuru.html', {'seminer': seminar,
+                                                                'basvuru': basvurularim,
+                                                                'user': user})
