@@ -29,5 +29,5 @@ class DepositSearchForm(ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        super(ProductSearhForm, self).__init__(*args, **kwargs)
+        super(DepositSearchForm, self).__init__(*args, **kwargs)
         self.fields['date'].required = False
