@@ -1742,9 +1742,12 @@ def visaSeminar_Delete_Coach_application(request, pk, competition):
         logout(request)
         return redirect('accounts:login')
     if request.method == 'POST' and request.is_ajax():
-        coachApplication = CoachApplication.objects.get(pk=pk)
-        coachApplication.status = CoachApplication.DENIED
-        coachApplication.save()
+
+
+        try:
+            coachApplication = CoachApplication.objects.get(pk=pk)
+            coachApplication.status = CoachApplication.DENIED
+            coachApplication.save()
 
         seminer = VisaSeminar.objects.get(pk=competition)
 

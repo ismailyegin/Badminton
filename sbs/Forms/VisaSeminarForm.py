@@ -6,18 +6,21 @@ class VisaSeminarForm(ModelForm):
         model = VisaSeminar
         fields = (
             'name', 'startDate', 'finishDate', 'location', 'branch',
-            'application', 'appStartDate', 'appFinishDate'
+            'application', 'appStartDate', 'appFinishDate','year'
         )
         labels = {'name': 'İsim', 'startDate': 'Başlangıç Tarihi', 'finishDate': 'Bitiş Tarihi',
                   'location': 'Yer', 'branch': 'Branş',
                   'application': 'Online Basvuru açık mı?', 'appStartDate': 'Online Basvuru Başlangıc Tarihi',
-                  'appFinishDate': 'Online Basvuru Bitiş tarihi'
+                  'appFinishDate': 'Online Basvuru Bitiş tarihi','year':'Geçerlilik Yılı'
                   }
         widgets = {
             'application': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                                'style': 'width: 100%; '}),
             'appStartDate': forms.DateInput(
                 attrs={'class': 'form-control  pull-right', 'id': 'datepicker', 'autocomplete': 'on',
+                       'onkeydown': 'return true'}),
+            'year': forms.DateInput(
+                attrs={'class': 'form-control  pull-right', 'id': 'datepicker5', 'autocomplete': 'on',
                        'onkeydown': 'return true'}),
             'appFinishDate': forms.DateInput(
                 attrs={'class': 'form-control  pull-right', 'id': 'datepicker3', 'autocomplete': 'on',

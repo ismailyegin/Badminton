@@ -323,6 +323,10 @@ urlpatterns = [
     url(r'hakem/basvuru/reddet/(?P<pk>\d+)$', RefereeViews.referenceStatus_reddet,
         name='reference-refere-status-reddet'),
 
+    # Hakem
+    url(r'hakem/visa-Seminar/Basvuru$', RefereeViews.return_visaSeminar_application, name='hakem-seminar-basvuru'),
+    url(r'hakem/visa-Seminar/basvuruListesi$', RefereeViews.return_visaSeminar_Basvuru, name='hakem-visa-seminar-basvuru'),
+
     url(r'hakem/Kademe-listesi/', RefereeViews.kademe_list, name='hakem-kademe-listesi'),
     url(r'hakem/kademe-Liste-Onayla/(?P<referee_pk>\d+)$', RefereeViews.kademe_onayla,
         name='hakem-kademe-list-onay'),
