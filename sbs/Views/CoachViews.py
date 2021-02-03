@@ -80,7 +80,12 @@ def visaSeminar_ekle(request):
         if visaSeminar.is_valid():
 
             visa = visaSeminar.save()
-            visa.forWhichClazz = 'COACH'
+            type = request.POST.get('typeSeminar')
+            if type == 'claim':
+                visa.forWhichClazz = 'COACH_CLAIM'
+            else:
+                visa.forWhichClazz = 'COACH'
+
             visa.save()
             messages.success(request, 'Vize Semineri Başari  Kaydedilmiştir.')
 
@@ -136,19 +141,30 @@ def visaSeminar_ekle(request):
 @login_required
 def return_visaSeminar(request):
     perm = general_methods.control_access_klup(request)
+    aktif = general_methods.controlGroup(request)
+
+
     if not perm:
         logout(request)
         return redirect('accounts:login')
     user = request.user
+    if aktif == "Antrenor":
+        seminar = VisaSeminar.objects.filter(forWhichClazz='COACH').exclude(coachApplication__coach__user=user)
+        for item in seminar:
+            print(item)
+        seminar |= VisaSeminar.objects.filter(forWhichClazz='COACH').filter(coachApplication__coach__user=user).filter(
+            coachApplication__status=VisaSeminar.DENIED)
+        for item in seminar:
+            print(item)
+        seminar |= VisaSeminar.objects.exclude(coachApplication__coach__user=user).filter(forWhichClazz='COACH_CLAIM')
+        seminar = seminar.distinct()
+        for item in seminar:
+            print(item)
 
-    seminar = VisaSeminar.objects.filter(forWhichClazz='COACH')
-    # işlemlere bakılacak
-    # if request.user.groups.filter(name='Antrenor').exists():
-    #     seminar = VisaSeminar.objects.filter(forWhichClazz='COACH').exclude(coachApplication__coach__user=user)
-    #     seminar |= VisaSeminar.objects.filter(forWhichClazz='COACH').filter(coachApplication__coach__user=user).exclude(coachApplication__status=CoachApplication.APPROVED).exclude(coachApplication__status=CoachApplication.WAITED)
-    #     seminar=seminar.distinct()
-    # else:
-    #     seminar = VisaSeminar.objects.filter(forWhichClazz='COACH')
+    elif aktif == "Admin":
+        seminar = VisaSeminar.objects.filter(forWhichClazz='COACH')
+        seminar |= VisaSeminar.objects.filter(forWhichClazz='COACH_CLAIM')
+
 
     if request.method == 'POST':
         if user.groups.filter(name='Antrenor').exists():
@@ -190,9 +206,15 @@ def visaSeminar_duzenle(request, pk):
     if request.method == 'POST':
         if competition_form.is_valid():
             competition_form.save()
+            type = request.POST.get('typeSeminar')
+            if type == 'claim':
+                seminar.forWhichClazz = 'COACH_CLAIM'
+            else:
+                seminar.forWhichClazz = 'COACH'
+            seminar.save()
             messages.success(request, 'Vize Seminer Başarıyla Güncellenmiştir.')
 
-            return redirect('sbs:visa-seminar')
+            return redirect('sbs:seminar-duzenle', seminar.pk)
         else:
 
             messages.warning(request, 'Alanları Kontrol Ediniz')

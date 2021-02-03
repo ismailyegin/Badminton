@@ -49,11 +49,11 @@
 
     <section class="content-header">
         <h1>
-            Hakem Vize Seminer Ekle
+            Hakem Seminer Ekle
 
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i>Hakem Vize Seminer Ekle</a></li>
+            <li><a href="#"><i class="fa fa-dashboard"></i>Hakem Seminer Ekle</a></li>
 
         </ol>
     </section>
@@ -93,6 +93,34 @@
                                     <div class="form-group">
                                         <label> {{ competition_form.branch.label }}</label>
                                         {{ competition_form.branch }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label> {{ competition_form.application.label }}</label>
+                                        {{ competition_form.application }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label> {{ competition_form.appStartDate.label }}</label>
+                                        {{ competition_form.appStartDate }}
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label> {{ competition_form.appFinishDate.label }}</label>
+                                        {{ competition_form.appFinishDate }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label> Seminer Türünü Seçiniz</label>
+                                        <select name="typeSeminar"
+                                                class="form-control select2 select2-hidden-accessible"
+                                                style="width: 100%; " id="type_visaSeminer">
+                                            <option value="visa">Vize Seminer</option>
+
+                                            <option value="claim " selected>Talep Toplama</option>
+
+                                        </select>
                                     </div>
 
 

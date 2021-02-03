@@ -1005,11 +1005,15 @@ def visaSeminar_ekle(request):
         if visaSeminar.is_valid():
 
             visa = visaSeminar.save()
-            visa.forWhichClazz = 'REFEREE'
+            type = request.POST.get('typeSeminar')
+            if type == 'claim':
+                visa.forWhichClazz = 'REFEREE_CLAIM'
+            else:
+                visa.forWhichClazz = 'REFEREE'
             visa.save()
             messages.success(request, 'Vize Semineri Başari  Kaydedilmiştir.')
 
-            return redirect('sbs:hakem-visa-seminar')
+            return redirect('sbs:hakem-seminar-duzenle', visa.pk)
         else:
 
             messages.warning(request, 'Alanları Kontrol Ediniz')
@@ -1030,15 +1034,18 @@ def visaSeminar_duzenle(request, pk):
     referee = seminar.referee.all()
     competition_form = VisaSeminarForm(request.POST or None, instance=seminar)
     if request.method == 'POST':
+        type = request.POST.get('typeSeminar')
         if competition_form.is_valid():
             competition_form.save()
+            if type == 'visa':
+                seminar.forWhichClazz = 'REFEREE'
+            else:
+                seminar.forWhichClazz = 'REFEREE_CLAIM'
+            seminar.save()
             messages.success(request, 'Vize Seminer Başarıyla Güncellenmiştir.')
-
-            return redirect('sbs:hakem-visa-seminar')
+            return redirect('sbs:hakem-seminar-duzenle', seminar.pk)
         else:
-
             messages.warning(request, 'Alanları Kontrol Ediniz')
-
     return render(request, 'hakem/hakem-VizeSeminerGuncelle.html',
                   {'competition_form': competition_form, 'competition': seminar, 'athletes': referee})
 

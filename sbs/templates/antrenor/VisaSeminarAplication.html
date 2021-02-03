@@ -201,10 +201,10 @@
                         </div>
                         <div class="box-header with-border">
                             <div class="btn-group">
-                                {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                                {% if aktif == 'Yonetim' or aktif == 'Admin' %}
                                     <a href="{% url "sbs:visa-seminar-ekle" %}"
-                                       type="button" class="btn btn-success"><i
-                                            class="fa fa-edit"></i> Yeni Seminer Ekle
+                                       type="button" class="btn btn-success"><i class="fa fa-edit"></i> Yeni Seminer
+                                        Ekle
                                     </a>
                                 {% endif %}
                             </div>
@@ -221,8 +221,6 @@
                                     <th>Geçerlilik Yılı</th>
                                     <th>Onay Durumu</th>
                                     <th>İşlemler</th>
-
-
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -236,11 +234,8 @@
                                             <td>{{ competition.location }}</td>
                                             <td>{{ competition.year }}</td>
                                             <td>{{ competition.status }}</td>
-
                                             <td>
-
-
-                                                {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}
+                                                {% if aktif == 'Yonetim' or aktif == 'Admin' %}
                                                     <div class="btn-group">
                                                         <a href="{% url "sbs:seminar-duzenle" competition.pk %}"
                                                            type="button" class="btn btn-warning"><i

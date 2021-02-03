@@ -93,36 +93,42 @@
 
     <section class="content-header">
         <h1>
-            Vize Semineri İncele
+            Semineri İncele
 
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i>Vize Semineri İncele</a></li>
+            <li><a href="#"><i class="fa fa-dashboard"></i>Seminer İncele</a></li>
 
         </ol>
     </section>
-    <div class="box box-primary">
 
-        <div class="box-header with-border">
-            <div class="box-header with-border">
-                <h3 class="box-title">Onay Durumu</h3>
+    <section class="content">
+
+        {% if competition.forWhichClazz == 'COACH' %}
+            <div class="box box-primary">
+
                 <div class="box-header with-border">
-                    <h3 class="box-title">{{ competition.status }}</h3>
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Onay Durumu</h3>
+                        <div class="box-header with-border">
+                            <h3 class="box-title">{{ competition.status }}</h3>
 
 
-                    <div class="text-right">
-                        <a href="{% url "sbs:seminar-onayla" competition.pk %}"
-                           type="button" class="btn btn-warning"><i
-                                class="fa fa-edit"></i>Onayla
-                        </a>
+                            <div class="text-right">
+                                <a href="{% url "sbs:seminar-onayla" competition.pk %}"
+                                   type="button" class="btn btn-warning"><i
+                                        class="fa fa-edit"></i>Onayla
+                                </a>
+                            </div>
+                        </div>
                     </div>
+
+
                 </div>
             </div>
+        {% endif %}
 
 
-        </div>
-    </div>
-    <section class="content">
 
         <form method="post" enctype="multipart/form-data" role="form">
             {% csrf_token %}
@@ -145,25 +151,50 @@
                                         <label> {{ competition_form.startDate.label }}</label>
                                         {{ competition_form.startDate }}
                                     </div>
-
-
                                     <div class="form-group">
-                                        <label> {{ competition_form.location.label }}</label>
-                                        {{ competition_form.location }}
+                                        <label> {{ competition_form.finishDate.label }}</label>
+                                        {{ competition_form.finishDate }}
                                     </div>
-
-
-                                </div>
-                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label> {{ competition_form.branch.label }}</label>
                                         {{ competition_form.branch }}
                                     </div>
                                     <div class="form-group">
-                                        <label> {{ competition_form.finishDate.label }}</label>
-                                        {{ competition_form.finishDate }}
+                                        <label> Seminer Türünü Seçiniz {{ competition.forWhichClazz }}</label>
+                                        <select name="typeSeminar"
+                                                class="form-control select2 select2-hidden-accessible"
+                                                style="width: 100%; " id="type_visaSeminer">
+                                            <option value="visa">Vize Seminer</option>
+
+                                            <option value="claim">Talep Toplama</option>
+
+
+                                        </select>
                                     </div>
 
+
+                                </div>
+                                <div class="col-lg-6">
+
+                                    <div class="form-group">
+                                        <label> {{ competition_form.application.label }}</label>
+                                        {{ competition_form.application }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label> {{ competition_form.appStartDate.label }}</label>
+                                        {{ competition_form.appStartDate }}
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label> {{ competition_form.appFinishDate.label }}</label>
+                                        {{ competition_form.appFinishDate }}
+                                    </div>
+                                    <div class="form-group">
+                                        <label> {{ competition_form.location.label }}</label>
+                                        {{ competition_form.location }}
+                                    </div>
 
                                 </div>
 
@@ -184,75 +215,77 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            {% if competition.forWhichClazz == 'COACH' %}
+                <div class="row">
 
-                <div class="col-lg-12">
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title"> Seçili Antrenörler</h3>
-                        </div>
-                        <div class="box-header with-border">
-                            <div class="btn-group">
+                    <div class="col-lg-12">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"> Seçili Antrenörler</h3>
+                            </div>
+                            <div class="box-header with-border">
+                                <div class="btn-group">
 
-                                <a href="{% url "sbs:vize-semineri-antroner-sec" competition.pk %}"
-                                   type="button" class="btn btn-success"><i
-                                        class="fa fa-edit"></i>Antrenör Ekle
-                                </a>
+                                    <a href="{% url "sbs:vize-semineri-antroner-sec" competition.pk %}"
+                                       type="button" class="btn btn-success"><i
+                                            class="fa fa-edit"></i>Antrenör Ekle
+                                    </a>
+
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <table id="sporcular" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Ad Soyad</th>
+                                        <th>Doğum Tarihi</th>
+                                        {#                                    {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}#}
+                                        {#                                        <th>Kulüp</th>#}
+                                        {#                                    {% endif %}#}
+                                        <th>İşlemler</th>
+
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% if athletes %}
+                                        {% for athlete in athletes %}
+                                            <tr>
+                                                <td>{{ forloop.counter }} </td>
+                                                <td>{{ athlete.user.first_name }} {{ athlete.user.last_name }} </td>
+                                                <td>{{ athlete.person.birthDate }} </td>
+
+
+                                                <td>
+                                                    <div class="btn-group">
+
+                                                        <a onclick="deleteAthlete({{ athlete.id }}, {{ competition.pk }})"
+                                                           type="button" class="btn btn-danger"><i
+                                                                class="fa fa-edit"></i>Kaldır
+                                                        </a>
+
+
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+
+                                        {% endfor %}
+                                    {% endif %}
+
+
+                                    </tbody>
+                                </table>
 
                             </div>
-                        </div>
-                        <div class="box-body">
-                            <table id="sporcular" class="table table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Ad Soyad</th>
-                                    <th>Doğum Tarihi</th>
-                                    {#                                    {% if user.groups.all.0.name == 'Yonetim' or user.groups.all.0.name == 'Admin' %}#}
-                                    {#                                        <th>Kulüp</th>#}
-                                    {#                                    {% endif %}#}
-                                    <th>İşlemler</th>
 
-
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% if athletes %}
-                                    {% for athlete in athletes %}
-                                        <tr>
-                                            <td>{{ forloop.counter }} </td>
-                                            <td>{{ athlete.user.first_name }} {{ athlete.user.last_name }} </td>
-                                            <td>{{ athlete.person.birthDate }} </td>
-
-
-                                            <td>
-                                                <div class="btn-group">
-
-                                                    <a onclick="deleteAthlete({{ athlete.id }}, {{ competition.pk }})"
-                                                       type="button" class="btn btn-danger"><i
-                                                            class="fa fa-edit"></i>Kaldır
-                                                    </a>
-
-
-                                                </div>
-                                            </td>
-
-                                        </tr>
-
-                                    {% endfor %}
-                                {% endif %}
-
-
-                                </tbody>
-                            </table>
 
                         </div>
-
 
                     </div>
-
                 </div>
-            </div>
+            {% endif %}
 
             <div class="row">
 
@@ -274,9 +307,9 @@
                                     <th>Dekont</th>
 
                                     <th>Onay Durumu</th>
-
-                                    <th>İşlemler</th>
-
+                                    {% if competition.forWhichClazz == 'COACH' %}
+                                        <th>İşlemler</th>
+                                    {% endif %}
 
                                 </tr>
                                 </thead>
@@ -293,23 +326,23 @@
                                             </td>
                                             <td> {{ athlete.status }}</td>
 
+                                            {% if competition.forWhichClazz == 'COACH' %}
+                                                <td>
+                                                    <div class="btn-group">
 
-                                            <td>
-                                                <div class="btn-group">
-
-                                                    <a onclick="onayla({{ athlete.id }}, {{ competition.pk }})"
-                                                       type="button" class="btn btn-success"><i
-                                                            class="fa fa-edit"></i>Onayla
-                                                    </a>
-                                                    <a onclick="reddet({{ athlete.id }}, {{ competition.pk }})"
-                                                       type="button" class="btn btn-danger"><i
-                                                            class="fa fa-edit"></i>Reddet
-                                                    </a>
+                                                        <a onclick="onayla({{ athlete.id }}, {{ competition.pk }})"
+                                                           type="button" class="btn btn-success"><i
+                                                                class="fa fa-edit"></i>Onayla
+                                                        </a>
+                                                        <a onclick="reddet({{ athlete.id }}, {{ competition.pk }})"
+                                                           type="button" class="btn btn-danger"><i
+                                                                class="fa fa-edit"></i>Reddet
+                                                        </a>
 
 
-                                                </div>
-                                            </td>
-
+                                                    </div>
+                                                </td>
+                                            {% endif %}
                                         </tr>
 
                                     {% endfor %}
@@ -333,6 +366,18 @@
     </section>
 
     <script>
+        $(function () {
+            $('#type_visaSeminer option[value={% if competition.forWhichClazz == 'COACH'  %}visa{% else %}
+                claim{% endif %}
+        ]
+            ').attr('
+            selected
+            ', '
+            selected
+            ');
+
+        });
+
 
         function reddet(coachApplicationPk, seminerpk) {
             $.ajax({
