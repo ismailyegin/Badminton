@@ -199,16 +199,17 @@
                         <div class="box-header with-border">
                             <h3 class="box-title">Vize Seminerleri</h3>
                         </div>
+                     {% if aktif == 'Yonetim' or aktif == 'Admin' %}
                         <div class="box-header with-border">
                             <div class="btn-group">
-                                {% if aktif == 'Yonetim' or aktif == 'Admin' %}
                                     <a href="{% url "sbs:visa-seminar-ekle" %}"
                                        type="button" class="btn btn-success"><i class="fa fa-edit"></i> Yeni Seminer
                                         Ekle
                                     </a>
-                                {% endif %}
+
                             </div>
                         </div>
+                     {% endif %}
                         <div class="box-body">
                             <table id="musabakalar" class="table table-bordered table-hover">
                                 <thead>

@@ -149,22 +149,14 @@ def return_visaSeminar(request):
         return redirect('accounts:login')
     user = request.user
     if aktif == "Antrenor":
-        seminar = VisaSeminar.objects.filter(forWhichClazz='COACH').exclude(coachApplication__coach__user=user)
-        for item in seminar:
-            print(item)
-        seminar |= VisaSeminar.objects.filter(forWhichClazz='COACH').filter(coachApplication__coach__user=user).filter(
-            coachApplication__status=VisaSeminar.DENIED)
-        for item in seminar:
-            print(item)
+        seminar = VisaSeminar.objects.exclude(coachApplication__coach__user=user).filter(forWhichClazz='COACH')
+        seminar |= VisaSeminar.objects.filter(forWhichClazz='COACH').filter(coachApplication__coach__user=user).exclude(coachApplication__status=VisaSeminar.WAITED).exclude(coachApplication__status=VisaSeminar.APPROVED)
         seminar |= VisaSeminar.objects.exclude(coachApplication__coach__user=user).filter(forWhichClazz='COACH_CLAIM')
         seminar = seminar.distinct()
-        for item in seminar:
-            print(item)
 
     elif aktif == "Admin":
         seminar = VisaSeminar.objects.filter(forWhichClazz='COACH')
         seminar |= VisaSeminar.objects.filter(forWhichClazz='COACH_CLAIM')
-
 
     if request.method == 'POST':
         if user.groups.filter(name='Antrenor').exists():

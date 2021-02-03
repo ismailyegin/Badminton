@@ -367,14 +367,7 @@
 
     <script>
         $(function () {
-            $('#type_visaSeminer option[value={% if competition.forWhichClazz == 'COACH'  %}visa{% else %}
-                claim{% endif %}
-        ]
-            ').attr('
-            selected
-            ', '
-            selected
-            ');
+            $('#type_visaSeminer option[value={% if competition.forWhichClazz == 'COACH'  %}visa{% else %}claim{% endif %}]').attr('selected', 'selected');
 
         });
 
