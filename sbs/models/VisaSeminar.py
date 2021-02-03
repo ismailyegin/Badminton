@@ -48,7 +48,7 @@ class VisaSeminar(models.Model):
     application = models.BooleanField(default=False, choices=IsFormal, null=True, blank=True)
     appStartDate = models.DateTimeField(null=True, blank=True)
     appFinishDate = models.DateTimeField(null=True, blank=True)
-    year=models.DateTimeField(null=True, blank=True)
+    year=models.CharField(null=True, blank=True,max_length=20)
 
     def __str__(self):
         return '%s ' % self.name
