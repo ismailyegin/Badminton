@@ -1742,12 +1742,9 @@ def visaSeminar_Delete_Coach_application(request, pk, competition):
         logout(request)
         return redirect('accounts:login')
     if request.method == 'POST' and request.is_ajax():
-
-
-        try:
-            coachApplication = CoachApplication.objects.get(pk=pk)
-            coachApplication.status = CoachApplication.DENIED
-            coachApplication.save()
+        coachApplication = CoachApplication.objects.get(pk=pk)
+        coachApplication.status = CoachApplication.DENIED
+        coachApplication.save()
 
         seminer = VisaSeminar.objects.get(pk=competition)
 
@@ -1764,12 +1761,12 @@ def visaSeminar_Delete_Coach_application(request, pk, competition):
             coachApplication.coach.user.get_full_name())
         log = general_methods.logwrite(request, request.user, log)
 
-        try:
-            print()
-
-            return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
-        except:
-            return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
+        # try:
+        #     print()
+        #
+        #     return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
+        # except:
+        #     return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
 
     else:
         return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
