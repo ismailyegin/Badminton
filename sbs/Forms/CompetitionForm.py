@@ -30,12 +30,12 @@ class CompetitionForm(ModelForm):
             'eventPlace': forms.TextInput(attrs={'class': 'form-control', "style": "text-transform:uppercase"}),
 
             'startDate': forms.DateInput(
-                attrs={'class': 'form-control  pull-right', 'id': 'datepicker2', 'autocomplete': 'on',
-                       'onkeydown': 'return true', 'required': 'required'}),
+                attrs={'class': 'form-control  pull-right datemask', 'id': 'datepicker2', 'autocomplete': 'on',
+                        'required': 'required'}),
 
             'finishDate': forms.DateInput(
-                attrs={'class': 'form-control  pull-right', 'id': 'datepicker4', 'autocomplete': 'on',
-                       'onkeydown': 'return true', 'required': 'required'}),
+                attrs={'class': 'form-control  pull-right datemask', 'id': 'datepicker4', 'autocomplete': 'on',
+                       'required': 'required'}),
 
             'name': forms.TextInput(
                 attrs={'class': 'form-control', 'required': 'required', "style": "text-transform:uppercase"}),

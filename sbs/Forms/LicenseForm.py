@@ -25,12 +25,12 @@ class LicenseForm(ModelForm):
         widgets = {
 
             'startDate': forms.DateInput(
-                attrs={'class': 'form-control  pull-right', 'id': 'datepicker2', 'autocomplete': 'on',
-                       'onkeydown': 'return true', 'required': 'required'}),
+                attrs={'class': 'form-control  pull-right datemask', 'id': 'datepicker2', 'autocomplete': 'on',
+                       'required': 'required'}),
 
             'expireDate': forms.DateInput(
-                attrs={'class': 'form-control  pull-right', 'id': 'datepicker4', 'autocomplete': 'on',
-                       'onkeydown': 'return true', 'required': 'required'}),
+                attrs={'class': 'form-control  pull-right datemask', 'id': 'datepicker4', 'autocomplete': 'on',
+                       'required': 'required'}),
 
             'branch': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                           'style': 'width: 100%; '}),

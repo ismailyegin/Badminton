@@ -12,11 +12,11 @@ class VisaSeminarSearchForm(ModelForm):
                   'location': 'Yer', }
         widgets = {
             'startDate': forms.DateInput(
-                attrs={'class': 'form-control  pull-right', 'id': 'datepicker2', 'autocomplete': 'on',
-                       'onkeydown': 'return true'}),
+                attrs={'class': 'form-control  pull-right datemask', 'id': 'datepicker2', 'autocomplete': 'on',
+                       }),
             'finishDate': forms.DateInput(
-                attrs={'class': 'form-control  pull-right', 'id': 'datepicker4', 'autocomplete': 'on',
-                       'onkeydown': 'return true'}),
+                attrs={'class': 'form-control  pull-right datemask', 'id': 'datepicker4', 'autocomplete': 'on',
+                       }),
 
             'name': forms.TextInput(
                 attrs={'class': 'form-control', "style": "text-transform:uppercase"}),
