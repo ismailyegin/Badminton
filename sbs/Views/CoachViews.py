@@ -85,7 +85,6 @@ def visaSeminar_ekle(request):
                 visa.forWhichClazz = 'COACH_CLAIM'
             else:
                 visa.forWhichClazz = 'COACH'
-
             visa.save()
             messages.success(request, 'Vize Semineri Başari  Kaydedilmiştir.')
 
@@ -148,6 +147,7 @@ def return_visaSeminar(request):
         logout(request)
         return redirect('accounts:login')
     user = request.user
+    seminar = VisaSeminar.objects.none()
     if aktif == "Antrenor":
         seminar = VisaSeminar.objects.exclude(coachApplication__coach__user=user).filter(forWhichClazz='COACH')
         seminar |= VisaSeminar.objects.filter(forWhichClazz='COACH').filter(coachApplication__coach__user=user).exclude(coachApplication__status=VisaSeminar.WAITED).exclude(coachApplication__status=VisaSeminar.APPROVED)
@@ -907,7 +907,7 @@ def coachUpdate(request, pk):
             messages.warning(request, 'Tc kimlik numarasi ile isim  soyisim dogum yılı  bilgileri uyuşmamaktadır. ')
             return render(request, 'antrenor/antrenorDuzenle.html',
                           {'user_form': user_form, 'communication_form': communication_form,
-                           'person_form': person_form, 'grades_form': grade_form, 'coach': coach.pk,
+                           'person_form': person_form, 'grades_form': grade_form, 'coach': coach,
                            'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
                            'metarial_form': metarial_form, 'competitions': competitions, 'logs': logs
                            })
@@ -947,8 +947,6 @@ def coachUpdate(request, pk):
                    'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
                    'metarial_form': metarial_form, 'competitions': competitions, 'logs': logs
                    })
-
-
 @login_required
 def updateCoachProfile(request):
     perm = general_methods.control_access_klup(request)
