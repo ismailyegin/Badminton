@@ -17,20 +17,20 @@ class VisaSeminarForm(ModelForm):
             'application': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                                'style': 'width: 100%; '}),
             'appStartDate': forms.DateInput(
-                attrs={'class': 'form-control  pull-right', 'id': 'datepicker', 'autocomplete': 'on',
-                       'onkeydown': 'return true'}),
+                attrs={'class': 'form-control  pull-right datemask', 'id': 'datepicker', 'autocomplete': 'on',
+                       }),
             'year': forms.DateInput(
                 attrs={'class': 'form-control  pull-right', 'id': 'datepicker5', 'autocomplete': 'on',
                        'onkeydown': 'return true'}),
             'appFinishDate': forms.DateInput(
-                attrs={'class': 'form-control  pull-right', 'id': 'datepicker3', 'autocomplete': 'on',
-                       'onkeydown': 'return true'}),
+                attrs={'class': 'form-control  pull-right datemask', 'id': 'datepicker3', 'autocomplete': 'on',
+                       }),
             'startDate': forms.DateInput(
-                attrs={'class': 'form-control  pull-right', 'id': 'datepicker2', 'autocomplete': 'on',
-                       'onkeydown': 'return true'}),
+                attrs={'class': 'form-control  pull-right datemask', 'id': 'datepicker2', 'autocomplete': 'on',
+                       }),
             'finishDate': forms.DateInput(
-                attrs={'class': 'form-control  pull-right', 'id': 'datepicker4', 'autocomplete': 'on',
-                       'onkeydown': 'return true'}),
+                attrs={'class': 'form-control  pull-right datemask', 'id': 'datepicker4', 'autocomplete': 'on',
+                       }),
             'branch': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                           'style': 'width: 100%; '}),
             'name': forms.TextInput(
