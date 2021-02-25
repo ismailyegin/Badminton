@@ -241,7 +241,7 @@ urlpatterns = [
 
     url(r'antrenor/antrenorDuzenle/(?P<pk>\d+)$', CoachViews.coachUpdate,
         name='update-coach'),
-    url(r'antrenor/antrenorDuzenle-Kayıt/(?P<pk>\d+)$', CoachViews.coachreferenceUpdate,
+    url(r'antrenor/antrenorDuzenle-Kayit/(?P<pk>\d+)$', CoachViews.coachreferenceUpdate,
         name='update-coach-reference'),
     url(r'antrenor/antrenorSec/(?P<pk>\d+)$', ClubViews.choose_coach,
         name='choose-coach'),
