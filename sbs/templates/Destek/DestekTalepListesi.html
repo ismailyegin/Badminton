@@ -283,12 +283,15 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Başlagıç Tarihi</th>
+                                    <th>Bitiş Tarihi</th>
                                     <th>Başlık</th>
                                     <th>Sistem</th>
                                     <th>Açıklama</th>
                                     <th>Durumu</th>
                                     <th>ücret</th>
                                     <th>Önem Durumu</th>
+
                                     {% if user.groups.all.0.name == 'Admin' %}
                                         <th>Yapılan işlem</th>
                                     {% endif %}
@@ -298,14 +301,18 @@
                                 {% if claims.all %}
                                     {% for log in claims %}
                                         <tr>
+
                                             <td>{{ forloop.counter }} </td>
+                                            <td>{{ log.creationDate }}</td>
+                                            <td>{{ log.modificationDate }}</td>
                                             <td>{{ log.title }} </td>
                                             <td>{{ log.project }} </td>
                                             <td>{{ log.definition }}  </td>
                                             <td>{{ log.status }} </td>
                                             <td>{{ log.pay }}</td>
+
                                             <td>{{ log.importanceSort }}</td>
-                                            {% if user.groups.all.0.name == 'Admin' %}
+                                            {% if aktif == 'Admin' %}
                                                 <td>
                                                     <div class="btn-group">
 

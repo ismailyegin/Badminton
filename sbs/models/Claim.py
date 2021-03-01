@@ -12,12 +12,14 @@ class Claim(models.Model):
     APPROVED = 'Onaylandı'
     PROPOUND = 'İşlem Devam Ediliyor'
     DENIED = 'Reddedildi'
+    END = 'Bitti'
 
     STATUS_CHOICES = (
         (APPROVED, 'Onaylandı'),
         (PROPOUND, 'İşlem Devam Ediliyor'),
         (DENIED, 'Reddedildi'),
         (WAITED, 'Beklemede'),
+        (END,'Bitti')
     )
 
     SBS = 'SPOR BİLGİ SİSTEMİ'
