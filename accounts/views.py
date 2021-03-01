@@ -675,7 +675,7 @@ def updatecoach(request, tc, pk):
                                    'person_form': person_form, 'grades_form': grade_form, 'coach': coach.pk,
                                    'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form,
                                    'groups': groups,
-                                   'metarial_form': metarial_form, 'competitions': competitions})
+                                   'metarial_form': metarial_form,})
 
             tc = request.POST.get('tc')
             if tc != coach.person.tc:
@@ -689,7 +689,7 @@ def updatecoach(request, tc, pk):
                                    'person_form': person_form, 'grades_form': grade_form, 'coach': coach.pk,
                                    'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form,
                                    'groups': groups,
-                                   'metarial_form': metarial_form, 'competitions': competitions
+                                   'metarial_form': metarial_form,
                                    })
 
             name = request.POST.get('first_name')
@@ -706,7 +706,7 @@ def updatecoach(request, tc, pk):
                                'person_form': person_form, 'grades_form': grade_form, 'coach': coach.pk,
                                'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form,
                                'groups': groups,
-                               'metarial_form': metarial_form, 'competitions': competitions
+                               'metarial_form': metarial_form,
                                })
             if user_form.is_valid() and person_form.is_valid() and communication_form.is_valid() and iban_form.is_valid() and metarial_form.is_valid():
                 user.username = user_form.cleaned_data['email']
@@ -788,7 +788,10 @@ def updatejudge(request, tc, pk):
     communication_form = CommunicationForm(request.POST or None, instance=communication)
 
     metarial_form = MaterialForm(request.POST or None, instance=metarial)
-    competitions = Competition.objects.filter(judges=judge).distinct()
+    if Competition.objects.filter(judges=judge).distinct():
+        competitions = Competition.objects.filter(judges=judge).distinct()
+    else:
+        competitions = Competition.objects.none()
 
     iban_form = IbanFormJudge(request.POST or None, instance=judge)
 
