@@ -22,7 +22,7 @@ class LicenseFormAntrenor(ModelForm):
             'startDate', 'branch', 'sportsClub', 'licenseNo', 'cityHeadShip', 'expireDate', 'lisansPhoto')
 
         labels = {'startDate': 'Başlangıç Tarihi', 'branch': 'Branş',
-                  'licenseNo': 'Lisans No', 'cityHeadShip': 'Verildiği İl', 'expireDate': 'Geçer. Süresi',
+                  'licenseNo': 'Lisans No', 'cityHeadShip': 'Verildiği İl', 'expireDate': ' Bitiş Tarihi',
                   'lisansPhoto': 'Lisans Foto'}
 
         widgets = {

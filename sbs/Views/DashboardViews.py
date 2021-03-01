@@ -133,7 +133,19 @@ def return_coach_dashboard(request):
             'count': competition.count(),
             'competiton': item
         }
+
         datacount.append(beka)
+        last_athlete = Athlete.objects.order_by('-creationDate')[:8]
+        total_club = SportsClub.objects.all().count()
+        total_athlete = Athlete.objects.all().count()
+        total_athlete_gender_man = Athlete.objects.filter(person__gender=Person.MALE).count()
+        total_athlete_gender_woman = Athlete.objects.filter(person__gender=Person.FEMALE).count()
+        total_athlate_last_month = Athlete.objects.exclude(user__date_joined__month=datetime.now().month).count()
+        total_club_user = SportClubUser.objects.all().count()
+        total_coachs = Coach.objects.all().count()
+        total_judge = Judge.objects.all().count()
+
+
 
     return render(request, 'anasayfa/antrenor.html',
                   {
@@ -157,7 +169,15 @@ def return_coach_dashboard(request):
                           (CompetitionsAthlete.objects.filter(competition=lastcompetition).count() * 100) / max),
 
                       'lastcompetition': lastcompetition,
-                      'data': datacount
+                      'data': datacount,
+                      'total_club': total_club,
+                      'total_athlete': total_athlete, 'total_coachs': total_coachs, 'last_athletes': last_athlete,
+                      'total_athlete_gender_man': total_athlete_gender_man,
+                      'total_athlete_gender_woman': total_athlete_gender_woman,
+                      'total_athlate_last_month': total_athlate_last_month,
+                      'total_judge': total_judge,
+                      'total_club_user': total_club_user,
+
                   })
 
 

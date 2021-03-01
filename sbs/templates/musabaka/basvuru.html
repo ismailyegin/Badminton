@@ -590,9 +590,10 @@
 
 
             $("#reddetwhy").on("shown.bs.modal", function (e) {
+ if (e.handled !== true) { // This will prevent event triggering more then once
+     e.handled = true;
 
-
-                $("#btn-gonder").click(function () {
+ $("#btn-gonder").click(function () {
 
 
                     {#console.log(competitionId)#}
@@ -631,7 +632,7 @@
 
 
                 });
-
+ }
 
             }).modal('show');
             $('#btn-closereddet').click(function () {

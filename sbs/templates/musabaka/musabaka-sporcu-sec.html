@@ -516,7 +516,7 @@
                 console.log();
                 $("#btn-gonder").click(function () {
 
-                    console.log('buradan girdi', competitionId);
+                    {#console.log('buradan girdi', competitionId);#}
 
                     if (e.handled !== true) {
                         e.handled = true;
@@ -537,7 +537,12 @@
 
                                     success: function (result) {
 
-                                        html = 'Sporcu Başarıyla Eklendi .';
+
+                                        console.log(result)
+
+                                        alert(result.msg);
+
+                                        html = result.msg;
                                         debugger;
                                         $(".successModal").html(html);
                                         window.location.replace("{% url "sbs:musabaka-sporcu-sec" pk %}");

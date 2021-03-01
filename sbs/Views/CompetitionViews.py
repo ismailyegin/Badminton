@@ -484,7 +484,7 @@ def return_sporcu(request):
 
 
             elif active == 'Antrenor':
-                modeldata = modeldata.filter(licenses__coach__user=user).exclude(pk__in=athletes).distinct()
+                modeldata = modeldata.filter(licenses__coach__user=user).distinct()
 
             total = modeldata.count()
 
@@ -512,10 +512,10 @@ def return_sporcu(request):
 
 
             elif active == 'Antrenor':
-                modeldata = Athlete.objects.filter(licenses__coach__user=user).exclude(pk__in=athletes).distinct()[
+                modeldata = Athlete.objects.filter(licenses__coach__user=user).distinct()[
                             start:start + length]
 
-                total = Athlete.objects.filter(licenses__coach__user=user).exclude(pk__in=athletes).distinct().count()
+                total = Athlete.objects.filter(licenses__coach__user=user).distinct().count()
 
     say = start + 1
     start = start + length
@@ -630,16 +630,36 @@ def choose_athlete(request, pk, competition):
                 competition = Competition.objects.get(pk=competition)
                 athlete = Athlete.objects.get(pk=pk)
                 compAthlete = CompetitionsAthlete()
-                if request.POST.get('sporcu'):
-                    compAthlete.athleteTwo=Athlete.objects.get(pk=request.POST.get('sporcu'))
-                compAthlete.athlete = athlete
-                compAthlete.competition = competition
-                compAthlete.category = Category.objects.get(pk=request.POST.get('weight'))
-                compAthlete.save()
-                log = str(athlete.user.get_full_name()) + "  Musabaka sporcu eklendi "
-                log = general_methods.logwrite(request, request.user, log)
-                return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
+                if CompetitionsAthlete.objects.filter(competition=competition).filter(athlete=athlete).count() <= 1:
+                    if CompetitionsAthlete.objects.filter(competition=competition).filter(athlete=athlete):
+                        competitionAthlete=CompetitionsAthlete.objects.get(athlete=athlete , competition=competition)
+                        katagori=competitionAthlete.category.pk
+                        if str(katagori) != request.POST.get('weight'):
+                            if request.POST.get('sporcu'):
+                                compAthlete.athleteTwo = Athlete.objects.get(pk=request.POST.get('sporcu'))
+                            compAthlete.athlete = athlete
+                            compAthlete.competition = competition
+                            compAthlete.category = Category.objects.get(pk=request.POST.get('weight'))
+                            compAthlete.save()
+                            log = str(athlete.user.get_full_name()) + "  Musabakaya sporcu eklendi "
+                            log = general_methods.logwrite(request, request.user, log)
+                            return JsonResponse({'status': 'Success', 'msg': 'Sporcu Başarı ile kaydedilmiştir.'})
+                        else:
+                            return JsonResponse({'status': 'Fail', 'msg': 'Aynı kategoride kayıt vardır.'})
+                    else:
+                        if request.POST.get('sporcu'):
+                            compAthlete.athleteTwo = Athlete.objects.get(pk=request.POST.get('sporcu'))
+                        compAthlete.athlete = athlete
+                        compAthlete.competition = competition
+                        compAthlete.category = Category.objects.get(pk=request.POST.get('weight'))
+                        compAthlete.save()
+                        log = str(athlete.user.get_full_name()) + "  Musabakaya sporcu eklendi "
+                        log = general_methods.logwrite(request, request.user, log)
+                        return JsonResponse({'status': 'Success', 'msg': 'Sporcu Başarı ile kaydedilmiştir.'})
 
+
+                else:
+                    return JsonResponse({'status': 'Fail', 'msg': 'Bir sporcu 3. defa eklenemez.'})
 
             else:
                 return JsonResponse({'status': 'Fail', 'msg': 'Eksik'})
