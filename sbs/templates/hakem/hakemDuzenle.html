@@ -148,8 +148,8 @@
 
                                         <center>
                                              <label> {{ person_form.profileImage.label }}</label>
-                                            {% load static %}
-                                            <img src="{% static 'images/user.png' %} " id="preview"
+
+                                            <img src="/media/{{ person_form.instance.profileImage }} " id="preview"
                                                  class="img-responsive img-rounded"
                                                  style=" height: 125px;width: 100px;">
                                             <input type="file" name="profileImage" accept="image/*" id="id_profileImage"

@@ -236,7 +236,6 @@
                                     </div>
 
 
-
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -317,10 +316,10 @@
                                     {% if aktif == 'Admin' or aktif == 'Yonetim' %}
                                         <th>Antrenör 1</th>
                                         <th>Antrenör 2</th>
+                                        <th>İşlemeler</th>
                                     {% endif %}
 
 
-                                    {#                                    <th>İşlemler</th>#}
 
 
                                 </tr>
@@ -353,25 +352,26 @@
                                                 <td>{{ compathlete.athlete.licenses.last.coach }}</td>
                                                 <td>{{ compathlete.athlete.licenses.last.coach2 }}</td>
 
+
+
+
+
+
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <a onclick="addPlayer({{ compathlete.id }},{{ competition.pk }},{{ compathlete.sıklet.weight }},{{ compathlete.total }}, {{ compathlete.silk1 }}, {{ compathlete.kop1 }})"
+                                                           type="button" class="btn btn-primary"><i
+                                                                class="fa fa-edit"></i>Güncelle
+                                                        </a>
+                                                        <a onclick="deleteAthlete({{ compathlete.id }})"
+                                                           type="button" class="btn btn-danger"><i
+                                                                class="fa fa-remove"></i>Kaldır
+                                                        </a>
+
+
+                                                    </div>
+                                                </td>
                                             {% endif %}
-
-
-
-
-                                            {#                                            <td>#}
-                                            {#                                                <div class="btn-group">#}
-                                            {#                                                    <a onclick="addPlayer({{ compathlete.id }},{{ competition.pk }},{{ compathlete.sıklet.weight }},{{ compathlete.total }}, {{ compathlete.silk1 }}, {{ compathlete.kop1 }})"#}
-                                            {#                                                       type="button" class="btn btn-primary"><i#}
-                                            {#                                                            class="fa fa-edit"></i>Güncelle#}
-                                            {#                                                    </a>#}
-                                            {#                                                    <a onclick="deleteAthlete({{ compathlete.id }})"#}
-                                            {#                                                       type="button" class="btn btn-danger"><i#}
-                                            {#                                                            class="fa fa-remove"></i>Kaldır#}
-                                            {#                                                    </a>#}
-                                            {##}
-                                            {##}
-                                            {#                                                </div>#}
-                                            {#                                            </td>#}
 
                                         </tr>
 
@@ -405,9 +405,6 @@
                 jop.push("{{ item.pk }}");
             {% endfor %}
             $('#multipleSelect').val(jop);
-
-
-
 
 
             $('#sporcular').DataTable({
