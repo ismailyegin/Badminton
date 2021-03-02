@@ -187,4 +187,6 @@
  127.0.0.1    [27-08-2020 14:17] admin  Giris yapti 
  127.0.0.1    [28-08-2020 21:26] admin   Cikis yapti  
  127.0.0.1    [28-08-2020 21:26] fatih@kobiltek.com  Giris yapti 
+ [25-02-2021 16:16]  lag kaydetme hata   
+ [01-03-2021 11:35]  lag kaydetme hata   
  
