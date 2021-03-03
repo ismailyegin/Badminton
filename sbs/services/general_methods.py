@@ -152,7 +152,7 @@ def control_access_klup(request):
             if request.resolver_match.url_name == perm.name:
                 is_exist = True
 
-        if group.name == "Admin" or group.name == "Hakem" or group.name == "Antrenor" or group.name == "Yonetim":
+        if group.name == "Admin" or group.name == "Hakem" or group.name == "Antrenor" or group.name == "Yonetim" :
             is_exist = True
 
     return is_exist
@@ -160,16 +160,12 @@ def control_access_klup(request):
 def aktif(request):
     if User.objects.filter(pk=request.user.pk):
         if not (ActiveGroup.objects.filter(user=request.user)):
-            aktive = ActiveGroup(user=request.user, group=request.user.groups.all()[0])
+            aktive = ActiveGroup(user=request.user, group=request.user.groups.exclude(name='Sporcu')[0])
             aktive.save()
-            aktif = request.user.groups.all()[0]
-            if(aktif == 'Sporcu'):
-                if request.user.groups.all()[1]:
-                    aktif=request.user.groups.all()[1]
-
+            aktif = request.user.groups.exclude(name='Sporcu')[0]
         else:
             aktif = ActiveGroup.objects.get(user=request.user).group.name
-        group = request.user.groups.all()
+        group = request.user.groups.exclude(name='Sporcu')
         return {'aktif': aktif,
                 'group': group,
                 }
@@ -181,9 +177,10 @@ def aktif(request):
 def controlGroup(request):
     if User.objects.filter(pk=request.user.pk):
         if not (ActiveGroup.objects.filter(user=request.user)):
-            aktive = ActiveGroup(user=request.user, group=request.user.groups.all()[0])
+            aktive = ActiveGroup(user=request.user, group=request.user.groups.exclude(name='Sporcu')[0])
             aktive.save()
-            active = request.user.groups.all()[0]
+            active = request.user.groups.exclude(name='Sporcu')[0]
+
         else:
             active = ActiveGroup.objects.get(user=request.user).group.name
         return active
