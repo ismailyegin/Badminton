@@ -163,6 +163,10 @@ def aktif(request):
             aktive = ActiveGroup(user=request.user, group=request.user.groups.all()[0])
             aktive.save()
             aktif = request.user.groups.all()[0]
+            if(aktif == 'Sporcu'):
+                if request.user.groups.all()[1]:
+                    aktif=request.user.groups.all()[1]
+
         else:
             aktif = ActiveGroup.objects.get(user=request.user).group.name
         group = request.user.groups.all()
