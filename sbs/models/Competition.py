@@ -1,12 +1,8 @@
-import enum
-
-from cffi import model
 from django.db import models
-
 from sbs.models.Category import Category
 from sbs.models.Judge import Judge
+from sbs.models.CompetitionAges import CompetitionAges
 
-from sbs.models.EnumFields import EnumFields
 class Competition(models.Model):
     TURKEY = 0
     WORLD = 1
@@ -23,20 +19,11 @@ class Competition(models.Model):
     INTERUNIVERSITY = 0
     INTERSCHOOL = 1
     PERSONAL = 2
-
-    # GRANDPRİX = 3
-
-
     COMPTYPE = (
         (INTERUNIVERSITY, 'Üniversiteler Arası'),
         (INTERSCHOOL, 'Okullar Arası'),
-
-
         (PERSONAL, 'Ferdi'),
-
-        # (GRANDPRİX, 'Grand Prix')
     )
-
     compType = models.IntegerField(db_column='compType', blank=True, null=True,
                                    choices=COMPTYPE)  # Field name made lowercase.
     creationDate = models.DateTimeField(db_column='creationDate', blank=True, null=True, auto_now_add=True)
@@ -59,6 +46,7 @@ class Competition(models.Model):
     compGeneralType = models.IntegerField(db_column='compGeneralType', blank=True, null=True, choices=COMPGENERALTYPE)
 
     categoryies = models.ManyToManyField(Category)
+    ages = models.ManyToManyField(CompetitionAges)
     judges = models.ManyToManyField(Judge)
 
 

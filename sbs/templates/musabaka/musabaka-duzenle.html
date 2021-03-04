@@ -262,6 +262,16 @@
                                         <label> {{ competition_form.registerFinishDate.label }}</label>
                                         {{ competition_form.registerFinishDate }}
                                     </div>
+                                    <div class="form-group">
+                                        <label>Yaş Gurupları</label>
+                                        <select class="form-control select2" multiple="multiple " name="ages"
+                                                id="ages"
+                                                data-placeholder="Yaşlari  Seçiniz">
+                                            {% for item in ages %}
+                                                <option value="{{ item.pk }}">{{ item.year }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
 
 
                                 </div>
@@ -399,6 +409,16 @@
 
 
         $(function () {
+
+
+            var year = new Array();
+            {% for item in competition.ages.all %}
+                year.push("{{ item.pk }}");
+            {% endfor %}
+            $('#ages').val(year);
+
+
+
 
             var jop = new Array();
             {% for item in competition.categoryies.all %}

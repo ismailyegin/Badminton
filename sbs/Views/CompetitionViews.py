@@ -18,21 +18,14 @@ from sbs.models.SimpleCategory import SimpleCategory
 from sbs.models.EnumFields import EnumFields
 from sbs.models.SandaAthlete import SandaAthlete
 from sbs.models.Category import Category
-from sbs.models.TaoluAthlete import TaoluAthlete
 from sbs.services import general_methods
 from sbs.Forms.SimplecategoryForm import SimplecategoryForm
 
-from datetime import date, datetime
 from django.utils import timezone
 
 from sbs.models.CompetitionsAthlete import CompetitionsAthlete
 
-# from pyexcel_xls import get_data as xls_get
-# from pyexcel_xlsx import get_data as xlsx_get
-from django.utils.datastructures import MultiValueDictKeyError
-
-from django.core import serializers
-from django.http import HttpResponse
+from sbs.models.CompetitionAges import CompetitionAges
 
 
 @login_required
@@ -180,10 +173,9 @@ def musabaka_duzenle(request, pk):
     musabaka = Competition.objects.get(pk=pk)
     athletes = CompetitionsAthlete.objects.filter(competition=musabaka)
 
-
-    weights = Weight.objects.all()
     competition_form = CompetitionForm(request.POST or None, instance=musabaka)
     category = Category.objects.all()
+    ages=CompetitionAges.objects.all()
 
     if request.method == 'POST':
         if competition_form.is_valid():
@@ -194,6 +186,13 @@ def musabaka_duzenle(request, pk):
             if request.POST.getlist('jobDesription'):
                 for item in request.POST.getlist('jobDesription'):
                     musabaka.categoryies.add(Category.objects.get(pk=item))
+                    musabaka.save()
+            for item in musabaka.ages.all():
+                musabaka.ages.remove(item)
+                musabaka.save()
+            if request.POST.getlist('ages'):
+                for item in request.POST.getlist('ages'):
+                    musabaka.ages.add(CompetitionAges.objects.get(pk=item))
                     musabaka.save()
 
 
@@ -211,7 +210,7 @@ def musabaka_duzenle(request, pk):
 
     return render(request, 'musabaka/musabaka-duzenle.html',
                   {'competition_form': competition_form, 'competition': musabaka, 'athletes': athletes,
-                    'category': category})
+                    'category': category,'ages':ages})
 
 
 @login_required
