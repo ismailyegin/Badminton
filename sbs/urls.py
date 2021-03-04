@@ -415,6 +415,8 @@ urlpatterns = [
         name='musabaka-sporcu-kaldir'),
     url(r'musabaka/KategoriEkle/$', CompetitionViews.categori_ekle, name='kategori-ekle'),
     url(r'musabaka/sonucal/(?P<pk>\d+)$', CompetitionViews.upload, name='competition-result'),
+    url(r'musabaka/musabaka-sonucEkle/$', CompetitionViews.musabakaResultAdd, name='musabaka-SonucEkle'),
+    url(r'musabaka/musabaka-sonucEkle-ajax/$',CompetitionViews.choose_athlete_competition, name='musabaka-sonuc-ajax'),
     #     Yardım ve destek
 
     url(r'yardim$', HelpViews.help, name='help'),
@@ -496,7 +498,6 @@ urlpatterns = [
     url(r'aktarma/hakem', Aktarma.judgeAktar, name='control-aktarhakemvize'),
 
     #     ceza görüntüleme modulleri
-
     url(r'ceza/ceza-listesi/', PenalView.return_penal_athlete, name='ceza-listesi'),
 
 

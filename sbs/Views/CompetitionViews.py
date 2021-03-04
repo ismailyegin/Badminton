@@ -1,31 +1,25 @@
-from builtins import print
-from itertools import combinations, product
-from statistics import mode
+from builtins import print, property
+from warnings import catch_warnings
 
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
-from django.urls import reverse
+from django.utils import timezone
 
 from sbs.Forms.CompetitionForm import CompetitionForm
 from sbs.Forms.CompetitionSearchForm import CompetitionSearchForm
-from django.db.models import Q
-from sbs.models import SportClubUser, SportsClub, Competition, Athlete, CompAthlete, Weight, CompCategory, Coach
-from sbs.models.SimpleCategory import SimpleCategory
-from sbs.models.EnumFields import EnumFields
-from sbs.models.SandaAthlete import SandaAthlete
-from sbs.models.Category import Category
-from sbs.services import general_methods
 from sbs.Forms.SimplecategoryForm import SimplecategoryForm
-
-from django.utils import timezone
-
-from sbs.models.CompetitionsAthlete import CompetitionsAthlete
-
+from sbs.models import SportClubUser, SportsClub, Competition, Athlete, CompCategory, Coach
+from sbs.models.Category import Category
 from sbs.models.CompetitionAges import CompetitionAges
+from sbs.models.CompetitionsAthlete import CompetitionsAthlete
+from sbs.models.SandaAthlete import SandaAthlete
+from sbs.models.SimpleCategory import SimpleCategory
+from sbs.services import general_methods
 
 
 @login_required
@@ -604,7 +598,7 @@ def choose_athlete_update(request, pk, competition):
         try:
 
             # bu alanda sporcu güncelleme alani olacak kategorisini güncelleme yapabilecegiz
-            return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
+            return JsonResponse({'status': 'Success', 'msg': 'save successfully'})
         except SandaAthlete.DoesNotExist:
             return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
 
@@ -670,7 +664,46 @@ def choose_athlete(request, pk, competition):
     else:
         return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
 
+@login_required
+def choose_athlete_competition(request):
+    perm = general_methods.control_access(request)
+    login_user = request.user
 
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    if request.method == 'POST' and request.is_ajax():
+
+        if request.POST.get('categori') and request.POST.get('competition'):
+            print(request.POST.get('categori'))
+            print(request.POST.get('competition'))
+            if Category.objects.filter(pk=request.POST.get('categori')) and Competition.objects.filter(
+                    pk=request.POST.get('competition')):
+                categori = Category.objects.get(pk=request.POST.get('categori'))
+                competition = Competition.objects.get(pk=request.POST.get('competition'))
+                comAthlete = CompetitionsAthlete.objects.filter(category=categori , competition=competition).distinct()
+                dizi=[]
+                for item in comAthlete:
+                    beka={
+                        'name': item.athlete.user.get_full_name()+ ' - ' + item.athleteTwo.user.get_full_name() if item.athleteTwo else item.athlete.user.get_full_name(),
+                        'pk':item.pk
+                    }
+                    dizi.append(beka)
+                return JsonResponse(
+                    {'status': 'Success', 'msg': 'Basarili bir şekilde sporcular alındı', 'athlete': dizi,'categori':categori.kategoriadi})
+
+        else:
+            return JsonResponse({'status': 'Fail', 'msg': 'Eksik'})
+
+        # try:
+        #
+        #
+        #
+        # except :
+        #     return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
+
+    else:
+        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
 @login_required
 def musabaka_sporcu_tamamla(request, athletes):
     perm = general_methods.control_access(request)
@@ -723,13 +756,10 @@ def result_list(request, pk):
     if not perm:
         logout(request)
         return redirect('accounts:login')
-    competition = Competition.objects.filter(pk=pk)
-
-    compAthlete = CompetitionsAthlete.objects.filter(competition=pk).order_by('degree')
-    compCategory = CompCategory.objects.filter(competition=pk).order_by('-name')
-
+    competition = Competition.objects.get(pk=pk)
+    compAthlete = CompetitionsAthlete.objects.exclude(degree=0).filter(competition=pk).order_by('degree')
     return render(request, 'musabaka/musabaka-sonuclar.html',
-                  {'compCategory': compCategory, 'compAthlete': compAthlete})
+                  { 'compAthlete': compAthlete,'competition':competition})
 
 
 @login_required
@@ -926,3 +956,27 @@ def antrenor_sporcu_ajax(request):
         # return HttpResponse(serializers.serialize("json", Coach.objects.all()))
     else:
         return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+
+
+@login_required
+def musabakaResultAdd(request):
+    competition = Competition.objects.none()
+    categori=Category.objects.none()
+    if Competition.objects.all():
+        competition = Competition.objects.all().order_by('-creationDate')
+    if Category.objects.all():
+        categori = Category.objects.all()
+
+    if request.POST:
+        if request.POST.get('categori') and request.POST.get('competitions') and request.POST.get('athlete') and request.POST.get('degre'):
+            pk=int(request.POST.get('athlete'))
+            comAthlete=CompetitionsAthlete.objects.get(pk=pk)
+            comAthlete.degree=int(request.POST.get('degre'))
+            comAthlete.save()
+            messages.success(request, 'Basarili bir sekilde kaydedildi.')
+        else:
+            messages.warning(request, 'Alanlari kontrol ediniz.')
+
+
+
+    return render(request, 'musabaka/musabakaSonucEkle.html', {'competition': competition,'categori':categori})
