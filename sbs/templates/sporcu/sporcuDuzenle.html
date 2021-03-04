@@ -611,23 +611,23 @@
                             <div class="box-header with-border">
                                 <div class="btn-group">
 
-                                    {% if user.groups.all.0.name == 'Antrenor' %}
+{#                                    {% if user.groups.all.0.name == 'Antrenor' %}#}
 
-
-                                        <a href="{% url "sbs:sporcu-lisans-ekle-antrenor" athlete.pk %}"
-                                           type="button" class="btn btn-success"><i
-                                                class="fa fa-edit"></i>Yeni Lisans Ekle
-                                        </a>
-
-
-
-                                    {% else %}
+{##}
+{#                                        <a href="{% url "sbs:sporcu-lisans-ekle-antrenor" athlete.pk %}"#}
+{#                                           type="button" class="btn btn-success"><i#}
+{#                                                class="fa fa-edit"></i>Yeni Lisans Ekle#}
+{#                                        </a>#}
+{##}
+{##}
+{##}
+{#                                    {% else %}#}
 
                                         <a href="{% url "sbs:sporcu-lisans-ekle"  athlete.pk %}"
                                            type="button" class="btn btn-success"><i
                                                 class="fa fa-edit"></i> Yeni Lisans Ekle
                                         </a>
-                                    {% endif %}
+{#                                    {% endif %}#}
                                 </div>
                             </div>
                             <table id="lisans" class="table table-bordered table-hover">
@@ -697,18 +697,18 @@
 
 
                                                     {% endif %}
-
-                                                    {% if user.groups.all.0.name == 'Antrenor' %}
-
-
-                                                        <a href="{% url "sbs:sporcu-lisans-duzenle-antrenor" license_pk=license.pk athlete_pk=athlete.pk %}"
-                                                           type="button" class="btn btn-warning"><i
-                                                                class="fa fa-edit"></i>Güncelle
-                                                        </a>
-
-
-
-                                                    {% else %}
+{##}
+{#                                                    {% if user.groups.all.0.name == 'Antrenor' %}#}
+{##}
+{##}
+{#                                                        <a href="{% url "sbs:sporcu-lisans-duzenle-antrenor" license_pk=license.pk athlete_pk=athlete.pk %}"#}
+{#                                                           type="button" class="btn btn-warning"><i#}
+{#                                                                class="fa fa-edit"></i>Güncelle#}
+{#                                                        </a>#}
+{##}
+{##}
+{##}
+{#                                                    {% else %}#}
 
 
                                                         <a href="{% url "sbs:sporcu-lisans-duzenle" license_pk=license.pk athlete_pk=athlete.pk %}"
@@ -718,7 +718,7 @@
 
 
 
-                                                    {% endif %}
+{#                                                    {% endif %}#}
 
 
 

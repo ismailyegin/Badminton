@@ -1125,9 +1125,7 @@ def sporcu_lisans_ekle(request, pk):
         return redirect('accounts:login')
     athlete = Athlete.objects.get(pk=pk)
     user = request.user
-
     license_form = LicenseForm(request.POST, request.FILES or None)
-
     if active == 'KlupUye':
         sc_user = SportClubUser.objects.get(user=user)
         clubs = SportsClub.objects.filter(clubUser=sc_user)
@@ -1138,6 +1136,13 @@ def sporcu_lisans_ekle(request, pk):
 
     elif active == 'Yonetim' or active == 'Admin':
         license_form.fields['sportsClub'].queryset = SportsClub.objects.all()
+    elif active=='Antrenor':
+        coach=Coach.objects.get(user=request.user)
+        license_form.fields['sportsClub'].queryset = SportsClub.objects.filter(coachs=coach)
+        license_form.fields['sportsClub'].queryset |= SportsClub.objects.filter(name="FERDI")
+        license_form.fields['coach'].queryset=Coach.objects.filter(user=request.user)
+        license_form.fields['coach'].required=True
+
 
     if request.method == 'POST':
         license_form = LicenseForm(request.POST, request.FILES or None)
@@ -1468,10 +1473,10 @@ def sporcu_kusak_duzenle(request, belt_pk, athlete_pk):
 @login_required
 def sporcu_lisans_duzenle_antrenor(request, license_pk, athlete_pk):
     perm = general_methods.control_access_klup(request)
-
     if not perm:
         logout(request)
         return redirect('accounts:login')
+
     license = License.objects.get(pk=license_pk)
     user = request.user
     coach = Coach.objects.get(user=user)
@@ -1482,7 +1487,6 @@ def sporcu_lisans_duzenle_antrenor(request, license_pk, athlete_pk):
     license_form.fields['sportsClub'].queryset |= SportsClub.objects.filter(name="FERDI")
 
     if request.method == 'POST':
-
         if license_form.is_valid():
             lisans = license_form.save(commit=False)
             if lisans.status != License.APPROVED:
@@ -1527,6 +1531,12 @@ def sporcu_lisans_duzenle(request, license_pk, athlete_pk):
         for club in clubs:
             clubsPk.append(club.pk)
         license_form.fields['sportsClub'].queryset = SportsClub.objects.filter(id__in=clubsPk)
+    elif active=='Antrenor':
+        coach=Coach.objects.get(user=request.user)
+        license_form.fields['sportsClub'].queryset = SportsClub.objects.filter(coachs=coach)
+        license_form.fields['sportsClub'].queryset |= SportsClub.objects.filter(name="FERDI")
+        license_form.fields['coach'].queryset=Coach.objects.filter(user=request.user)
+        license_form.fields['coach'].required=True
 
 
     elif active == 'Yonetim' or active == 'Admin':
