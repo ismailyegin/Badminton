@@ -1510,7 +1510,7 @@ def sporcu_lisans_duzenle_antrenor(request, license_pk, athlete_pk):
 
 @login_required
 def sporcu_lisans_duzenle(request, license_pk, athlete_pk):
-    perm = general_methods.control_access(request)
+    perm = general_methods.control_access_klup(request)
     active = general_methods.controlGroup(request)
 
     if not perm:
