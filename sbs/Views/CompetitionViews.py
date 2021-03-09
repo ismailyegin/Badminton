@@ -423,9 +423,9 @@ def return_sporcu(request):
     if length == -1:
 
         athletes = []
-        for comp in compAthlete:
-            if comp.athlete:
-                athletes.append(comp.athlete.pk)
+        # for comp in compAthlete:
+        #     if comp.athlete:
+        #         athletes.append(comp.athlete.pk)
 
         if active == 'KlupUye':
             sc_user = SportClubUser.objects.get(user=user)
@@ -443,10 +443,16 @@ def return_sporcu(request):
             total = Athlete.objects.exclude(pk__in=athletes).count()
 
         elif active == 'Antrenor':
-            modeldata = Athlete.objects.filter(licenses__coach__user=user).exclude(pk__in=athletes).distinct()[
-                        start:start + length]
 
-            total = Athlete.objects.filter(licenses__coach__user=user).exclude(pk__in=athletes).distinct().count()
+            coach = Coach.objects.get(user=request.user)
+            clup = SportsClub.objects.filter(coachs=coach)
+            clupsPk = []
+            for item in clup:
+                clupsPk.append(item.pk)
+            athletes = Athlete.objects.filter(licenses__sportsClub_id__in=clupsPk).distinct()
+            athletes |= Athlete.objects.filter(licenses__coach=coach).distinct()
+            modeldata = athletes.distinct()[start:start + length]
+            total = athletes.distinct().count()
 
     else:
         if search:
@@ -472,12 +478,19 @@ def return_sporcu(request):
                     licenses__sportsClub__in=clubsPk).distinct()
                 total = modeldata.exclude(pk__in=athletes).filter(
                     licenses__sportsClub__in=clubsPk).distinct().count()
-            elif active == 'Yonetim' or active == 'Admin':
-                modeldata = modeldata.exclude(pk__in=athletes)
+            # elif active == 'Yonetim' or active == 'Admin':
+            #     modeldata = modeldata.exclude(pk__in=athletes)
 
 
             elif active == 'Antrenor':
-                modeldata = modeldata.filter(licenses__coach__user=user).distinct()
+                coach = Coach.objects.get(user=request.user)
+                clup = SportsClub.objects.filter(coachs=coach)
+                clupsPk = []
+                for item in clup:
+                    clupsPk.append(item.pk)
+                athletes = modeldata.filter(licenses__sportsClub_id__in=clupsPk).distinct()
+                athletes |= modeldata.filter(licenses__coach=coach).distinct()
+                modeldata = athletes.distinct()
 
             total = modeldata.count()
 
@@ -505,10 +518,17 @@ def return_sporcu(request):
 
 
             elif active == 'Antrenor':
-                modeldata = Athlete.objects.filter(licenses__coach__user=user).distinct()[
-                            start:start + length]
 
-                total = Athlete.objects.filter(licenses__coach__user=user).distinct().count()
+                coach = Coach.objects.get(user=request.user)
+                clup = SportsClub.objects.filter(coachs=coach)
+                clupsPk = []
+                for item in clup:
+                    clupsPk.append(item.pk)
+                athletes = Athlete.objects.filter(licenses__sportsClub_id__in=clupsPk).distinct()
+                athletes |= Athlete.objects.filter(licenses__coach=coach).distinct()
+                modeldata = athletes.distinct()[start:start + length]
+                total = athletes.distinct().count()
+
 
     say = start + 1
     start = start + length
@@ -939,11 +959,18 @@ def antrenor_sporcu_ajax(request):
 
     if request.method == 'POST' and request.is_ajax():
         if request.POST.get('coach'):
-            coach = request.POST.get('coach')
-
+            athletes=Athlete.objects.none()
+            if Coach.objects.filter(pk= request.POST.get('coach')):
+                coach = Coach.objects.filter(pk=request.POST.get('coach'))[0]
+                clup = SportsClub.objects.filter(coachs=coach)
+                clupsPk = []
+                for item in clup:
+                    clupsPk.append(item.pk)
+                athletes = Athlete.objects.filter(licenses__sportsClub_id__in=clupsPk).distinct()
+                athletes |= Athlete.objects.filter(licenses__coach=coach).distinct()
             beka = []
             # antrenor verisi alınıp sistemde filtreleme yapılacak
-            for item in Athlete.objects.filter(licenses__coach=Coach.objects.filter(pk=coach)[0]):
+            for item in athletes:
                 data = {
                     'pk': item.pk,
                     'name': item.user.get_full_name(),
