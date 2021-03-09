@@ -880,9 +880,10 @@ def coachUpdate(request, pk):
                 messages.warning(request, 'Mail adresi başka bir kullanici tarafından kullanilmaktadir.')
                 return render(request, 'antrenor/antrenorDuzenle.html',
                               {'user_form': user_form, 'communication_form': communication_form,
-                               'person_form': person_form, 'grades_form': grade_form, 'coach': coach.pk,
+                               'person_form': person_form, 'grades_form': grade_form, 'coach': coach,
                                'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
-                               'metarial_form': metarial_form, 'competitions': competitions, 'logs': logs})
+                               'metarial_form': metarial_form, 'competitions': competitions, 'logs': logs
+                               })
 
         tc = request.POST.get('tc')
         if tc != coach.person.tc:
@@ -892,7 +893,7 @@ def coachUpdate(request, pk):
                 messages.warning(request, 'Tc kimlik numarasi sisteme kayıtlıdır. ')
                 return render(request, 'antrenor/antrenorDuzenle.html',
                               {'user_form': user_form, 'communication_form': communication_form,
-                               'person_form': person_form, 'grades_form': grade_form, 'coach': coach.pk,
+                               'person_form': person_form, 'grades_form': grade_form, 'coach': coach,
                                'personCoach': person, 'visa_form': visa_form, 'iban_form': iban_form, 'groups': groups,
                                'metarial_form': metarial_form, 'competitions': competitions, 'logs': logs
                                })
