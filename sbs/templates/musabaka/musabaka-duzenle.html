@@ -314,15 +314,17 @@
                             <table id="sporcular" class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
-                                    <th>Sporcu No</th>
-                                    <th>Adı</th>
-                                    <th>Soyadı</th>
-                                    {% if aktif == 'Admin' or aktif == 'Yonetim' %}
-                                        <th>Kulüp</th>
-                                    {% endif %}
+                                    <th>No.</th>
+                                    <th>Name</th>
+                                    <th>Gender</th>
+                                    <th>MemberID</th>
+                                    <th>Kulüp</th>
+                                    <th>Seed</th>
+
                                     <th>Kategori</th>
+
                                     <th>Kimlik No</th>
-                                    <th>Cinsiyet</th>
+
                                     {% if aktif == 'Admin' or aktif == 'Yonetim' %}
                                         <th>Antrenör 1</th>
                                         <th>Antrenör 2</th>
@@ -337,17 +339,12 @@
                                 <tbody>
                                 {% if athletes %}
                                     {% for compathlete in athletes %}
+                                        {% if compathlete.category.kategoriadi == "Tek Erkekler" or compathlete.category.kategoriadi == "Tek Bayanlar" %}
                                         <tr>
-                                            <td>{{ compathlete.athlete.pk }} </td>
-                                            <td>{{ compathlete.athlete.user.first_name }}
-                                            </td>
-                                            <td>{{ compathlete.athlete.user.last_name }} </td>
 
-                                            {% if aktif == 'Admin' or aktif == 'Yonetim' %}
-                                                <td>{{ compathlete.athlete.licenses.last.sportsClub }}</td>
-                                            {% endif %}
-                                            <td>{{ compathlete.category }} </td>
-                                            <td>{{ compathlete.athlete.person.tc }} </td>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ compathlete.athlete.user.first_name }} {{ compathlete.athlete.user.last_name }}
+                                            </td>
                                             <td>
                                                 {% if compathlete.athlete.person.gender == 1 %}
 
@@ -358,21 +355,23 @@
                                                 {% endif %}
                                             </td>
 
+
+                                            <td>{{ compathlete.athlete.pk }} </td>
+
+
+                                            <td>{{ compathlete.athlete.licenses.last.sportsClub }}</td>
+                                            <td></td>
+                                            <td>{{ compathlete.category }} </td>
+                                            <td>{{ compathlete.athlete.person.tc }} </td>
+
+
                                             {% if aktif == 'Admin' or aktif == 'Yonetim' %}
                                                 <td>{{ compathlete.athlete.licenses.last.coach }}</td>
                                                 <td>{{ compathlete.athlete.licenses.last.coach2 }}</td>
 
-
-
-
-
-
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a onclick="addPlayer({{ compathlete.id }},{{ competition.pk }},{{ compathlete.sıklet.weight }},{{ compathlete.total }}, {{ compathlete.silk1 }}, {{ compathlete.kop1 }})"
-                                                           type="button" class="btn btn-primary"><i
-                                                                class="fa fa-edit"></i>Güncelle
-                                                        </a>
+
                                                         <a onclick="deleteAthlete({{ compathlete.id }})"
                                                            type="button" class="btn btn-danger"><i
                                                                 class="fa fa-remove"></i>Kaldır
@@ -384,7 +383,94 @@
                                             {% endif %}
 
                                         </tr>
+                                        {% else %}
+                                            <tr>
 
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ compathlete.athlete.user.first_name }} {{ compathlete.athlete.user.last_name }}
+                                                </td>
+                                                <td>
+                                                    {% if compathlete.athlete.person.gender == 1 %}
+
+                                                        M
+                                                    {% else %}
+                                                        F
+
+                                                    {% endif %}
+                                                </td>
+
+
+                                                <td>{{ compathlete.athlete.pk }} </td>
+
+
+                                                <td>{{ compathlete.athlete.licenses.last.sportsClub }}</td>
+                                                <td></td>
+                                                <td>{{ compathlete.category }} </td>
+                                                <td>{{ compathlete.athlete.person.tc }} </td>
+
+
+                                                {% if aktif == 'Admin' or aktif == 'Yonetim' %}
+                                                    <td>{{ compathlete.athlete.licenses.last.coach }}</td>
+                                                    <td>{{ compathlete.athlete.licenses.last.coach2 }}</td>
+
+                                                    <td>
+                                                        <div class="btn-group">
+
+                                                            <a onclick="deleteAthlete({{ compathlete.id }})"
+                                                               type="button" class="btn btn-danger"><i
+                                                                    class="fa fa-remove"></i>Kaldır
+                                                            </a>
+
+
+                                                        </div>
+                                                    </td>
+                                                {% endif %}
+
+                                            </tr>
+                                            <tr>
+
+                                                <td></td>
+                                                <td>{{ compathlete.athleteTwo.user.first_name }} {{ compathlete.athleteTwo.user.last_name }}
+                                                </td>
+                                                <td>
+                                                    {% if compathlete.athleteTwo.person.gender == 1 %}
+
+                                                        M
+                                                    {% else %}
+                                                        F
+
+                                                    {% endif %}
+                                                </td>
+
+
+                                                <td>{{ compathlete.athleteTwo.pk }} </td>
+
+
+                                                <td>{{ compathlete.athleteTwo.licenses.last.sportsClub }}</td>
+                                                <td></td>
+                                                <td>{{ compathlete.category }} </td>
+                                                <td>{{ compathlete.athleteTwo.person.tc }} </td>
+
+
+                                                {% if aktif == 'Admin' or aktif == 'Yonetim' %}
+                                                    <td>{{ compathlete.athleteTwo.licenses.last.coach }}</td>
+                                                    <td>{{ compathlete.athleteTwo.licenses.last.coach2 }}</td>
+
+                                                    <td>
+                                                        <div class="btn-group">
+
+                                                            <a onclick="deleteAthlete({{ compathlete.id }})"
+                                                               type="button" class="btn btn-danger"><i
+                                                                    class="fa fa-remove"></i>Kaldır
+                                                            </a>
+
+
+                                                        </div>
+                                                    </td>
+                                                {% endif %}
+
+                                            </tr>
+                                        {% endif %}
                                     {% endfor %}
                                 {% endif %}
 
@@ -430,10 +516,10 @@
             $('#sporcular').DataTable({
 
                 dom: 'Bfrtip',
-                orderFixed: [[3, 'asc']],
-                rowGroup: {
-                    dataSrc: 3
-                },
+                {#orderFixed: [[3, 'asc']],#}
+                {#rowGroup: {#}
+                {#    dataSrc: 3#}
+                {# },#}
 
                 language: {
                     buttons: {
@@ -514,7 +600,7 @@
                 'paging': false,
                 'lengthChange': true,
                 'searching': true,
-                'ordering': true,
+                'ordering': false,
                 'info': true,
                 'autoWidth': true,
                 'responsive': true,
