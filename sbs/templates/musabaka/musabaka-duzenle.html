@@ -315,7 +315,8 @@
                                 <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <th>Name</th>
+                                    <th>Firsth Name</th>
+                                 <th>Last Name</th>
                                     <th>Gender</th>
                                     <th>MemberID</th>
                                     <th>Kulüp</th>
@@ -343,8 +344,9 @@
                                         <tr>
 
                                             <td>{{ forloop.counter }}</td>
-                                            <td>{{ compathlete.athlete.user.first_name }} {{ compathlete.athlete.user.last_name }}
+                                            <td>{{ compathlete.athlete.user.first_name }}
                                             </td>
+                                        <td>{{ compathlete.athlete.user.last_name }}</td>
                                             <td>
                                                 {% if compathlete.athlete.person.gender == 1 %}
 
@@ -387,8 +389,10 @@
                                             <tr>
 
                                                 <td>{{ forloop.counter }}</td>
-                                                <td>{{ compathlete.athlete.user.first_name }} {{ compathlete.athlete.user.last_name }}
+                                                <td>{{ compathlete.athlete.user.first_name }}
+
                                                 </td>
+                                            <td>{{ compathlete.athlete.user.last_name }}</td>
                                                 <td>
                                                     {% if compathlete.athlete.person.gender == 1 %}
 
@@ -430,8 +434,8 @@
                                             <tr>
 
                                                 <td></td>
-                                                <td>{{ compathlete.athleteTwo.user.first_name }} {{ compathlete.athleteTwo.user.last_name }}
-                                                </td>
+                                                <td>{{ compathlete.athleteTwo.user.first_name }} </td>
+                                            <td>{{ compathlete.athleteTwo.user.last_name }}</td>
                                                 <td>
                                                     {% if compathlete.athleteTwo.person.gender == 1 %}
 
@@ -447,7 +451,7 @@
 
 
                                                 <td>{{ compathlete.athleteTwo.licenses.last.sportsClub }}</td>
-                                                <td></td>
+<td></td>
                                                 <td>{{ compathlete.category }} </td>
                                                 <td>{{ compathlete.athleteTwo.person.tc }} </td>
 
