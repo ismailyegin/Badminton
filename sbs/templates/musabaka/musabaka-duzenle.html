@@ -314,9 +314,10 @@
                             <table id="sporcular" class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
-                                    <th>No.</th>
+                                    <th>Takım</th>
                                     <th>Firsth Name</th>
-                                 <th>Last Name</th>
+                                    <th>Last Name</th>
+                                <th>Birth Date</th>
                                     <th>Gender</th>
                                     <th>MemberID</th>
                                     <th>Kulüp</th>
@@ -348,6 +349,7 @@
                                             <td>{{ compathlete.athlete.user.first_name }}
                                             </td>
                                         <td>{{ compathlete.athlete.user.last_name }}</td>
+                                        <td>{{ compathlete.athlete.person.birthDate }}</td>
                                             <td>
                                                 {% if compathlete.athlete.person.gender == 1 %}
 
@@ -395,6 +397,7 @@
 
                                                 </td>
                                             <td>{{ compathlete.athlete.user.last_name }}</td>
+                                            <td>{{ compathlete.athlete.person.birthDate   }}</td>
                                                 <td>
                                                     {% if compathlete.athlete.person.gender == 1 %}
 
@@ -439,6 +442,7 @@
                                                 <td>{{forloop.counter}} </td>
                                                 <td>{{ compathlete.athleteTwo.user.first_name }} </td>
                                             <td>{{ compathlete.athleteTwo.user.last_name }}</td>
+                                            <td>{{ compathlete.athleteTwo.person.birthDate }}</td>
                                                 <td>
                                                     {% if compathlete.athleteTwo.person.gender == 1 %}
 
