@@ -165,7 +165,7 @@ def musabaka_duzenle(request, pk):
         return redirect('accounts:login')
 
     musabaka = Competition.objects.get(pk=pk)
-    athletes = CompetitionsAthlete.objects.filter(competition=musabaka)
+    athletes = CompetitionsAthlete.objects.filter(competition=musabaka).order_by('category')
 
     competition_form = CompetitionForm(request.POST or None, instance=musabaka)
     category = Category.objects.all()
@@ -188,8 +188,6 @@ def musabaka_duzenle(request, pk):
                 for item in request.POST.getlist('ages'):
                     musabaka.ages.add(CompetitionAges.objects.get(pk=item))
                     musabaka.save()
-
-
 
             competition_form.save()
             messages.success(request, 'Müsabaka Başarıyla Güncellenmiştir.')
