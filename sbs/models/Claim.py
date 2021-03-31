@@ -6,6 +6,8 @@ from sbs.models.Coach import Coach
 from sbs.models.Judge import Judge
 from sbs.models.EnumFields import EnumFields
 
+from django.contrib.auth.models import User
+
 
 class Claim(models.Model):
     WAITED = 'Beklemede'
@@ -62,6 +64,9 @@ class Claim(models.Model):
     importanceSort = models.CharField(max_length=128, verbose_name='Önem Durumu', choices=İMPORTANCE, default=ACİL)
     # ücret
     pay = models.IntegerField(blank=True, null=True)
+
+    user = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
+
 
     def __str__(self):
         return '%s ' % self.title
