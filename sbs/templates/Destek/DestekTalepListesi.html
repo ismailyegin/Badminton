@@ -225,8 +225,20 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label> {{ destek_form.importanceSort.label }}</label>
-                                        {{ destek_form.importanceSort }}
+                                        <label> Önem Durumu</label>
+                                        <select name="importanceSort"
+                                                class="form-control select2 select2-hidden-accessible"
+                                                style="width: 100%; " id="id_importanceSort">
+                                            <option value="" selected>---------</option>
+
+                                            <option value="ACİL" >ACİL</option>
+
+                                            <option value="ÖNEMLİ">ÖNEMLİ</option>
+
+                                            <option value="AZ ÖNEMLİ">AZ ÖNEMLİ</option>
+
+                                        </select>
+
                                     </div>
                                 </div>
 

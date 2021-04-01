@@ -6,6 +6,10 @@ from sbs.models.Claim import Claim
 
 
 class DestekSearchform(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(DestekSearchform, self).__init__(*args, **kwargs)
+        self.fields['importanceSort'].required=False
+        self.fields['status'].required=False
     class Meta:
         model = Claim
 

@@ -25,41 +25,38 @@ def return_claim(request):
     perm = general_methods.control_access(request)
     active = general_methods.controlGroup(request)
 
-
     if not perm:
         logout(request)
         return redirect('accounts:login')
-    destek_form = DestekSearchform(request.POST or None)
+    destek_form = DestekSearchform()
     destek = Claim.objects.none()
     user_form = UserSearchForm()
     if request.method == 'POST':
+        destek_form = DestekSearchform(request.POST or None)
+        status = request.POST.get('status')
+        importanceSort = request.POST.get('importanceSort')
+        firstName = unicode_tr(request.POST.get('first_name')).upper()
+        lastName = unicode_tr(request.POST.get('last_name')).upper()
 
-        if destek_form.is_valid():
-            status = destek_form.cleaned_data.get('status')
-            importanceSort = destek_form.cleaned_data.get('importanceSort')
-            firstName = unicode_tr(request.POST.get('first_name')).upper()
-            lastName = unicode_tr(request.POST.get('last_name')).upper()
+        if not (status or importanceSort):
+            if active == 'Admin':
+                destek = Claim.objects.all()
+        else:
+            query = Q()
+            if status:
+                query &= Q(status=status)
+            if importanceSort:
+                query &= Q(importanceSort=importanceSort)
+            if lastName:
+                query &= Q(last_name__icontains=lastName)
+            if firstName:
+                query &= Q(user__first_name__icontains=firstName)
 
-            if not (status or importanceSort):
-                if active == 'Admin':
-                    destek = Claim.objects.filter(status=Claim.APPROVED)
-            else:
-                query = Q()
-                if status:
-                    query &= Q(status=status)
-                if importanceSort:
-                    query &= Q(importanceSort=importanceSort)
-                if lastName:
-                        query &= Q(last_name__icontains=lastName)
-                if firstName:
-                        query &= Q(first_name__icontains=firstName)
+            if active == 'Admin':
+                destek = Claim.objects.filter(query)
 
-                if  active == 'Admin':
-                    destek = Claim.objects.filter(query)
-
-
-
-    return render(request, 'Destek/DestekTalepListesi.html', {'claims': destek ,'destek_form':destek_form,'user_form': user_form,})
+    return render(request, 'Destek/DestekTalepListesi.html',
+                  {'claims': destek, 'destek_form': destek_form, 'user_form': user_form, })
 
 
 @login_required
@@ -75,11 +72,9 @@ def claim_add(request):
     if request.method == 'POST':
         claim_form = ClaimForm(request.POST)
         if claim_form.is_valid():
-            claimSave=claim_form.save(commit=False)
-            claimSave.user=request.user
+            claimSave = claim_form.save(commit=False)
+            claimSave.user = request.user
             claimSave.save()
-
-
 
             messages.success(request, 'Destek Talep  Eklendi.')
             return redirect('sbs:destek-talep-listesi')

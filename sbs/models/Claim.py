@@ -55,9 +55,9 @@ class Claim(models.Model):
     # baslık
     title = models.CharField(blank=False, null=False, max_length=1000)
     # proje durumu
-    project = models.CharField(max_length=128, verbose_name='Proje Seçiniz', choices=STATUS_PROJECT, default=SBS)
+    project = models.CharField(max_length=128, verbose_name='Proje Seçiniz', choices=STATUS_PROJECT)
     # proje durumu
-    status = models.CharField(max_length=128, verbose_name='Kayıt Durumu', choices=STATUS_CHOICES, default=WAITED,blank=True,null=True)
+    status = models.CharField(max_length=128, verbose_name='Kayıt Durumu', choices=STATUS_CHOICES,blank=True,null=True)
     # proje açıklama
     definition = models.CharField(blank=False, null=False, max_length=1000)
     # önem durumu
