@@ -954,6 +954,8 @@
 
 
 
+
+
 <script>
     $(function () {
         $('#example1').DataTable()
@@ -1036,6 +1038,15 @@
             autoclose: true,
             language: 'tr',
             format: 'dd/mm/yyyy',
+        })
+        $('.dateyear').datepicker({
+            autoclose: true,
+            language: 'tr',
+            format: "yyyy",
+            viewMode: "years",
+            minViewMode: "years"
+
+
         })
         $('#datepicker5').datepicker({
             autoclose: true,
