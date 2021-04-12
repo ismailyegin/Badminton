@@ -26,6 +26,8 @@
 
     <!-- DataTables -->
     <link rel="stylesheet" href="{% static 'bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'drazone/basic.css' %}">
+    <link rel="stylesheet" href="{% static 'drazone/dropzone.css' %}">
 
 
     {#    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">#}
@@ -1065,6 +1067,17 @@
         $(window).on('load', function () {
             $('.preloader').fadeOut('slow');
         });
+
+
+        $('.dateyear').datepicker({
+            autoclose: true,
+            language: 'tr',
+            format: "yyyy",
+            viewMode: "years",
+            minViewMode: "years"
+
+
+        })
 
         //Timepicker
         $('.timepicker').timepicker({
