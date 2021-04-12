@@ -809,26 +809,6 @@ def arsiv_dosyaEkle(request):
 
     units = Abirim.objects.all()
 
-    if request.method == 'POST':
-        print('')
-
-        # sirano = request.POST.get('sirano')
-        # location = request.POST.get('location')
-        # birim = request.POST.get('birim')
-        # klasor = request.POST.get('klasor')
-        # if not (klasor or sirano or location or birim):
-        #     dosya=Adosya.objects.all()
-        # else:
-        #     query = Q()
-        #     if klasor:
-        #         query &= Q(klasor__pk=klasor)
-        #     if sirano:
-        #         query &= Q(sirano=sirano)
-        #     if location:
-        #         query &= Q(klasor__location__pk=location)
-        #     if birim:
-        #         query &= Q(klasor__birim__pk=birim)
-        #     dosya=Adosya.objects.filter(query)
 
     return render(request, 'arsiv/EvrakEkleSec.html', {
         'units': units,
