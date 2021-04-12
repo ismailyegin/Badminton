@@ -538,8 +538,11 @@ urlpatterns = [
     url(r'arsiv/arsiv-evrak/evrakSil/ajax/(?P<pk>\d+)$', ArsivView.arsiv_evrakDelete_ajax, name='evrak-sil-ajax'),
 
     url(r'arsiv/arsiv-anasayfa/$', ArsivView.arsiv_anasayfa, name='evrak-anasayfa'),
-
+    # evrak
     url(r'arsiv/indir/(?P<pk>\d+)$', ArsivView.zipfile, name='dosya-zip'),
+    url(r'arsiv/arsiv-evrakEkle/$', ArsivView.arsiv_dosyaEkle, name='evrak-ekle'),
+    url(r'arsiv/klasor$', ArsivView.ajax_klasor, name='birim-klasor-ajax'),
+    url(r'arsiv/dosya$', ArsivView.ajax_dosya, name='birim-dosya-ajax'),
 
 
 

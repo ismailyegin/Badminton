@@ -646,6 +646,8 @@ def birimSearch(request):
 
     dosyadizi=[]
 
+    # Hangi alanda oldugunu detatlı olarak bak dosya dizi
+
     for item in dosya.distinct():
         if AdosyaParametre.objects.filter(dosya=item):
             test = AdosyaParametre.objects.filter(dosya=item)[0]
@@ -657,8 +659,6 @@ def birimSearch(request):
                 'klasor_id':item.klasor.pk
             }
             dosyadizi.append(beka)
-
-
 
     return render(request, "arsiv/Arama.html",
                   {
@@ -798,4 +798,85 @@ def arsiv_dosya_delete(request, pk):
             return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
 
     else:
+        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+
+
+def arsiv_dosyaEkle(request):
+    perm = general_methods.control_access(request)
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+
+    units = Abirim.objects.all()
+
+    if request.method == 'POST':
+        print('')
+
+        # sirano = request.POST.get('sirano')
+        # location = request.POST.get('location')
+        # birim = request.POST.get('birim')
+        # klasor = request.POST.get('klasor')
+        # if not (klasor or sirano or location or birim):
+        #     dosya=Adosya.objects.all()
+        # else:
+        #     query = Q()
+        #     if klasor:
+        #         query &= Q(klasor__pk=klasor)
+        #     if sirano:
+        #         query &= Q(sirano=sirano)
+        #     if location:
+        #         query &= Q(klasor__location__pk=location)
+        #     if birim:
+        #         query &= Q(klasor__birim__pk=birim)
+        #     dosya=Adosya.objects.filter(query)
+
+    return render(request, 'arsiv/EvrakEkleSec.html', {
+        'units': units,
+
+    })
+
+
+@login_required
+def ajax_klasor(request):
+
+    try:
+        if request.method == 'POST':
+            klasor = Aklasor.objects.filter(birim__pk=request.POST.get('cmd'))
+            beka = []
+            for item in klasor:
+                data = {
+                    'pk': item.pk,
+                    'name': item.name,
+                }
+                beka.append(data)
+            return JsonResponse(
+                {
+                    'data': beka,
+                    'msg': 'Valid is  request'
+                })
+
+    except:
+        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+
+
+@login_required
+def ajax_dosya(request):
+
+    try:
+        if request.method == 'POST':
+            project = Adosya.objects.filter(klasor__pk=request.POST.get('cmd'))
+            beka = []
+            for item in project:
+                data = {
+                    'pk': item.pk,
+                    'name': item.sirano,
+                }
+                beka.append(data)
+            return JsonResponse(
+                {
+                    'data': beka,
+                    'msg': 'Valid is  request'
+                })
+
+    except:
         return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
