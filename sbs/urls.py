@@ -2,7 +2,7 @@ from django.conf.urls import url
 
 from sbs.Views import DashboardViews, AthleteViews, RefereeViews, ClubViews, CoachViews, DirectoryViews, UserViews, \
     CompetitionViews, AdminViews, HelpViews, PageViews, PreRegistration, ActivityView, ReferenceView, QuestionViews, \
-    LogViews, ProductView, Aktarma, ClaimView, PenalView
+    LogViews, ProductView, Aktarma, ClaimView, PenalView,ArsivView
 
 app_name = 'sbs'
 
@@ -499,6 +499,49 @@ urlpatterns = [
 
     #     ceza görüntüleme modulleri
     url(r'ceza/ceza-listesi/', PenalView.return_penal_athlete, name='ceza-listesi'),
+
+
+#     arsiv modulü
+    url(r'arsiv/arsiv-gorsel/',ArsivView.return_arsiv, name='arsiv-listesi'),
+
+    url(r'arsiv/arsiv-konumEkle/',ArsivView.arsiv_location_add, name='arsiv-konumEkle'),
+    url(r'arsiv/arsiv-konumGuncelle/(?P<pk>\d+)$',ArsivView.arsiv_location_update,name='arsiv-konumUpdate'),
+
+    url(r'arsiv/arsiv-BirimEkle/', ArsivView.arsiv_birim_add, name='arsiv-birimEkle'),
+    url(r'arsiv/arsiv-BirimGuncelle/(?P<pk>\d+)$',ArsivView.arsiv_birim_update,name='arsiv-birimUpdate'),
+    url(r'arsiv/arsiv-Birim/sil/(?P<pk>\d+)$', ArsivView.categoryItemDelete,name='Birim-delete'),
+    url(r'arsiv/arsiv-Birim/ParametreEkle/(?P<pk>\d+)$', ArsivView.arsiv_birimParametre, name='Birim-parametreAdd'),
+    url(r'arsiv/arsiv-Birim/ParametreGuncelle/(?P<pk>\d+)$', ArsivView.arsiv_birimParametreUpdate, name='Birim-parametreGuncelle'),
+    url(r'arsiv/arsiv-Birim/ParametreSil/(?P<pk>\d+)$', ArsivView.parametredelete, name='Birim-parametre-delete'),
+    url(r'arsiv/arsiv-Birim/BirimListesi/$', ArsivView.arsiv_birimListesi,name='Birim-listesi'),
+    url(r'arsiv/arsiv-Birim/BirimArama/$', ArsivView.birimsearch, name='birim-arama'),
+    url(r'arsiv/arsiv-Birim/BirimListesi/parametre/$', ArsivView.parametre, name='parametre-bilgi'),
+
+
+    url(r'arsiv/Arama/$', ArsivView.birimSearch, name='arama'),
+    url(r'arsiv/GenelArama/$', ArsivView.birimGeneralSearch, name='genel-arama'),
+
+    url(r'arsiv/arsiv-Klasor/klasorler/$', ArsivView.arsiv_klasorler, name='klasor-listesi'),
+    url(r'arsiv/arsiv-Klasor/klasorEkle/$', ArsivView.arsiv_klasorEkle, name='klasor-ekle'),
+    url(r'arsiv/arsiv-klasor/sil/(?P<pk>\d+)$', ArsivView.arsiv_klasor_delete, name='klasor-delete'),
+    url(r'arsiv/arsiv-Dosya/DosyaListesi/$', ArsivView.arsiv_dosyalar, name='dosya-listesi'),
+    url(r'arsiv/arsiv-Klasor/klasorGuncelle/(?P<pk>\d+)$', ArsivView.arsiv_klasorUpdate,
+        name='klasor-guncelle'),
+
+    url(r'arsiv/arsiv-Dosya/dosyaEkle/(?P<pk>\d+)$', ArsivView.arsiv_dosyaEkle, name='dosya-ekle'),
+    url(r'arsiv/arsiv-Dosya/dosyaGuncelle/(?P<pk>\d+)$', ArsivView.arsiv_dosyaUpdate,
+        name='dosya-guncelle'),
+    url(r'arsiv/arsiv-dosya/sil/(?P<pk>\d+)$', ArsivView.arsiv_dosya_delete, name='dosya-delete'),
+
+    url(r'arsiv/arsiv-evrak/evrakEkle/(?P<pk>\d+)$', ArsivView.arsiv_evrakEkle, name='evrak-ekle'),
+    url(r'arsiv/arsiv-evrak/evrakSil/(?P<pk>\d+)$', ArsivView.arsiv_evrakDelete, name='evrak-sil'),
+    url(r'arsiv/arsiv-evrak/evrakSil/ajax/(?P<pk>\d+)$', ArsivView.arsiv_evrakDelete_ajax, name='evrak-sil-ajax'),
+
+    url(r'arsiv/arsiv-anasayfa/$', ArsivView.arsiv_anasayfa, name='evrak-anasayfa'),
+
+    url(r'arsiv/indir/(?P<pk>\d+)$', ArsivView.zipfile, name='dosya-zip'),
+
+
 
 
 
