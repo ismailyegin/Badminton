@@ -15,11 +15,20 @@ class CategoryItem(models.Model):
     creationDate = models.DateTimeField(auto_now_add=True)
     operationDate = models.DateTimeField(auto_now=True)
 
+    def locationSet(self, location, deger):
+        deger =  str(location.name)+"/"+deger
+        if not (location.parent):
+            return '%s' % (str(deger))
+        else:
+            location = CategoryItem.objects.get(pk=location.parent_id)
+            return self.locationSet(location, deger)
+
     def __str__(self):
-        if self.branch == None:
+        if self.parent == None:
             return '%s' % (self.name)
         else:
-            return '%s' % (self.name + '-' + self.branch)
+            location = CategoryItem.objects.get(pk=self.parent_id)
+            return '%s' % ( self.locationSet( location, '')+self.name )
 
     # class Meta:
     #     default_permissions = ()
