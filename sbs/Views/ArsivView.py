@@ -148,9 +148,7 @@ def arsiv_birimParametre(request, pk):
                                    type=category_item_form.cleaned_data['type']
                                    )
             test.save()
-            # print()
-            # print(test.birim.name)
-            # print(test)
+
 
             return redirect('sbs:arsiv-birimUpdate', pk=abirim.pk)
 
@@ -831,6 +829,18 @@ def arsiv_dosyaEkle_full(request):
 
     units = Abirim.objects.all()
 
+    if request.method == 'POST':
+
+        if request.POST.get("dosya_id"):
+            if Adosya.objects.filter(pk=int(request.POST.get("dosya_id"))):
+                dosya = Adosya.objects.get(pk=int(request.POST.get("dosya_id")))
+                if request.FILES.getlist('file'):
+                    for item in request.FILES.getlist('file'):
+                        evrak = Aevrak(file=item)
+                        evrak.save()
+                        dosya.evrak.add(evrak)
+                        dosya.save()
+                    return redirect('sbs:dosya-guncelle', pk=dosya.pk)
 
     return render(request, 'arsiv/EvrakEkleSec.html', {
         'units': units,
