@@ -540,7 +540,7 @@ urlpatterns = [
     url(r'arsiv/arsiv-anasayfa/$', ArsivView.arsiv_anasayfa, name='evrak-anasayfa'),
     # evrak
     url(r'arsiv/indir/(?P<pk>\d+)$', ArsivView.zipfile, name='dosya-zip'),
-    url(r'arsiv/arsiv-evrakEkle/$', ArsivView.arsiv_dosyaEkle, name='evrak-ekle-ajax'),
+    url(r'arsiv/arsiv-evrakEkle/$', ArsivView.arsiv_dosyaEkle_full, name='evrak-ekle-ajax'),
     url(r'arsiv/klasor$', ArsivView.ajax_klasor, name='birim-klasor-ajax'),
     url(r'arsiv/dosya$', ArsivView.ajax_dosya, name='birim-dosya-ajax'),
 

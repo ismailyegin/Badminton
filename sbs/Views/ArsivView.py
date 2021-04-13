@@ -84,12 +84,13 @@ def arsiv_birim_add(request):
     if request.method == 'POST':
         category_item_form = AbirimForm(request.POST)
         if category_item_form.is_valid():
-            category_item_form.save()
+            birim = category_item_form.save(commit=False)
+            birim.save()
+            return redirect('sbs:arsiv-birimUpdate', pk=birim.pk)
 
     category_item_form = AbirimForm()
-    categoryitem = Abirim.objects.all()
     return render(request, 'arsiv/birimAdd.html',
-                  {'category_item_form': category_item_form, 'categoryitem': categoryitem})
+                  {'category_item_form': category_item_form,})
 
 
 @login_required
@@ -801,7 +802,7 @@ def arsiv_dosya_delete(request, pk):
         return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
 
 
-def arsiv_dosyaEkle(request):
+def arsiv_dosyaEkle_full(request):
     perm = general_methods.control_access(request)
     if not perm:
         logout(request)
