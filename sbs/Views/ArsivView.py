@@ -603,7 +603,7 @@ def birimSearch(request):
                     klasor |= Aklasor.objects.filter(pk=item.dosya.klasor.pk)
                     units |= Abirim.objects.filter(pk=item.dosya.klasor.birim.pk)
                     beka = {
-                        'pk': item.pk,
+                        'pk': item.dosya.pk,
                         'sirano': item.dosya.sirano,
                         'parametre': item.parametre.title,
                         'klasor_id': item.dosya.klasor.pk
