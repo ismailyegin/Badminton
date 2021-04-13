@@ -112,7 +112,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
+                    <div class="row" id="dosyamodelrow">
                         <div class="col-lg-12">
                             <div class="col-lg-12">
                                 <div class="form-group ">
@@ -324,7 +324,6 @@
                 klasor(birim);
             });
 
-
             $("#klasor_id").change(function () {
                 var klasor = $(this).find('option:selected').val();
                 $("#dosya_id").empty();
@@ -412,7 +411,6 @@
                         e.handled = true;
                         alert('birim ');
 
-
                         {#$.ajax({#}
                         {#    url: "{% url "sbs:proje-gorus-kaldir" project_pk=212121223232323232 employee_pk=999999999999999 %}".replace(/212121223232323232/, id.toString()).replace(/999999999999999/, competitionId.toString()),#}
                         {#    type: "POST",#}
@@ -432,8 +430,6 @@
                         {#        }#}
                         {#    }#}
                         {# });#}
-
-
                     }
 
 
@@ -445,40 +441,88 @@
         });
 
         $("#btnklasor").click(function () {
-            $("#modalklasorAdd").on("shown.bs.modal", function (e) {
-                $("#btnklasorkaydet").click(function (e) {
 
 
-                    if (e.handled !== true) { // This will prevent event triggering more then once
-                        e.handled = true;
-                        alert('klasör');
-                    }
+            if ($("#birim_id").val() != "") {
 
 
+
+
+
+                $("#modalklasorAdd").on("shown.bs.modal", function (e) {
+                    $("#btnklasorkaydet").click(function (e) {
+
+
+                        if (e.handled !== true) { // This will prevent event triggering more then once
+                            e.handled = true;
+                            alert('klasör');
+                        }
+
+
+                    });
+                }).modal('show');
+                $('#btn-close').click(function () {
+                    $('#modalklasorAdd').modal('hide');
                 });
-            }).modal('show');
-            $('#btn-close').click(function () {
-                $('#modalklasorAdd').modal('hide');
-            });
+            }
         });
 
 
         $("#btndosya").click(function () {
-            $("#modaldosyaAdd").on("shown.bs.modal", function (e) {
-                $("#btndosyaAdd").click(function (e) {
+            {#var deger=$("#klasor_id").val();#}
+            {#  conslole.log(deger);#}
+
+            if ($("#klasor_id").val() != "") {
 
 
-                    if (e.handled !== true) { // This will prevent event triggering more then once
-                        e.handled = true;
-                        alert('dosya kaydet');
-                    }
+
+                 $.ajax({
+                            url: "{% url "sbs:dosyaform-ajax"  %}",
+                            type: "POST",
+                            data: {
+                                'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                                isActive: 'False',
+                                cmd:$("#klasor_id").val()
+                            },
+                            success: function (result) {
 
 
-                });
-            }).modal('show');
-            $('#btn-close').click(function () {
-                $('#modaldosyaAdd').modal('hide');
-            });
+                                $("#dosyamodelrow").prepend(result.data)
+
+
+                                console.log(result);
+                                if (result.status == 'Success') {
+                                    html = 'Aşama başarıyla kaldırıldı.';
+
+
+                                    console.log(result.status);
+
+                                }
+                            }
+                         });
+
+
+                $("#modaldosyaAdd").on("shown.bs.modal", function (e) {
+                    $("#btndosyaAdd").click(function (e) {
+
+
+                        if (e.handled !== true) { // This will prevent event triggering more then once
+                            e.handled = true;
+                            alert('dosya kaydet');
+                        }
+
+
+                    });
+                 }).modal('show');
+                $('#btn-close').click(function () {
+                    $('#modaldosyaAdd').modal('hide');
+                 });
+
+            } else {
+                console.log('deger yok ');
+            }
+
+
         });
 
 

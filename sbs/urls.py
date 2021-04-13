@@ -543,6 +543,7 @@ urlpatterns = [
     url(r'arsiv/arsiv-evrakEkle/$', ArsivView.arsiv_dosyaEkle_full, name='evrak-ekle-ajax'),
     url(r'arsiv/klasor$', ArsivView.ajax_klasor, name='birim-klasor-ajax'),
     url(r'arsiv/dosya$', ArsivView.ajax_dosya, name='birim-dosya-ajax'),
+    url(r'arsiv/dosyaform/ajax$', ArsivView.ajax_dosyaform, name='dosyaform-ajax'),
 
 
 
