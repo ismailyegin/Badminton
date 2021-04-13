@@ -26,6 +26,7 @@ from sbs.models.Aevrak import Aevrak
 from sbs.models.Aklasor import Aklasor
 from sbs.models.CategoryItem import CategoryItem
 from sbs.services import general_methods
+from unicode_tr import unicode_tr
 
 
 @login_required
@@ -456,11 +457,12 @@ def birimGeneralSearch(request):
 
     if request.method == 'POST':
         if request.POST.get('search'):
-            units |= Abirim.objects.filter(name__icontains=request.POST.get('search'))
+            search= unicode_tr(request.POST.get('search')).upper()
+            units |= Abirim.objects.filter(name__icontains=search)
 
-            klasor |= Aklasor.objects.filter(name__icontains=request.POST.get('search'))
+            klasor |= Aklasor.objects.filter(name__icontains=search)
             try:
-                dosya |= Adosya.objects.filter(sirano=request.POST.get('search'))
+                dosya |= Adosya.objects.filter(sirano=search)
             except:
                 print('Sayisal degil')
             if klasor:
@@ -470,7 +472,7 @@ def birimGeneralSearch(request):
                 for item in dosya:
                     klasor |= Aklasor.objects.filter(pk=item.klasor.pk)
                     units |= Abirim.objects.filter(pk=item.klasor.birim.pk)
-            dosyaparametre = AdosyaParametre.objects.filter(value__contains=request.POST.get('search'))
+            dosyaparametre = AdosyaParametre.objects.filter(value__contains=search)
             if dosyaparametre:
                 for item in dosyaparametre:
                     dosya |= Adosya.objects.filter(pk=int(item.dosya.pk))
@@ -569,6 +571,8 @@ def birimSearch(request):
     klasor = Aklasor.objects.none()
     klasor_form=AklasorSearchForm()
 
+    dosyadizi=[]
+
     if request.method == 'POST':
         name = request.POST.get('klasorname')
         sirano = request.POST.get('klasorsirano')
@@ -577,11 +581,12 @@ def birimSearch(request):
 
         # genel arama alani
         if request.POST.get('search'):
+            search = unicode_tr(request.POST.get('search')).upper()
             print('genel arama ')
-            units |= Abirim.objects.filter(name__icontains=request.POST.get('search'))
-            klasor |= Aklasor.objects.filter(name__icontains=request.POST.get('search'))
+            units |= Abirim.objects.filter(name__icontains=search)
+            klasor |= Aklasor.objects.filter(name__icontains=search)
             try:
-                dosya |= Adosya.objects.filter(sirano=request.POST.get('search'))
+                dosya |= Adosya.objects.filter(sirano=search)
             except:
                 print('Sayisal degil')
             if klasor:
@@ -591,12 +596,19 @@ def birimSearch(request):
                 for item in dosya:
                     klasor |= Aklasor.objects.filter(pk=item.klasor.pk)
                     units |= Abirim.objects.filter(pk=item.klasor.birim.pk)
-            dosyaparametre = AdosyaParametre.objects.filter(value__contains=request.POST.get('search'))
+            dosyaparametre = AdosyaParametre.objects.filter(value__contains=search)
             if dosyaparametre:
                 for item in dosyaparametre:
                     dosya |= Adosya.objects.filter(pk=int(item.dosya.pk))
                     klasor |= Aklasor.objects.filter(pk=item.dosya.klasor.pk)
                     units |= Abirim.objects.filter(pk=item.dosya.klasor.birim.pk)
+                    beka = {
+                        'pk': item.pk,
+                        'sirano': item.dosya.sirano,
+                        'parametre': item.parametre.title,
+                        'klasor_id': item.dosya.klasor.pk
+                    }
+                    dosyadizi.append(beka)
 
         # dosya arama alani
         # if request.POST.get('searchdosya'):
@@ -607,16 +619,33 @@ def birimSearch(request):
         # birim arama alani
         elif request.POST.get('searchbirim'):
             print('birim arama ')
+
             units =Abirim.objects.filter(pk=request.POST.get('searchbirim'))
             birimparametre = AbirimParametre.objects.filter(birim__id=int(request.POST.get('searchbirim')))
             if birimparametre:
                 for item in birimparametre:
                     if request.POST.get(item.title):
                         print(request.POST.get(item.title))
-                        dosyaParametre = AdosyaParametre.objects.filter(value__icontains=request.POST.get(item.title))
-                        for item in dosyaParametre:
-                            dosya |= Adosya.objects.filter(pk=int(item.dosya.pk))
-                            klasor |= Aklasor.objects.filter(pk=item.dosya.klasor.pk)
+
+                        dosyaParametre = AdosyaParametre.objects.filter(value__icontains=unicode_tr(request.POST.get(item.title)).upper())
+                        for dosyapara in dosyaParametre:
+                            dosya |= Adosya.objects.filter(pk=int(dosyapara.dosya.pk))
+                            klasor |= Aklasor.objects.filter(pk=dosyapara.dosya.klasor.pk)
+
+                            beka = {
+                                'pk': dosyapara.dosya.pk,
+                                'sirano': dosyapara.dosya.sirano,
+                                'parametre': dosyapara.parametre.title,
+                                'klasor_id': dosyapara.dosya.klasor.pk
+                            }
+                            dosyadizi.append(beka)
+
+
+
+
+
+
+
             if not (klasor):
                 klasor=Aklasor.objects.filter(birim=Abirim.objects.get(pk=request.POST.get('searchbirim')))
                 dosya=Adosya.objects.filter(klasor__birim__pk=request.POST.get('searchbirim'))
@@ -644,23 +673,17 @@ def birimSearch(request):
             klasor = Aklasor.objects.all()
 
 
-
-    dosyadizi=[]
-
-    # Hangi alanda oldugunu detatlı olarak bak dosya dizi
-
-    for item in dosya.distinct():
-        if AdosyaParametre.objects.filter(dosya=item):
-            test = AdosyaParametre.objects.filter(dosya=item)[0]
-            print(test.parametre)
-            beka = {
-                'pk': item.pk,
-                'sirano': item.sirano,
-                'parametre': test.parametre.title,
-                'klasor_id':item.klasor.pk
-            }
-            dosyadizi.append(beka)
-
+    if len(dosyadizi) == 0:
+        for item in dosya.distinct():
+            if AdosyaParametre.objects.filter(dosya=item):
+                test = AdosyaParametre.objects.filter(dosya=item)[0]
+                print(test.parametre)
+                beka = {
+                    'pk': item.pk,
+                    'sirano': item.sirano,
+                    'klasor_id': item.klasor.pk
+                }
+                dosyadizi.append(beka)
     return render(request, "arsiv/Arama.html",
                   {
                       'units': units.distinct(),
@@ -668,7 +691,6 @@ def birimSearch(request):
                       'files': dosyadizi,
                       'klasor_form':klasor_form
                   })
-
 @login_required
 def zipfile(request, pk):
     perm = general_methods.control_access(request)
@@ -815,8 +837,6 @@ def arsiv_dosyaEkle_full(request):
         'units': units,
 
     })
-
-
 @login_required
 def ajax_klasor(request):
 
@@ -842,7 +862,6 @@ def ajax_klasor(request):
 
 @login_required
 def ajax_dosya(request):
-
     try:
         if request.method == 'POST':
             project = Adosya.objects.filter(klasor__pk=request.POST.get('cmd'))
