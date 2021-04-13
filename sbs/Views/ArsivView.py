@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render
+from unicode_tr import unicode_tr
 
 from sbs.Forms.AbirimForm import AbirimForm
 from sbs.Forms.AbirimSearchForm import AbirimSearchForm
@@ -26,7 +27,6 @@ from sbs.models.Aevrak import Aevrak
 from sbs.models.Aklasor import Aklasor
 from sbs.models.CategoryItem import CategoryItem
 from sbs.services import general_methods
-from unicode_tr import unicode_tr
 
 
 @login_required
@@ -351,15 +351,22 @@ def arsiv_dosyaUpdate(request, pk):
             dosya.save()
 
         dosya.sirano = request.POST.get('sirano')
-        # Sonradan  parametre eklendigine  kontrol yazılmasi lazım
-        if dosyaparametre:
-            for item in dosyaparametre:
 
-                if request.POST.get(item.parametre.title):
-                    item.value = request.POST.get(item.parametre.title)
-                    item.save()
-        # else:
-        #     form.update(dosya.pk)
+        birimparametre = AbirimParametre.objects.filter(birim=dosya.klasor.birim)
+        for item in birimparametre:
+            if dosyaparametre.filter(parametre=item):
+                deger = dosyaparametre.filter(parametre=item)[0]
+                if request.POST.get(deger.parametre.title):
+                    deger.value = request.POST.get(deger.parametre.title)
+                    deger.save()
+            else:
+                dosyaParametre = AdosyaParametre(
+                    value=str(request.POST.get(item.title)),
+                    dosya=dosya,
+                )
+                dosyaParametre.parametre = item
+                dosyaParametre.save()
+        dosya.save()
     return render(request, 'arsiv/DosyaGuncelle.html', {'form': form, 'dosya': dosya, 'files': files ,'evraklist':evraklist})
 
 
