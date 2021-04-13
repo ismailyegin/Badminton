@@ -148,9 +148,9 @@ def arsiv_birimParametre(request, pk):
                                    type=category_item_form.cleaned_data['type']
                                    )
             test.save()
-            print()
-            print(test.birim.name)
-            print(test)
+            # print()
+            # print(test.birim.name)
+            # print(test)
 
             return redirect('sbs:arsiv-birimUpdate', pk=abirim.pk)
 
@@ -369,7 +369,6 @@ def arsiv_dosyaUpdate(request, pk):
         dosya.save()
     return render(request, 'arsiv/DosyaGuncelle.html', {'form': form, 'dosya': dosya, 'files': files ,'evraklist':evraklist})
 
-
 @login_required
 def arsiv_evrakEkle(request, pk):
     perm = general_methods.control_access(request)
@@ -448,13 +447,6 @@ def parametre(request):
             return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
 
 
-    try:
-
-        print()
-
-
-    except:
-        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
 
 
 def birimGeneralSearch(request):
@@ -519,7 +511,7 @@ def birimsearch(request):
             birimparametre=AbirimParametre.objects.filter(birim__id=int(request.POST.get('birim_id')))
             for item in birimparametre:
                 if request.POST.get(item.title):
-                    print(request.POST.get(item.title))
+                    # print(request.POST.get(item.title))
                     dosyaParametre = AdosyaParametre.objects.filter(value__icontains=request.POST.get(item.title))
                     for item in dosyaParametre:
                         dosya |= Adosya.objects.filter(pk=int(item.dosya.pk))
@@ -589,7 +581,7 @@ def birimSearch(request):
         # genel arama alani
         if request.POST.get('search'):
             search = unicode_tr(request.POST.get('search')).upper()
-            print('genel arama ')
+            # print('genel arama ')
             units |= Abirim.objects.filter(name__icontains=search)
             klasor |= Aklasor.objects.filter(name__icontains=search)
             try:
@@ -625,14 +617,14 @@ def birimSearch(request):
         #         units |= Abirim.objects.filter(pk=item.klasor.birim.pk)
         # birim arama alani
         elif request.POST.get('searchbirim'):
-            print('birim arama ')
+            # print('birim arama ')
 
             units =Abirim.objects.filter(pk=request.POST.get('searchbirim'))
             birimparametre = AbirimParametre.objects.filter(birim__id=int(request.POST.get('searchbirim')))
             if birimparametre:
                 for item in birimparametre:
                     if request.POST.get(item.title):
-                        print(request.POST.get(item.title))
+                        # print(request.POST.get(item.title))
 
                         dosyaParametre = AdosyaParametre.objects.filter(value__icontains=unicode_tr(request.POST.get(item.title)).upper())
                         for dosyapara in dosyaParametre:
@@ -660,7 +652,7 @@ def birimSearch(request):
         # klasör arama alani
 
         elif (name or sirano or location or birim):
-            print('klasor  arama ')
+            # print('klasor  arama ')
             query = Q()
             if name:
                 query &= Q(name__icontains=name)
@@ -684,7 +676,7 @@ def birimSearch(request):
         for item in dosya.distinct():
             if AdosyaParametre.objects.filter(dosya=item):
                 test = AdosyaParametre.objects.filter(dosya=item)[0]
-                print(test.parametre)
+                # print(test.parametre)
                 beka = {
                     'pk': item.pk,
                     'sirano': item.sirano,
