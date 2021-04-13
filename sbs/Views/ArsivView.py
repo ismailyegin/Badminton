@@ -828,6 +828,8 @@ def arsiv_dosyaEkle_full(request):
         return redirect('accounts:login')
 
     units = Abirim.objects.all()
+    unit_form=AbirimForm()
+    klasor_form=AklasorForm()
 
     if request.method == 'POST':
 
@@ -844,6 +846,8 @@ def arsiv_dosyaEkle_full(request):
 
     return render(request, 'arsiv/EvrakEkleSec.html', {
         'units': units,
+        'unit_form':unit_form,
+        'klasor_form':klasor_form,
 
     })
 @login_required
