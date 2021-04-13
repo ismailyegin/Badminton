@@ -65,11 +65,12 @@
                         <div class="col-lg-12">
                             {{ unit_form }}
                         </div>
+
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-                    {#                    <button type="button" class="btn btn-primary">Save changes</button>#}
+                    <button type="button" id="btnbirimAdd" class="btn btn-secondary">Kaydet</button>
+
                 </div>
             </div>
         </div>
@@ -93,7 +94,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                    <button type="button" id="btnklasorkaydet" class="btn btn-secondary">Kaydet</button>
                     {#                    <button type="button" class="btn btn-primary">Save changes</button>#}
                 </div>
             </div>
@@ -113,12 +114,55 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-12">
-                            {{ klasor_form }}
+                            <div class="col-lg-12">
+                                <div class="form-group ">
+                                    <label> Birim</label>
+
+
+                                    <!-- /btn-group -->
+                                    <select name="dosyabirim_id" class="form-control select2 select2-hidden-accessible"
+                                            style="width: 100%; " id="dosyabirim_id" tabindex="-1" required
+                                            aria-hidden="true">
+                                        <option value="" selected="">Seçiniz</option>
+                                        {% for item in units %}
+                                            <option value="{{ item.pk }}">{{ item }}</option>
+                                        {% endfor %}
+                                    </select>
+
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-12">
+                                <div class="form-group ">
+                                    <label> Klasör</label>
+
+                                    <!-- /btn-group -->
+                                    <select name="dosyaklasor_id" class="form-control select2 select2-hidden-accessible"
+                                            style="width: 100%; " id="dosyaklasor_id" tabindex="-1" required
+                                            aria-hidden="true">
+                                        <option value="" selected="">Seçiniz</option>
+                                    </select>
+
+
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group ">
+                                    <label> Sıra Numarası</label>
+
+                                    <input type="text" name="dosyasirano" maxlength="120" class="form-control"
+                                           required="" id="dosyasirano_id" required>
+
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                    <button type="button" class="btn btn-secondary" id="btndosyaAdd">Kaydet</button>
                     {#                    <button type="button" class="btn btn-primary">Save changes</button>#}
                 </div>
             </div>
@@ -255,7 +299,7 @@
                             </div>
                         </div>
                         <div class="box-footer">
-                            <button type="submit" class="btn btn-primary pull-right" >Kaydet</button>
+                            <button type="submit" class="btn btn-primary pull-right">Kaydet</button>
                         </div>
                     </div>
                 </div>
@@ -286,9 +330,37 @@
                 $("#dosya_id").empty();
                 dosya(klasor);
             });
+            $("#dosyabirim_id").change(function () {
+                var birim = $(this).find('option:selected').val();
+                $("#dosyaklasor_id").empty();
+                $("#dosya_id").empty();
+                dosyaklasor(birim);
+            });
 
 
         });
+
+
+        function dosyaklasor(city) {
+            $.ajax({
+                url: "{% url "sbs:birim-klasor-ajax" %}",
+                type: "POST",
+                data: {
+                    'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                    "cmd": city,
+                },
+                success: function (result) {
+
+                    $("#dosyaklasor_id").append('<option value="">-----------</option>');
+
+                    for (item in result.data) {
+                        $("#dosyaklasor_id").append('<option value="' + result.data[item].pk + '">' + result.data[item].name + '</option>');
+                    }
+                }
+            });
+
+        };
+
 
         function klasor(city) {
             $.ajax({
@@ -334,27 +406,36 @@
 
         $("#btnbirim").click(function () {
             $("#modalbirimAdd").on("shown.bs.modal", function (e) {
-                $("#btn-conf").click(function (e) {
+                $("#btnbirimAdd").click(function (e) {
 
-                    {#$.ajax({#}
-                    {#    url: "{% url "sbs:proje-gorus-kaldir" project_pk=212121223232323232 employee_pk=999999999999999 %}".replace(/212121223232323232/, id.toString()).replace(/999999999999999/, competitionId.toString()),#}
-                    {#    type: "POST",#}
-                    {#    data: {#}
-                    {#        'csrfmiddlewaretoken': "{{  csrf_token  }}",#}
-                    {#        isActive: 'False'#}
-                    {#    },#}
-                    {#    success: function (result) {#}
-                    {#        if (result.status == 'Success') {#}
-                    {#            html = 'Aşama başarıyla kaldırıldı.';#}
-                    {#            $('#offset-' + competitionId).hide();#}
-                    {##}
-                    {#            console.log(result.status);#}
-                    {##}
-                    {##}
-                    {##}
-                    {#        }#}
-                    {#    }#}
-                    {# });#}
+                    if (e.handled !== true) { // This will prevent event triggering more then once
+                        e.handled = true;
+                        alert('birim ');
+
+
+                        {#$.ajax({#}
+                        {#    url: "{% url "sbs:proje-gorus-kaldir" project_pk=212121223232323232 employee_pk=999999999999999 %}".replace(/212121223232323232/, id.toString()).replace(/999999999999999/, competitionId.toString()),#}
+                        {#    type: "POST",#}
+                        {#    data: {#}
+                        {#        'csrfmiddlewaretoken': "{{  csrf_token  }}",#}
+                        {#        isActive: 'False'#}
+                        {#    },#}
+                        {#    success: function (result) {#}
+                        {#        if (result.status == 'Success') {#}
+                        {#            html = 'Aşama başarıyla kaldırıldı.';#}
+                        {#            $('#offset-' + competitionId).hide();#}
+                        {##}
+                        {#            console.log(result.status);#}
+                        {##}
+                        {##}
+                        {##}
+                        {#        }#}
+                        {#    }#}
+                        {# });#}
+
+
+                    }
+
 
                 });
             }).modal('show');
@@ -365,27 +446,14 @@
 
         $("#btnklasor").click(function () {
             $("#modalklasorAdd").on("shown.bs.modal", function (e) {
-                $("#btn-conf").click(function (e) {
+                $("#btnklasorkaydet").click(function (e) {
 
-                    {#$.ajax({#}
-                    {#    url: "{% url "sbs:proje-gorus-kaldir" project_pk=212121223232323232 employee_pk=999999999999999 %}".replace(/212121223232323232/, id.toString()).replace(/999999999999999/, competitionId.toString()),#}
-                    {#    type: "POST",#}
-                    {#    data: {#}
-                    {#        'csrfmiddlewaretoken': "{{  csrf_token  }}",#}
-                    {#        isActive: 'False'#}
-                    {#    },#}
-                    {#    success: function (result) {#}
-                    {#        if (result.status == 'Success') {#}
-                    {#            html = 'Aşama başarıyla kaldırıldı.';#}
-                    {#            $('#offset-' + competitionId).hide();#}
-                    {##}
-                    {#            console.log(result.status);#}
-                    {##}
-                    {##}
-                    {##}
-                    {#        }#}
-                    {#    }#}
-                    {# });#}
+
+                    if (e.handled !== true) { // This will prevent event triggering more then once
+                        e.handled = true;
+                        alert('klasör');
+                    }
+
 
                 });
             }).modal('show');
@@ -397,27 +465,14 @@
 
         $("#btndosya").click(function () {
             $("#modaldosyaAdd").on("shown.bs.modal", function (e) {
-                $("#btn-conf").click(function (e) {
+                $("#btndosyaAdd").click(function (e) {
 
-                    {#$.ajax({#}
-                    {#    url: "{% url "sbs:proje-gorus-kaldir" project_pk=212121223232323232 employee_pk=999999999999999 %}".replace(/212121223232323232/, id.toString()).replace(/999999999999999/, competitionId.toString()),#}
-                    {#    type: "POST",#}
-                    {#    data: {#}
-                    {#        'csrfmiddlewaretoken': "{{  csrf_token  }}",#}
-                    {#        isActive: 'False'#}
-                    {#    },#}
-                    {#    success: function (result) {#}
-                    {#        if (result.status == 'Success') {#}
-                    {#            html = 'Aşama başarıyla kaldırıldı.';#}
-                    {#            $('#offset-' + competitionId).hide();#}
-                    {##}
-                    {#            console.log(result.status);#}
-                    {##}
-                    {##}
-                    {##}
-                    {#        }#}
-                    {#    }#}
-                    {# });#}
+
+                    if (e.handled !== true) { // This will prevent event triggering more then once
+                        e.handled = true;
+                        alert('dosya kaydet');
+                    }
+
 
                 });
             }).modal('show');
