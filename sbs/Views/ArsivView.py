@@ -356,8 +356,8 @@ def arsiv_dosyaUpdate(request, pk):
                 if request.POST.get(item.parametre.title):
                     item.value = request.POST.get(item.parametre.title)
                     item.save()
-        else:
-            form.update(dosya.pk)
+        # else:
+        #     form.update(dosya.pk)
     return render(request, 'arsiv/DosyaGuncelle.html', {'form': form, 'dosya': dosya, 'files': files ,'evraklist':evraklist})
 
 
