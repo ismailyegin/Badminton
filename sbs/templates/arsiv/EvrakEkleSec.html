@@ -2,7 +2,29 @@
 {% block content %}
 
 
+{#message modal#}
+    <div class="modal fade" id="modelMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Uyarı</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <p id="message"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
     <!-- success modal -->
+
     <div class="modal modal-success modal-success-food fade in" id="modal-success" style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -48,7 +70,7 @@
         <!-- /.modal-dialog -->
     </div>
 
-
+{#birim modal #}
     <div class="modal fade" id="modalbirimAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -75,6 +97,7 @@
             </div>
         </div>
     </div>
+{# klasor modal#}
     <div class="modal fade" id="modalklasorAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -100,6 +123,7 @@
             </div>
         </div>
     </div>
+{# dosya modal#}
     <div class="modal fade" id="modaldosyaAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -112,52 +136,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="row" id="dosyamodelrow">
-                        <div class="col-lg-12">
-                            <div class="col-lg-12">
-                                <div class="form-group ">
-                                    <label> Birim</label>
+                    <div class="row" >
+                        <div class="col-lg-12 "id="dosyamodelrow">
 
 
-                                    <!-- /btn-group -->
-                                    <select name="dosyabirim_id" class="form-control select2 select2-hidden-accessible"
-                                            style="width: 100%; " id="dosyabirim_id" tabindex="-1" required
-                                            aria-hidden="true">
-                                        <option value="" selected="">Seçiniz</option>
-                                        {% for item in units %}
-                                            <option value="{{ item.pk }}">{{ item }}</option>
-                                        {% endfor %}
-                                    </select>
-
-
-                                </div>
-                            </div>
-
-
-                            <div class="col-lg-12">
-                                <div class="form-group ">
-                                    <label> Klasör</label>
-
-                                    <!-- /btn-group -->
-                                    <select name="dosyaklasor_id" class="form-control select2 select2-hidden-accessible"
-                                            style="width: 100%; " id="dosyaklasor_id" tabindex="-1" required
-                                            aria-hidden="true">
-                                        <option value="" selected="">Seçiniz</option>
-                                    </select>
-
-
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="form-group ">
-                                    <label> Sıra Numarası</label>
-
-                                    <input type="text" name="dosyasirano" maxlength="120" class="form-control"
-                                           required="" id="dosyasirano_id" required>
-
-
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -226,11 +208,13 @@
                             <h3 class="box-title"> Evrak Ekle </h3>
                         </div>
                         <div class="box-body">
-                            <div class="col-lg-3">
+                            <div class="col">
                                 <div class="form-group ">
                                     <label> Birim</label>
                                     <div class="input-group margin">
                                         <div class="input-group-btn">
+                                            <button type="button" id="btnbirimincele" class="btn btn-warning"><i
+                                                    class="fa fa-align-left"></i></button>
                                             <button type="button" id="btnbirim" class="btn btn-success"><i
                                                     class="fa fa-plus"></i></button>
                                         </div>
@@ -249,11 +233,13 @@
                             </div>
 
 
-                            <div class="col-lg-3">
+                            <div class="col">
                                 <div class="form-group ">
                                     <label> Klasör</label>
                                     <div class="input-group margin">
                                         <div class="input-group-btn">
+                                            <button type="button" id="btnklasorincele" class="btn btn-warning"><i
+                                                    class="fa fa-align-left"></i></button>
                                             <button type="button" id="btnklasor" class="btn btn-success"><i
                                                     class="fa fa-plus"></i></button>
                                         </div>
@@ -268,11 +254,14 @@
 
                                 </div>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col">
                                 <div class="form-group ">
                                     <label> Dosya</label>
                                     <div class="input-group margin">
                                         <div class="input-group-btn">
+
+                                             <button type="button" id="btndosyaincele" class="btn btn-warning"><i
+                                                    class="fa fa-align-left"></i></button>
                                             <button type="button" id="btndosya" class="btn btn-success"><i
                                                     class="fa fa-plus"></i></button>
                                         </div>
@@ -286,7 +275,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col">
                                 <div class="form-group">
                                     <label> Evraklar</label>
 
@@ -465,6 +454,12 @@
                     $('#modalklasorAdd').modal('hide');
                 });
             }
+            else {
+
+                 $("#modelMessage").on("shown.bs.modal", function (e) {
+                    $("#message").text("Lütfen Birim Seçiniz");
+                 }).modal('show');
+            }
         });
 
 
@@ -519,11 +514,85 @@
                  });
 
             } else {
-                console.log('deger yok ');
+
+
+
+                 $("#modelMessage").on("shown.bs.modal", function (e) {
+                    $("#message").text("Lütfen Klasör Seçiniz");
+                 }).modal('show');
+
             }
 
 
         });
+
+             {#birim incele alani#}
+        $("#btnbirimincele").click(function () {
+
+
+            if ($("#birim_id").val() != "") {
+
+
+                  alert(
+                "birim güncelleme  alani"
+            );
+
+
+
+            }else {
+                 $("#modelMessage").on("shown.bs.modal", function (e) {
+                    $("#message").text("Lütfen Birim Seçiniz");
+                 }).modal('show');
+
+            }
+
+
+        });
+
+
+
+        {#klasör incele alani#}
+        $("#btnklasorincele").click(function () {
+
+            if ($("#klasor_id").val() != "") {
+
+
+                  alert(
+                "klasor güncelleme  alani"
+            );
+
+
+
+            }else {
+                 $("#modelMessage").on("shown.bs.modal", function (e) {
+                    $("#message").text("Lütfen Klasör Seçiniz");
+                 }).modal('show');
+
+            }
+        });
+
+
+
+                        {#birim incele alani#}
+        $("#btndosyaincele").click(function () {
+
+            if ($("#birim_id").val() != "") {
+
+
+                  alert(
+                "dosya güncelleme  alani"
+            );
+
+
+
+            }else {
+                 $("#modelMessage").on("shown.bs.modal", function (e) {
+                    $("#message").text("Lütfen Dosya Seçiniz");
+                 }).modal('show');
+
+            }
+        });
+
 
 
     </script>

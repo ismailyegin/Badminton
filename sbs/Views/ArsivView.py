@@ -842,7 +842,7 @@ def arsiv_dosyaEkle_full(request):
                         evrak.save()
                         dosya.evrak.add(evrak)
                         dosya.save()
-                    return redirect('sbs:dosya-guncelle', pk=dosya.pk)
+                return redirect('sbs:dosya-guncelle', pk=dosya.pk)
 
     return render(request, 'arsiv/EvrakEkleSec.html', {
         'units': units,
@@ -897,42 +897,16 @@ def ajax_dosya(request):
 
 @login_required
 def ajax_dosyaform(request):
-    klasor = Aklasor.objects.get(pk=int(request.POST.get('cmd')))
-    form= str(AdosyaForm(klasor.pk))
-    return JsonResponse(
-        {
-            'data': form,
-            'msg': 'Valid is  request'
-        })
-
-    #     for item in project:
-    #         data = {
-    #             'pk': item.pk,
-    #             'name': item.sirano,
-    #         }
-    #         beka.append(data)
-
-
-
-
-
-
-
-    try:
-        # if request.method == 'POST':
-        #     project = Adosya.objects.filter(klasor__pk=request.POST.get('cmd'))
-        #     beka = []
-        #     for item in project:
-        #         data = {
-        #             'pk': item.pk,
-        #             'name': item.sirano,
-        #         }
-        #         beka.append(data)
-            return JsonResponse(
-                {
-                    'data': beka,
-                    'msg': 'Valid is  request'
-                })
-
-    except:
+    if request.POST.get('cmd'):
+        klasor = Aklasor.objects.get(pk=int(request.POST.get('cmd')))
+        form = str(AdosyaForm(klasor.pk))
+        return JsonResponse(
+            {
+                'data': form,
+                'msg': 'Valid is  request'
+            })
+    else:
         return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+
+
+
