@@ -833,7 +833,16 @@ def arsiv_dosyaEkle_full(request):
 
     if request.method == 'POST':
 
-        if request.POST.get("dosya_id"):
+        if request.POST.get("modaldosyaaddklasor"):
+
+            form = AdosyaForm(int(request.POST.get("modaldosyaaddklasor")), request.POST)
+            if form.is_valid():
+                pk = form.save(int(request.POST.get("modaldosyaaddklasor")))
+                return redirect('sbs:dosya-guncelle', pk)
+
+
+
+        elif request.POST.get("dosya_id"):
             if Adosya.objects.filter(pk=int(request.POST.get("dosya_id"))):
                 dosya = Adosya.objects.get(pk=int(request.POST.get("dosya_id")))
                 if request.FILES.getlist('file'):
@@ -843,6 +852,8 @@ def arsiv_dosyaEkle_full(request):
                         dosya.evrak.add(evrak)
                         dosya.save()
                 return redirect('sbs:dosya-guncelle', pk=dosya.pk)
+
+
 
     return render(request, 'arsiv/EvrakEkleSec.html', {
         'units': units,
@@ -902,6 +913,7 @@ def ajax_dosyaform(request):
         form = str(AdosyaForm(klasor.pk))
         return JsonResponse(
             {
+
                 'data': form,
                 'msg': 'Valid is  request'
             })
@@ -910,3 +922,35 @@ def ajax_dosyaform(request):
 
 
 
+@login_required
+def ajax_birimAdd(request):
+    if request.POST.get('cmd'):
+        birim=Abirim(name=request.POST.get('cmd'))
+        birim.save()
+        return JsonResponse(
+            {
+                'pk': birim.pk,
+                'status': 'Success',
+                'msg': 'Valid is  request'
+            })
+    else:
+        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+
+
+@login_required
+def ajax_klasorAdd(request):
+    if request.POST.get('name')  and request.POST.get('sirano')  and request.POST.get('location')  and request.POST.get('birim') :
+        klasor=Aklasor(name=request.POST.get('name'),
+                      sirano=int(request.POST.get('sirano')),
+                      location_id=int(request.POST.get('location')),
+                      birim_id=int(request.POST.get('birim')),
+                      )
+        klasor.save()
+        return JsonResponse(
+            {
+                'pk': klasor.pk,
+                'status': 'Success',
+                'msg': 'Valid is  request'
+            })
+    else:
+        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})

@@ -544,6 +544,8 @@ urlpatterns = [
     url(r'arsiv/klasor$', ArsivView.ajax_klasor, name='birim-klasor-ajax'),
     url(r'arsiv/dosya$', ArsivView.ajax_dosya, name='birim-dosya-ajax'),
     url(r'arsiv/dosyaform/ajax$', ArsivView.ajax_dosyaform, name='dosyaform-ajax'),
+    url(r'arsiv/arsiv-birimEkle/ajax/$', ArsivView.ajax_birimAdd, name='evrak-birim-ajax'),
+    url(r'arsiv/arsiv-klasorEkle/ajax/$', ArsivView.ajax_klasorAdd, name='evrak-klasor-ajax'),
 
 
 

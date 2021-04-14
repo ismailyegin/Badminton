@@ -86,7 +86,8 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-12">
-                            {{ unit_form }}
+                            <label>İsim:</label>
+                            <input type="text" name="name" maxlength="120" class="form-control" id="modalbirimaddtext">
                         </div>
 
                     </div>
@@ -136,18 +137,26 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-12 " id="dosyamodelrow">
+                <form method="post" enctype="multipart/form-data" role="form">
+                    {% csrf_token %}
+
+                    <input type="hidden" name="modaldosyaaddklasor" id="modaldosyaaddklasor" value="">
 
 
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-lg-12 " id="dosyamodelrow">
+
+
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="btndosyaAdd">Kaydet</button>
-                    {#                    <button type="button" class="btn btn-primary">Save changes</button>#}
-                </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-secondary" id="btndosyaAdd">Kaydet</button>
+                        {#                    <button type="button" class="btn btn-primary">Save changes</button>#}
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -398,27 +407,24 @@
 
                     if (e.handled !== true) { // This will prevent event triggering more then once
                         e.handled = true;
-                        alert('birim ');
 
-                        {#$.ajax({#}
-                        {#    url: "{% url "sbs:proje-gorus-kaldir" project_pk=212121223232323232 employee_pk=999999999999999 %}".replace(/212121223232323232/, id.toString()).replace(/999999999999999/, competitionId.toString()),#}
-                        {#    type: "POST",#}
-                        {#    data: {#}
-                        {#        'csrfmiddlewaretoken': "{{  csrf_token  }}",#}
-                        {#        isActive: 'False'#}
-                        {#    },#}
-                        {#    success: function (result) {#}
-                        {#        if (result.status == 'Success') {#}
-                        {#            html = 'Aşama başarıyla kaldırıldı.';#}
-                        {#            $('#offset-' + competitionId).hide();#}
-                        {##}
-                        {#            console.log(result.status);#}
-                        {##}
-                        {##}
-                        {##}
-                        {#        }#}
-                        {#    }#}
-                        {# });#}
+
+                        $.ajax({
+                            url: "{% url "sbs:evrak-birim-ajax"  %}",
+                            type: "POST",
+                            data: {
+                                'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                                isActive: 'False',
+                                cmd: $("#modalbirimaddtext").val(),
+                            },
+                            success: function (result) {
+                                if (result.status == 'Success') {
+                                    $('#birim_id').prepend("<option value=" + result.pk + " selected='selected'>" + $("#modalbirimaddtext").val() + "</option>");
+                                    $('#modalbirimAdd').modal('hide');
+
+                                }
+                            }
+                        });
                     }
 
 
@@ -436,15 +442,33 @@
 
 
                 $("#modalklasorAdd").on("shown.bs.modal", function (e) {
+                    $("#id_birim").val($("#birim_id").val());
                     $("#btnklasorkaydet").click(function (e) {
 
 
                         if (e.handled !== true) { // This will prevent event triggering more then once
                             e.handled = true;
-                            alert('klasör');
+                            $.ajax({
+                                url: "{% url "sbs:evrak-klasor-ajax"  %}",
+                                type: "POST",
+                                data: {
+                                    'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                                    isActive: 'False',
+                                    name: $("#id_name").val(),
+                                    sirano: $("#id_sirano").val(),
+                                    location: $("#id_location").val(),
+                                    birim: $("#id_birim").val(),
+                                },
+                                success: function (result) {
+                                    console.log(result.status);
+                                    if (result.status == 'Success') {
+                                        $('#klasor_id').prepend("<option value=" + result.pk + " selected='selected'>" + $("#id_name").val() + "</option>");
+                                        $('#modalklasorAdd').modal('hide');
+
+                                    }
+                                }
+                            });
                         }
-
-
                     });
                 }).modal('show');
                 $('#btn-close').click(function () {
@@ -493,16 +517,7 @@
 
 
                 $("#modaldosyaAdd").on("shown.bs.modal", function (e) {
-                    $("#btndosyaAdd").click(function (e) {
-
-
-                        if (e.handled !== true) { // This will prevent event triggering more then once
-                            e.handled = true;
-                            alert('dosya kaydet');
-                        }
-
-
-                    });
+                    $("#modaldosyaaddklasor").val($("#klasor_id").val());
                 }).modal('show');
                 $('#btn-close').click(function () {
                     $('#modaldosyaAdd').modal('hide');
@@ -527,8 +542,11 @@
             if ($("#birim_id").val() != "") {
 
 
+                id = $('#birim_id option:selected').val();
+                text = $('#birim_id option:selected').text();
+
                 alert(
-                    "birim güncelleme  alani"
+                    $('#birim_id option:selected').text()
                 );
 
 
