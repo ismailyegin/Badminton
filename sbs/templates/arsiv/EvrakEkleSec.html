@@ -2,26 +2,27 @@
 {% block content %}
 
 
-{#message modal#}
-    <div class="modal fade" id="modelMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Uyarı</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-          <p id="message"></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+    {#message modal#}
+    <div class="modal fade" id="modelMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Uyarı</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="message"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
 
-      </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
     <!-- success modal -->
 
@@ -70,7 +71,7 @@
         <!-- /.modal-dialog -->
     </div>
 
-{#birim modal #}
+    {#birim modal #}
     <div class="modal fade" id="modalbirimAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -97,7 +98,7 @@
             </div>
         </div>
     </div>
-{# klasor modal#}
+    {# klasor modal#}
     <div class="modal fade" id="modalklasorAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -123,7 +124,7 @@
             </div>
         </div>
     </div>
-{# dosya modal#}
+    {# dosya modal#}
     <div class="modal fade" id="modaldosyaAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -136,8 +137,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="row" >
-                        <div class="col-lg-12 "id="dosyamodelrow">
+                    <div class="row">
+                        <div class="col-lg-12 " id="dosyamodelrow">
 
 
                         </div>
@@ -260,7 +261,7 @@
                                     <div class="input-group margin">
                                         <div class="input-group-btn">
 
-                                             <button type="button" id="btndosyaincele" class="btn btn-warning"><i
+                                            <button type="button" id="btndosyaincele" class="btn btn-warning"><i
                                                     class="fa fa-align-left"></i></button>
                                             <button type="button" id="btndosya" class="btn btn-success"><i
                                                     class="fa fa-plus"></i></button>
@@ -434,9 +435,6 @@
             if ($("#birim_id").val() != "") {
 
 
-
-
-
                 $("#modalklasorAdd").on("shown.bs.modal", function (e) {
                     $("#btnklasorkaydet").click(function (e) {
 
@@ -452,12 +450,11 @@
                 $('#btn-close').click(function () {
                     $('#modalklasorAdd').modal('hide');
                 });
-            }
-            else {
+            } else {
 
-                 $("#modelMessage").on("shown.bs.modal", function (e) {
+                $("#modelMessage").on("shown.bs.modal", function (e) {
                     $("#message").text("Lütfen Birim Seçiniz");
-                 }).modal('show');
+                }).modal('show');
             }
         });
 
@@ -469,31 +466,30 @@
             if ($("#klasor_id").val() != "") {
 
 
+                $.ajax({
+                    url: "{% url "sbs:dosyaform-ajax"  %}",
+                    type: "POST",
+                    data: {
+                        'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                        isActive: 'False',
+                        cmd: $("#klasor_id").val()
+                    },
+                    success: function (result) {
 
-                 $.ajax({
-                            url: "{% url "sbs:dosyaform-ajax"  %}",
-                            type: "POST",
-                            data: {
-                                'csrfmiddlewaretoken': "{{  csrf_token  }}",
-                                isActive: 'False',
-                                cmd:$("#klasor_id").val()
-                            },
-                            success: function (result) {
-
-                                $("#dosyamodelrow").empty();
-                                $("#dosyamodelrow").prepend(result.data)
-
-
-                                console.log(result);
-                                if (result.status == 'Success') {
-                                    html = 'Aşama başarıyla kaldırıldı.';
+                        $("#dosyamodelrow").empty();
+                        $("#dosyamodelrow").prepend(result.data)
 
 
-                                    console.log(result.status);
+                        console.log(result);
+                        if (result.status == 'Success') {
+                            html = 'Aşama başarıyla kaldırıldı.';
 
-                                }
-                            }
-                         });
+
+                            console.log(result.status);
+
+                        }
+                    }
+                });
 
 
                 $("#modaldosyaAdd").on("shown.bs.modal", function (e) {
@@ -507,47 +503,44 @@
 
 
                     });
-                 }).modal('show');
+                }).modal('show');
                 $('#btn-close').click(function () {
                     $('#modaldosyaAdd').modal('hide');
-                 });
+                });
 
             } else {
 
 
-
-                 $("#modelMessage").on("shown.bs.modal", function (e) {
+                $("#modelMessage").on("shown.bs.modal", function (e) {
                     $("#message").text("Lütfen Klasör Seçiniz");
-                 }).modal('show');
+                }).modal('show');
 
             }
 
 
         });
 
-             {#birim incele alani#}
+        {#birim incele alani#}
         $("#btnbirimincele").click(function () {
 
 
             if ($("#birim_id").val() != "") {
 
 
-                  alert(
-                "birim güncelleme  alani"
-            );
+                alert(
+                    "birim güncelleme  alani"
+                );
 
 
-
-            }else {
-                 $("#modelMessage").on("shown.bs.modal", function (e) {
+            } else {
+                $("#modelMessage").on("shown.bs.modal", function (e) {
                     $("#message").text("Lütfen Birim Seçiniz");
-                 }).modal('show');
+                }).modal('show');
 
             }
 
 
         });
-
 
 
         {#klasör incele alani#}
@@ -556,42 +549,38 @@
             if ($("#klasor_id").val() != "") {
 
 
-                  alert(
-                "klasor güncelleme  alani"
-            );
+                alert(
+                    "klasor güncelleme  alani"
+                );
 
 
-
-            }else {
-                 $("#modelMessage").on("shown.bs.modal", function (e) {
+            } else {
+                $("#modelMessage").on("shown.bs.modal", function (e) {
                     $("#message").text("Lütfen Klasör Seçiniz");
-                 }).modal('show');
+                }).modal('show');
 
             }
         });
 
 
-
-                        {#birim incele alani#}
+        {#birim incele alani#}
         $("#btndosyaincele").click(function () {
 
             if ($("#birim_id").val() != "") {
 
 
-                  alert(
-                "dosya güncelleme  alani"
-            );
+                alert(
+                    "dosya güncelleme  alani"
+                );
 
 
-
-            }else {
-                 $("#modelMessage").on("shown.bs.modal", function (e) {
+            } else {
+                $("#modelMessage").on("shown.bs.modal", function (e) {
                     $("#message").text("Lütfen Dosya Seçiniz");
-                 }).modal('show');
+                }).modal('show');
 
             }
         });
-
 
 
     </script>
