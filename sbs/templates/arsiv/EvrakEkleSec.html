@@ -71,7 +71,7 @@
         <!-- /.modal-dialog -->
     </div>
 
-    {#birim modal #}
+    {#birim modal add #}
     <div class="modal fade" id="modalbirimAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -99,7 +99,7 @@
             </div>
         </div>
     </div>
-    {# klasor modal#}
+    {# klasor modal add#}
     <div class="modal fade" id="modalklasorAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -125,7 +125,7 @@
             </div>
         </div>
     </div>
-    {# dosya modal#}
+    {# dosya modal add #}
     <div class="modal fade" id="modaldosyaAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -420,6 +420,7 @@
                             success: function (result) {
                                 if (result.status == 'Success') {
                                     $('#birim_id').prepend("<option value=" + result.pk + " selected='selected'>" + $("#modalbirimaddtext").val() + "</option>");
+                                    $('#id_birim').prepend("<option value=" + result.pk + " selected='selected'>" + $("#modalbirimaddtext").val() + "</option>");
                                     $('#modalbirimAdd').modal('hide');
 
                                 }
