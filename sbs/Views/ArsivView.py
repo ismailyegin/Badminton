@@ -1006,10 +1006,14 @@ def ajax_dosyaform_update(request):
     if request.POST.get('dosya'):
         if Adosya.objects.filter(pk=int(request.POST.get('dosya'))):
             dosya=Adosya.objects.get(pk=int(request.POST.get('dosya')))
-            form =str(AdosyaForm(dosya.klasor.pk,instance=dosya))
+            form =AdosyaForm(dosya.klasor.pk,instance=dosya)
+            dosyaparametre = AdosyaParametre.objects.filter(dosya=dosya)
+            for item in dosyaparametre:
+                form.fields[item.parametre.title].initial = item.value
+            data=str(form)
             return JsonResponse(
                 {
-                    'data': form,
+                    'data': data,
                     'msg': 'Valid is  request',
                     'status': 'Success'
                 })
