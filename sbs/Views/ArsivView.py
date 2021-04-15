@@ -1044,7 +1044,6 @@ def ajax_birimUpdateParametre(request):
 
     if request.method == 'POST':
         if Abirim.objects.get(pk=request.POST.get('pk')):
-            print(request.POST.get('pk'))
             birim = Abirim.objects.get(pk=request.POST.get('pk'))
             say = 1
             beka = []
@@ -1063,11 +1062,7 @@ def ajax_birimUpdateParametre(request):
                 'recordsFiltered': total,
             }
             return JsonResponse(response)
-    try:
-        print()
-
-    except:
-        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+    return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
 
 
 
