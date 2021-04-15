@@ -185,11 +185,31 @@
                         </div>
 
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="btnbirimupdate" class="btn btn-secondary">Kaydet</button>
 
                 </div>
+
+                <div class="box-body">
+                    <table id="parametrebirimid" class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Tanımı</th>
+
+                            <th>İnceleme/Silme</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+
+
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
         </div>
     </div>
@@ -660,6 +680,47 @@
 
 
             if ($("#birim_id").val() != "") {
+
+
+                table = $('#parametrebirimid').DataTable();
+                table.destroy();
+                $('#parametrebirimid').DataTable({
+
+                    'paging': false,
+                    'searching': false,
+                    'ordering': false,
+                    'responsive': false,
+                    'autoWidth': false,
+                    "serverSide": true,
+                    "processing": true,
+
+                    'ajax': {
+                        url: "{% url "sbs:evrak-birim-ajax-update-parametre"  %}",
+                        type: "POST",
+                        data: {
+                            'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                            isActive: 'False',
+                            pk: $('#birim_id option:selected').val(),
+
+                        },
+                    },
+
+
+                    'columns': [
+                        {'data': 'count'},
+                        {'data': 'tanımı'},
+                        {
+                            "data": null,
+                            "bSortable": false,
+                            "mRender": function (data) {
+                                return '<div class="btn-group"><a type="button" class="btn btn-danger" onclick=deleteRequirement('+ data.pk + ')><i class="fa fa-trash"></i></a></div>'
+                            }
+                        }
+
+                    ],
+
+                });
+
 
                 $("#modalbirimUpdate").on("shown.bs.modal", function (e) {
                     $("#modalbirimguncelletext").val($('#birim_id option:selected').text());

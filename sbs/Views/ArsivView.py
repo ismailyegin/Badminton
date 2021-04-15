@@ -1040,6 +1040,40 @@ def ajax_birimAdd(request):
 
 
 @login_required
+def ajax_birimUpdateParametre(request):
+
+    if request.method == 'POST':
+        if Abirim.objects.get(pk=request.POST.get('pk')):
+            print(request.POST.get('pk'))
+            birim = Abirim.objects.get(pk=request.POST.get('pk'))
+            say = 1
+            beka = []
+            for item in AbirimParametre.objects.filter(birim=birim):
+                data = {
+                    'pk': item.pk,
+                    'count': say,
+                    'tanımı': item.title,
+                }
+                beka.append(data)
+                say += 1
+            total = AbirimParametre.objects.filter(birim=birim).count()
+            response = {
+                'data': beka,
+                'recordsTotal': total,
+                'recordsFiltered': total,
+            }
+            return JsonResponse(response)
+    try:
+        print()
+
+    except:
+        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+
+
+
+
+
+@login_required
 def ajax_birimUpdate(request):
     if request.POST.get('pk') and request.POST.get('name'):
         if Abirim.objects.filter(pk=int(request.POST.get('pk'))):
