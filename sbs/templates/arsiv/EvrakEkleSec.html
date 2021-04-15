@@ -169,46 +169,85 @@
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Birim Güncelle</h3>
 
+
+                <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+                    {#                    <h3 class="modal-title"></h3>#}
+
+
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <label>İsim:</label>
-                            <input type="text" name="name" maxlength="120" class="form-control"
-                                   id="modalbirimguncelletext">
+
+
+                    <!-- Custom Tabs (Pulled to the right) -->
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs pull-right">
+                            <li class="active"><a href="#tab_1-1" data-toggle="tab">Güncelle </a></li>
+                            <li><a href="#tab_2-2" data-toggle="tab">Parametreler</a></li>
+
+                            <li class="pull-left header"><i class="fa fa-th"></i> Birim Güncelle</li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab_1-1">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label>İsim:</label>
+                                        <input type="text" name="name" maxlength="120" class="form-control"
+                                               id="modalbirimguncelletext">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="btnbirimupdate" class="btn btn-secondary">Kaydet</button>
+                                </div>
+                            </div>
+
+                            <!-- /.tab-pane -->
+                            <div class="tab-pane" id="tab_2-2">
+
+
+                                <table id="parametrebirimid" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Tanımı</th>
+
+                                        <th>İnceleme/Silme</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <!-- /.tab-pane -->
+{#                            <div class="tab-pane" id="tab_3-2">#}
+{#                                Lorem Ipsum is simply dummy text of the printing and typesetting industry.#}
+{#                                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,#}
+{#                                when an unknown printer took a galley of type and scrambled it to make a type#}
+{#                                specimen book.#}
+{#                                It has survived not only five centuries, but also the leap into electronic#}
+{#                                typesetting,#}
+{#                                remaining essentially unchanged. It was popularised in the 1960s with the release of#}
+{#                                Letraset#}
+{#                                sheets containing Lorem Ipsum passages, and more recently with desktop publishing#}
+{#                                software#}
+{#                                like Aldus PageMaker including versions of Lorem Ipsum.#}
+{#                            </div>#}
+                            <!-- /.tab-pane -->
                         </div>
-
+                        <!-- /.tab-content -->
                     </div>
+                    <!-- nav-tabs-custom -->
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="btnbirimupdate" class="btn btn-secondary">Kaydet</button>
 
                 </div>
 
-                <div class="box-body">
-                    <table id="parametrebirimid" class="table table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Tanımı</th>
-
-                            <th>İnceleme/Silme</th>
-
-                        </tr>
-                        </thead>
-                        <tbody>
-
-
-                        </tbody>
-                    </table>
-                </div>
 
             </div>
         </div>
@@ -713,7 +752,7 @@
                             "data": null,
                             "bSortable": false,
                             "mRender": function (data) {
-                                return '<div class="btn-group"><a type="button" class="btn btn-danger" onclick=deleteRequirement('+ data.pk + ')><i class="fa fa-trash"></i></a></div>'
+                                return '<div class="btn-group"><a type="button" class="btn btn-danger" onclick=deleteparametre(' + data.pk + ')><i class="fa fa-trash">Sil</i></a><a type="button" class="btn btn-warning" onclick=updateparametre(' + data.pk + ')><i class="fa fa-align-left">İncele</i></a></div>'
                             }
                         }
 
