@@ -832,14 +832,32 @@ def arsiv_dosyaEkle_full(request):
     klasor_form=AklasorForm()
 
     if request.method == 'POST':
-
         if request.POST.get("modaldosyaaddklasor"):
-
             form = AdosyaForm(int(request.POST.get("modaldosyaaddklasor")), request.POST)
             if form.is_valid():
                 pk = form.save(int(request.POST.get("modaldosyaaddklasor")))
                 return redirect('sbs:dosya-guncelle', pk)
 
+        elif request.POST.get("dosyaupdatepk"):
+            dosya = Adosya.objects.get(pk=int(request.POST.get("dosyaupdatepk")))
+            dosyaparametre = AdosyaParametre.objects.filter(dosya=dosya)
+            dosya.sirano = request.POST.get('sirano')
+            birimparametre = AbirimParametre.objects.filter(birim=dosya.klasor.birim)
+            for item in birimparametre:
+                if dosyaparametre.filter(parametre=item):
+                    deger = dosyaparametre.filter(parametre=item)[0]
+                    if request.POST.get(deger.parametre.title):
+                        deger.value = request.POST.get(deger.parametre.title)
+                        deger.save()
+                else:
+                    dosyaParametre = AdosyaParametre(
+                        value=str(request.POST.get(item.title)),
+                        dosya=dosya,
+                    )
+                    dosyaParametre.parametre = item
+                    dosyaParametre.save()
+            dosya.save()
+            return redirect('sbs:dosya-guncelle', dosya.pk)
 
 
         elif request.POST.get("dosya_id"):
@@ -883,6 +901,69 @@ def ajax_klasor(request):
     except:
         return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
 
+@login_required
+def ajax_klasor_update(request):
+
+    try:
+        if request.method == 'POST':
+            if request.POST.get('pk'):
+                if Aklasor.objects.filter(pk=request.POST.get('pk')):
+                    klasor = Aklasor.objects.get(pk=request.POST.get('pk'))
+                    return JsonResponse(
+                        {
+                            'pk': klasor.pk,
+                            'location':klasor.location.pk,
+                            'birim':klasor.birim.pk,
+                            'name':klasor.name,
+                            'sirano':klasor.sirano,
+                            'status': 'Success',
+                            'msg': 'Valid is  request'
+
+                        })
+            else:
+                return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+        else:
+            return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+
+    except:
+        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+
+@login_required
+def ajax_klasor_update_add(request):
+
+    try:
+        if request.method == 'POST':
+            if request.POST.get('pk'):
+                if Aklasor.objects.filter(pk=request.POST.get('pk')):
+                    klasor = Aklasor.objects.get(pk=request.POST.get('pk'))
+                    if request.POST.get('name'):
+                        klasor.name=request.POST.get('name')
+                    if request.POST.get('sirano'):
+                        klasor.sirano = request.POST.get('sirano')
+                    if request.POST.get('location'):
+                        klasor.location_id = request.POST.get('location')
+                    if request.POST.get('birim'):
+                        klasor.birim_id = request.POST.get('birim')
+                    klasor.save()
+
+
+                    return JsonResponse(
+                        {
+                            'pk': klasor.pk,
+                            'name':klasor.name,
+                            'birimpk':klasor.birim.pk,
+                            'birimname':klasor.birim.name,
+                            'status': 'Success',
+                            'msg': 'İşlem Başari ile gerçekleşti'
+
+                        })
+            else:
+                return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+        else:
+            return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+
+    except:
+        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
 
 @login_required
 def ajax_dosya(request):
@@ -920,7 +1001,24 @@ def ajax_dosyaform(request):
     else:
         return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
 
+@login_required
+def ajax_dosyaform_update(request):
+    if request.POST.get('dosya'):
+        if Adosya.objects.filter(pk=int(request.POST.get('dosya'))):
+            dosya=Adosya.objects.get(pk=int(request.POST.get('dosya')))
+            form =str(AdosyaForm(dosya.klasor.pk,instance=dosya))
+            return JsonResponse(
+                {
+                    'data': form,
+                    'msg': 'Valid is  request',
+                    'status': 'Success'
+                })
+        else:
+            return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
 
+
+    else:
+        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
 
 @login_required
 def ajax_birimAdd(request):
@@ -936,6 +1034,29 @@ def ajax_birimAdd(request):
     else:
         return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
 
+
+@login_required
+def ajax_birimUpdate(request):
+    if request.POST.get('pk') and request.POST.get('name'):
+        if Abirim.objects.filter(pk=int(request.POST.get('pk'))):
+            birim = Abirim.objects.get(pk=int(request.POST.get('pk')))
+            birim.name=request.POST.get('name')
+            birim.save()
+            return JsonResponse(
+                {
+                    'pk':birim.pk,
+                    'name':birim.name,
+                    'status': 'Success',
+                    'msg': 'Valid is  request'
+                })
+        else:
+
+            return JsonResponse({'status': 'Fail', 'msg': 'Birim Yok '})
+
+
+
+    else:
+        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
 
 @login_required
 def ajax_klasorAdd(request):
