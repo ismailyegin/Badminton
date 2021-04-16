@@ -624,6 +624,7 @@
                                 if (result.status == 'Success') {
                                     $('#birim_id').prepend("<option value=" + result.pk + " selected='selected'>" + $("#modalbirimaddtext").val() + "</option>");
                                     $('#id_birim').prepend("<option value=" + result.pk + " selected='selected'>" + $("#modalbirimaddtext").val() + "</option>");
+                                    $('#klasorupdatebirim').prepend("<option value=" + result.pk + " selected='selected'>" + $("#modalbirimaddtext").val() + "</option>");
                                     $('#modalbirimAdd').modal('hide');
                                     birimupdate()
 
