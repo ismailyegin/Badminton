@@ -1,11 +1,7 @@
 from django.db import models
 
 from sbs.models.Abirim import Abirim
-from sbs.models.Aevrak import Aevrak
-from sbs.services import general_methods
 from unicode_tr import unicode_tr
-
-
 class AbirimParametre(models.Model):
     aDate = 'date'
     aString = 'string'
@@ -24,7 +20,7 @@ class AbirimParametre(models.Model):
     operationDate = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=120,  null=True, blank=True, verbose_name='Başlık')
     type = models.CharField(max_length=128, verbose_name='Türü ', choices=Type,default=aString)
-    birim = models.ForeignKey(Abirim, on_delete=models.DO_NOTHING, null=True, blank=True, verbose_name='Birim')
+    birim = models.ForeignKey(Abirim, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Birim')
 
     def __str__(self):
         return '%s' % (self.title)

@@ -209,10 +209,16 @@ def parametredelete(request, pk):
     if request.method == 'POST' and request.is_ajax():
         try:
 
-            obj = AbirimParametre.objects.get(pk=pk)
+            if AbirimParametre.objects.filter(pk=pk):
+                obj = AbirimParametre.objects.get(pk=pk)
+
+                obj.delete()
+            else:
+                return JsonResponse({'status': 'Fail', 'msg': 'id degeri yok'})
 
 
-            obj.delete()
+
+
             return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
         except CategoryItem.DoesNotExist:
             return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
