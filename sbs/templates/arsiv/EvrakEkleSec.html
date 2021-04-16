@@ -746,12 +746,12 @@
                 datatablesAdd();
 
 
-                $("#modalbirimUpdate").on("shown.bs.modal", function (e) {
+                $("#modalbirimUpdate").on("shown.bs.modal", function () {
                     $("#modalbirimguncelletext").val($('#birim_id option:selected').text());
 
 
-                    $('#parametreEkle').click(function () {
-                        if (e.handled !== true) { // This will prevent event triggering more then once
+                    $('#parametreEkle').click(function (e) {
+                        if (e.handled !== true) {
                             e.handled = true;
                             $.ajax({
                                 url: "{% url "sbs:evrak-birim-ajax-update-parametreAdd"  %}",
@@ -767,6 +767,9 @@
                                 success: function (result) {
                                     console.log(result.status);
                                     if (result.status == 'Success') {
+
+
+                                        $('#modalbirimUpdate').modal('show');
 
                                         $('#navul a[href="#tab_2-2"]').tab('show');
 
@@ -792,7 +795,7 @@
                     });
 
 
-                    $('#btnbirimupdate').click(function () {
+                    $('#btnbirimupdate').click(function (e) {
                         if (e.handled !== true) { // This will prevent event triggering more then once
                             e.handled = true;
                             $.ajax({
