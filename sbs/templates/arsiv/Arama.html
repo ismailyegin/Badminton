@@ -420,6 +420,7 @@
                     $("#searchbirim option[value='{{ backdata }}']").prop("selected", true);
 
                     $('#navtop a[href="#detay"]').tab('show');
+                    list({{ backdata }});
 
                 {% elif backsearch == "searchKlasor"  %}
 
@@ -433,11 +434,6 @@
                     $("#klasorsirano").val(dizi[1]);
                     $("#klasorlocation option[value='" + dizi[2] + "']").prop("selected", true);
                     $("#klasorbirim option[value='" + dizi[3] + "']").prop("selected", true);
-
-
-
-
-
 
 
 
