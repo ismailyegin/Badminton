@@ -550,15 +550,9 @@ urlpatterns = [
     url(r'arsiv/arsiv-birimguncelle/ajax/parametreEkle$', ArsivView.ajax_birimUpdateParametreAdd, name='evrak-birim-ajax-update-parametreAdd'),
     url(r'arsiv/arsiv-birimguncelle/ajax/parametre$', ArsivView.ajax_birimUpdateParametre, name='evrak-birim-ajax-update-parametre'),
 
-
-
-
     url(r'arsiv/arsiv-klasorEkle/ajax/$', ArsivView.ajax_klasorAdd, name='evrak-klasor-ajax'),
     url(r'arsiv/arsiv-klasorguncelle/ajax/search$', ArsivView.ajax_klasor_update, name='evrak-klasor-ajax-update'),
     url(r'arsiv/arsiv-klasorguncelle/ajax/$', ArsivView.ajax_klasor_update_add, name='evrak-klasor-ajax-update-add'),
-
-
-
 
 
 ]

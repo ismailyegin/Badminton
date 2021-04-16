@@ -615,7 +615,7 @@ def birimSearch(request):
                     beka = {
                         'pk': item.dosya.pk,
                         'sirano': item.dosya.sirano,
-                        'parametre': item.parametre.title,
+                        'parametre': search+'/'+item.parametre.title,
                         'klasor_id': item.dosya.klasor.pk
                     }
                     dosyadizi.append(beka)
@@ -648,7 +648,7 @@ def birimSearch(request):
                             beka = {
                                 'pk': dosyapara.dosya.pk,
                                 'sirano': dosyapara.dosya.sirano,
-                                'parametre': dosyapara.parametre.title,
+                                'parametre':unicode_tr(request.POST.get(item.title)).upper()+'/'+dosyapara.parametre.title,
                                 'klasor_id': dosyapara.dosya.klasor.pk
                             }
                             dosyadizi.append(beka)
