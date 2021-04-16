@@ -575,7 +575,10 @@ def birimSearch(request):
     klasor = Aklasor.objects.none()
     klasor_form=AklasorSearchForm()
 
+
     dosyadizi=[]
+    backdata=None
+    backsearch=None
 
     if request.method == 'POST':
         name = request.POST.get('klasorname')
@@ -583,9 +586,12 @@ def birimSearch(request):
         location = request.POST.get('klasorlocation')
         birim = request.POST.get('klasorbirim')
 
+
         # genel arama alani
         if request.POST.get('search'):
             search = unicode_tr(request.POST.get('search')).upper()
+            backdata =search
+            backsearch="genelArama"
             # print('genel arama ')
             units |= Abirim.objects.filter(name__icontains=search)
             klasor |= Aklasor.objects.filter(name__icontains=search)
@@ -625,11 +631,14 @@ def birimSearch(request):
             # print('birim arama ')
 
             units =Abirim.objects.filter(pk=request.POST.get('searchbirim'))
+            backdata=Abirim.objects.get(pk=request.POST.get('searchbirim')).pk
+            backsearch="birimArama"
             birimparametre = AbirimParametre.objects.filter(birim__id=int(request.POST.get('searchbirim')))
             if birimparametre:
                 for item in birimparametre:
                     if request.POST.get(item.title):
                         # print(request.POST.get(item.title))
+
 
                         dosyaParametre = AdosyaParametre.objects.filter(value__icontains=unicode_tr(request.POST.get(item.title)).upper())
                         for dosyapara in dosyaParametre:
@@ -644,12 +653,6 @@ def birimSearch(request):
                             }
                             dosyadizi.append(beka)
 
-
-
-
-
-
-
             if not (klasor):
                 klasor=Aklasor.objects.filter(birim=Abirim.objects.get(pk=request.POST.get('searchbirim')))
                 dosya=Adosya.objects.filter(klasor__birim__pk=request.POST.get('searchbirim'))
@@ -657,6 +660,10 @@ def birimSearch(request):
         # klasör arama alani
 
         elif (name or sirano or location or birim):
+
+
+            backdata =name+"/"+sirano+"/"+location+"/"+birim
+            backsearch="searchKlasor"
             # print('klasor  arama ')
             query = Q()
             if name:
@@ -693,7 +700,10 @@ def birimSearch(request):
                       'units': units.distinct(),
                       'klasor': klasor.distinct(),
                       'files': dosyadizi,
-                      'klasor_form':klasor_form
+                      'klasor_form':klasor_form,
+                      'backdata':backdata,
+                      'backsearch':backsearch,
+
                   })
 @login_required
 def zipfile(request, pk):

@@ -198,54 +198,54 @@
 
 
             <div class="col-md-12">
-                    <!-- Custom Tabs (Pulled to the right) -->
-                    <div class="nav-tabs-custom">
-                        <ul class="nav nav-tabs pull-right">
-                            <li class="active"><a href="#genel" data-toggle="tab" aria-expanded="true">Genel Arama
-                            </a></li>
-                            <li class=""><a href="#detay" data-toggle="tab" aria-expanded="false">Detaylı Arama
-                            </a></li>
+                <!-- Custom Tabs (Pulled to the right) -->
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs pull-right" id="navtop">
+                        <li class="active"><a href="#genel" data-toggle="tab" aria-expanded="true">Genel Arama
+                        </a></li>
+                        <li class=""><a href="#detay" data-toggle="tab" aria-expanded="false">Detaylı Arama
+                        </a></li>
 
-                            <li class="pull-left header"><i class="fa fa-th"></i> Arama Alanı</li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="genel">
-                                <form method="post" role="form">
+                        <li class="pull-left header"><i class="fa fa-th"></i> Arama Alanı</li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="genel">
+                            <form method="post" role="form">
 
-                                    {% csrf_token %}
-                                    <div class="box-body">
-                                        <div class="col-lg-12">
-                                            <div class="form-group ">
-                                                <label> Genel Arama </label>
-                                                <input type="text" name="search" class="form-control"
-                                                       style="width: 100%; " id="search" tabindex="-1"
-                                                       aria-hidden="true">
-                                                </input>
-                                            </div>
+                                {% csrf_token %}
+                                <div class="box-body">
+                                    <div class="col-lg-12">
+                                        <div class="form-group ">
+                                            <label> Genel Arama </label>
+                                            <input type="text" name="search" class="form-control"
+                                                   style="width: 100%; " id="search" tabindex="-1"
+                                                   aria-hidden="true">
+                                            </input>
                                         </div>
                                     </div>
-                                    <div class="box-footer">
-                                        <button type="submit" class="btn btn-primary">Ara</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- /.tab-pane -->
-                            <div class="tab-pane" id="detay">
+                                </div>
+                                <div class="box-footer">
+                                    <button type="submit" class="btn btn-primary">Ara</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- /.tab-pane -->
+                        <div class="tab-pane" id="detay">
 
-                                <div class="nav-tabs-custom">
-                                    <ul class="nav nav-tabs">
-                                        <li class="active"><a href="#birim" data-toggle="tab">Birim</a></li>
-                                        <li><a href="#klasor" data-toggle="tab">Klasor</a></li>
-{#                                        <li><a href="#dosya" data-toggle="tab">Dosya</a></li>#}
+                            <div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs" id="navlower">
+                                    <li class="active"><a href="#birim" data-toggle="tab">Birim</a></li>
+                                    <li><a href="#klasor" data-toggle="tab">Klasor</a></li>
+                                    {#                                        <li><a href="#dosya" data-toggle="tab">Dosya</a></li>#}
 
-                                        <li class="pull-right"><a href="#genel" class="text-muted"><i
-                                                class="fa fa-gear"></i></a></li>
-                                    </ul>
-                                    <div class="tab-content">
-                                        <div class="tab-pane active height-control " id="birim">
-                                            <form method="post" role="form">
+                                    <li class="pull-right"><a href="#genel" class="text-muted"><i
+                                            class="fa fa-gear"></i></a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active height-control " id="birim">
+                                        <form method="post" role="form">
 
-                                                {% csrf_token %}
+                                            {% csrf_token %}
                                             <div class="secim"><label> Birimler</label>
                                                 <select name="searchbirim"
                                                         id="searchbirim"
@@ -263,19 +263,18 @@
                                                 </select></div>
 
 
-
                                             <div class="box-footer">
                                                 <button type="submit" class="btn btn-primary">Ara</button>
                                             </div>
-                                            </form>
+                                        </form>
 
-                                        </div>
+                                    </div>
 
-                                        <!-- /.tab-pane -->
-                                        <div class="tab-pane" id="klasor">
-                                            <form method="post" role="form">
+                                    <!-- /.tab-pane -->
+                                    <div class="tab-pane" id="klasor">
+                                        <form method="post" role="form">
 
-                                                {% csrf_token %}
+                                            {% csrf_token %}
                                             <tr>
                                                 <th><label for="klasorname">Tanımı:</label></th>
                                                 <td><input type="text" name="klasorname" maxlength="120"
@@ -316,53 +315,53 @@
                                                 </select></td>
                                             </tr>
 
-                                                <div class="box-footer">
+                                            <div class="box-footer">
                                                 <button type="submit" class="btn btn-primary">Ara</button>
                                             </div>
-                                            </form>
-                                        </div>
-                                        <!-- /.tab-pane -->
-{#                                        <div class="tab-pane" id="dosya">#}
-{#                                            <div class="box-body">#}
-{##}
-{##}
-{#                                                <div class="col-lg-12">#}
-{#                                                    <div class="form-group ">#}
-{#                                                        <label> Sıra Numarası </label>#}
-{#                                                        <input type="text" name="searchdosya" class="form-control"#}
-{#                                                               style="width: 100%; " id="searchdosya" tabindex="-1"#}
-{#                                                               aria-hidden="true">#}
-{#                                                        </input>#}
-{##}
-{##}
-{#                                                    </div>#}
-{#                                                </div>#}
-{##}
-{##}
-{#                                            </div>#}
-{#                                            <div class="box-footer">#}
-{#                                                <button type="submit" class="btn btn-primary">Ara</button>#}
-{#                                            </div>#}
-{#                                        </div>#}
-                                        <!-- /.tab-pane -->
+                                        </form>
                                     </div>
-                                    <!-- /.tab-content -->
+                                    <!-- /.tab-pane -->
+                                    {#                                        <div class="tab-pane" id="dosya">#}
+                                    {#                                            <div class="box-body">#}
+                                    {##}
+                                    {##}
+                                    {#                                                <div class="col-lg-12">#}
+                                    {#                                                    <div class="form-group ">#}
+                                    {#                                                        <label> Sıra Numarası </label>#}
+                                    {#                                                        <input type="text" name="searchdosya" class="form-control"#}
+                                    {#                                                               style="width: 100%; " id="searchdosya" tabindex="-1"#}
+                                    {#                                                               aria-hidden="true">#}
+                                    {#                                                        </input>#}
+                                    {##}
+                                    {##}
+                                    {#                                                    </div>#}
+                                    {#                                                </div>#}
+                                    {##}
+                                    {##}
+                                    {#                                            </div>#}
+                                    {#                                            <div class="box-footer">#}
+                                    {#                                                <button type="submit" class="btn btn-primary">Ara</button>#}
+                                    {#                                            </div>#}
+                                    {#                                        </div>#}
+                                    <!-- /.tab-pane -->
                                 </div>
-                                <!-- nav-tabs-custom -->
-
-
+                                <!-- /.tab-content -->
                             </div>
-                            <!-- /.tab-pane -->
+                            <!-- nav-tabs-custom -->
 
-                            <!-- /.tab-pane -->
+
                         </div>
-                        <!-- /.tab-content -->
+                        <!-- /.tab-pane -->
+
+                        <!-- /.tab-pane -->
                     </div>
-                    <!-- nav-tabs-custom -->
+                    <!-- /.tab-content -->
                 </div>
+                <!-- nav-tabs-custom -->
+            </div>
 
 
-                <!-- /.box-body -->
+            <!-- /.box-body -->
 
 
             </form>
@@ -414,6 +413,51 @@
 
     <script>
         $(function () {
+
+            {% if backsearch %}
+
+                {% if backsearch == "birimArama" %}
+                    $("#searchbirim option[value='{{ backdata }}']").prop("selected", true);
+
+                    $('#navtop a[href="#detay"]').tab('show');
+
+                {% elif backsearch == "searchKlasor"  %}
+
+                    $('#navtop a[href="#detay"]').tab('show');
+                    $('#navlower a[href="#klasor"]').tab('show');
+
+
+                    var str = "{{ backdata }}";
+                    var dizi = str.split("/");
+                    $("#klasorname").val(dizi[0]);
+                    $("#klasorsirano").val(dizi[1]);
+                    $("#klasorlocation option[value='" + dizi[2] + "']").prop("selected", true);
+                    $("#klasorbirim option[value='" + dizi[3] + "']").prop("selected", true);
+
+
+
+
+
+
+
+
+                {% elif backsearch == "genelArama"  %}
+
+                    $("#search").val('{{ backdata }}');
+
+                {% endif %}
+
+
+
+
+
+            {% endif %}
+
+
+
+
+
+
             $('#kullanicilar').DataTable({
                 dom: 'Bfrtip',
 
