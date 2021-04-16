@@ -625,6 +625,7 @@
                                     $('#birim_id').prepend("<option value=" + result.pk + " selected='selected'>" + $("#modalbirimaddtext").val() + "</option>");
                                     $('#id_birim').prepend("<option value=" + result.pk + " selected='selected'>" + $("#modalbirimaddtext").val() + "</option>");
                                     $('#modalbirimAdd').modal('hide');
+                                    birimupdate()
 
                                 }
                             }
@@ -739,94 +740,8 @@
         {#birim güncelleme  alani#}
         $("#btnbirimincele").click(function () {
 
+           birimupdate();
 
-            if ($("#birim_id").val() != "") {
-
-
-                datatablesAdd();
-
-
-                $("#modalbirimUpdate").on("shown.bs.modal", function () {
-                    $("#modalbirimguncelletext").val($('#birim_id option:selected').text());
-
-
-                    $('#parametreEkle').click(function (e) {
-                        if (e.handled !== true) {
-                            e.handled = true;
-                            $.ajax({
-                                url: "{% url "sbs:evrak-birim-ajax-update-parametreAdd"  %}",
-                                type: "POST",
-                                data: {
-                                    'csrfmiddlewaretoken': "{{  csrf_token  }}",
-                                    isActive: 'False',
-                                    title: $("#id_title").val(),
-                                    type: $('#id_type').val(),
-                                    birim: $('#birim_id').val(),
-
-                                },
-                                success: function (result) {
-                                    console.log(result.status);
-                                    if (result.status == 'Success') {
-
-
-                                        $('#modalbirimUpdate').modal('show');
-
-                                        $('#navul a[href="#tab_2-2"]').tab('show');
-
-                                        datatablesAdd();
-
-
-                                        {#var p = $('#parametrebirimid').DataTable();#}
-                                        {#var count = p.rows().count() + 1;#}
-
-                                        {#p.row.add([#}
-                                        {#    count.toString(),#}
-                                        {#    result.title,#}
-                                        {#    '<div class="btn-group"><a type="button" class="btn btn-danger" onclick=deleteparametre(' + result.pk + ')>  <i class="fa fa-trash"></i></a></div>',#}
-                                        {##}
-                                        {#]);#}
-                                        {#p.draw(true);#}
-
-
-                                    }
-                                }
-                            });
-                        }
-                    });
-
-
-                    $('#btnbirimupdate').click(function (e) {
-                        if (e.handled !== true) { // This will prevent event triggering more then once
-                            e.handled = true;
-                            $.ajax({
-                                url: "{% url "sbs:evrak-birim-ajax-update"  %}",
-                                type: "POST",
-                                data: {
-                                    'csrfmiddlewaretoken': "{{  csrf_token  }}",
-                                    isActive: 'False',
-                                    name: $("#modalbirimguncelletext").val(),
-                                    pk: $('#birim_id option:selected').val(),
-
-                                },
-                                success: function (result) {
-                                    console.log(result.status);
-                                    if (result.status == 'Success') {
-                                        $("#id_birim option[value='" + $('#birim_id option:selected').val() + "']").text(result.name);
-                                        $('#birim_id option:selected').remove();
-                                        $('#birim_id').prepend("<option value=" + result.pk + " selected='selected'>" + result.name + "</option>");
-                                        $('#modalbirimUpdate').modal('hide');
-
-                                    }
-                                }
-                            });
-                        }
-                    });
-                }).modal('show');
-            } else {
-                $("#modelMessage").on("shown.bs.modal", function (e) {
-                    $("#message").text("Lütfen Birim Seçiniz");
-                }).modal('show');
-            }
         });
         {#klasör güncelleme alani#}
         $("#btnklasorincele").click(function () {
@@ -1025,6 +940,98 @@
                 });
             }).modal('show');
         }
+
+    function birimupdate() {
+
+             if ($("#birim_id").val() != "") {
+
+
+                datatablesAdd();
+
+
+                $("#modalbirimUpdate").on("shown.bs.modal", function () {
+                    $("#modalbirimguncelletext").val($('#birim_id option:selected').text());
+
+
+                    $('#parametreEkle').click(function (e) {
+                        if (e.handled !== true) {
+                            e.handled = true;
+                            $.ajax({
+                                url: "{% url "sbs:evrak-birim-ajax-update-parametreAdd"  %}",
+                                type: "POST",
+                                data: {
+                                    'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                                    isActive: 'False',
+                                    title: $("#id_title").val(),
+                                    type: $('#id_type').val(),
+                                    birim: $('#birim_id').val(),
+
+                                },
+                                success: function (result) {
+                                    console.log(result.status);
+                                    if (result.status == 'Success') {
+
+
+                                        $('#modalbirimUpdate').modal('show');
+
+                                        $('#navul a[href="#tab_2-2"]').tab('show');
+
+                                        datatablesAdd();
+
+
+                                        {#var p = $('#parametrebirimid').DataTable();#}
+                                        {#var count = p.rows().count() + 1;#}
+
+                                        {#p.row.add([#}
+                                        {#    count.toString(),#}
+                                        {#    result.title,#}
+                                        {#    '<div class="btn-group"><a type="button" class="btn btn-danger" onclick=deleteparametre(' + result.pk + ')>  <i class="fa fa-trash"></i></a></div>',#}
+                                        {##}
+                                        {#]);#}
+                                        {#p.draw(true);#}
+
+
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+
+                    $('#btnbirimupdate').click(function (e) {
+                        if (e.handled !== true) { // This will prevent event triggering more then once
+                            e.handled = true;
+                            $.ajax({
+                                url: "{% url "sbs:evrak-birim-ajax-update"  %}",
+                                type: "POST",
+                                data: {
+                                    'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                                    isActive: 'False',
+                                    name: $("#modalbirimguncelletext").val(),
+                                    pk: $('#birim_id option:selected').val(),
+
+                                },
+                                success: function (result) {
+                                    console.log(result.status);
+                                    if (result.status == 'Success') {
+                                        $("#id_birim option[value='" + $('#birim_id option:selected').val() + "']").text(result.name);
+                                        $('#birim_id option:selected').remove();
+                                        $('#birim_id').prepend("<option value=" + result.pk + " selected='selected'>" + result.name + "</option>");
+                                        $('#modalbirimUpdate').modal('hide');
+
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }).modal('show');
+            } else {
+                $("#modelMessage").on("shown.bs.modal", function (e) {
+                    $("#message").text("Lütfen Birim Seçiniz");
+                }).modal('show');
+            }
+
+    }
 
     </script>
 

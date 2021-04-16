@@ -619,7 +619,6 @@ def birimSearch(request):
                         'klasor_id': item.dosya.klasor.pk
                     }
                     dosyadizi.append(beka)
-
         # dosya arama alani
         # if request.POST.get('searchdosya'):
         #     dosya |=Adosya.objects.filter(sirano=request.POST.get('searchdosya'))
