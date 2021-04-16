@@ -626,14 +626,11 @@
                                     $('#id_birim').prepend("<option value=" + result.pk + " selected='selected'>" + $("#modalbirimaddtext").val() + "</option>");
                                     $('#klasorupdateid_birim').prepend("<option value=" + result.pk + " selected='selected'>" + $("#modalbirimaddtext").val() + "</option>");
                                     $('#modalbirimAdd').modal('hide');
-                                    birimupdate()
-
+                                    birimupdate();
                                 }
                             }
                         });
                     }
-
-
                 });
             }).modal('show');
             $('#btn-close').click(function () {
