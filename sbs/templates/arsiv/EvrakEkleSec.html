@@ -184,10 +184,10 @@
 
                     <!-- Custom Tabs (Pulled to the right) -->
                     <div class="nav-tabs-custom">
-                        <ul class="nav nav-tabs pull-right">
-                            <li class="active"><a href="#tab_1-1" data-toggle="tab">Güncelle </a></li>
-                            <li><a href="#tab_2-2" data-toggle="tab">Parametreler</a></li>
-                            <li><a href="#tab_3-2" data-toggle="tab">Parametre Ekle</a></li>
+                        <ul class="nav nav-tabs pull-right" id="navul">
+                            <li class="active" id="navguncelle"><a href="#tab_1-1" data-toggle="tab">Güncelle </a></li>
+                            <li id="navparamerte"><a href="#tab_2-2"  data-toggle="tab">Parametreler</a></li>
+                            <li id="navparametreekle"><a href="#tab_3-2"  data-toggle="tab">Parametre Ekle</a></li>
 
                             <li class="pull-left header"><i class="fa fa-th"></i> Birim Güncelle</li>
                         </ul>
@@ -253,7 +253,7 @@
 
 
                                         <div class="box-footer">
-                                            <button type="submit" class="btn btn-primary">Kaydet</button>
+                                            <button type="button" id="parametreEkle" class="btn btn-primary">Kaydet</button>
                                         </div>
                                     </div>
                                 </div>
@@ -704,10 +704,7 @@
 
                         console.log(result);
                         if (result.status == 'Success') {
-                            html = 'Aşama başarıyla kaldırıldı.';
 
-
-                            console.log(result.status);
 
                         }
                     }
@@ -740,48 +737,64 @@
             if ($("#birim_id").val() != "") {
 
 
-                table = $('#parametrebirimid').DataTable();
-                table.destroy();
-                $('#parametrebirimid').DataTable({
-
-                    'paging': false,
-                    'searching': false,
-                    'ordering': false,
-                    'responsive': false,
-                    'autoWidth': false,
-                    "serverSide": true,
-                    "processing": true,
-
-                    'ajax': {
-                        url: "{% url "sbs:evrak-birim-ajax-update-parametre"  %}",
-                        type: "POST",
-                        data: {
-                            'csrfmiddlewaretoken': "{{  csrf_token  }}",
-                            isActive: 'False',
-                            pk: $('#birim_id option:selected').val(),
-
-                        },
-                    },
-
-
-                    'columns': [
-                        {'data': 'count'},
-                        {'data': 'tanımı'},
-                        {
-                            "data": null,
-                            "bSortable": false,
-                            "mRender": function (data) {
-                                return '<div class="btn-group"><a type="button" class="btn btn-danger" onclick=deleteparametre(' + data.pk + ')><i class="fa fa-trash">Sil</i></a><a type="button" class="btn btn-warning" onclick=updateparametre(' + data.pk + ')><i class="fa fa-align-left">İncele</i></a></div>'
-                            }
-                        }
-
-                    ],
-
-                });
+               datatablesAdd();
 
 
                 $("#modalbirimUpdate").on("shown.bs.modal", function (e) {
                     $("#modalbirimguncelletext").val($('#birim_id option:selected').text());
+
+
+                     $('#parametreEkle').click(function () {
+                        {#if (e.handled !== true) { // This will prevent event triggering more then once#}
+                        {#    e.handled = true;#}
+                            $.ajax({
+                                url: "{% url "sbs:evrak-birim-ajax-update-parametreAdd"  %}",
+                                type: "POST",
+                                data: {
+                                    'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                                    isActive: 'False',
+                                    title: $("#id_title").val(),
+                                    type: $('#id_type').val(),
+                                    birim:$('#birim_id').val(),
+
+                                },
+                                success: function (result) {
+                                    console.log(result.status);
+                                    if (result.status == 'Success') {
+
+                                         $('#navul a[href="#tab_2-2"]').tab('show');
+
+                                         datatablesAdd();
+
+
+                                        {#var p = $('#parametrebirimid').DataTable();#}
+                                        {#var count = p.rows().count() + 1;#}
+
+                                        {#p.row.add([#}
+                                        {#    count.toString(),#}
+                                        {#    result.title,#}
+                                        {#    '<div class="btn-group"><a type="button" class="btn btn-danger" onclick=deleteparametre(' + result.pk + ')>  <i class="fa fa-trash"></i></a></div>',#}
+                                        {##}
+                                        {#]);#}
+                                        {#p.draw(true);#}
+
+
+
+
+
+
+
+
+                                    }
+                                }
+                            });
+                        {# }#}
+                    });
+
+
+
+
+
                     $('#btnbirimupdate').click(function () {
                         if (e.handled !== true) { // This will prevent event triggering more then once
                             e.handled = true;
@@ -888,7 +901,7 @@
         });
 
 
-        {#birim incele alani#}
+        {#dosya incele alani#}
         $("#btndosyaincele").click(function () {
             if ($("#klasor_id").val() != "" && $("#dosya_id").val() != "") {
 
@@ -931,6 +944,107 @@
             }
         });
 
+
+         function datatablesAdd() {
+
+              table = $('#parametrebirimid').DataTable();
+                table.destroy();
+                $('#parametrebirimid').DataTable({
+
+                    'paging': false,
+                    'searching': false,
+                    'ordering': false,
+                    'responsive': false,
+                    'autoWidth': false,
+                    "serverSide": true,
+                    "processing": true,
+
+                    'ajax': {
+                        url: "{% url "sbs:evrak-birim-ajax-update-parametre"  %}",
+                        type: "POST",
+                        data: {
+                            'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                            isActive: 'False',
+                            pk: $('#birim_id option:selected').val(),
+
+                        },
+                    },
+
+
+                    'columns': [
+                        {'data': 'count'},
+                        {'data': 'tanımı'},
+                        {
+                            "data": null,
+                            "bSortable": false,
+                            "mRender": function (data) {
+                                return '<div class="btn-group"><a type="button" class="btn btn-danger" onclick=deleteparametre(' + data.pk + ')><i class="fa fa-trash">Sil</i></a></div>'
+                            }
+                        }
+
+                    ],
+
+                });
+
+         }
+
+
+         function deleteparametre(id) {
+
+
+             $('#modalbirimUpdate').modal('hide');
+
+             console.log(id);
+
+              $("#modal-danger").on("shown.bs.modal", function (e) {
+                     $('#btn-conf').click(function () {
+                        {#if (e.handled !== true) { // This will prevent event triggering more then once#}
+                        {#    e.handled = true;#}
+                            console.log(id);
+                            $.ajax({
+                                url: "{% url "sbs:Birim-parametre-delete" pk=212121223232323232  %}".replace(/212121223232323232/, id.toString()),
+                                type: "POST",
+                                data: {
+                                    'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                                    isActive: 'False',
+                                },
+                                success: function (result) {
+                                    console.log(result.status);
+                                    if (result.status == 'Success') {
+
+                                        $('#modalbirimUpdate').modal('show');
+
+                                         $('#navul a[href="#tab_2-2"]').tab('show');
+
+                                         datatablesAdd();
+
+
+                                        {#var p = $('#parametrebirimid').DataTable();#}
+                                        {#var count = p.rows().count() + 1;#}
+
+                                        {#p.row.add([#}
+                                        {#    count.toString(),#}
+                                        {#    result.title,#}
+                                        {#    '<div class="btn-group"><a type="button" class="btn btn-danger" onclick=deleteparametre(' + result.pk + ')>  <i class="fa fa-trash"></i></a></div>',#}
+                                        {##}
+                                        {#]);#}
+                                        {#p.draw(true);#}
+
+
+
+
+
+
+
+
+                                    }
+                                }
+                            });
+                         {# }#}
+                    });
+                }).modal('show');
+
+         }
 
     </script>
 

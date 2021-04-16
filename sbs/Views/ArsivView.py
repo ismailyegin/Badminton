@@ -27,8 +27,6 @@ from sbs.models.Aevrak import Aevrak
 from sbs.models.Aklasor import Aklasor
 from sbs.models.CategoryItem import CategoryItem
 from sbs.services import general_methods
-
-
 @login_required
 def return_arsiv(request):
     perm = general_methods.control_access(request)
@@ -210,7 +208,10 @@ def parametredelete(request, pk):
         return redirect('accounts:login')
     if request.method == 'POST' and request.is_ajax():
         try:
+
             obj = AbirimParametre.objects.get(pk=pk)
+
+
             obj.delete()
             return JsonResponse({'status': 'Success', 'messages': 'save successfully'})
         except CategoryItem.DoesNotExist:
@@ -1065,6 +1066,35 @@ def ajax_birimUpdateParametre(request):
     return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
 
 
+
+@login_required
+def ajax_birimUpdateParametreAdd(request):
+    if request.POST.get('type') and request.POST.get('title') and request.POST.get('birim') :
+
+        parametre=AbirimParametre(
+            title=request.POST.get('title'),
+            type=request.POST.get('type'),
+            birim=Abirim.objects.get(pk=int(request.POST.get('birim')))
+        )
+        parametre.save()
+
+        return JsonResponse(
+            {
+                'pk': parametre.pk,
+                'title':parametre.title,
+                'status': 'Success',
+                'msg': 'Valid is  request'
+            })
+
+
+
+
+
+
+
+
+    else:
+        return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
 
 
 
