@@ -437,11 +437,9 @@ def arsiv_anasayfa(request):
     def takeSecond(elem):
         return elem[1]
     beka.sort(key=takeSecond, reverse=True)
-    print(beka)
     for item in beka[:6]:
         data.append({'sayi':item[1],'birim':item[0]})
         oran.append({'oran':round((item[1]/beka[0][1])*100)})
-    print(oran)
 
 
     # competitions = Competition.objects.filter().order_by('creationDate')[:6]
