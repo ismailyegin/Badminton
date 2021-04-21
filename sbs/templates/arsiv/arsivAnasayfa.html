@@ -119,28 +119,28 @@
                                     {#                                    </p>#}
 
                                     <div class="progress-group">
-                                        <span class="progress-text">{{ data.0.birim}}</span>
-                                        <span class="progress-number"><b>{{ data.0.sayi}}</b>/{{ data.0.sayi }}</span>
+                                        <span class="progress-text">{{ data.0.birim }}</span>
+                                        <span class="progress-number"><b>{{ data.0.sayi }}</b>/{{ data.0.sayi }}</span>
 
                                         <div class="progress sm">
                                             <div class="progress-bar progress-bar-aqua"
-                                                 style="width: {{oran.0.oran}}%"></div>
+                                                 style="width: {{ oran.0.oran }}%"></div>
                                         </div>
                                     </div>
                                     <!-- /.progress-group -->
                                     <div class="progress-group">
-                                        <span class="progress-text">{{ data.1.birim}}</span>
-                                        <span class="progress-number"><b>{{ data.1.sayi}}</b>/{{ data.0.sayi }}</span>
+                                        <span class="progress-text">{{ data.1.birim }}</span>
+                                        <span class="progress-number"><b>{{ data.1.sayi }}</b>/{{ data.0.sayi }}</span>
 
                                         <div class="progress sm">
                                             <div class="progress-bar progress-bar-red"
-                                                 style="width: {{ oran.1.oran  }}%"></div>
+                                                 style="width: {{ oran.1.oran }}%"></div>
                                         </div>
                                     </div>
                                     <!-- /.progress-group -->
                                     <div class="progress-group">
-                                        <span class="progress-text">{{ data.2.birim}}</span>
-                                        <span class="progress-number"><b>{{ data.2.sayi}}</b>/{{ data.0.sayi }}</span>
+                                        <span class="progress-text">{{ data.2.birim }}</span>
+                                        <span class="progress-number"><b>{{ data.2.sayi }}</b>/{{ data.0.sayi }}</span>
 
                                         <div class="progress sm">
                                             <div class="progress-bar progress-bar-green"
@@ -162,7 +162,7 @@
 
                                     <div class="col-sm-2 col-xs-6">
                                         <div class="description-block border-right">
-{#                                            <span class="description-percentage text-green">{{ item }}</span>#}
+                                            {#                                            <span class="description-percentage text-green">{{ item }}</span>#}
                                             <h5 class="description-header">{{ item.birim }}</h5>
                                             <span class="description-text">({{ item.sayi }})</span>
                                         </div>
@@ -180,271 +180,55 @@
                 <!-- /.col -->
             </div>
 
-            <div class="row">
 
-                <div class="col-md-6">
-                    <div class="box box-info">
-                        <div class="box-header with-border">
-                            <h3 class="box-title"> Antrenor Kademe Bilgileri</h3>
-
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                        class="fa fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i
-                                        class="fa fa-times"></i></button>
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-
-                            <canvas id="antrenorcanvas"></canvas>
-
-
-                            <!-- /.table-responsive -->
-                        </div>
-                        <!-- /.box-body -->
-                        <div class="box-footer clearfix">
-                            <a href="{% url 'sbs:antrenorler' %}" class="btn btn-sm btn-info btn-flat pull-left">Antrenor
-                                Listesi </a>
-                            <a href="{% url 'sbs:kademe' %}" class="btn btn-sm btn-default btn-flat pull-right">Antrenor
-                                Kademe Tanımlari</a>
-                        </div>
-                        <!-- /.box-footer -->
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="box box-info">
-                        <div class="box-header with-border">
-                            <h3 class="box-title"> Hakem Seviye Tanımları</h3>
-
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                        class="fa fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i
-                                        class="fa fa-times"></i></button>
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-
-                            <canvas id="hakemcanvas"></canvas>
-
-
-                            <!-- /.table-responsive -->
-                        </div>
-                        <!-- /.box-body -->
-                        <div class="box-footer clearfix">
-                            <a href="{% url 'sbs:hakemler' %}" class="btn btn-sm btn-info btn-flat pull-left">Hakem
-                                Listesi</a>
-                            <a href="{% url 'sbs:seviye' %}" class="btn btn-sm btn-default btn-flat pull-right">Hakem
-                                Seviye Tanımları</a>
-                        </div>
-                        <!-- /.box-footer -->
-                    </div>
-                </div>
-
-
-            </div>
             <!-- /.row -->
 
             <!-- Main row -->
-            <div class="row">
-                <!-- Left col -->
-                <div class="col-md-8">
-
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Sayılar</h3>
-                            <div class="box-tools pull-right">
-
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                        class="fa fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i
-                                        class="fa fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <table class="table table-bordered">
-                                <tbody>
-                                <tr>
-                                    <th style="width: 10px">#</th>
-                                    <th>Alan</th>
-
-                                    <th>Sayısı</th>
-                                </tr>
-                                <tr>
-                                    <td>1.</td>
-                                    <td>Toplam Sporcu</td>
-                                    <td><span class="badge ">{{ total_athlete }}</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2.</td>
-                                    <td>Toplam Klüp</td>
-                                    <td><span class="badge ">{{ total_club }}</span></td>
-                                </tr>
-                                <tr>
-                                    <td>3.</td>
-                                    <td>Toplam Antrenör</td>
-                                    <td><span class="badge ">{{ total_coachs }}</span></td>
-                                </tr>
-                                <tr>
-                                    <td>4.</td>
-                                    <td>Toplam Hakem</td>
-                                    <td><span class="badge ">{{ total_judge }}</span></td>
-                                </tr>
-                                <tr>
-                                    <td>5.</td>
-                                    <td>Toplam Kullanici</td>
-                                    <td><span class="badge ">{{ total_user }}</span></td>
-                                </tr>
 
 
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.box-body -->
-                        <div class="box-footer clearfix">
-                            <ul class="pagination pagination-sm no-margin pull-right">
-                                <li><a href="#">«</a></li>
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">»</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-
-                    <!-- /.box -->
-                    <div class="row">
-                        <div class="col-md-6">
-
-                        </div>
-                        <!-- /.col -->
-
-                        <div class="col-md-12">
-                            <!-- USERS LIST -->
-
-                            <!--/.box -->
-                        </div>
-                        <!-- /.col -->
-                    </div>
-
-                </div>
-                <!-- /.col -->
-
-                <div class="col-md-4">
-
-                    <!-- /.info-box -->
-
-                    <div class="box box-default">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Sporcularda Cinsiyet Dağılımı</h3>
-
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                        class="fa fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i
-                                        class="fa fa-times"></i></button>
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div class="chart-responsive">
-                                        <canvas id="pieChart2" height="202" width="303"
-                                                style="width: 243px; height: 162px;"></canvas>
-                                    </div>
-                                    <!-- ./chart-responsive -->
-                                </div>
-                                <!-- /.col -->
-                                <div class="col-md-4">
-                                    <ul class="chart-legend clearfix">
-
-                                        <li><i class="fa fa-circle-o text-green"></i> Erkek</li>
-                                        <li><i class="fa fa-circle-o text-red"></i> Kadın</li>
-
-                                    </ul>
-                                </div>
-                                <!-- /.col -->
-                            </div>
-                            <!-- /.row -->
-                        </div>
-                        <!-- /.box-body -->
-                        <div class="box-footer no-padding">
-                            <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#">Kadın
-                                    <span class="pull-right text-red"><i
-                                            class="fa fa-angle-down"></i> {{ total_athlete_gender_woman }}</span></a>
-                                </li>
-                                <li><a href="#">Erkek <span class="pull-right text-green"><i
-                                        class="fa fa-angle-up"></i> {{ total_athlete_gender_man }}</span></a>
-                                </li>
-
-                            </ul>
-                        </div>
-                        <!-- /.footer -->
-                    </div>
-                    <!-- /.box -->
-
-                    <!-- PRODUCT LIST -->
-
-
-                    <!-- /.box -->
-                </div>
-                <!-- /.col -->
-            </div>
-
-
-                {#                <div class="box box-danger">#}
-                {#                    <div class="box-header with-border">#}
-                {#                        <h3 class="box-title">Son Eklenen Sporcular</h3>#}
-                {##}
-                {#                        <div class="box-tools pull-right">#}
-                {##}
-                {#                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i#}
-                {#                                    class="fa fa-minus"></i>#}
-                {#                            </button>#}
-                {#                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i#}
-                {#                                    class="fa fa-times"></i>#}
-                {#                            </button>#}
-                {#                        </div>#}
-                {#                    </div>#}
-                {#                    <!-- /.box-header -->#}
-                {#                    <div class="box-body no-padding">#}
-                {#                        <ul class="users-list clearfix">#}
-                {#                            {% for athlete in last_athletes %}#}
-                {#                                <li>#}
-                {#                                <img src="/media/{{ athlete.person.profileImage }}" style="width: 100px;height: 100px"#}
-                {#                                     alt="User Image">#}
-                {#                                <a href="{% url "sbs:update-athletes" athlete.pk %}"#}
-                {#                                   class="users-list-name">{{ athlete.user.first_name }} {{ athlete.user.last_name }}#}
-                {#                                    ({{ athlete.licenses.last.sportsClub }}) </a>#}
-                {#                                <a class="users-list-name">({{ athlete.licenses.last.sportsClub }}) </a>#}
-                {#                                          <span class="product-description">     #}
-                {#                                              </span>#}
-                {##}
-                {##}
-                {#                            {% endfor %}#}
-                {##}
-                {##}
-                {#                            </li>#}
-                {##}
-                {#                        </ul>#}
-                {#                        <!-- /.users-list -->#}
-                {#                    </div>#}
-                {#                    <!-- /.box-body -->#}
-                {#                    <div class="box-footer text-center">#}
-                {#                        <a href="{% url "sbs:sporcular" %}" class="uppercase">Tüm Sporculari Görüntüleyin</a>#}
-                {#                    </div>#}
-                {#                    <!-- /.box-footer -->#}
-                {#                </div>#}
-
+            {#                <div class="box box-danger">#}
+            {#                    <div class="box-header with-border">#}
+            {#                        <h3 class="box-title">Son Eklenen Sporcular</h3>#}
+            {##}
+            {#                        <div class="box-tools pull-right">#}
+            {##}
+            {#                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i#}
+            {#                                    class="fa fa-minus"></i>#}
+            {#                            </button>#}
+            {#                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i#}
+            {#                                    class="fa fa-times"></i>#}
+            {#                            </button>#}
+            {#                        </div>#}
+            {#                    </div>#}
+            {#                    <!-- /.box-header -->#}
+            {#                    <div class="box-body no-padding">#}
+            {#                        <ul class="users-list clearfix">#}
+            {#                            {% for athlete in last_athletes %}#}
+            {#                                <li>#}
+            {#                                <img src="/media/{{ athlete.person.profileImage }}" style="width: 100px;height: 100px"#}
+            {#                                     alt="User Image">#}
+            {#                                <a href="{% url "sbs:update-athletes" athlete.pk %}"#}
+            {#                                   class="users-list-name">{{ athlete.user.first_name }} {{ athlete.user.last_name }}#}
+            {#                                    ({{ athlete.licenses.last.sportsClub }}) </a>#}
+            {#                                <a class="users-list-name">({{ athlete.licenses.last.sportsClub }}) </a>#}
+            {#                                          <span class="product-description">     #}
+            {#                                              </span>#}
+            {##}
+            {##}
+            {#                            {% endfor %}#}
+            {##}
+            {##}
+            {#                            </li>#}
+            {##}
+            {#                        </ul>#}
+            {#                        <!-- /.users-list -->#}
+            {#                    </div>#}
+            {#                    <!-- /.box-body -->#}
+            {#                    <div class="box-footer text-center">#}
+            {#                        <a href="{% url "sbs:sporcular" %}" class="uppercase">Tüm Sporculari Görüntüleyin</a>#}
+            {#                    </div>#}
+            {#                    <!-- /.box-footer -->#}
+            {#                </div>#}
 
 
         </section>
@@ -455,199 +239,28 @@
     <script>
 
 
-        {#var myLineChart = new Chart(ctxL, {#}
-        {#    type: 'line',#}
-        {#    data: {#}
-        {#        labels: ["January", "February", "March", "April", "May", "June", "July"],#}
-        {#        datasets: [#}
-        {#            {#}
-        {#                label: "My First dataset",#}
-        {#                data: [0, 65, 45, 65, 35, 65, 0],#}
-        {#                backgroundColor: '#AD35BA',#}
-        {#                borderColor: [#}
-        {#                    '#AD35BA',#}
-        {#                ],#}
-        {#                borderWidth: 2,#}
-        {#                pointBorderColor: "#fff",#}
-        {#                pointBackgroundColor: "rgba(173, 53, 186, 0.1)",#}
-        {#            }#}
-        {#        ]#}
-        {#    },#}
-        {#    options: {#}
-        {#        responsive: true#}
-        {#    }#}
-        {# }) #}
-        {#;#}
-        {#        #}
-    </script>
 
-
-    <script>
-
-        var randomScalingFactor = function () {
-            return Math.round(Math.random() * 100)
-        };
-
-        var barChartDataantrenor = {
-            labels: [{% for item in coach_grades %}"{{ item.name }} Kademe",{% endfor %}],
-            datasets: [
-                {
-                    fillColor: "rgba(220,220,220,0.5)",
-                    strokeColor: "rgba(220,220,220,0.8)",
-                    highlightFill: "rgba(220,220,220,0.75)",
-                    highlightStroke: "rgba(220,220,220,1)",
-                    data: [{% for item in coach_grades %}{{ item.count }}, {% endfor %}]
-                },
-
-            ]
-
-        };
-
-        var barChartDatahakem = {
-            labels: [{% for item in judge_grades %}"{{ item.name }}",{% endfor %}],
-            datasets: [
-                {
-                    fillColor: "rgba(220,220,220,0.5)",
-                    strokeColor: "rgba(220,220,220,0.8)",
-                    highlightFill: "rgba(220,220,220,0.75)",
-                    highlightStroke: "rgba(220,220,220,1)",
-                    data: [{% for item in judge_grades %}{{ item.count }}, {% endfor %}]
-                },
-
-            ]
+        var barChartData = {
+            labels: [{% for item in data %}"{{ item.birim }}",{% endfor %}],
+                datasets:[{
+                fillColor: "rgba(151,187,205,0.5)",
+                strokeColor: "rgba(151,187,205,0.8)",
+                highlightFill: "rgba(151,187,205,0.75)",
+                highlightStroke: "rgba(151,187,205,1)",
+                data: [{% for item in data %}"{{ item.sayi }}",{% endfor %}]
+            }]
 
         }
 
 
         $(function () {
 
-            var ctx = document.getElementById("antrenorcanvas").getContext("2d");
-            window.myBar = new Chart(ctx).Bar(barChartDataantrenor, {
-                responsive: true
-            });
-
-            var hakem = document.getElementById("hakemcanvas").getContext("2d");
-            window.myBar = new Chart(hakem).Bar(barChartDatahakem, {
-                responsive: true
-            });
-
-
-            var salesChartCanvas = $('#salesChart2').get(0).getContext('2d');
-            // This will get the first returned node in the jQuery collection.
-            var salesChart = new Chart(salesChartCanvas);
-
-            var salesChartData = {
-                labels: [{% for item in data %}'{{ item.birim }}',{% endfor %}],
-
-                datasets: [
-
-
-                    {
-                        label: 'Digital Goods',
-                        fillColor: 'rgba(60,141,188,0.9)',
-                        strokeColor: 'rgba(60,141,188,0.8)',
-                        pointColor: '#3b8bba',
-                        pointStrokeColor: 'rgba(60,141,188,1)',
-                        pointHighlightFill: '#fff',
-                        pointHighlightStroke: 'rgba(60,141,188,1)',
-                        data: [{% for item in data %}{{ item.sayi }}, {% endfor %}],
-                    }
-
-                ]
-            };
-            var salesChartOptions = {
-                // Boolean - If we should show the scale at all
-                showScale: true,
-                // Boolean - Whether grid lines are shown across the chart
-                scaleShowGridLines: false,
-                // String - Colour of the grid lines
-                scaleGridLineColor: 'rgba(0,0,0,.05)',
-                // Number - Width of the grid lines
-                scaleGridLineWidth: 1,
-                // Boolean - Whether to show horizontal lines (except X axis)
-                scaleShowHorizontalLines: true,
-                // Boolean - Whether to show vertical lines (except Y axis)
-                scaleShowVerticalLines: true,
-                // Boolean - Whether the line is curved between points
-                bezierCurve: true,
-                // Number - Tension of the bezier curve between points
-                bezierCurveTension: 0.3,
-                // Boolean - Whether to show a dot for each point
-                pointDot: false,
-                // Number - Radius of each point dot in pixels
-                pointDotRadius: 4,
-                // Number - Pixel width of point dot stroke
-                pointDotStrokeWidth: 1,
-                // Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-                pointHitDetectionRadius: 20,
-                // Boolean - Whether to show a stroke for datasets
-                datasetStroke: true,
-                // Number - Pixel width of dataset stroke
-                datasetStrokeWidth: 2,
-                // Boolean - Whether to fill the dataset with a color
-                datasetFill: true,
-                // String - A legend template
-                legendTemplate: ' ',
-                // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-                maintainAspectRatio: true,
-                // Boolean - whether to make the chart responsive to window resizing
-                responsive: true
-            };
-
-            // Create the line chart
-            salesChart.Line(salesChartData, salesChartOptions);
-
-
-            var pieChartCanvas = $('#pieChart2').get(0).getContext('2d');
-            var pieChart = new Chart(pieChartCanvas);
-            var PieData = [
-                {
-                    value: 1678,
-                    color: '#f56954',
-                    highlight: '#f56954',
-                    label: 'Kadın'
-                },
-                {
-                    value: 3764,
-                    color: '#00a65a',
-                    highlight: '#00a65a',
-                    label: 'Erkek'
-                },
-
-            ];
-            var pieOptions = {
-                // Boolean - Whether we should show a stroke on each segment
-                segmentShowStroke: true,
-                // String - The colour of each segment stroke
-                segmentStrokeColor: '#fff',
-                // Number - The width of each segment stroke
-                segmentStrokeWidth: 1,
-                // Number - The percentage of the chart that we cut out of the middle
-                percentageInnerCutout: 50, // This is 0 for Pie charts
-                // Number - Amount of animation steps
-                animationSteps: 100,
-                // String - Animation easing effect
-                animationEasing: 'easeOutBounce',
-                // Boolean - Whether we animate the rotation of the Doughnut
-                animateRotate: true,
-                // Boolean - Whether we animate scaling the Doughnut from the centre
-                animateScale: false,
-                // Boolean - whether to make the chart responsive to window resizing
+            var ctx = document.getElementById("salesChart2").getContext("2d");
+            window.myBar = new Chart(ctx).Bar(barChartData, {
                 responsive: true,
-                // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-                maintainAspectRatio: false,
-                // String - A legend template
-                legendTemplate: '',
-                // String - A tooltip template
-                tooltipTemplate: ''
-            };
-            // Create pie or douhnut chart
-            // You can switch between pie and douhnut using the method below.
-            pieChart.Doughnut(PieData, pieOptions);
-            // -----------------
-            // - END PIE CHART -
-        });
 
+            });
+        });
 
     </script>
 
