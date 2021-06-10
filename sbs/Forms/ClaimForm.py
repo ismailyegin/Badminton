@@ -9,9 +9,9 @@ class ClaimForm(ModelForm):
         model = Claim
 
         fields = (
-            'title', 'project', 'status', 'definition', 'importanceSort', 'pay')
+            'title', 'project', 'status', 'definition', 'importanceSort')
 
-        labels = {'pay': 'Ücret ',
+        labels = {
                   'title': 'Başlık ',
                   'status': 'Durumu ',
                   'definition': 'Açıklama ',
@@ -26,9 +26,7 @@ class ClaimForm(ModelForm):
             'project': forms.Select(attrs={'class': 'form-control select2 select2-hidden-accessible',
                                            'style': 'width: 100%; '}),
             'title': forms.TextInput(attrs={'class': 'form-control', "style": "text-transform:uppercase"}),
-            'definition': forms.Textarea(attrs={'class': 'form-control','rows': '2'}),
+            'definition': forms.Textarea(attrs={'class': 'form-control','rows': '6'}),
 
-
-            'pay': forms.NumberInput(attrs={'class': 'form-control', 'onkeypress': 'validate(event)'}),
 
         }

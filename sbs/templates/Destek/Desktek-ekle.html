@@ -141,11 +141,12 @@
 
                     <div class="box box-solid box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Destek-Talep Ekle</h3>
+                            <h3 class="box-title">Destek-Talep</h3>
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
                         <form method="post" role="form">
+                            <div class="box-body">
                             <div class="box-body">
                                 {% csrf_token %}
 
@@ -169,10 +170,7 @@
 
                                 {% if aktif == 'Admin' %}
 
-                                    <div class="form-group">
-                                        <label> {{ claim_form.pay.label }}</label>
-                                        {{ claim_form.pay }}
-                                    </div>
+
                                     <div class="form-group">
                                         <label> {{ claim_form.status.label }}</label>
                                         {{ claim_form.status }}

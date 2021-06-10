@@ -40,7 +40,7 @@ def return_claim(request):
 
         if not (status or importanceSort):
             if active == 'Admin':
-                destek = Claim.objects.all()
+                destek = Claim.objects.all().order_by('-creationDate')
         else:
             query = Q()
             if status:
@@ -53,7 +53,7 @@ def return_claim(request):
                 query &= Q(user__first_name__icontains=firstName)
 
             if active == 'Admin':
-                destek = Claim.objects.filter(query)
+                destek = Claim.objects.filter(query).order_by('-creationDate')
 
     return render(request, 'Destek/DestekTalepListesi.html',
                   {'claims': destek, 'destek_form': destek_form, 'user_form': user_form, })

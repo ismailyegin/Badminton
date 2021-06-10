@@ -372,7 +372,7 @@
 
                                             {% endif %} </td>
 
-                                        <td>{{ forloop.counter }}</td>
+                                            <td>{{ forloop.counter }}</td>
 
                                             <td>
                                                 <div class="btn-group">
@@ -388,60 +388,60 @@
 
 
                                         </tr>
-                      {% if compathlete.category.kategoriadi != 'Tek Erkekler' and compathlete.category.kategoriadi != 'Tek Bayanlar' %}
+                                        {% if compathlete.category.kategoriadi != 'Tek Erkekler' and compathlete.category.kategoriadi != 'Tek Bayanlar' %}
                                             <tr>
 
-                                            <td>{{ compathlete.athleteTwo.pk }} </td>
-                                            <td>{{ compathlete.athleteTwo.user.first_name }}
-                                            </td>
-                                            <td>{{ compathlete.athleteTwo.user.last_name }}</td>
-                                            <td>{{ compathlete.athleteTwo.licenses.last.sportsClub }}</td>
-                                            <td>{{ compathlete.category }} </td>
+                                                <td>{{ compathlete.athleteTwo.pk }} </td>
+                                                <td>{{ compathlete.athleteTwo.user.first_name }}
+                                                </td>
+                                                <td>{{ compathlete.athleteTwo.user.last_name }}</td>
+                                                <td>{{ compathlete.athleteTwo.licenses.last.sportsClub }}</td>
+                                                <td>{{ compathlete.category }} </td>
 
 
-                                            <td>{{ compathlete.athleteTwo.person.tc }}</td>
-                                            <td>
-                                                {% if compathlete.athleteTwo.person.gender == 1 %}
+                                                <td>{{ compathlete.athleteTwo.person.tc }}</td>
+                                                <td>
+                                                    {% if compathlete.athleteTwo.person.gender == 1 %}
 
-                                                    ERKEK
-                                                {% else %}
-                                                    BAYAN
+                                                        ERKEK
+                                                    {% else %}
+                                                        BAYAN
+
+                                                    {% endif %}
+                                                </td>
+
+
+                                                <td>{% if compathlete.athleteTwo.licenses.last.coach %}
+                                                    {{ compathlete.athleteTwo.licenses.last.coach }}
 
                                                 {% endif %}
-                                            </td>
+                                                </td>
+                                                <td>{% if compathlete.athleteTwo.licenses.last.coach2 %}
+                                                    {{ compathlete.athleteTwo.licenses.last.coach2 }}
+                                                {% endif %} </td>
+                                                <td>{% if  compathlete.athlete %}
+
+                                                    {{ compathlete.athlete.user.first_name }}
+                                                    {{ compathlete.athlete.user.last_name }}
+
+                                                {% endif %} </td>
+
+                                                <td>{{ forloop.counter }}</td>
+
+                                                <td>
+                                                    <div class="btn-group">
+
+                                                        <a onclick="deleteAthlete({{ compathlete.id }})"
+                                                           type="button" class="btn btn-danger"><i
+                                                                class="fa fa-remove"></i>Kaldır
+                                                        </a>
 
 
-                                            <td>{% if compathlete.athleteTwo.licenses.last.coach %}
-                                                {{ compathlete.athleteTwo.licenses.last.coach }}
-
-                                            {% endif %}
-                                            </td>
-                                            <td>{% if compathlete.athleteTwo.licenses.last.coach2 %}
-                                                {{ compathlete.athleteTwo.licenses.last.coach2 }}
-                                            {% endif %} </td>
-                                            <td>{% if  compathlete.athlete %}
-
-                                                {{ compathlete.athlete.user.first_name }}
-                                                {{ compathlete.athlete.user.last_name }}
-
-                                            {% endif %} </td>
-
-                                        <td>{{ forloop.counter }}</td>
-
-                                            <td>
-                                                <div class="btn-group">
-
-                                                    <a onclick="deleteAthlete({{ compathlete.id }})"
-                                                       type="button" class="btn btn-danger"><i
-                                                            class="fa fa-remove"></i>Kaldır
-                                                    </a>
+                                                    </div>
+                                                </td>
 
 
-                                                </div>
-                                            </td>
-
-
-                                        </tr>
+                                            </tr>
 
                                         {% endif %}
 
