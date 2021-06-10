@@ -16,6 +16,7 @@ from sbs.models.Claim import Claim
 from sbs.Forms.DestekSearchForm import DestekSearchform
 from unicode_tr import unicode_tr
 from sbs.Forms.UserSearchForm import UserSearchForm
+from django.core.mail import BadHeaderError, send_mail
 
 from sbs.models import MenuDirectory, MenuAdmin
 
@@ -75,6 +76,11 @@ def claim_add(request):
             claimSave = claim_form.save(commit=False)
             claimSave.user = request.user
             claimSave.save()
+
+            konu = "Badminton Bilgi Sistemi Destek ve Yardım"
+            icerik=claimSave.definition
+            send_mail(konu, icerik, 'no-reply@badminton.gov.tr', ['fatih@kobiltek.com'])
+
 
             messages.success(request, 'Destek Talep  Eklendi.')
             return redirect('sbs:destek-talep-listesi')
