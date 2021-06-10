@@ -312,27 +312,21 @@
                             <table id="sporcular" class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
-                                    <th>Takım</th>
-                                    <th>Firsth Name</th>
-                                    <th>Last Name</th>
-                                <th>Birth Date</th>
-                                    <th>Gender</th>
-                                    <th>MemberID</th>
+                                    <th>Sporcu No</th>
+                                    <th>Adı</th>
+                                    <th>Soyadı</th>
                                     <th>Kulüp</th>
-                                    <th>Seed</th>
-
                                     <th>Kategori</th>
-
                                     <th>Kimlik No</th>
 
-                                    {% if aktif == 'Admin' or aktif == 'Yonetim' %}
-                                        <th>Antrenör 1</th>
-                                        <th>Antrenör 2</th>
-                                        <th>Diger Sporcu</th>
-                                        <th>İşlemeler</th>
-                                    {% endif %}
+                                    <th>Cinsisyet</th>
 
 
+                                    <th>Antrenör 1</th>
+                                    <th>Antrenör 2</th>
+                                    <th>Diger Sporcu</th>
+                                    <th>Takım</th>
+                                    <th>İşlemeler</th>
 
 
                                 </tr>
@@ -340,147 +334,118 @@
                                 <tbody>
                                 {% if athletes %}
                                     {% for compathlete in athletes %}
-                                        {% if compathlete.category.kategoriadi == "Tek Erkekler" or compathlete.category.kategoriadi == "Tek Bayanlar" %}
+
                                         <tr>
 
-                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ compathlete.athlete.pk }} </td>
                                             <td>{{ compathlete.athlete.user.first_name }}
                                             </td>
-                                        <td>{{ compathlete.athlete.user.last_name }}</td>
-                                        <td>{{ compathlete.athlete.person.birthDate }}</td>
+                                            <td>{{ compathlete.athlete.user.last_name }}</td>
+                                            <td>{{ compathlete.athlete.licenses.last.sportsClub }}</td>
+                                            <td>{{ compathlete.category }} </td>
+
+
+                                            <td>{{ compathlete.athlete.person.tc }}</td>
                                             <td>
                                                 {% if compathlete.athlete.person.gender == 1 %}
 
-                                                    M
+                                                    ERKEK
                                                 {% else %}
-                                                    F
+                                                    BAYAN
 
                                                 {% endif %}
                                             </td>
 
 
-                                            <td>{{ compathlete.athlete.pk }} </td>
+                                            <td>{% if compathlete.athlete.licenses.last.coach %}
+                                                {{ compathlete.athlete.licenses.last.coach }}
 
-
-                                            <td>{{ compathlete.athlete.licenses.last.sportsClub }}</td>
-                                            <td></td>
-                                            <td>{{ compathlete.category }} </td>
-                                            <td>{{ compathlete.athlete.person.tc }} </td>
-
-
-                                            {% if aktif == 'Admin' or aktif == 'Yonetim' %}
-                                                <td>{{ compathlete.athlete.licenses.last.coach }}</td>
-                                                <td>{{ compathlete.athlete.licenses.last.coach2 }}</td>
-                                                <td></td>
-
-                                                <td>
-                                                    <div class="btn-group">
-
-                                                        <a onclick="deleteAthlete({{ compathlete.id }})"
-                                                           type="button" class="btn btn-danger"><i
-                                                                class="fa fa-remove"></i>Kaldır
-                                                        </a>
-
-
-                                                    </div>
-                                                </td>
                                             {% endif %}
+                                            </td>
+                                            <td>{% if compathlete.athlete.licenses.last.coach2 %}
+                                                {{ compathlete.athlete.licenses.last.coach2 }}
+                                            {% endif %} </td>
+                                            <td>{% if  compathlete.athleteTwo %}
+
+                                                {{ compathlete.athleteTwo.user.first_name }}
+                                                {{ compathlete.athleteTwo.user.last_name }}
+
+                                            {% endif %} </td>
+
+                                        <td>{{ forloop.counter }}</td>
+
+                                            <td>
+                                                <div class="btn-group">
+
+                                                    <a onclick="deleteAthlete({{ compathlete.id }})"
+                                                       type="button" class="btn btn-danger"><i
+                                                            class="fa fa-remove"></i>Kaldır
+                                                    </a>
+
+
+                                                </div>
+                                            </td>
+
 
                                         </tr>
-                                        {% else %}
+                      {% if compathlete.category.kategoriadi != 'Tek Erkekler' and compathlete.category != 'Tek Bayanlar' %}
                                             <tr>
 
-                                                <td>{{ forloop.counter }}</td>
-                                                <td>{{ compathlete.athlete.user.first_name }}
-
-                                                </td>
-                                            <td>{{ compathlete.athlete.user.last_name }}</td>
-                                            <td>{{ compathlete.athlete.person.birthDate   }}</td>
-                                                <td>
-                                                    {% if compathlete.athlete.person.gender == 1 %}
-
-                                                        M
-                                                    {% else %}
-                                                        F
-
-                                                    {% endif %}
-                                                </td>
-
-
-                                                <td>{{ compathlete.athlete.pk }} </td>
-
-
-                                                <td>{{ compathlete.athlete.licenses.last.sportsClub }}</td>
-                                                <td></td>
-                                                <td>{{ compathlete.category }} </td>
-                                                <td>{{ compathlete.athlete.person.tc }} </td>
-
-
-                                                {% if aktif == 'Admin' or aktif == 'Yonetim' %}
-                                                    <td>{{ compathlete.athlete.licenses.last.coach }}</td>
-                                                    <td>{{ compathlete.athlete.licenses.last.coach2 }}</td>
-                                                      <td>{{ compathlete.athleteTwo.pk }}</td>
-
-                                                    <td>
-                                                        <div class="btn-group">
-
-                                                            <a onclick="deleteAthlete({{ compathlete.id }})"
-                                                               type="button" class="btn btn-danger"><i
-                                                                    class="fa fa-remove"></i>Kaldır
-                                                            </a>
-
-
-                                                        </div>
-                                                    </td>
-                                                {% endif %}
-
-                                            </tr>
-                                            <tr>
-
-                                                <td>{{forloop.counter}} </td>
-                                                <td>{{ compathlete.athleteTwo.user.first_name }} </td>
+                                            <td>{{ compathlete.athleteTwo.pk }} </td>
+                                            <td>{{ compathlete.athleteTwo.user.first_name }}
+                                            </td>
                                             <td>{{ compathlete.athleteTwo.user.last_name }}</td>
-                                            <td>{{ compathlete.athleteTwo.person.birthDate }}</td>
-                                                <td>
-                                                    {% if compathlete.athleteTwo.person.gender == 1 %}
-
-                                                        M
-                                                    {% else %}
-                                                        F
-
-                                                    {% endif %}
-                                                </td>
+                                            <td>{{ compathlete.athleteTwo.licenses.last.sportsClub }}</td>
+                                            <td>{{ compathlete.category }} </td>
 
 
-                                                <td>{{ compathlete.athleteTwo.pk }} </td>
+                                            <td>{{ compathlete.athleteTwo.person.tc }}</td>
+                                            <td>
+                                                {% if compathlete.athleteTwo.person.gender == 1 %}
 
+                                                    ERKEK
+                                                {% else %}
+                                                    BAYAN
 
-                                                <td>{{ compathlete.athleteTwo.licenses.last.sportsClub }}</td>
-<td></td>
-                                                <td>{{ compathlete.category }} </td>
-                                                <td>{{ compathlete.athleteTwo.person.tc }} </td>
-
-
-                                                {% if aktif == 'Admin' or aktif == 'Yonetim' %}
-                                                    <td>{{ compathlete.athleteTwo.licenses.last.coach }}</td>
-                                                    <td>{{ compathlete.athleteTwo.licenses.last.coach2 }}</td>
-                                                    <td>{{ compathlete.athlete.pk }}</td>
-
-                                                    <td>
-                                                        <div class="btn-group">
-
-                                                            <a onclick="deleteAthlete({{ compathlete.id }})"
-                                                               type="button" class="btn btn-danger"><i
-                                                                    class="fa fa-remove"></i>Kaldır
-                                                            </a>
-
-
-                                                        </div>
-                                                    </td>
                                                 {% endif %}
+                                            </td>
 
-                                            </tr>
+
+                                            <td>{% if compathlete.athleteTwo.licenses.last.coach %}
+                                                {{ compathlete.athleteTwo.licenses.last.coach }}
+
+                                            {% endif %}
+                                            </td>
+                                            <td>{% if compathlete.athleteTwo.licenses.last.coach2 %}
+                                                {{ compathlete.athleteTwo.licenses.last.coach2 }}
+                                            {% endif %} </td>
+                                            <td>{% if  compathlete.athlete %}
+
+                                                {{ compathlete.athlete.user.first_name }}
+                                                {{ compathlete.athlete.user.last_name }}
+
+                                            {% endif %} </td>
+
+                                        <td>{{ forloop.counter }}</td>
+
+                                            <td>
+                                                <div class="btn-group">
+
+                                                    <a onclick="deleteAthlete({{ compathlete.id }})"
+                                                       type="button" class="btn btn-danger"><i
+                                                            class="fa fa-remove"></i>Kaldır
+                                                    </a>
+
+
+                                                </div>
+                                            </td>
+
+
+                                        </tr>
+
                                         {% endif %}
+
+
                                     {% endfor %}
                                 {% endif %}
 
@@ -512,8 +477,6 @@
                 year.push("{{ item.pk }}");
             {% endfor %}
             $('#ages').val(year);
-
-
 
 
             var jop = new Array();
@@ -574,7 +537,7 @@
                     {
                         extend: 'pdfHtml5',
                         download: 'open',
-                        title:'{{ competition.name }}',
+                        title: '{{ competition.name }}',
                         text: '<i class="fa fa-file-pdf-o"></i>',
                         exportOptions: {
                             columns: [0, 1, ':visible']
