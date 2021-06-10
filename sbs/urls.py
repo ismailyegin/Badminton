@@ -555,4 +555,9 @@ urlpatterns = [
     url(r'arsiv/arsiv-klasorguncelle/ajax/$', ArsivView.ajax_klasor_update_add, name='evrak-klasor-ajax-update-add'),
 
 
+
+   #silinecekler
+    url(r'aktar$', ArsivView.aktar, name='aktar'),
+
+
 ]

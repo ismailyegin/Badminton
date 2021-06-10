@@ -253,13 +253,15 @@ def musabaka_sporcu_sec(request, pk):
         return redirect('accounts:login')
 
     category = Category.objects.all()
+    musabaka=Competition.objects.get(pk=pk)
 
     competition = Competition.objects.filter(registerStartDate__lte=timezone.now(),
                                              registerFinishDate__gte=timezone.now())
 
 
     return render(request, 'musabaka/musabaka-sporcu-sec.html',
-                  {'pk': pk, 'weights': category, 'application': competition})
+                  {'pk': pk, 'weights': category, 'application': competition,
+                   'musabaka':musabaka})
 
 
 @login_required
@@ -426,14 +428,18 @@ def return_sporcu(request):
         #         athletes.append(comp.athlete.pk)
 
         if active == 'KlupUye':
+
+            #çalisma yapılacak
             sc_user = SportClubUser.objects.get(user=user)
             clubsPk = []
             clubs = SportsClub.objects.filter(clubUser=sc_user)
             for club in clubs:
                 clubsPk.append(club.pk)
+            yearArray=[]
+            for year in competition.ages.all():
+                yearArray.append(year.year)
 
-
-            modeldata = Athlete.objects.exclude(pk__in=athletes).filter(licenses__sportsClub__in=clubsPk).distinct()
+            modeldata = Athlete.objects.exclude(pk__in=athletes).filter(licenses__sportsClub__in=clubsPk).filter(person__birthDate__year__in=yearArray) .distinct()
             total = modeldata.count()
 
         elif active == 'Yonetim' or active == 'Admin':
@@ -442,27 +448,34 @@ def return_sporcu(request):
 
         elif active == 'Antrenor':
 
+
+            #çalisma yapılacak
+
             coach = Coach.objects.get(user=request.user)
             clup = SportsClub.objects.filter(coachs=coach)
             clupsPk = []
             for item in clup:
                 clupsPk.append(item.pk)
-            athletes = Athlete.objects.filter(licenses__sportsClub_id__in=clupsPk).distinct()
-            athletes |= Athlete.objects.filter(licenses__coach=coach).distinct()
+            yearArray = []
+            for year in competition.ages.all():
+                yearArray.append(year.year)
+            athletes = Athlete.objects.filter(licenses__sportsClub_id__in=clupsPk).filter(person__birthDate__year__in=yearArray).distinct()
+            athletes |= Athlete.objects.filter(licenses__coach=coach).filter(person__birthDate__year__in=yearArray).distinct()
             modeldata = athletes.distinct()[start:start + length]
             total = athletes.distinct().count()
 
     else:
         if search:
             modeldate = Athlete.objects.none()
+            yearArray = []
+            for year in competition.ages.all():
+                yearArray.append(year.year)
 
             compAthlete = CompetitionsAthlete.objects.filter(competition=competition)
             athletes = []
             modeldata = Athlete.objects.filter(
                 Q(user__last_name__icontains=search) | Q(user__first_name__icontains=search) | Q(
                     user__email__icontains=search))
-
-
             for comp in compAthlete:
                 if comp.athlete:
                     athletes.append(comp.athlete.pk)
@@ -472,22 +485,20 @@ def return_sporcu(request):
                 clubs = SportsClub.objects.filter(clubUser=sc_user)
                 for club in clubs:
                     clubsPk.append(club.pk)
-                modeldata = modeldata.exclude(pk__in=athletes).filter(
+                modeldata = modeldata.filter(person__birthDate__year__in=yearArray).exclude(pk__in=athletes).filter(
                     licenses__sportsClub__in=clubsPk).distinct()
                 total = modeldata.exclude(pk__in=athletes).filter(
                     licenses__sportsClub__in=clubsPk).distinct().count()
             # elif active == 'Yonetim' or active == 'Admin':
             #     modeldata = modeldata.exclude(pk__in=athletes)
-
-
             elif active == 'Antrenor':
                 coach = Coach.objects.get(user=request.user)
                 clup = SportsClub.objects.filter(coachs=coach)
                 clupsPk = []
                 for item in clup:
                     clupsPk.append(item.pk)
-                athletes = modeldata.filter(licenses__sportsClub_id__in=clupsPk).distinct()
-                athletes |= modeldata.filter(licenses__coach=coach).distinct()
+                athletes = modeldata.filter(person__birthDate__year__in=yearArray).filter(licenses__sportsClub_id__in=clupsPk).distinct()
+                athletes |= modeldata.filter(person__birthDate__year__in=yearArray).filter(licenses__coach=coach).distinct()
                 modeldata = athletes.distinct()
 
             total = modeldata.count()
@@ -501,21 +512,28 @@ def return_sporcu(request):
                     athletes.append(comp.athlete.pk)
                     # print(comp.athlete)
             if active == 'KlupUye':
+                yearArray = []
+                for year in competition.ages.all():
+                    yearArray.append(year.year)
                 sc_user = SportClubUser.objects.get(user=user)
                 clubsPk = []
                 clubs = SportsClub.objects.filter(clubUser=sc_user)
                 for club in clubs:
                     clubsPk.append(club.pk)
                 modeldata = Athlete.objects.exclude(pk__in=athletes).filter(
-                    licenses__sportsClub__in=clubsPk).distinct()[start:start + length]
+                    licenses__sportsClub__in=clubsPk).filter(person__birthDate__year__in=yearArray).distinct()[start:start + length]
                 total = Athlete.objects.exclude(pk__in=athletes).filter(
-                    licenses__sportsClub__in=clubsPk).distinct().count()
+                    licenses__sportsClub__in=clubsPk).filter(person__birthDate__year__in=yearArray).distinct().count()
             elif active == 'Yonetim' or active == 'Admin':
                 modeldata = Athlete.objects.exclude(pk__in=athletes)[start:start + length]
                 total = Athlete.objects.exclude(pk__in=athletes).distinct().count()
 
 
             elif active == 'Antrenor':
+                yearArray = []
+                for year in competition.ages.all():
+                    yearArray.append(year.year)
+
 
                 coach = Coach.objects.get(user=request.user)
                 clup = SportsClub.objects.filter(coachs=coach)
@@ -524,6 +542,7 @@ def return_sporcu(request):
                     clupsPk.append(item.pk)
                 athletes = Athlete.objects.filter(licenses__sportsClub_id__in=clupsPk).distinct()
                 athletes |= Athlete.objects.filter(licenses__coach=coach).distinct()
+                athletes=athletes.filter(person__birthDate__year__in=yearArray)
                 modeldata = athletes.distinct()[start:start + length]
                 total = athletes.distinct().count()
 
@@ -693,8 +712,6 @@ def choose_athlete_competition(request):
     if request.method == 'POST' and request.is_ajax():
 
         if request.POST.get('categori') and request.POST.get('competition'):
-            print(request.POST.get('categori'))
-            print(request.POST.get('competition'))
             if Category.objects.filter(pk=request.POST.get('categori')) and Competition.objects.filter(
                     pk=request.POST.get('competition')):
                 categori = Category.objects.get(pk=request.POST.get('categori'))
@@ -964,8 +981,13 @@ def antrenor_sporcu_ajax(request):
                 clupsPk = []
                 for item in clup:
                     clupsPk.append(item.pk)
+
+                yearArray = []
+                for year in Competition.objects.get(pk=request.POST.get('competition')).ages.all():
+                    yearArray.append(year.year)
                 athletes = Athlete.objects.filter(licenses__sportsClub_id__in=clupsPk).distinct()
-                athletes |= Athlete.objects.filter(licenses__coach=coach).distinct()
+                athletes |= Athlete.objects.filter(licenses__coach=coach ).distinct()
+                athletes = athletes.filter(person__birthDate__year__in=yearArray)
             beka = []
             # antrenor verisi alınıp sistemde filtreleme yapılacak
             for item in athletes:

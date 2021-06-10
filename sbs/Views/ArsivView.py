@@ -27,6 +27,8 @@ from sbs.models.Aevrak import Aevrak
 from sbs.models.Aklasor import Aklasor
 from sbs.models.CategoryItem import CategoryItem
 from sbs.services import general_methods
+
+from sbs.models.CompetitionAges import CompetitionAges
 @login_required
 def return_arsiv(request):
     perm = general_methods.control_access(request)
@@ -1195,3 +1197,14 @@ def ajax_klasorAdd(request):
             })
     else:
         return JsonResponse({'status': 'Fail', 'msg': 'Not a valid request'})
+
+
+@login_required
+def aktar(request):
+    for item in CompetitionAges.objects.all():
+        item.delete()
+    for item in range(1950,2030):
+        print(item)
+        x=CompetitionAges(year=item)
+        x.save()
+    return JsonResponse({'status': 'succusss', 'msg': 'Not a valid request'})

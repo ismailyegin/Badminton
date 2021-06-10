@@ -263,7 +263,7 @@
                                         {{ competition_form.registerFinishDate }}
                                     </div>
                                     <div class="form-group">
-                                        <label>Yaş Gurupları</label>
+                                        <label>Müsabakada Yarışabilecek Dogum Yılları</label>
                                         <select class="form-control select2" multiple="multiple " name="ages"
                                                 id="ages"
                                                 data-placeholder="Yaşlari  Seçiniz">
@@ -272,8 +272,6 @@
                                             {% endfor %}
                                         </select>
                                     </div>
-
-
                                 </div>
 
 
@@ -565,7 +563,7 @@
                     },
                     {
                         extend: 'print',
-                        title: 'Spor Bilgi Sistemi',
+                        title: '{{ competition.name }}',
                         text: '<i class="fa  fa-print"></i>',
                         exportOptions: {
                             columns: [0, 1, ':visible']
@@ -576,6 +574,7 @@
                     {
                         extend: 'pdfHtml5',
                         download: 'open',
+                        title:'{{ competition.name }}',
                         text: '<i class="fa fa-file-pdf-o"></i>',
                         exportOptions: {
                             columns: [0, 1, ':visible']
@@ -586,6 +585,7 @@
 
                     {
                         extend: 'excelHtml5',
+                        title: '{{ competition.name }}',
 
                         text: '<i class="fa fa-file-excel-o"></i>',
 
@@ -602,7 +602,7 @@
 
                             $.fn.dataTable.fileSave(
                                 new Blob([JSON.stringify(data)]),
-                                'Projeler.json'
+                                'musabakaData.json'
                             );
                         }
                     }
