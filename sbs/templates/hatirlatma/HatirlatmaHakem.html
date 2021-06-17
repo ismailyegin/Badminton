@@ -129,8 +129,8 @@
 
     <section class="content">
 
-
         <div class="row">
+
 
             <section class="col-lg-12 ">
 
@@ -140,74 +140,85 @@
 
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Sporcular</h3>
+                            <h3 class="box-title">Hakemler</h3>
                         </div>
-                        <div class="box-header with-border">
-                            <div class="btn-group">
-                                <a href="{% url "sbs:sporcu-ekle" %}"
-                                   type="button" class="btn btn-success"><i
-                                        class="fa fa-edit"></i> Yeni Sporcu Ekle
-                                </a>
-                            </div>
-                        </div>
+
+
+
                         <div class="box-body">
-                            <table id="sporcular" class="table table-bordered table-hover">
+                            <table id="hakemler" class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
                                     <th>#</th>
                                     <th> Ad Soyad</th>
-                                    <th>Dogum Günü</th>
-                                    <th>Kulüp</th>
-                                    <th>İşlemler</th>
+                                <th>Dogum Günü</th>
+                                    <th>E-Mail</th>
+                                    <th>Branş</th>
+                                    <th>Kademe</th>
+                                    <th>Vize</th>
+                                    {% if aktif == 'Admin' %}
+                                        <th>İncele/Sil</th>
+                                    {% endif %}
 
 
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% if athletes.all %}
-                                    {% for athlete in athletes %}
+                                {% if referees.all %}
+                                    {% for referee in referees %}
                                         <tr>
                                             <td>{{ forloop.counter }} </td>
-
-                                            <td>{{ athlete.user.first_name }} {{ athlete.user.last_name }} </td>
-                                            <td>{{ athlete.person.birthDate }}</td>
+                                            <td>{{ referee.user.first_name }} {{ referee.user.last_name }} </td>
+                                         <td>{{ coach.person.birthDate }}</td>
+                                            <td>{{ referee.user.email }} </td>
                                             <td>
-                                                {% for license in athlete.licenses.all %}
-                                                    {% if  license.status == 'Onaylandı' %}
-                                                        <p>{{ license.sportsClub }}</p>
+
+
+                                                {% for grade in referee.grades.all %}
+                                                    {% if  grade.status == 'Onaylandı' and grade.isActive == True %}
+
+                                                        <p>{{ grade.branch }}  </p>
                                                     {% endif %}
+
+
                                                 {% endfor %}
+
                                             </td>
+                                            <td>
 
 
-                                            {% comment %}<td>
-                                                {% for belts in athlete.belts.all %}
-                                                    {% if  belts.status == 'Onaylandı' %}
-                                                        <p>{{ belts.definition }}</p>
+                                                {% for grade in referee.grades.all %}
+                                                    {% if  grade.status == 'Onaylandı' and grade.isActive == True %}
+
+                                                        <p>{{ grade.definition }}  </p>
                                                     {% endif %}
-                                                {% endfor %}
-                                            </td>{% endcomment %}
 
+
+                                                {% endfor %}
+
+                                            </td>
+                                            <td>
+
+
+                                                {% for grade in referee.visa.all %}
+                                                    {% if  grade.status == 'Onaylandı' and grade.isActive == True %}
+
+                                                        <p>{{ grade.branch }}  </p>
+                                                    {% endif %}
+
+
+                                                {% endfor %}
+
+                                            </td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <a href="{% url "sbs:update-athletes" athlete.pk %}"
+                                                    <a href="{% url "sbs:hakem-duzenle" referee.pk %}"
                                                        type="button" class="btn btn-warning"><i
-                                                            class="fa fa-edit"></i>İncele
+                                                            class="fa fa-edit"></i> İncele
                                                     </a>
-
-                                                    {#                                                    {% if aktif == 'Admin' %}#}
-                                                    {##}
-                                                    {#                                                        <a href="{% url "sbs:sporcu-birlestir" athlete.pk %}"#}
-                                                    {#                                                           type="button" class="btn btn-success"><i#}
-                                                    {#                                                                class="fa fa-edit"></i>Birleştir#}
-                                                    {#                                                        </a>#}
-                                                    {##}
-                                                    {#                                                    {% endif %}#}
-                                                    {#                                                    <a href="{% url "sbs:sporcu-lisans-ekle" athlete.pk %}"#}
-                                                    {#                                                       type="button" class="btn btn-secondary btn-success">Lisans#}
-                                                    {#                                                        Ekle#}
-                                                    {#                                                    </a>#}
-
+                                                    <a class="btn btn-danger"
+                                                       data-toggle="modal" onclick=deleteReferee({{ referee.pk }})><i
+                                                            class="fa fa-trash"></i> Sil</a>
 
                                                 </div>
                                             </td>
@@ -220,8 +231,8 @@
 
                                 </tbody>
                             </table>
-
                         </div>
+
                     </div>
                     <!-- /.box -->
 
@@ -237,88 +248,7 @@
 
     <script>
         $(function () {
-            $('#sporcular').DataTable({
-
-
-                dom: 'Bfrtip',
-
-                language: {
-                    buttons: {
-                        pageLength: {
-                            _: " %d  Tane Göster",
-                            '-1': "Hepsini Göster"
-                        }
-                    }
-                },
-
-                lengthMenu: [
-                    [10, 25, 50, 100, -1],
-                    ['10 tane', '25 tane ', '50 tane ', '100 Tane', 'Hepsini Getir']
-                ],
-
-                'buttons': [
-                    {##}
-                    {##}
-                    {#'copy',#}
-                    {#'csv',#}
-
-                    {
-                        extend: "pageLength",
-                    },
-
-
-                    {
-                        extend: 'colvis',
-                        text: '<i class=" fa  fa-th-list"></i>',
-                        titleAttr: 'Ekle Çıkar'
-
-
-                    },
-                    {
-                        extend: 'print',
-                        title: 'Sporcular',
-                        text: '<i class="fa  fa-print"></i>',
-                        exportOptions: {
-                            {#columns: [0, 1, 2, 3, 4, 5]#}
-                        },
-                        titleAttr: 'Yazdır'
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        download: 'open',
-                        text: '<i class="fa fa-file-pdf-o"></i>',
-                        exportOptions: {
-                            {#columns: [0, 1, 2, 3, 4, 5]#}
-                        },
-                        titleAttr: 'Pdf Kaydet'
-                    },
-
-                    {
-                        extend: 'excelHtml5',
-                        text: '<i class="fa fa-file-excel-o"></i>',
-                        {#footer: true,#}
-                        exportOptions: {
-                            {#     yer degisimi de yapilabilir.#}
-                            {#columns: [0, 2, 1, 3, 4, 5]#}
-
-                        },
-                        titleAttr: 'Excel Kaydet'
-                    },
-                    {
-                        text: '<i class="fa fa-file-text-o"></i>',
-                        action: function (e, dt, button, config) {
-                            var data = dt.buttons.exportData();
-
-                            $.fn.dataTable.fileSave(
-                                new Blob([JSON.stringify(data)]),
-                                'Sporcular.json'
-                            );
-                        }
-                    }
-
-
-                ],
-                'bubble': true,
+            $('#hakemler').DataTable({
                 'paging': true,
                 'lengthChange': true,
                 'searching': true,
@@ -326,17 +256,52 @@
                 'info': true,
                 'autoWidth': true,
                 'responsive': true,
-                'select': true,
+            })
 
-
-            });
-
-        });
-
-
+        })
     </script>
 
 
+    <script>
+        function deleteReferee(id) {
+
+            console.log(id);
+            var html = ''
+            $("#modal-danger").on("shown.bs.modal", function (e) {
+                $("#btn-conf").click(function () {
+                    $.ajax({
+                        url: "{% url "sbs:referee-delete" pk=212121223232323232 %}".replace(/212121223232323232/, id.toString()),
+                        type: "POST",
+                        data: {
+                            'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                            isActive: 'False'
+                        },
+                        success: function (result) {
+
+                            html = 'Hakem Başarıyla Silindi';
+                            debugger;
+                            $(".successModal").html(html);
+                            $('#modal-success').on("shown.bs.modal", function (e) {
+                                $(".btn-ok").click(function () {
+
+                                    window.location.replace("{% url "sbs:hakemler" %}");
+
+                                });
+
+                            }).modal('show');
+
+
+                            console.log(result.status)
+                        }
+                    });
+                });
+            }).modal('show');
+            $('#btn-close').click(function () {
+                $('#modal-danger').modal('hide');
+            });
+
+        }
+    </script>
 
 
 

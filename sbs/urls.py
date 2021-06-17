@@ -440,8 +440,12 @@ urlpatterns = [
     url(r'log/log-kayitlari/$', LogViews.return_log,
         name='logs'),
 
-    url(r'hatirlatma/sporcu$', LogViews.return_birthdate,
-        name='birthdate'),
+    url(r'hatirlatma/sporcu$', LogViews.return_birthdate_athlete,
+        name='birthdate-athlete'),
+    url(r'hatirlatma/antrenor$', LogViews.return_birthdate_coach,
+        name='birthdate-coach'),
+    url(r'hatirlatma/hakem$', LogViews.return_birthdate_judge,
+        name='birthdate-judge'),
 
     #
     # sistemde dogum günü uyarısı

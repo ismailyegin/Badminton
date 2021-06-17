@@ -10,7 +10,7 @@ from django.shortcuts import render, redirect
 from sbs.Forms.UserSearchForm import UserSearchForm
 from sbs.Forms.SearchClupForm import SearchClupForm
 from sbs.models import Athlete, CategoryItem, Person, Communication, License, SportClubUser, SportsClub, City, Country, \
-    Coach, CompAthlete, Competition
+    Coach, CompAthlete, Competition, Judge
 from sbs.models.EnumFields import EnumFields
 from sbs.models.Level import Level
 from sbs.services import general_methods
@@ -63,17 +63,45 @@ def return_log(request):
     return render(request, 'Log/Logs.html', {'logs': logs, 'user_form': user_form})
 
 @login_required
-def return_birthdate(request):
+def return_birthdate_athlete(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    athletes=Athlete.objects.none()
+    now=datetime.date.today()
+    for item in range(0,5):
+        date=now+datetime.timedelta(days=item)
+        athletes |=  Athlete.objects.filter(person__birthDate__day=date.day ,person__birthDate__month=date.month)
+
+    return render(request, 'hatirlatma/hatirlatmaSporcu.html',{"athletes":athletes})
+@login_required
+def return_birthdate_coach(request):
+    perm = general_methods.control_access(request)
+
+    if not perm:
+        logout(request)
+        return redirect('accounts:login')
+    athletes=Coach.objects.none()
+    now=datetime.date.today()
+    for item in range(0,20):
+        date=now+datetime.timedelta(days=item)
+        athletes |=  Coach.objects.filter(person__birthDate__day=date.day ,person__birthDate__month=date.month)
+    return render(request, 'hatirlatma/HatirlatmaCoach.html',{"coachs":athletes})
+
+
+@login_required
+def return_birthdate_judge(request):
     perm = general_methods.control_access(request)
 
     if not perm:
         logout(request)
         return redirect('accounts:login')
 
-    athletes=Athlete.objects.none()
-    for item in Athlete.objects.all():
-        if item.person.birthDate:
-            # kişilerin bilgileri karşılaştırılacak
-            if (((datetime.date.today() - item.person.birthDate).days) % 365)>350:
-                athletes |= Athlete.objects.filter(pk=item.pk)
-    return render(request, 'hatirlatma/hatirlatmaSporcu.html',{"athletes":athletes})
+    athletes=Judge.objects.none()
+    now=datetime.date.today()
+    for item in range(0,5):
+        date=now+datetime.timedelta(days=item)
+        athletes |=  Judge.objects.filter(person__birthDate__day=date.day ,person__birthDate__month=date.month)
+    return render(request, 'hatirlatma/HatirlatmaHakem.html',{"referees":athletes})
