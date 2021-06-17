@@ -440,6 +440,12 @@ urlpatterns = [
     url(r'log/log-kayitlari/$', LogViews.return_log,
         name='logs'),
 
+    url(r'hatirlatma/sporcu$', LogViews.return_birthdate,
+        name='birthdate'),
+
+    #
+    # sistemde dogum günü uyarısı
+
     url(r'message/messages/$', DashboardViews.return_message,
         name='message'),
 

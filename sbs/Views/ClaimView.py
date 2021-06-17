@@ -19,8 +19,6 @@ from sbs.Forms.UserSearchForm import UserSearchForm
 from django.core.mail import BadHeaderError, send_mail
 
 from sbs.models import MenuDirectory, MenuAdmin
-
-
 @login_required
 def return_claim(request):
     perm = general_methods.control_access(request)
