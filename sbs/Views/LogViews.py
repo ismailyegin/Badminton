@@ -76,7 +76,4 @@ def return_birthdate(request):
             # kişilerin bilgileri karşılaştırılacak
             if (((datetime.date.today() - item.person.birthDate).days) % 365)>350:
                 athletes |= Athlete.objects.filter(pk=item.pk)
-                print(item.user.get_full_name())
-
-
     return render(request, 'hatirlatma/hatirlatmaSporcu.html',{"athletes":athletes})
