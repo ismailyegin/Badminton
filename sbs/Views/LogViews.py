@@ -71,7 +71,7 @@ def return_birthdate_athlete(request):
         return redirect('accounts:login')
     athletes=Athlete.objects.none()
     now=datetime.date.today()
-    for item in range(0,5):
+    for item in range(0,7):
         date=now+datetime.timedelta(days=item)
         athletes |=  Athlete.objects.filter(person__birthDate__day=date.day ,person__birthDate__month=date.month)
 
@@ -85,7 +85,7 @@ def return_birthdate_coach(request):
         return redirect('accounts:login')
     athletes=Coach.objects.none()
     now=datetime.date.today()
-    for item in range(0,20):
+    for item in range(0,7):
         date=now+datetime.timedelta(days=item)
         athletes |=  Coach.objects.filter(person__birthDate__day=date.day ,person__birthDate__month=date.month)
     return render(request, 'hatirlatma/HatirlatmaCoach.html',{"coachs":athletes})
@@ -101,7 +101,7 @@ def return_birthdate_judge(request):
 
     athletes=Judge.objects.none()
     now=datetime.date.today()
-    for item in range(0,5):
+    for item in range(0,7):
         date=now+datetime.timedelta(days=item)
         athletes |=  Judge.objects.filter(person__birthDate__day=date.day ,person__birthDate__month=date.month)
     return render(request, 'hatirlatma/HatirlatmaHakem.html',{"referees":athletes})
