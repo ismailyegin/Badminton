@@ -87,20 +87,12 @@
     {#    test harita #}
 
 
-
-
-
-
-
-
-
-
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
     <!-- Google Font -->
     <link rel="stylesheet"
@@ -848,8 +840,6 @@
 </div>
 <!-- ./wrapper -->
 
-
-<!-- Bootstrap 3.3.7 -->
 <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
 
 
@@ -908,7 +898,6 @@
 <script src="{% static 'drazone/dropzone.js' %}"></script>
 
 
-
 {#Kontrolleri yapılacak  statik hale gelecek#}
 {#<script src="{% static 'datatable/js/responsive.js' %}"></script>#}
 {#<script src="{% static 'datatable/js/buttons.js' %}"></script>#}
@@ -946,14 +935,6 @@
 {#<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.foundation.min.js"></script>#}
 
 
-
-
-
-
-
-
-
-
 <script>
     $(function () {
         $('#example1').DataTable()
@@ -979,14 +960,40 @@
         //Datemask2 mm/dd/yyyy
         $('#datemask2').inputmask('mm/dd/yyyy', {'placeholder': 'mm/dd/yyyy'})
 
-         $('.datemask').inputmask('dd/mm/yyyy', {'placeholder': 'dd/mm/yyyy'})
+        $('.datemask').inputmask('dd/mm/yyyy', {'placeholder': 'dd/mm/yyyy'})
         //Money Euro
         $('[data-mask]').inputmask()
 
         //Date range picker
         $('#reservation').daterangepicker()
         //Date range picker with time picker
-        $('#reservationtime').daterangepicker({timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A'})
+        $('#reservationtime').daterangepicker({
+
+
+            timePicker: true,
+            timePicker24Hour: true,
+            timePickerIncrement: 30,
+            {#startDate: moment().startOf('hour'),#}
+            {#endDate: moment().startOf('hour').add(32, 'hour'),#}
+
+            locale: {
+                format: 'DD/MM/YYYY hh:mm:ss'
+            }
+
+
+        })
+
+
+        $('.reservationtime').datepicker({
+            autoclose: true,
+            language: 'tr',
+            format: 'dd/mm/yyyy',
+        })
+        $('.timepicker').timepicker({
+            showInputs: true
+        })
+
+
         //Date range as a button
         $('#daterange-btn').daterangepicker(
             {
@@ -1007,7 +1014,7 @@
         )
 
         //Date picker
-        $('#datepicker').datepicker({
+        $('#c').datepicker({
             autoclose: true,
             language: 'tr',
             format: 'dd/mm/yyyy',
@@ -1033,9 +1040,13 @@
             format: 'dd/mm/yyyy',
         })
         $('.datepicker6').datepicker({
+            showSecond: true,
             autoclose: true,
             language: 'tr',
             format: 'dd/mm/yyyy',
+            stepHour: 2,
+            stepMinute: 10,
+            stepSecond: 10
         })
         $('.dateyear').datepicker({
             autoclose: true,

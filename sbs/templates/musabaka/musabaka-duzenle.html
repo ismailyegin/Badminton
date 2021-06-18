@@ -255,13 +255,20 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label> {{ competition_form.registerStartDate.label }}</label>
-                                        {{ competition_form.registerStartDate }}
+                                        <label>Ön kayıt Başlangıç ve Bitiş
+                                            Tarihi </label>
+
+
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="far fa-clock"></i></span>
+                                        </div>
+                                        <input type="text" name="reservationtime" class="form-control "
+                                               value="{{ competition.registerStartDate |date:"d/m/Y H:i:s" }}-{{ competition.registerFinishDate |date:"d/m/Y H:i:s" }}"
+                                               id="reservationtimelocal">
+
                                     </div>
-                                    <div class="form-group">
-                                        <label> {{ competition_form.registerFinishDate.label }}</label>
-                                        {{ competition_form.registerFinishDate }}
-                                    </div>
+
+
                                     <div class="form-group">
                                         <label>Müsabakada Yarışabilecek Dogum Yılları</label>
                                         <select class="form-control select2" multiple="multiple " name="ages"
@@ -470,6 +477,22 @@
 
 
         $(function () {
+
+            $('#reservationtimelocal').daterangepicker({
+
+                timePicker: true,
+                timePicker24Hour: true,
+                timePickerIncrement: 30,
+                startDate: "{{ competition.registerStartDate |date:"d/m/Y H:i:s" }}",
+                endDate: "{{ competition.registerFinishDate |date:"d/m/Y H:i:s" }}",
+
+
+                locale: {
+                    format: 'DD/MM/YYYY hh:mm:ss'
+                }
+
+
+            })
 
 
             var year = new Array();

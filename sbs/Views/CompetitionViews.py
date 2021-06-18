@@ -21,6 +21,8 @@ from sbs.models.SandaAthlete import SandaAthlete
 from sbs.models.SimpleCategory import SimpleCategory
 from sbs.services import general_methods
 
+from datetime import datetime
+
 
 @login_required
 def categori_ekle(request):
@@ -173,6 +175,21 @@ def musabaka_duzenle(request, pk):
 
     if request.method == 'POST':
         if competition_form.is_valid():
+
+
+
+
+
+            print(request.POST.get("reservationtime"))
+
+            if request.POST.get("reservationtime"):
+                dates=request.POST.get("reservationtime")
+                date=dates.split("-")
+                musabaka.registerFinishDate=datetime.strptime(str(date[1].strip()), '%d/%m/%Y %H:%M:%S')
+                musabaka.registerStartDate=datetime.strptime(str(date[0].strip()), '%d/%m/%Y %H:%M:%S')
+                musabaka.save()
+
+
 
             for item in musabaka.categoryies.all():
                 musabaka.categoryies.remove(item)
