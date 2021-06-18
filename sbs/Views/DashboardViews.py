@@ -57,7 +57,7 @@ def return_referee_dashboard(request):
     max_male = CompetitionsAthlete.objects.filter(competition=maxcom, athlete__person__gender=Person.MALE).count()
     max_female = CompetitionsAthlete.objects.filter(competition=maxcom, athlete__person__gender=Person.FEMALE).count()
 
-    competitions = Competition.objects.filter().order_by('creationDate')[:6]
+    competitions = Competition.objects.filter().order_by('-creationDate')[:6]
     lastcompetition = Competition.objects.filter().order_by('-creationDate')[0]
 
     datacount = []
@@ -123,7 +123,7 @@ def return_coach_dashboard(request):
     max_male = CompetitionsAthlete.objects.filter(competition=maxcom, athlete__person__gender=Person.MALE).count()
     max_female = CompetitionsAthlete.objects.filter(competition=maxcom, athlete__person__gender=Person.FEMALE).count()
 
-    competitions = Competition.objects.filter().order_by('creationDate')[:6]
+    competitions = Competition.objects.filter().order_by('-creationDate')[:6]
     lastcompetition = Competition.objects.filter().order_by('-creationDate')[0]
 
     datacount = []
@@ -205,7 +205,7 @@ def return_directory_dashboard(request):
 
     max = 0
     maxcom = Competition.objects.none()
-    competitions = Competition.objects.filter().order_by('creationDate')
+    competitions = Competition.objects.filter().order_by('-creationDate')
     for item in competitions:
         if max < int(CompetitionsAthlete.objects.filter(competition=item).count()):
             maxcom = item
@@ -215,7 +215,7 @@ def return_directory_dashboard(request):
     max_male = CompetitionsAthlete.objects.filter(competition=maxcom, athlete__person__gender=Person.MALE).count()
     max_female = CompetitionsAthlete.objects.filter(competition=maxcom, athlete__person__gender=Person.FEMALE).count()
 
-    competitions = Competition.objects.filter().order_by('creationDate')[:6]
+    competitions = Competition.objects.filter().order_by('-creationDate')[:6]
     lastcompetition = Competition.objects.filter().order_by('-creationDate')[0]
 
     datacount = []
@@ -396,7 +396,7 @@ def return_admin_dashboard(request):
 
     max = 0
     maxcom = Competition.objects.none()
-    competitions = Competition.objects.filter().order_by('creationDate')
+    competitions = Competition.objects.filter().order_by('-creationDate')
     for item in competitions:
         if max < int(CompetitionsAthlete.objects.filter(competition=item).count()):
             maxcom = item
@@ -406,7 +406,7 @@ def return_admin_dashboard(request):
     max_male = CompetitionsAthlete.objects.filter(competition=maxcom, athlete__person__gender=Person.MALE).count()
     max_female = CompetitionsAthlete.objects.filter(competition=maxcom, athlete__person__gender=Person.FEMALE).count()
 
-    competitions = Competition.objects.filter().order_by('creationDate')[:6]
+    competitions = Competition.objects.filter().order_by('-creationDate')[:6]
     lastcompetition = Competition.objects.filter().order_by('-creationDate')[0]
 
     lastcompetitionArray = []
