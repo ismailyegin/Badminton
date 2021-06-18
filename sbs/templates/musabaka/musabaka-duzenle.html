@@ -483,8 +483,12 @@
                 timePicker: true,
                 timePicker24Hour: true,
                 timePickerIncrement: 30,
+            {% if competition.registerStartDate  %}
                 startDate: "{{ competition.registerStartDate |date:"d/m/Y H:i:s" }}",
+             {% endif %}
+                     {% if competition.registerFinishDate  %}
                 endDate: "{{ competition.registerFinishDate |date:"d/m/Y H:i:s" }}",
+            {% endif %}
 
 
                 locale: {
