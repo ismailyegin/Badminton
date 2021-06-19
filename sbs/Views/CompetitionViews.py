@@ -684,6 +684,7 @@ def choose_athlete(request, pk, competition):
                         if str(katagori) != request.POST.get('weight'):
                             if request.POST.get('sporcu'):
                                 compAthlete.athleteTwo = Athlete.objects.get(pk=request.POST.get('sporcu'))
+
                             compAthlete.athlete = athlete
                             compAthlete.competition = competition
                             compAthlete.category = Category.objects.get(pk=request.POST.get('weight'))
@@ -694,16 +695,22 @@ def choose_athlete(request, pk, competition):
                         else:
                             return JsonResponse({'status': 'Fail', 'msg': 'Aynı kategoride kayıt vardır.'})
                     else:
+
                         if request.POST.get('sporcu'):
                             compAthlete.athleteTwo = Athlete.objects.get(pk=request.POST.get('sporcu'))
+
+                            if CompetitionsAthlete.objects.filter(athleteTwo=athlete, athlete=Athlete.objects.get(pk=request.POST.get('sporcu')),category_id=request.POST.get('weight')):
+                                athlete=None
+                                return JsonResponse({'status': 'Fail', 'msg': 'Aynı isimler sistem de kayıtlıdır.'})
+
                         compAthlete.athlete = athlete
                         compAthlete.competition = competition
                         compAthlete.category = Category.objects.get(pk=request.POST.get('weight'))
+
                         compAthlete.save()
                         log = str(athlete.user.get_full_name()) + "  Musabakaya sporcu eklendi "
                         log = general_methods.logwrite(request, request.user, log)
                         return JsonResponse({'status': 'Success', 'msg': 'Sporcu Başarı ile kaydedilmiştir.'})
-
 
                 else:
                     return JsonResponse({'status': 'Fail', 'msg': 'Bir sporcu 3. defa eklenemez.'})
@@ -712,7 +719,7 @@ def choose_athlete(request, pk, competition):
                 return JsonResponse({'status': 'Fail', 'msg': 'Eksik'})
 
 
-        except SandaAthlete.DoesNotExist:
+        except:
             return JsonResponse({'status': 'Fail', 'msg': 'Object does not exist'})
 
     else:
@@ -1000,8 +1007,12 @@ def antrenor_sporcu_ajax(request):
                     clupsPk.append(item.pk)
 
                 yearArray = []
-                for year in Competition.objects.get(pk=request.POST.get('competition')).ages.all():
-                    yearArray.append(year.year)
+                if Competition.objects.filter(pk=request.POST.get('competition')):
+                    if Competition.objects.get(pk=request.POST.get('competition')).ages.count()>0:
+                        for year in Competition.objects.get(pk=request.POST.get('competition')).ages.all():
+                            yearArray.append(year.year)
+
+
                 athletes = Athlete.objects.filter(licenses__sportsClub_id__in=clupsPk).distinct()
                 athletes |= Athlete.objects.filter(licenses__coach=coach ).distinct()
                 athletes = athletes.filter(person__birthDate__year__in=yearArray)

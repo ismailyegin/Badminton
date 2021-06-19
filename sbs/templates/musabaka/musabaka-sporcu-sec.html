@@ -216,7 +216,7 @@
                                     <div class="btn-group">
                                         <a href="{% url "sbs:basvuru" pk=competition.pk %}"
                                            type="button" class="btn btn-success"><i
-                                                class="fa fa-edit"></i> Başvurularim
+                                                class="fa fa-edit"></i> Başvurularim ({{ competition.name }})
                                         </a>
                                     </div>
                                 </div>
@@ -229,7 +229,7 @@
 
 
 
-                        <div class="box-body berktug">
+                        <div class="box-body">
                             <form method="post" enctype="multipart/form-data" role="form">
                                 {% csrf_token %}
                                 <table id="sporcular" class="table table-bordered table-hover">
@@ -537,8 +537,6 @@
 
                                     success: function (result) {
 
-
-                                        console.log(result)
 
                                         alert(result.msg);
 

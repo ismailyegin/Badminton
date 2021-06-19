@@ -437,7 +437,8 @@
                         type: "POST",
                         data: {
                             'csrfmiddlewaretoken': "{{  csrf_token  }}",
-                            isActive: 'False'
+                            isActive: 'False',
+                            'competition':"{{ competition.pk }}",
                         },
                         success: function (result) {
 
@@ -570,6 +571,7 @@
                     type: "POST",
                     data: {
                         'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                        'competition':"{{ competition.pk }}",
 
 
                         isActive: 'False',
@@ -604,7 +606,8 @@
                             'csrfmiddlewaretoken': "{{  csrf_token  }}",
                              sporcu: $("#sporcu option:selected").val(),
                              category: $('#category').val(),
-                             isActive: 'False'
+                             isActive: 'False',
+                             competition:"{{ competition.pk }}",
                         },
                         success: function (result) {
 
@@ -662,6 +665,9 @@
                         type: "POST",
                         data: {
                             'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                            'competition':"{{ competition.pk }}",
+
+
 
 
                             isActive: 'False',
@@ -698,6 +704,7 @@
 
                     isActive: 'False',
                     coach: $("#antrenor option:selected").val(),
+                    'competition':"{{ competition.pk }}",
 
                 },
 
