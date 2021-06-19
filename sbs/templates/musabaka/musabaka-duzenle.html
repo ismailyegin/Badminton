@@ -332,6 +332,7 @@
                                     <th>Antrenör 1</th>
                                     <th>Antrenör 2</th>
                                     <th>Diger Sporcu</th>
+                                    <th>Diger Sporcu İd</th>
                                     <th>Takım</th>
                                     <th>İşlemeler</th>
 
@@ -378,6 +379,13 @@
                                                 {{ compathlete.athleteTwo.user.last_name }}
 
                                             {% endif %} </td>
+                                        <td>{% if  compathlete.athleteTwo %}
+
+                                                {{ compathlete.athleteTwo.pk}}
+
+
+                                            {% endif %} </td>
+
 
                                             <td>{{ forloop.counter }}</td>
 
@@ -432,6 +440,13 @@
                                                     {{ compathlete.athlete.user.last_name }}
 
                                                 {% endif %} </td>
+                                            <td>{% if  compathlete.athlete %}
+
+                                                    {{ compathlete.athlete.pk }}
+
+
+                                                {% endif %} </td>
+
 
                                                 <td>{{ forloop.counter }}</td>
 
