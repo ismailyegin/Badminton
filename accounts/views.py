@@ -297,7 +297,7 @@ def forgot(request):
             fdk.save()
 
             html_content = ''
-            subject, from_email, to = 'THF Bilgi Sistemi Kullanıcı Bilgileri', 'no-reply@badminton.gov.tr', mail
+            subject, from_email, to = 'Badminton Bilgi Sistemi Kullanıcı Bilgileri', 'no-reply@badminton.gov.tr', mail
             html_content = '<h2>TÜRKİYE BADMİNTON FEDERASYONU BİLGİ SİSTEMİ</h2>'
             html_content = html_content + '<p><strong>Kullanıcı Adınız :' + str(fdk.user.username) + '</strong></p>'
             # html_content = html_content + '<p> <strong>Site adresi:</strong> <a href="http://127.0.0.1:8000/newpassword?query=' + str(
