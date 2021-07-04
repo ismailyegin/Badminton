@@ -362,7 +362,7 @@
                             <th>#</th>
                             <th>Ad Soyad</th>
                             {#                            <th>Doğum Tarihi</th>#}
-                            {% if aktif == 'Admin' %}
+                            {% if aktif == 'Admin' or aktif == 'Yonetim' %}
                                 <th>Kulüp</th>
                             {% endif %}
                             <th>Kategori</th>
@@ -379,13 +379,13 @@
                                     <td>{{ forloop.counter }} </td>
                                     <td>
                                         {{ compathlete.athlete.user.first_name }} {{ compathlete.athlete.user.last_name }}
-                                        {% if compathlete.category.kategoriadi == 'Çift Erkekler' or compathlete.category.kategoriadi == 'Çift Bayanlar' or compathlete.category.kategoriadi == 'Karışık' %}
+                                        {% if compathlete.category.kategoriadi == 'Çift Erkekler' or compathlete.category.kategoriadi == 'Çift Bayanlar' or compathlete.category.kategoriadi == 'Karışık Çiftler' %}
                                             <br>{{ compathlete.athleteTwo.user.first_name }}
                                             {{ compathlete.athleteTwo.user.last_name }}
 
                                         {% endif %}</td>
                                     {#                                    <td>{{ compathlete.athlete.person.birthDate |date }} </td>#}
-                                    {% if aktif == 'Admin' %}
+                                    {% if aktif == 'Admin' or aktif == 'Yonetim' %}
                                         <td>{{ compathlete.athlete.licenses.last.sportsClub }}</td>
                                     {% endif %}
                                     <td>{{ compathlete.category }}</td>
@@ -490,24 +490,18 @@
                     {##}
                     {#'copy',#}
                     {#'csv',#}
-
                     {
                         extend: "pageLength",
                     },
-
-
                     {
                         extend: 'colvis',
                         text: '<i class=" fa  fa-th-list"></i>',
                         titleAttr: 'Ekle Çıkar'
-
-
                     },
                     {
                         extend: 'print',
                         title: 'Sbs Bilgi Sistemi',
                         text: '<i class="fa  fa-print"></i>',
-
                         titleAttr: 'Yazdır'
                     },
                     {
@@ -537,8 +531,6 @@
                             );
                         }
                     }
-
-
                 ],
                 'paging': true,
                 'lengthChange': true,
@@ -572,9 +564,7 @@
                     data: {
                         'csrfmiddlewaretoken': "{{  csrf_token  }}",
                         'competition':"{{ competition.pk }}",
-
-
-                        isActive: 'False',
+                         isActive: 'False',
 
                     },
 
@@ -586,7 +576,6 @@
                         result.data.forEach(element => $('#antrenor').append("<option value=" + element.pk + ">" + element.name + "</option>"));
                     }
                 });
-
 
             }
 
