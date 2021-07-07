@@ -967,11 +967,6 @@ def antrenor_ajax(request):
 
         beka = []
         for item in Coach.objects.all():
-            clups = SportsClub.objects.filter(coachs=item)
-            clupsPk = []
-            for clup in clups:
-                clupsPk.append(clup.pk)
-            if Athlete.objects.filter(licenses__sportsClub_id__in=clupsPk) or Athlete.objects.filter(licenses__coach=item ):
                 data = {
                     'pk': item.pk,
                     'name': item.user.get_full_name(),
