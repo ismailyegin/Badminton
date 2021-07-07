@@ -29,20 +29,20 @@
 
 
     <!-- success modal -->
-    <div class="modal modal-success modal-success-food fade in" id="modal-success" style="display: none;">
+    <div class="modal modal-dialog" id="modal-success" style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">İşlem Başarılı</h4>
+                    <h4 class="modal-title">İşlem Sonucu</h4>
                 </div>
                 <div class="modal-body successModal">
-                    ...
+                    <label id="successtext"></label>
                 </div>
                 <div class="modal-footer">
 
-                    <button type="button" class="btn btn-outline btn-ok">Tamam</button>
+                    <button type="button" class="btn btn-success btn-ok">Tamam</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -299,7 +299,7 @@
 
             console.log($("#weight option:selected").text());
             console.log($("#weight option:selected").val());
-            if ($("#weight option:selected").val() == 3 || $("#weight option:selected").val() == 4  || $("#weight option:selected").val() == 5) {
+            if ($("#weight option:selected").val() == 3 || $("#weight option:selected").val() == 4 || $("#weight option:selected").val() == 5) {
 
                 row = $("body").find("#antrenor")
 
@@ -314,8 +314,7 @@
                         type: "POST",
                         data: {
                             'csrfmiddlewaretoken': "{{  csrf_token  }}",
-
-
+                            competition: '{{musabaka.pk }}',
                             isActive: 'False',
 
                         },
@@ -347,7 +346,7 @@
                 data: {
                     'csrfmiddlewaretoken': "{{  csrf_token  }}",
 
-                   competition:'{{musabaka.pk }}',
+                    competition: '{{musabaka.pk }}',
                     isActive: 'False',
                     coach: $("#antrenor option:selected").val(),
 
@@ -365,21 +364,6 @@
         }
 
 
-
-
-        $(function () {
-            //Enable iCheck plugin for checkboxes
-            //iCheck for checkbox and radio inputs
-            $('.berktug input[type="checkbox"]').iCheck({
-
-                checkboxClass: 'icheckbox_flat-blue',
-
-            });
-
-        });
-
-
-        {#    --------------------------------------------------------------------#}
         $(function () {
 
 
@@ -523,29 +507,32 @@
 
                         if ($('#weight').val()) {
 
-                                $.ajax({
-                                    url: "{% url "sbs:catagori-sporcu-sec-ajax" pk=212121223232323232 competition=999999999999999 %}".replace(/212121223232323232/, id.toString()).replace(/999999999999999/, competitionId.toString()),
-                                    type: "POST",
-                                    data: {
-                                        'csrfmiddlewaretoken': "{{  csrf_token  }}",
+                            $.ajax({
+                                url: "{% url "sbs:catagori-sporcu-sec-ajax" pk=212121223232323232 competition=999999999999999 %}".replace(/212121223232323232/, id.toString()).replace(/999999999999999/, competitionId.toString()),
+                                type: "POST",
+                                data: {
+                                    'csrfmiddlewaretoken': "{{  csrf_token  }}",
 
-                                        weight: $('#weight').val(),
-                                        sporcu: $("#sporcu option:selected").val(),
-                                        isActive: 'False',
+                                    weight: $('#weight').val(),
+                                    sporcu: $("#sporcu option:selected").val(),
+                                    isActive: 'False',
 
-                                    },
+                                },
 
-                                    success: function (result) {
+                                success: function (result) {
+
+                                    $("#successtext").text(result.msg);
+                                    $("#modal-success").modal('show');
+                                    $('.btn-ok').click(function () {
 
 
-                                        alert(result.msg);
-
-                                        html = result.msg;
-                                        debugger;
-                                        $(".successModal").html(html);
                                         window.location.replace("{% url "sbs:musabaka-sporcu-sec" pk %}");
-                                    }
-                                });
+
+                                    });
+
+
+                                }
+                            });
 
 
                         } else {

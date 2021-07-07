@@ -176,12 +176,6 @@ def musabaka_duzenle(request, pk):
     if request.method == 'POST':
         if competition_form.is_valid():
 
-
-
-
-
-            print(request.POST.get("reservationtime"))
-
             if request.POST.get("reservationtime"):
                 dates=request.POST.get("reservationtime")
                 date=dates.split("-")
@@ -973,11 +967,16 @@ def antrenor_ajax(request):
 
         beka = []
         for item in Coach.objects.all():
-            data = {
-                'pk': item.pk,
-                'name': item.user.get_full_name(),
-            }
-            beka.append(data)
+            clups = SportsClub.objects.filter(coachs=item)
+            clupsPk = []
+            for clup in clups:
+                clupsPk.append(clup.pk)
+            if Athlete.objects.filter(licenses__sportsClub_id__in=clupsPk) or Athlete.objects.filter(licenses__coach=item ):
+                data = {
+                    'pk': item.pk,
+                    'name': item.user.get_full_name(),
+                }
+                beka.append(data)
         return JsonResponse({'data': beka})
         # return HttpResponse(serializers.serialize("json", Coach.objects.all()))
     else:
