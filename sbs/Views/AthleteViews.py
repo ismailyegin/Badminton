@@ -467,7 +467,6 @@ def return_athletes_antrenor(request):
             firstName = unicode_tr(user_form.cleaned_data['first_name']).upper()
             lastName = unicode_tr(user_form.cleaned_data['last_name']).upper()
             tcno = request.POST.get('tc')
-
             email = user_form.cleaned_data.get('email')
             if not (firstName or lastName or email or tcno):
 
@@ -477,32 +476,15 @@ def return_athletes_antrenor(request):
                     clupsPk = []
                     for item in clup:
                         clupsPk.append(item.pk)
-                    athletes = Athlete.objects.filter(licenses__sportsClub_id__in=clupsPk).distinct()
-                    athletes |= Athlete.objects.filter(licenses__coach=coach).distinct()
+                    athletes = Athlete.objects.filter(licenses__sportsClub_id__in=clupsPk)
+                    athletes |= Athlete.objects.filter(licenses__coach=coach)
+                    athletes |= Athlete.objects.filter(licenses__coach2=coach)
+                    athletes=athletes.distinct()
 
 
                 elif active == 'Yonetim' or active == 'Admin':
                     athletes = Athlete.objects.all()
-            elif firstName or lastName or email or sportsclup or brans or tcno:
-                query = Q()
-                if firstName:
-                    query &= Q(user__first_name__icontains=firstName)
-                if lastName:
-                    query &= Q(user__last_name__icontains=lastName)
-                if email:
-                    query &= Q(user__email__icontains=email)
-                if tcno:
-                    query &= Q(person__tc__icontains=tcno)
-                if active == 'Antrenor':
-                    coach = Coach.objects.get(user=user)
-                    clup = SportsClub.objects.filter(coachs=coach)
-                    clupsPk = []
-                    for item in clup:
-                        clupsPk.append(item.pk)
-                    athletes = Athlete.objects.filter(licenses__sportsClub_id__in=clupsPk).filter(query).distinct()
-                    athletes |= Athlete.objects.filter(licenses__coach=coach).filter(query).distinct()
-                elif active == 'Yonetim' or active == 'Admin':
-                    athletes = Athlete.objects.filter(query).distinct()
+
 
     return render(request, 'sporcu/sporcularAntrenor.html', {'athletes': athletes, 'user_form': user_form})
 
@@ -1759,8 +1741,15 @@ def sporcu_lisans_listesi(request):
             elif active == 'Yonetim' or active == 'Admin':
                 licenses = License.objects.filter(query).distinct()
             elif active=='Antrenor':
-                sc_user = Coach.objects.get(user=user)
-                licenses=License.objects.filter(coach=sc_user).filter(query).distinct()
+                coach = Coach.objects.get(user=user)
+                clup = SportsClub.objects.filter(coachs=coach)
+                clupsPk = []
+                for item in clup:
+                    clupsPk.append(item.pk)
+                licenses = License.objects.filter(sportsClub_id__in=clupsPk)
+                licenses |= License.objects.filter(coach=coach)
+                licenses |= License.objects.filter(coach2=coach)
+                licenses=licenses.distinct()
 
         else:
             if active == 'KlupUye':
@@ -1774,10 +1763,15 @@ def sporcu_lisans_listesi(request):
             elif active == 'Yonetim' or active == 'Admin':
                 licenses = License.objects.all().distinct()
             elif active == 'Antrenor':
-                sc_user = Coach.objects.get(user=user)
-                licenses=License.objects.filter(coach=sc_user).distinct()
-
-
+                coach = Coach.objects.get(user=user)
+                clup = SportsClub.objects.filter(coachs=coach)
+                clupsPk = []
+                for item in clup:
+                    clupsPk.append(item)
+                licenses = License.objects.filter(sportsClub_id__in=clupsPk)
+                licenses |= License.objects.filter(coach=coach)
+                licenses |= License.objects.filter(coach2=coach)
+                licenses=licenses.distinct()
     sportclup = SearchClupForm(request.POST, request.FILES or None)
     if active == 'KlupUye':
         sc_user = SportClubUser.objects.get(user=user)

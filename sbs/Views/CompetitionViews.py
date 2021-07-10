@@ -23,6 +23,9 @@ from sbs.services import general_methods
 
 from datetime import datetime
 
+from unicode_tr import unicode_tr
+
+
 
 @login_required
 def categori_ekle(request):
@@ -78,8 +81,16 @@ def aplication(request, pk):
         comAthlete = CompetitionsAthlete.objects.filter(competition=pk).distinct()
 
     elif active == 'Antrenor':
-        coach = Coach.objects.get(user=user)
-        comAthlete = CompetitionsAthlete.objects.filter(competition=pk, athlete__licenses__coach=coach).distinct()
+        coach = Coach.objects.get(user=request.user)
+        clup = SportsClub.objects.filter(coachs=coach)
+        clupsPk = []
+        for item in clup:
+            clupsPk.append(item.pk)
+
+        comAthlete = CompetitionsAthlete.objects.filter(competition=musabaka, athlete__licenses__coach=coach)
+        comAthlete |=CompetitionsAthlete.objects.filter(competition=musabaka , athlete__licenses__coach2=coach)
+        comAthlete |=CompetitionsAthlete.objects.filter(competition=musabaka , athlete__licenses__sportsClub_id__in=clup)
+        comAthlete = comAthlete.distinct()
     return render(request, 'musabaka/basvuru.html',
                   {'athletes': comAthlete, 'competition': musabaka, 'weights': weights})
 
@@ -258,7 +269,6 @@ def musabaka_sporcu_ekle(request, athlete_pk, competition_pk):
 @login_required
 def musabaka_sporcu_sec(request, pk):
     perm = general_methods.control_access_klup(request)
-
     if not perm:
         logout(request)
         return redirect('accounts:login')
@@ -268,8 +278,6 @@ def musabaka_sporcu_sec(request, pk):
 
     competition = Competition.objects.filter(registerStartDate__lte=timezone.now(),
                                              registerFinishDate__gte=timezone.now())
-
-
     return render(request, 'musabaka/musabaka-sporcu-sec.html',
                   {'pk': pk, 'weights': category, 'application': competition,
                    'musabaka':musabaka})
@@ -470,13 +478,15 @@ def return_sporcu(request):
             yearArray = []
             for year in competition.ages.all():
                 yearArray.append(year.year)
-            athletes = Athlete.objects.filter(licenses__sportsClub_id__in=clupsPk).filter(person__birthDate__year__in=yearArray).distinct()
-            athletes |= Athlete.objects.filter(licenses__coach=coach).filter(person__birthDate__year__in=yearArray).distinct()
+            athletes = Athlete.objects.filter(licenses__sportsClub_id__in=clupsPk).filter(person__birthDate__year__in=yearArray)
+            athletes |= Athlete.objects.filter(licenses__coach=coach).filter(person__birthDate__year__in=yearArray)
+            athletes |= Athlete.objects.filter(licenses__coach2=coach).filter(person__birthDate__year__in=yearArray)
             modeldata = athletes.distinct()[start:start + length]
             total = athletes.distinct().count()
 
     else:
         if search:
+            search=unicode_tr(search).upper()
             modeldate = Athlete.objects.none()
             yearArray = []
             for year in competition.ages.all():
@@ -508,9 +518,14 @@ def return_sporcu(request):
                 clupsPk = []
                 for item in clup:
                     clupsPk.append(item.pk)
-                athletes = modeldata.filter(person__birthDate__year__in=yearArray).filter(licenses__sportsClub_id__in=clupsPk).distinct()
-                athletes |= modeldata.filter(person__birthDate__year__in=yearArray).filter(licenses__coach=coach).distinct()
+                athletes = modeldata.filter(person__birthDate__year__in=yearArray).filter(licenses__sportsClub_id__in=clupsPk)
+                athletes |= modeldata.filter(person__birthDate__year__in=yearArray).filter(licenses__coach=coach)
+                athletes |= modeldata.filter(person__birthDate__year__in=yearArray).filter(licenses__coach2=coach)
                 modeldata = athletes.distinct()
+
+
+
+
 
             total = modeldata.count()
 
@@ -551,8 +566,9 @@ def return_sporcu(request):
                 clupsPk = []
                 for item in clup:
                     clupsPk.append(item.pk)
-                athletes = Athlete.objects.filter(licenses__sportsClub_id__in=clupsPk).distinct()
-                athletes |= Athlete.objects.filter(licenses__coach=coach).distinct()
+                athletes = Athlete.objects.filter(licenses__sportsClub_id__in=clupsPk)
+                athletes |= Athlete.objects.filter(licenses__coach=coach)
+                athletes |= Athlete.objects.filter(licenses__coach2=coach)
                 athletes=athletes.filter(person__birthDate__year__in=yearArray)
                 modeldata = athletes.distinct()[start:start + length]
                 total = athletes.distinct().count()
@@ -966,7 +982,7 @@ def antrenor_ajax(request):
     if request.method == 'POST' and request.is_ajax():
 
         beka = []
-        for item in Coach.objects.all():
+        for item in Coach.objects.all().order_by('user__first_name'):
                 data = {
                     'pk': item.pk,
                     'name': item.user.get_full_name(),

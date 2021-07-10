@@ -155,18 +155,22 @@
                                                maxlength="254" id="id_email">
                                     </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label> {{ Sportclup.sportsClub.label }}</label>
-                                        {{ Sportclup.sportsClub }}
+                                {% if aktif == 'Admin' or aktif == 'Yonetim' %}
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label> {{ Sportclup.sportsClub.label }}</label>
+                                            {{ Sportclup.sportsClub }}
+                                        </div>
                                     </div>
-                                </div>
+                                {% endif %}
+
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label> {{ Sportclup.branch.label }}</label>
                                         {{ Sportclup.branch }}
                                     </div>
                                 </div>
+
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label>Onay durumu </label>
@@ -246,6 +250,7 @@
                                     <tr>
                                         <td>{{ forloop.counter }} </td>
                                         <td>{{ license.athlete_set.first }}</td>
+
                                         <td>{{ license.sportsClub }}</td>
                                         <td>{{ license.startDate }}  </td>
                                         <td>{{ license.expireDate }}  </td>
